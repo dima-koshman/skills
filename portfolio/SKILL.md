@@ -15,18 +15,19 @@ A knowledge base of professional abilities, achievements, and project experience
 | Resource | Description |
 |---|---|
 | [Resume](resume.md) | Professional summary, employment history, education |
-| [Certificates](references/certificates.md) | Professional certifications (Dataiku, LangChain, C++, Statistics) |
+| [Certificates](projects/certificates.md) | Professional certifications (Dataiku, LangChain, C++, Statistics) |
 
 ## Projects
 
 | Project | Type | Description |
 |---|---|---|
-| [Bir MCP](references/bir-mcp.md) | Enterprise AI | MCP gateway for secure AI assistant access to internal tools |
-| [Kapital Bank AI](references/kapital.md) | Enterprise AI | RAG-powered Jira Service Desk Assistant |
-| [Speech AI](references/aws-app.md) | AI Application | Multi-modal text-to-audio/video platform |
-| [Moow Analytics](references/moow.md) | Data Engineering | Analytics platform for electric scooter rental |
-| [YSDA Coursework](references/ysda.md) | Educational | ML, statistics, algorithms (55+ notebooks) |
-| [C++ Algorithms](references/c++.md) | Educational | 260+ competitive programming solutions |
+| [Bir MCP](projects/bir-mcp.md) | Enterprise AI | MCP gateway for secure AI assistant access to internal tools |
+| [Kapital Bank AI](projects/kapital.md) | Enterprise AI | RAG-powered Jira Service Desk Assistant |
+| [Proactive](projects/proactive.md) | AI Application | Telegram bot with autonomous messaging using LangGraph |
+| [Speech AI](projects/aws-app.md) | AI Application | Multi-modal text-to-audio/video platform |
+| [Moow Analytics](projects/moow.md) | Data Engineering | Analytics platform for electric scooter rental |
+| [YSDA Coursework](projects/ysda.md) | Educational | ML, statistics, algorithms (55+ notebooks) |
+| [C++ Algorithms](projects/c++.md) | Educational | 260+ competitive programming solutions |
 
 ## Core Skills
 

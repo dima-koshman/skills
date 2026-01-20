@@ -33,13 +33,20 @@ A knowledge base of professional abilities, achievements, and project experience
 
 **AI & Machine Learning**
 - LLM agents (LangChain, LangGraph, MCP protocol)
-- RAG systems, vector databases (pgvector)
+- RAG systems, vector databases (pgvector, Chroma)
+- PyTorch, deep learning
 - MLOps, observability (LangSmith, Logfire)
 
 **Software Engineering**
-- Python (expert), C++, SQL, Dart
+- Python (expert), C++, SQL
 - FastAPI, Gradio, Flutter
-- PostgreSQL, MySQL, Oracle, VictoriaMetrics
+- PostgreSQL, MySQL, Oracle
+- Docker, Docker Compose
+
+**Cloud & Infrastructure**
+- AWS: ECS, EC2, AppRunner
+- GitLab CI/CD pipelines, runners
+- Monitoring: Grafana, Prometheus, VictoriaMetrics
 
 **Data Engineering**
 - ETL pipelines, Dataiku, Kafka

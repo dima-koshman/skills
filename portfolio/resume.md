@@ -1,12 +1,12 @@
 # Dima Koshman
 
-**AI Engineer**
+**AI Engineer | LLM Agents & Enterprise AI Systems**
 
-Baku, Azerbaijan
+Baku, Azerbaijan (open to remote)
 
 **Email:** koshmandk.koshmandk@gmail.com | **Phone:** +994557451994
 
-**Links:** [GitHub](https://github.com/dima-koshman/) | [GitLab](https://gitlab.com/koshmandk/) | [LeetCode](https://leetcode.com/u/dkoshman/)
+**Links:** [GitHub](https://github.com/dima-koshman/) | [GitLab](https://gitlab.com/koshmandk/) | [LinkedIn](https://linkedin.com/in/YOUR_LINKEDIN)
 
 ---
 
@@ -22,7 +22,7 @@ Baku, Azerbaijan
 ### Software Engineering & DevOps
 
 - **Languages:** Python (expert), C++, SQL, Dart
-- **Frameworks:** FastAPI, Gradio, Flutter
+- **Frameworks:** FastAPI, Gradio, FastMCP, SQLAlchemy, SQLModel, PyTorch, LangChain, LangGraph
 - **Databases:** PostgreSQL, MySQL, Oracle, VictoriaMetrics, Prometheus
 - **Infrastructure:** Docker, AWS, Azure, GitLab CI/CD, Linux
 - **Security:** OAuth2/OIDC, PII anonymization, infosec reviews, pentesting
@@ -37,44 +37,43 @@ Baku, Azerbaijan
 
 ## Employment History
 
-### AI Engineer | Kapital Bank
+### AI Engineer | Kapital Bank (Azerbaijan's largest private bank)
 
 Baku | Mar 2024 – Present
 
 **AI Platform Development**
-- Built enterprise AI gateway (MCP protocol) enabling secure AI assistant access to internal tools (Jira, GitLab, Confluence, Grafana)
-- Developed RAG-powered Jira Service Desk Assistant serving thousands of employees in 3 languages
-- Implemented vector database (pgvector) with automated knowledge base generation from resolved tickets
-- Set up AI observability stack (LangSmith, Logfire) with quality metrics and evaluation pipelines
-- Passed infosec review for production deployment, implemented PII anonymization
+- Architected and built enterprise MCP gateway — enables Claude/GPT to securely access internal tools (Jira, GitLab, Confluence, Grafana) with OAuth2/OIDC, per-user permissions, and audit logging
+- Developed RAG-powered Service Desk Assistant handling 1000+ tickets/month across 3 languages, reducing average resolution time
+- Implemented vector database (pgvector) with automated knowledge base generation from 50K+ resolved tickets
+- Built AI observability stack (LangSmith, Langfuse Logfire) with quality metrics, evaluation pipelines, and cost tracking
 
 **Data Engineering & Analytics**
-- Created most-used Tableau dashboard in the organization
-- Developed dozens of data engineering pipelines in Dataiku (SQL, Kafka, API sources)
-- Built SQL-to-Kafka-to-Prometheus exporter for metrics collection
-- Implemented Apdex and DORA metrics calculation pipelines
+- Created organization's most-used Tableau dashboard (daily active users across departments)
+- Developed 20+ data engineering pipelines in Dataiku (SQL, Kafka, REST APIs)
+- Built real-time metrics pipeline: SQL → Kafka → Prometheus → Grafana
+- Implemented DORA metrics for engineering productivity measurement
 
 **Technical Leadership**
-- Designed system architecture, managed stakeholders, wrote documentation
-- Conducted load testing, security reviews, and performance optimization
-- Administered databases, set up CI/CD pipelines, managed OAuth/SSO integration
+- Led infosec review and production deployment; implemented PII anonymization (Presidio)
+- Designed system architecture, managed stakeholders, wrote technical documentation
+- Set up GitLab CI/CD, load testing (Locust), OAuth/SSO integration with enterprise IdP
 
 ### Freelance Data Engineer | Moow
 
 Greece (Remote) | 2023
 
-- Built complete analytics infrastructure for electric scooter rental startup across 6 Greek cities
-- Designed ETL pipelines processing 100K+ telemetry records with VictoriaMetrics and PostgreSQL
-- Developed ML models for demand forecasting and parking location optimization (MeanShift clustering)
-- Created route optimization system for field workers using Google OR-Tools (VRP)
-- Built worker web app with real-time fleet tracking and Google Maps integration
+- Built complete analytics infrastructure for electric scooter rental startup operating across 6 Greek cities
+- Designed ETL pipelines processing 100K+ daily telemetry records with VictoriaMetrics and PostgreSQL
+- Developed ML models for demand forecasting and optimal parking location selection (MeanShift clustering)
+- Built route optimization system for field operations using Google OR-Tools (Vehicle Routing Problem)
+- Created operations web app with real-time fleet tracking and Google Maps integration
 
-### Software Engineer | Mail.ru
+### Software Engineer | Mail.ru (VK)
 
 Moscow | 2018
 
-- Performed data processing and analysis
-- Developed VKontakte.ru app back-end supporting millions of users
+- Developed backend services for VKontakte.ru (100M+ MAU social network)
+- Built data processing pipelines for analytics
 
 ---
 
@@ -91,25 +90,46 @@ Moscow | 2018
 
 ---
 
-## Certifications
+## Certificates
 
-- LangChain Academy (LangChain/LangGraph)
-- Dataiku: Core Designer, Developer, ML Practitioner, Advanced Engineer
-- Yandex C++ Specialization (Coursera)
-- Stepik: C++, Probability Theory, Statistics
+### AI & LLM
+
+| Certificate | Description |
+|---|---|
+| [LangChain Academy](../certificates/LangChain%20Academy.pdf) | LangChain/LangGraph framework certification |
+
+### Dataiku Platform
+
+| Certificate | Description |
+|---|---|
+| [Dataiku Core Designer](../certificates/Dataiku%20Core%20Designer.pdf) | Data pipeline design and workflow automation |
+| [Dataiku Developer](../certificates/Dataiku%20Developer.pdf) | Custom code integration, plugins, API usage |
+| [Dataiku ML Practitioner](../certificates/Dataiku%20ML%20Practitioner.pdf) | Machine learning model building and deployment |
+| [Dataiku Advanced Engineer](../certificates/Dataiku%20Advanced%20Engineer.pdf) | Advanced platform administration and optimization |
+
+### Programming
+
+| Certificate | Description |
+|---|---|
+| [Coursera Yandex C++](../certificates/Coursera%20Yandex%20C++.pdf) | "Fundamentals of C++" specialization by Yandex |
+| [Stepik C++](../certificates/Stepik%20C++.pdf) | C++ programming course completion |
+
+### Mathematics & Statistics
+
+| Certificate | Description |
+|---|---|
+| [Stepik Probabilities](../certificates/Stepik%20Probabilities.pdf) | Probability theory course |
+| [Stepik Statistics](../certificates/Stepik%20Statistics.pdf) | Mathematical statistics course |
+
+### Competitions
+
+| Certificate | Description |
+|---|---|
+| [Coderun ML](../certificates/Coderun%20ML.pdf) | Yandex Coderun 2023 ML challenge — prize placement |
 
 ---
 
 ## Languages
 
-- **Russian:** Native speaker
-- **English:** C1 (IELTS 8/9)
-- **Esperanto:** Working knowledge
-
----
-
-## Achievements
-
-- **Yandex Coderun 2023:** Prize places in ML and algorithms tracks
-- **Academic:** 100 points on unified state physics exam; 10+ olympiad diplomas (math, physics, geometry)
-- **Teaching:** Reviewed and graded students' C++ code
+- **English:** Fluent (IELTS 8/9, C1)
+- **Russian:** Native

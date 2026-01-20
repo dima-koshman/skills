@@ -1,6 +1,6 @@
 # Proactive: AI-Powered Telegram Bot with Autonomous Messaging
 
-**[Source](https://github.com/koshmandk/proactive)**
+**[Source](https://gitlab.com/koshmandk/proactive)**
 
 ---
 

@@ -30,11 +30,24 @@ class DirectoryStore:
         if ids:
             await self.vector_store.adelete(ids)
 
-    def embed_file(self, file_path: str, content: str, metadata: dict | None):
-        # First, delete the existing documents in store for this file path.
-        # Then split the file content into chunks, embed and store resulting documents with
-        # metadata + file_path, creation time
-        ...
+    async def embed_file(self, file_path: str, content: str, metadata: dict | None):
+        await self.delete_file(file_path)
+
+        if file_path.endswith(".md"):
+            splitter = self._markdown_splitter
+        else:
+            splitter = self._recursive_splitter
+
+        chunks = splitter.split_text(content)
+        base_metadata = {"file_path": file_path, "created_at": datetime.now(UTC).isoformat()}
+        if metadata:
+            base_metadata.update(metadata)
+
+        documents = [
+            langchain_core.documents.Document(page_content=chunk, metadata=base_metadata.copy())
+            for chunk in chunks
+        ]
+        await self.vector_store.aadd_documents(documents)
 
     def search_documents(self, query: str):
         # Search the vector store for documents matching the query.

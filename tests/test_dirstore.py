@@ -118,3 +118,53 @@ async def test_delete_file_noop_for_missing_path():
     store = DirectoryStore(vs, FakeEmbeddings())
 
     await store.delete_file("nonexistent.txt")  # should not raise
+
+
+@pytest.mark.asyncio
+async def test_embed_file_stores_documents_with_metadata():
+    vs = FakeVectorStore()
+    store = DirectoryStore(vs, FakeEmbeddings())
+
+    await store.embed_file("docs/readme.md", "# Hello\n\nWorld", {"author": "test"})
+
+    assert len(vs._docs) > 0
+    for doc in vs._docs.values():
+        assert doc.metadata["file_path"] == "docs/readme.md"
+        assert doc.metadata["author"] == "test"
+        assert "created_at" in doc.metadata
+
+
+@pytest.mark.asyncio
+async def test_embed_file_uses_markdown_splitter_for_md():
+    vs = FakeVectorStore()
+    store = DirectoryStore(vs, FakeEmbeddings())
+
+    content = ("# Section 1\n\n" + "Word " * 1000 + "\n\n# Section 2\n\n" + "Word " * 1000)
+    await store.embed_file("file.md", content, None)
+
+    texts = [doc.page_content for doc in vs._docs.values()]
+    assert len(texts) >= 2
+
+
+@pytest.mark.asyncio
+async def test_embed_file_uses_recursive_splitter_for_non_md():
+    vs = FakeVectorStore()
+    store = DirectoryStore(vs, FakeEmbeddings())
+
+    await store.embed_file("file.txt", "Hello world", None)
+
+    assert len(vs._docs) == 1
+    assert list(vs._docs.values())[0].page_content == "Hello world"
+
+
+@pytest.mark.asyncio
+async def test_embed_file_re_embeds_on_second_call():
+    vs = FakeVectorStore()
+    store = DirectoryStore(vs, FakeEmbeddings())
+
+    await store.embed_file("file.txt", "version 1", None)
+    await store.embed_file("file.txt", "version 2", None)
+
+    docs = list(vs._docs.values())
+    assert len(docs) == 1
+    assert docs[0].page_content == "version 2"

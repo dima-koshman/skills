@@ -168,3 +168,41 @@ async def test_embed_file_re_embeds_on_second_call():
     docs = list(vs._docs.values())
     assert len(docs) == 1
     assert docs[0].page_content == "version 2"
+
+
+@pytest.mark.asyncio
+async def test_search_documents_returns_documents():
+    vs = FakeVectorStore()
+    store = DirectoryStore(vs, FakeEmbeddings())
+
+    await store.embed_file("a.txt", "hello", None)
+    results = await store.search_documents("hello")
+
+    assert len(results) >= 1
+    assert results[0].page_content == "hello"
+
+
+@pytest.mark.asyncio
+async def test_search_files_returns_unique_paths():
+    vs = FakeVectorStore()
+    store = DirectoryStore(vs, FakeEmbeddings())
+
+    await store.embed_file("a.txt", "hello", None)
+    await store.embed_file("b.txt", "world", None)
+
+    paths = await store.search_files("hello")
+    assert isinstance(paths, list)
+    assert len(paths) == len(set(paths))
+    assert all(isinstance(p, str) for p in paths)
+
+
+@pytest.mark.asyncio
+async def test_search_files_preserves_relevance_order():
+    vs = FakeVectorStore()
+    store = DirectoryStore(vs, FakeEmbeddings())
+
+    await store.embed_file("first.txt", "aaa", None)
+    await store.embed_file("second.txt", "bbb", None)
+
+    paths = await store.search_files("query")
+    assert paths == ["first.txt", "second.txt"]

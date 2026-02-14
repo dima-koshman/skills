@@ -49,10 +49,16 @@ class DirectoryStore:
         ]
         await self.vector_store.aadd_documents(documents)
 
-    def search_documents(self, query: str):
-        # Search the vector store for documents matching the query.
-        ...
+    async def search_documents(self, query: str) -> list[langchain_core.documents.Document]:
+        return await self.vector_store.asimilarity_search(query)
 
-    def search_files(self, query: str) -> list[str]:
-        # Search the vector store for files matching the query, returning unique file paths.
-        ...
+    async def search_files(self, query: str) -> list[str]:
+        docs = await self.search_documents(query)
+        seen: set[str] = set()
+        paths: list[str] = []
+        for doc in docs:
+            path = doc.metadata["file_path"]
+            if path not in seen:
+                seen.add(path)
+                paths.append(path)
+        return paths

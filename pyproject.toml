@@ -1,0 +1,14 @@
+[project]
+name = "dirstore"
+version = "0.1.0"
+description = "Embed a file directory into a LangChain vector store"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = ["langchain-core>=0.3", "langchain-text-splitters>=0.3"]
+
+[dependency-groups]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.25"]
+
+
+[tool.uv]
+package = true

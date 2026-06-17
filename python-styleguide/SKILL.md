@@ -60,6 +60,41 @@ explaining why.
 Exceptions: `from __future__ import annotations` and `from typing import ...` are fine
 (type-annotation helpers with no meaningful module to import).
 
+### Relative vs absolute imports
+
+Use relative imports only for sibling or child modules — those living in the same directory
+as the importing module. Everything else, including any module reached by going *up* the
+package tree (`..` or higher), uses an absolute import from the project root.
+
+Exception: modules at the project root itself (directly under `src/project_name/`) use
+absolute imports for everything, including their siblings and children. Relative imports
+start one level below the root.
+
+```python
+# In src/project_name/servers/gitlab/tools.py
+
+# Good — siblings/children of tools.py use relative imports
+from .annotations import BranchType, ProjectPathOrUrlType
+from .utils import GitLabUrl, MergeRequest
+
+# Good — anything outside gitlab/ uses an absolute import
+from project_name.core import BuiltinMcpName, SecretName
+from project_name.servers.core import BaseAhttpxMcp
+from project_name.servers.atlassian.jira.utils import collect_jira_issue_keys_in_text
+
+# Bad — reaching up the tree with a relative import
+from ..core import BaseAhttpxMcp
+from ..atlassian.jira.utils import collect_jira_issue_keys_in_text
+
+# In src/project_name/core.py (a root module)
+
+# Good — root modules use absolute imports even for siblings/children
+from project_name.utils import filter_dict_by_keys
+
+# Bad — relative import in a root module
+from .utils import filter_dict_by_keys
+```
+
 ## Visibility
 
 A module-level name gets a leading underscore (`_helper`, `_Internal`) when it is part of

@@ -1,6 +1,24 @@
-# skills
+# dima
 
+Personal Python toolbox.
 
+## Making `dima` importable from any project
+
+The `dima` package is put on `PYTHONPATH` via `~/.zshenv` (not `.zshrc`), so it
+resolves in **all** shells — interactive, non-interactive, and the shells VSCode
+spawns to run tasks:
+
+```sh
+# ~/.zshenv
+export PYTHONPATH="/Users/koshmandmitry/Projects/dima${PYTHONPATH:+:$PYTHONPATH}"
+```
+
+`uv run` passes `PYTHONPATH` through to the subprocess, so `import dima` works
+even inside another project's venv. Note this only exposes the dima *source* —
+dima's own third-party deps (`rich`, `pyyaml`, etc.) must be present in the
+active venv for modules that use them. Pure-stdlib modules work anywhere.
+
+> Renamed from `utils` → `dima`; the old `Projects/utils` path was updated in `~/.zshenv`.
 
 ## Getting started
 

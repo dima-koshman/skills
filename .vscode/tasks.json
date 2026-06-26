@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Symlink skills to Claude",
+      "type": "shell",
+      "detail": "Symlink every skills/<name>/ directory into ~/.claude/skills/",
+      "command": "mkdir -p ~/.claude/skills && for d in skills/*/; do ln -sf \"${PWD}/$d\" ~/.claude/skills/\"$(basename \"$d\")\"; done",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    }
+  ]
+}

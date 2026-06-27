@@ -1,8 +1,8 @@
 ---
 name: using-cli-subagents
 description: >
-  Use when delegating a self-contained task to an external AI agent CLI — codex or opencode (GPT-5.x
-  via ChatGPT subscription) or agy (Gemini / Claude / GPT-OSS via Google AI Pro subscription) — for a
+  Use when delegating a self-contained task to an external AI agent CLI — codex or opencode (via a
+  ChatGPT subscription) or agy (Gemini / Claude / GPT-OSS via a Google AI Pro subscription) — for a
   second opinion, cross-checking a tricky result, when a non-Claude model is better suited, or to
   have another model implement file edits autonomously. Claude acts as the main orchestrator;
   subagents handle well-scoped implementation or verification tasks. Covers non-interactive
@@ -19,24 +19,29 @@ review — not grinding out boilerplate or implementation that a cheaper model c
 self-contained, well-scoped tasks to subagent CLIs that ride the user's existing subscriptions
 instead of burning Claude tokens:
 
-| CLI | Path | Subscription | Models | Non-interactive entry |
-|-----|------|-------------|--------|-----------------------|
-| `codex` | `/opt/homebrew/bin/codex` | ChatGPT | GPT-5.x (codex) | `codex exec` |
-| `opencode` | `/opt/homebrew/bin/opencode` | ChatGPT | GPT-5.5 | `opencode run` |
-| `agy` | `~/.local/bin/agy` | Google AI Pro | Gemini 3.x Pro/Flash, Claude Sonnet/Opus, GPT-OSS 120B | `agy -p` |
+| CLI | Path | Subscription | Lab | Non-interactive entry |
+|-----|------|-------------|-----|-----------------------|
+| `codex` | `/opt/homebrew/bin/codex` | ChatGPT | OpenAI (codex) | `codex exec` |
+| `opencode` | `/opt/homebrew/bin/opencode` | ChatGPT | OpenAI | `opencode run` |
+| `agy` | `~/.local/bin/agy` | Google AI Pro | Gemini / Claude / GPT-OSS | `agy -p` |
 
-Pick the CLI/model that fits the task:
+> **Models are not pinned here.** Each CLI picks its model from its own config — for opencode that's
+> the project's `.opencode/opencode.jsonc` (or global `~/.config/opencode/opencode.json`); for codex
+> it's `~/.codex/config.toml`; for agy its default model. Pass a `--model`/`-m` override only when you
+> deliberately want a different one. Don't hardcode a specific model version in commands or briefs.
+
+Pick the CLI/lab that fits the task:
 - **Large / design-locked implementation** → **prefer `codex`** (`codex exec`). In this repo's
   testing it completed a large file-writing+verify task reliably (~2 min) where `opencode` **hung**
   on the same class of task (see Reliability below).
-- **Second opinion / cross-check** → use a different lab than Claude (Gemini Pro via `agy`; GPT-5.x
+- **Second opinion / cross-check** → use a different lab than Claude (Gemini via `agy`; OpenAI
   via `codex`/`opencode`).
 - **Quick one-shot answer** → `opencode run` is fast for short, no-tool prompts.
 - **Parallel fan-out** → launch multiple background runs across the CLIs simultaneously.
 
 ## Quick Reference
 
-### codex (GPT-5.x via ChatGPT) — preferred for large / implementation tasks
+### codex (OpenAI, via ChatGPT) — preferred for large / implementation tasks
 
 ```bash
 codex exec --dangerously-bypass-approvals-and-sandbox "<self-contained prompt>" < /dev/null
@@ -58,15 +63,18 @@ piped stdin as a `<stdin>` block). Redirecting from /dev/null gives an immediate
 
 Docs: <https://developers.openai.com/codex/>
 
-### opencode (GPT-5.5 via ChatGPT)
+### opencode (OpenAI, via ChatGPT)
 
 ```bash
-opencode run --model openai/gpt-5.5 --variant high --dangerously-skip-permissions "<self-contained prompt>"
+opencode run --variant high --dangerously-skip-permissions "<self-contained prompt>"
 ```
+
+The model comes from the project's `.opencode/opencode.jsonc` (or global `~/.config/opencode/opencode.json`) —
+don't pass `--model` unless you deliberately want to override it.
 
 | Flag | Purpose |
 |------|---------|
-| `--model openai/gpt-5.5` | The model. Always `gpt-5.5` for now. |
+| `--model <provider/model>` | Override the model. Omit to use the project/global opencode config. |
 | `--variant high` | Reasoning effort (`minimal`, `high`, `max`). |
 | `--dangerously-skip-permissions` | Required for any non-interactive run (see below). |
 | `--format json` | Emit parseable events; carries a server-generated `sessionID` (`ses_...`). |
@@ -85,7 +93,7 @@ agy -p "<self-contained prompt>" --dangerously-skip-permissions
 |------|---------|
 | `-p` / `--print` | Non-interactive mode: run one prompt, print response, exit. |
 | `--dangerously-skip-permissions` | Auto-approve all tool calls (see below). |
-| `--model "<name>"` | Override the default model (e.g. `"Gemini 3.1 Pro (High)"`). |
+| `--model "<name>"` | Override the default model (agy uses labelled variants, e.g. `"Gemini Pro (High)"`). |
 | `--print-timeout <dur>` | Wait timeout for print mode (default 5m). |
 | `-c` / `--continue` | Continue the most recent conversation. |
 | `--conversation <id>` | Resume a previous conversation by id. |

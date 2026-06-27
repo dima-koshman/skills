@@ -1,22 +1,74 @@
 # skills
 
-Personal skill collection for Claude Code. Each skill lives in `skills/<name>/SKILL.md` and is
-auto-discovered when symlinked into `~/.claude/skills/`.
+Personal skill collection for AI coding agents. Each skill lives in `.agents/skills/<name>/SKILL.md`
+and is loaded on demand by any agent that supports the `SKILL.md` standard (Claude Code, Codex,
+opencode, …). This repo is the **single source of truth** — `npx skills add` copies skills into each
+agent's directory. Run `npx skills update` after editing a skill to propagate changes.
 
-## Injecting skills into Claude Code
+## How `npx skills` tracks installed skills
 
-Claude Code discovers skills from `~/.claude/skills/<skill-name>/SKILL.md` (user-level) or
-`.claude/skills/<skill-name>/SKILL.md` (project-level). To expose these skills globally without
-copying files, symlink each skill directory into `~/.claude/skills/`:
+`npx skills` maintains a lock file at the root of each scope:
+
+- **Project scope**: `skills-lock.json` (next to `.agents/skills/`)
+- **Global scope**: `~/.agents/.skill-lock.json`
+
+Each entry records the source repo, skill path, and a content hash. `npx skills update` re-fetches
+the source, compares hashes, and re-copies only changed skills. `npx skills list` reads the lock
+file to show what's installed and where. `npx skills remove` deletes the skill files and the lock
+entry.
+
+Skills installed from a **local path** (like `.agents/skills/`) are tracked with `sourceType:
+"local"`. `npx skills update` re-copies from the local path, so edits to the source are picked up on
+the next update.
+
+## Making these skills global (all agents)
+
+Agents discover global skills from per-tool directories. [`npx skills`](https://github.com/vercel-labs/skills)
+copies each skill into a canonical location in `~/.agents/skills/` (shared by OpenCode + Codex),
+then symlinks from there to `~/.claude/skills/` for Claude Code:
+
+| Agent | `--agent` flag | Global skills dir |
+| ----- | -------------- | ----------------- |
+| Claude Code | `claude-code` | `~/.claude/skills/` (symlink → `~/.agents/skills/`) |
+| Codex | `codex` | `~/.agents/skills/` (universal) |
+| opencode | `opencode` | `~/.agents/skills/` (universal) |
+
+### One-shot setup
+
+Run the **"Install skills to all agents"** VS Code task (`.vscode/tasks.json`), or:
 
 ```bash
-ln -sf "$PWD/skills/portfolio"               ~/.claude/skills/portfolio
-ln -sf "$PWD/skills/python-styleguide"       ~/.claude/skills/python-styleguide
-ln -sf "$PWD/skills/using-cli-subagents"     ~/.claude/skills/using-cli-subagents
+npx skills add ./.agents/skills --agent claude-code --agent opencode --agent codex --global --yes
 ```
 
-Or run the **"Symlink skills to Claude"** VS Code task (`.vscode/tasks.json`) to do all of them at
-once.
+This copies every `.agents/skills/<name>/` dir into `~/.agents/skills/` and symlinks from there to
+`~/.claude/skills/`. Use `npx skills list` to see installed skills, `npx skills update` to
+re-copy after editing a skill, and `npx skills remove` to uninstall.
 
-Symlinking keeps the repo as the single source of truth — edits are picked up live by Claude Code
-with no restart needed.
+## Installing third-party skills
+
+```bash
+# Search the registry
+npx skills find superpowers
+
+# Install from GitHub (owner/repo shorthand)
+npx skills add pydantic/skills              # interactive selection
+npx skills add obra/superpowers --global    # all superpowers skills, globally
+
+# Install a specific skill
+npx skills add obra/superpowers@systematic-debugging --global
+```
+
+Third-party skills are installed the same way — copied to `.agents/skills/` (project) or
+`~/.agents/skills/` (global) and tracked in the lock file for updates.
+
+## Project-scoped skills
+
+Skills in `.agents/skills/` are read by all agents at the project level (Claude, Codex, opencode).
+This is where our own skills live, alongside any third-party skills installed without `--global`.
+
+## Per-tool docs
+
+- Claude Code — `~/.claude/skills/`, project `.claude/skills/`
+- opencode — <https://opencode.ai/docs/skills/>
+- Codex — <https://developers.openai.com/codex/skills>

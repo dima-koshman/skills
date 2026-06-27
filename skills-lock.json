@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "logfire-instrumentation": {
+      "source": "pydantic/skills",
+      "sourceType": "github",
+      "skillPath": "skills/logfire-instrumentation/SKILL.md",
+      "computedHash": "732046ab766666495c5ced2b33b802792684fd776402ccd1b8f2853ff8e624dc"
+    },
+    "logfire-query": {
+      "source": "pydantic/skills",
+      "sourceType": "github",
+      "skillPath": "skills/logfire-query/SKILL.md",
+      "computedHash": "51ddcfa6016440895c54cb34b43b9ade73e000c0a14e092a2524b4e844cc3397"
+    },
+    "logfire-ui": {
+      "source": "pydantic/skills",
+      "sourceType": "github",
+      "skillPath": "skills/logfire-ui/SKILL.md",
+      "computedHash": "ec9ad81fb607e771b6e21eedae39af01985fc902f8bac03b51f669ad0ddb3f97"
+    }
+  }
+}

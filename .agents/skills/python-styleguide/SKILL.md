@@ -1,3 +1,8 @@
+---
+name: python-styleguide
+description: Shared Python style rules for all internal projects — imports, visibility, naming, Pydantic, FastAPI, enums, and more. Use when writing or reviewing Python code.
+---
+
 # Python Style Guide
 
 Shared style rules for all internal Python projects. Follow the

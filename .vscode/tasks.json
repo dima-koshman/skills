@@ -1,17 +1,29 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "Symlink skills to Claude",
-      "type": "shell",
-      "detail": "Symlink every skills/<name>/ directory into ~/.claude/skills/",
-      "command": "mkdir -p ~/.claude/skills && for d in skills/*/; do ln -sf \"${PWD}/$d\" ~/.claude/skills/\"$(basename \"$d\")\"; done",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    }
-  ]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Install skills to all agents",
+            "type": "shell",
+            "detail": "Install every .agents/skills/<name>/ dir globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
+            "command": "npx skills add ./.agents/skills --agent claude-code --agent opencode --agent codex --global --yes",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Update skills from remote sources",
+            "type": "shell",
+            "detail": "Re-fetch all skills tracked in skills-lock.json from their remote sources and re-copy if changed",
+            "command": "npx skills update --yes",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        }
+    ]
 }

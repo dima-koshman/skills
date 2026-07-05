@@ -2,10 +2,6 @@
 okf_version: "0.1"
 ---
 
-# Concept
-
-* [Memory](/context/memory.md) - How an agent carries state across steps and sessions — short-term context plus durable long-term stores.
-
 # Overview
 
 * [Agent](/agents/agent.md) - The loop, planning, subagents, tools, and memory that turn an LLM into a task-completing agent.
@@ -41,6 +37,8 @@ okf_version: "0.1"
 
 # Standard
 
+* [Agent Client Protocol](/agents/ACP.md) - ACP standardizes communication between code editors/IDEs and coding agents.
+* [Agent2Agent](/agents/A2A.md) - An open protocol enabling communication and interoperability between opaque agentic applications.
 * [Model Context Protocol (MCP)](/context/mcp.md) - Open protocol standardizing how LLM apps expose and consume tools, resources, and prompts.
 * [Open Knowledge Format (OKF)](/context/okf.md) - Google's vendor-neutral markdown-plus-frontmatter standard for agent-readable knowledge.
 
@@ -51,6 +49,7 @@ okf_version: "0.1"
 * [Guardrails](/security/mitigations/guardrails.md) - Input/output controls that constrain LLM behavior to a safe, policy-compliant envelope.
 * [LLM Gateway](/enterprise/llm-gateway.md) - A control plane sitting between AI clients and models/tools for auth, routing, policy, and observability.
 * [MCP Gateway](/enterprise/mcp-gateway.md) - An enterprise gateway multiplexing MCP servers behind auth, permissions, secrets, and audit.
+* [Memory](/context/memory.md) - How an agent carries state across steps and sessions — short-term context plus durable long-term stores.
 * [PII Masking & Anonymization](/security/mitigations/pii-masking.md) - Detecting and redacting or tokenizing personal data in LLM inputs/outputs, reversibly where needed.
 * [Provider-Side Tools](/tools/provider-tools.md) - Tools defined and executed by the model provider — built-in web search, code execution — that clients just enable.
 * [RAG](/context/rag.md) - Retrieval-augmented generation — fetching relevant documents at query time and adding them to the model's context.

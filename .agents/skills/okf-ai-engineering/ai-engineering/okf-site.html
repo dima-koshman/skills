@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ai-engineering — OKF knowledge graph</title>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+<style>
+  :root {
+    --bg:#ffffff; --sidebar:#f6f8fa; --ink:#1f2328; --muted:#656d76; --line:#d0d7de;
+    --accent:#0969da; --hover:#eaeef2; --active:#ddf4ff; --code:#f6f8fa;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; height:100%; color:var(--ink); background:var(--bg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; font-size:14px; }
+  .layout { display:flex; flex-direction:column; height:100vh; }
+  header { display:flex; gap:14px; align-items:center; padding:9px 16px; border-bottom:1px solid var(--line); background:var(--sidebar); flex:0 0 auto; }
+  header h1 { font-size:14px; margin:0; font-weight:600; white-space:nowrap; }
+  header h1 span { color:var(--muted); font-weight:400; }
+  #search { margin-left:auto; flex:0 0 260px; padding:6px 10px; border-radius:6px; border:1px solid var(--line); background:var(--bg); color:var(--ink); font-size:13px; }
+  .below { flex:1 1 auto; display:flex; min-height:0; }
+
+  aside { flex:0 0 264px; display:flex; flex-direction:column; border-right:1px solid var(--line); background:var(--sidebar); min-height:0; }
+  #nav { flex:1 1 auto; overflow-y:auto; padding:10px 8px; }
+  #nav ul { list-style:none; margin:0; padding:0; }
+  #nav .dir > .label { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); padding:8px 8px 3px; }
+  #nav .dir ul { margin-left:12px; border-left:1px solid var(--line); }
+  #nav a { display:flex; align-items:center; gap:8px; padding:5px 8px; border-radius:6px; color:var(--ink); text-decoration:none; font-size:13px; line-height:1.3; }
+  #nav a:hover { background:var(--hover); }
+  #nav a.active { background:var(--active); font-weight:600; }
+  #nav a.typematch:not(.active) { background:#fff3bf; }
+  #nav a .dot { width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
+  #nav a.hidden { display:none; }
+  #nav a.homelink { font-weight:600; margin-bottom:6px; }
+  #loglink { flex:0 0 auto; border-top:1px solid var(--line); padding:8px; }
+  #loglink a { display:flex; align-items:center; gap:8px; padding:7px 10px; border-radius:6px; color:var(--muted); text-decoration:none; font-size:13px; }
+  #loglink a:hover { background:var(--hover); color:var(--ink); }
+  #loglink a.active { background:var(--active); color:var(--ink); font-weight:600; }
+
+  main { flex:1 1 auto; display:flex; flex-direction:row; min-width:0; min-height:0; }
+  #doc { flex:1 1 auto; overflow-y:auto; padding:26px 36px; min-width:0; }
+  #doc > * { max-width:820px; }
+  main.graph-only #doc { display:none; }
+  #graph-wrap { flex:0 0 42%; border-left:1px solid var(--line); display:flex; flex-direction:column; min-height:0; min-width:0; background:var(--bg); }
+  main.graph-only #graph-wrap { flex:1 1 auto; border-left:none; }
+  #legend { flex:0 0 auto; display:flex; flex-wrap:wrap; align-items:center; gap:2px 6px; padding:8px 12px; border-bottom:1px solid var(--line); }
+  #legend .legend-title { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-right:4px; }
+  #legend .legend-item { display:inline-flex; align-items:center; gap:5px; cursor:pointer; border:0; background:none; font:inherit; font-size:11.5px; color:var(--muted); padding:2px 6px; border-radius:5px; }
+  #legend .legend-item:hover { background:var(--hover); color:var(--ink); }
+  #legend .legend-item.active { background:var(--active); color:var(--ink); font-weight:600; }
+  #legend .sw { width:10px; height:10px; border-radius:3px; flex:0 0 auto; }
+  #graph-container { flex:1 1 auto; position:relative; min-height:0; }
+  #graph { position:absolute; inset:0; }
+  #graph-caption { position:absolute; top:8px; left:12px; font-size:11px; color:var(--muted); pointer-events:none; }
+
+  #doc h1 { font-size:24px; margin:0 0 2px; }
+  #doc h2 { font-size:17px; margin:1.5em 0 .4em; padding-bottom:5px; border-bottom:1px solid var(--line); }
+  #doc .prose h1 { font-size:17px; font-weight:600; margin:1.6em 0 .4em; padding-bottom:5px; border-bottom:1px solid var(--line); }
+  #doc .meta { display:flex; align-items:center; gap:10px; margin:8px 0 16px; font-size:12.5px; }
+  #doc .badge { flex:0 0 auto; display:inline-block; padding:2px 9px; border-radius:11px; font-size:11px; color:#fff; font-weight:600; }
+  #doc .resource { flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  #doc .meta-right { flex:0 0 auto; margin-left:auto; display:flex; align-items:center; gap:8px; }
+  #doc .tags-inline { display:flex; gap:5px; }
+  #doc .tags-inline code { color:var(--muted); font-size:11px; }
+  #doc .summary { margin:0 0 18px; color:var(--muted); font-size:14px; line-height:1.5; }
+  #doc a { color:var(--accent); text-decoration:none; }
+  #doc a:hover { text-decoration:underline; }
+  #doc a.xref { border-bottom:1px dotted var(--accent); }
+  #doc a.flash { background:#fff3bf; box-shadow:0 0 0 3px #fff3bf; border-radius:3px; transition:background .3s, box-shadow .3s; }
+  #doc table { border-collapse:collapse; font-size:13px; margin:12px 0; }
+  #doc th, #doc td { border:1px solid var(--line); padding:6px 10px; text-align:left; }
+  #doc th { background:var(--sidebar); }
+  #doc code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:85%; background:var(--code); padding:.15em .4em; border-radius:5px; }
+  #doc pre { background:var(--code); padding:13px; border-radius:8px; overflow-x:auto; }
+  #doc pre code { background:none; padding:0; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <header>
+    <h1>ai-engineering <span>· OKF</span></h1>
+    <input id="search" type="search" placeholder="Search concepts…" autocomplete="off">
+  </header>
+  <div class="below">
+    <aside>
+      <nav id="nav"></nav>
+      <div id="loglink"></div>
+    </aside>
+    <main id="main" class="graph-only">
+      <div id="doc"></div>
+      <div id="graph-wrap">
+        <div id="legend"></div>
+        <div id="graph-container">
+          <div id="graph"></div>
+          <div id="graph-caption"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+const DATA = {"title": "ai-engineering", "nodes": [{"id": "agents/agent.md", "title": "Agent Architecture", "type": "Architecture Pattern", "description": "The loop, planning, subagents, tools, and memory that turn an LLM into a task-completing agent.", "tags": ["agents", "architecture", "deepagents", "platform"], "resource": "", "body": "Agent is not a well defined term, but in most cases it means an LLM in a loop\nwith tools that can perform actions beyond the standard chat interface.", "color": "#3b82f6"}, {"id": "agents/deepagents.md", "title": "deepagents", "type": "Framework", "description": "LangChain library packaging planning, subagents, memory, and human-in-the-loop on LangGraph.", "tags": ["agents", "deepagents", "langgraph", "framework"], "resource": "https://docs.langchain.com/oss/python/deepagents/overview", "body": "deepagents is the LangChain library that packages production agent patterns \u2014 planning, subagents, durable memory, HITL \u2014 on top of LangGraph.\n\n# Related\n\n- [Agent Architecture](#node:agents/agent.md)\n- [Agent Harness](#node:agents/harness.md)\n- [Programmatic Tools & Code Mode](#node:agents/programmatic-tools.md)", "color": "#16a34a"}, {"id": "agents/harness.md", "title": "Agent Harness", "type": "Architecture Pattern", "description": "The runtime scaffolding around the model loop: tool dispatch, state, sandboxing, and loop control.", "tags": ["agents", "harness", "runtime", "architecture"], "resource": "", "body": "The harness is everything around the model call that makes an agent run \u2014 tool dispatch, state and memory, sandboxing, retries, and stop conditions.\n\n# Related\n\n- [Agent Architecture](#node:agents/agent.md)\n- [deepagents](#node:agents/deepagents.md)\n- [Programmatic Tools & Code Mode](#node:agents/programmatic-tools.md)", "color": "#3b82f6"}, {"id": "agents/programmatic-tools.md", "title": "Programmatic Tools & Code Mode", "type": "Technique", "description": "Letting agents write and run code \u2014 interpreters, dynamic workflows \u2014 instead of only fixed tool calls.", "tags": ["agents", "code-mode", "tools", "technique"], "resource": "", "body": "Programmatic tools give an agent a way to make tool calls in a scripted way, allowing for reduced token usage and orchestration of long running tasks.\n\nExamples of programmatic tools implementations:\n\n- [LangChain Interpreters](https://docs.langchain.com/oss/python/deepagents/interpreters)\n- [Claude Workflows](https://code.claude.com/docs/en/workflows)\n\n# Related\n\n- [Agent Harness](#node:agents/harness.md)\n- [Agent Architecture](#node:agents/agent.md)\n- [Unexpected Code Execution](#node:security/threats/asi05-unexpected-code-execution.md)", "color": "#ca8a04"}, {"id": "ai-engineering.md", "title": "AI Engineering", "type": "Overview", "description": "Map of the concepts behind building enterprise-grade AI services \u2014 context, gateways, agents, observability, evaluation, and security.", "tags": ["overview", "ai-engineering", "enterprise", "platform"], "resource": "", "body": "# Related\n\n- **Context** \u2014 the protocols this builds on: [MCP](#node:context/mcp.md) and the\n  [Open Knowledge Format](#node:context/okf.md).\n- **Enterprise** \u2014 the control plane: the [LLM Gateway](#node:enterprise/llm-gateway.md)\n  and the [MCP Gateway](#node:enterprise/mcp-gateway.md).\n- **Agents** \u2014 [agent architecture](#node:agents/agent.md),\n  [deepagents](#node:agents/deepagents.md), the [harness](#node:agents/harness.md), and\n  [programmatic tools](#node:agents/programmatic-tools.md).\n- **Observability** \u2014 tracing with [LangSmith](#node:observability/langsmith.md) and\n  [Langfuse](#node:observability/langfuse.md).\n- **Evaluation** \u2014 [LangSmith Evals](#node:evaluation/langsmith-evals.md).\n- **Security** \u2014 [threats and controls](#node:security/security.md): the OWASP Agentic\n  Top 10 and the guardrails and masking that contain them.\n\n# Resources\n\n- [Cognition blog](https://cognition.com/blog)\n- [LangChain blog](https://www.langchain.com/blog)\n- [Anthropic Engineering blog](https://www.anthropic.com/engineering)\n- [The Agentic Operating Model \u2014 LangChain](https://www.langchain.com/resources/the-agentic-operating-model)", "color": "#7c3aed"}, {"id": "context/mcp.md", "title": "Model Context Protocol (MCP)", "type": "Protocol", "description": "Open protocol standardizing how LLM apps expose and consume tools, resources, and prompts.", "tags": ["mcp", "protocol", "platform", "integration"], "resource": "https://modelcontextprotocol.io", "body": "MCP is a JSON-RPC-based protocol that standardizes the\nboundary between an LLM client and external capabilities, mainly **tools** but also supports **resources** and **prompts**.\n\nIts drawback is the stateful nature, but there is an initiative to make it stateless.\n\n# Related\n\nConsumed by [agent architectures](#node:agents/agent.md); secured and\nmultiplexed by an [LLM gateway](#node:enterprise/llm-gateway.md); distinct from\n[OKF](#node:context/okf.md), which is static knowledge rather than live\ntools.\n\n# Resources\n\n- [MCP specification](https://modelcontextprotocol.io)\n- [FastMCP](https://gofastmcp.com)", "color": "#0891b2"}, {"id": "context/okf.md", "title": "Open Knowledge Format (OKF)", "type": "Knowledge Format", "description": "Google's vendor-neutral markdown-plus-frontmatter standard for agent-readable knowledge.", "tags": ["knowledge", "standards", "agents"], "resource": "https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf", "body": "OKF represents knowledge \u2014 the metadata and curated context around data and\nsystems \u2014 as a directory of markdown files with YAML frontmatter. One concept\nper file; the file path is the concept's identity. No schema registry, no\ncentral authority, no required tooling. This very bundle is an OKF bundle.\n\n# Relationship with skills\n\nOKF is *knowledge* (declarative facts), distinct from an agent **skill**\n(procedural capability) and from [MCP](#node:context/mcp.md) (a transport for tools\nand resources). An agent could consume an OKF bundle as its knowledge base while\na skill provides the procedure to traverse it and MCP exposes the live tools.\n\n# Resources\n\n- [OKF specification](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)", "color": "#dc2626"}, {"id": "enterprise/llm-gateway.md", "title": "LLM Gateway", "type": "Architecture Pattern", "description": "A control plane sitting between AI clients and models/tools for auth, routing, policy, and observability.", "tags": ["platform", "gateway", "security", "enterprise"], "resource": "", "body": "An LLM gateway is the control plane between AI clients and the\nmodels they use. It centralizes cross-cutting concerns \u2014 authentication,\nauthorization, rate limiting, routing/failover, content\npolicy, and audit \u2014 so that individual apps and agents stay thin.\n\nExamples:\n\n- LiteLLM", "color": "#3b82f6"}, {"id": "enterprise/mcp-gateway.md", "title": "MCP Gateway", "type": "Architecture Pattern", "description": "An enterprise gateway multiplexing MCP servers behind auth, permissions, secrets, and audit.", "tags": ["enterprise", "mcp", "gateway", "platform"], "resource": "", "body": "An MCP gateway is the control point in front of many MCP servers \u2014 one authenticated endpoint applying permissions, secret injection, anonymization, and audit.\n\n# Related\n\n- [MCP](#node:context/mcp.md)\n- [LLM Gateway](#node:enterprise/llm-gateway.md)\n- [Guardrails](#node:security/controls/guardrails.md)\n- [PII Masking & Anonymization](#node:security/controls/pii-masking.md)\n- [Agent Identity & Privilege Abuse](#node:security/threats/asi03-identity-privilege-abuse.md)", "color": "#3b82f6"}, {"id": "evaluation/langsmith-evals.md", "title": "LangSmith Evals", "type": "Tool", "description": "Dataset and evaluator tooling in LangSmith for offline and online agent evaluation.", "tags": ["evaluation", "evals", "langsmith", "tool"], "resource": "https://docs.langchain.com/oss/python/langchain/test/evals", "body": "LangSmith's evaluation tooling runs datasets, LLM-as-judge and custom evaluators, and experiments over traces \u2014 the operational side of evals in this stack.\n\n# Related\n\n- [LangSmith](#node:observability/langsmith.md)", "color": "#db2777"}, {"id": "observability/langfuse.md", "title": "Langfuse", "type": "Tool", "description": "Open-source LLM observability and tracing, OpenTelemetry-friendly.", "tags": ["observability", "tracing", "langfuse", "open-source", "tool"], "resource": "https://langfuse.com", "body": "Langfuse is an open-source LLM observability platform \u2014 self-hostable tracing, metrics, and evals, a vendor-neutral alternative on the same OTel backbone.\n\n# Related\n\n- [LangSmith](#node:observability/langsmith.md)", "color": "#db2777"}, {"id": "observability/langsmith.md", "title": "LangSmith", "type": "Tool", "description": "LangChain's tracing and evaluation platform for LLM/agent observability.", "tags": ["observability", "tracing", "langsmith", "tool"], "resource": "https://www.langchain.com/langsmith", "body": "LangSmith is LangChain's managed platform for tracing, monitoring, and evaluating LLM apps and agents \u2014 the observability backend used across this work.\n\n# Related\n\n- [Langfuse](#node:observability/langfuse.md)\n- [LangSmith Evals](#node:evaluation/langsmith-evals.md)", "color": "#db2777"}, {"id": "security/controls/guardrails.md", "title": "Guardrails", "type": "Control", "description": "Input/output controls that constrain LLM behavior to a safe, policy-compliant envelope.", "tags": ["security", "control", "policy", "moderation"], "resource": "", "body": "Guardrails are the deterministic and model-based controls wrapped around an LLM\ncall to keep behavior inside a safe envelope: input filters (jailbreak/\n[injection](#node:security/threats/asi01-agent-goal-hijack.md) detection, topic limits), output\nfilters (moderation, PII checks, schema/format validation), and action gates\n(approval required before destructive tool calls). They are policy enforcement,\ndistinct from the model's own alignment.\n\n# Related\n\nMitigate [prompt injection](#node:security/threats/asi01-agent-goal-hijack.md); complement\n[PII masking](#node:security/controls/pii-masking.md) on the output path.", "color": "#ea7317"}, {"id": "security/controls/pii-masking.md", "title": "PII Masking & Anonymization", "type": "Control", "description": "Detecting and redacting or tokenizing personal data in LLM inputs/outputs, reversibly where needed.", "tags": ["security", "control", "privacy", "pii"], "resource": "", "body": "PII masking is the detection and transformation of personal data flowing through\nan AI system \u2014 redaction, pseudonymization, or reversible tokenization \u2014 so that\nsensitive fields never reach a model, a log, or a third party in the clear. In a\nbank, this is a hard regulatory boundary, not a nice-to-have.", "color": "#ea7317"}, {"id": "security/security.md", "title": "Security", "type": "Overview", "description": "How enterprise agent platforms are attacked and defended \u2014 the OWASP Agentic Top 10 threats and the controls that contain them.", "tags": ["security", "overview", "owasp", "agents"], "resource": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/", "body": "Agentic systems act with real tools and the user's own permissions, so their\nattack surface is the tool, identity, memory, and communication surface \u2014 not\njust the prompt. This area splits into **threats** (how agents are subverted) and\n**controls** (what keeps them inside a safe envelope). The reference model is the\nOWASP Top 10 for Agentic Applications (2026).\n\n# Threats (OWASP Agentic Top 10)\n\n- [ASI01: Agent Goal Hijack](#node:security/threats/asi01-agent-goal-hijack.md)\n- [ASI02: Tool Misuse & Exploitation](#node:security/threats/asi02-tool-misuse.md)\n- [ASI03: Agent Identity & Privilege Abuse](#node:security/threats/asi03-identity-privilege-abuse.md)\n- [ASI04: Agentic Supply Chain Compromise](#node:security/threats/asi04-supply-chain-compromise.md)\n- [ASI05: Unexpected Code Execution](#node:security/threats/asi05-unexpected-code-execution.md)\n- [ASI06: Memory & Context Poisoning](#node:security/threats/asi06-memory-context-poisoning.md)\n- [ASI07: Insecure Inter-Agent Communication](#node:security/threats/asi07-insecure-inter-agent-communication.md)\n- [ASI08: Cascading Agent Failures](#node:security/threats/asi08-cascading-agent-failures.md)\n- [ASI09: Human-Agent Trust Exploitation](#node:security/threats/asi09-human-agent-trust-exploitation.md)\n- [ASI10: Rogue Agents](#node:security/threats/asi10-rogue-agents.md)\n\n# Controls\n\n- [Guardrails](#node:security/controls/guardrails.md) \u2014 input/output/action policy enforcement around the model.\n- [PII Masking & Anonymization](#node:security/controls/pii-masking.md) \u2014 redacting or tokenizing personal data on the way in and out.\n\nControls are enforced in practice at the [LLM gateway](#node:enterprise/llm-gateway.md)\nand [MCP gateway](#node:enterprise/mcp-gateway.md), under a zero-trust posture: every\nagent action authenticated, authorized, least-privileged, and logged.\n\n# Resources\n\n- [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)\n- [State of Agentic AI Security and Governance v2.01 \u2014 OWASP](https://genai.owasp.org/resource/state-of-agentic-ai-security-and-governance/)\n- [Zero Trust for AI agents \u2014 Anthropic](https://claude.com/blog/zero-trust-for-ai-agents)", "color": "#7c3aed"}, {"id": "security/threats/asi01-agent-goal-hijack.md", "title": "ASI01: Agent Goal Hijack", "type": "Threat", "description": "Adversarial input redirects the agent's plan or objective \u2014 OWASP's", "tags": ["security", "threat", "agents", "owasp", "asi01"], "resource": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/", "body": "Agent goal hijack is when adversarial input redirects an agent's plan or\nobjective away from the developer's intent. Its primary mechanism is **prompt\ninjection** \u2014 adversarial instructions embedded in content the model reads (a web\npage, a document, a tool result, an email). **Indirect** injection (via data the\nagent retrieves rather than the user's own message) is the dangerous variant for\nautonomous agents. There is no known complete fix; it is a systemic property of\nmodels that follow natural-language instructions.", "color": "#9333ea"}, {"id": "security/threats/asi02-tool-misuse.md", "title": "ASI02: Tool Misuse & Exploitation", "type": "Threat", "description": "The agent invokes tools in ways they were not intended or authorized for.", "tags": ["security", "threat", "tools", "owasp", "asi02"], "resource": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/", "body": "Tool misuse is when an agent is driven to call tools \u2014 or chain them \u2014 in ways outside their intended, authorized use, turning legitimate capabilities into an attack.", "color": "#9333ea"}, {"id": "security/threats/asi03-identity-privilege-abuse.md", "title": "ASI03: Agent Identity & Privilege Abuse", "type": "Threat", "description": "The agent's identity or permissions are misused, impersonated, or escalated.", "tags": ["security", "threat", "identity", "owasp", "asi03"], "resource": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/", "body": "Identity and privilege abuse covers impersonation, token theft, and privilege escalation \u2014 the agent acting with authority it should not have.", "color": "#9333ea"}, {"id": "security/threats/asi04-supply-chain-compromise.md", "title": "ASI04: Agentic Supply Chain Compromise", "type": "Threat", "description": "Malicious or compromised components \u2014 tools, MCP servers, models, dependencies \u2014 enter the agent supply chain.", "tags": ["security", "threat", "supply-chain", "owasp", "asi04"], "resource": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/", "body": "Supply chain compromise is the poisoning of what the agent depends on: a backdoored MCP server, a tampered model, a malicious package, or a spoofed tool.", "color": "#9333ea"}, {"id": "security/threats/asi05-unexpected-code-execution.md", "title": "ASI05: Unexpected Code Execution", "type": "Threat", "description": "The agent executes attacker-influenced code, e.g. via a code interpreter or a tool with an RCE path.", "tags": ["security", "threat", "rce", "owasp", "asi05"], "resource": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/", "body": "Unexpected code execution is when an agent runs attacker-controlled code \u2014 a growing risk as agents gain interpreters and code-mode tools.", "color": "#9333ea"}, {"id": "security/threats/asi06-memory-context-poisoning.md", "title": "ASI06: Memory & Context Poisoning", "type": "Threat", "description": "Malicious content persists in the agent's memory or context and influences later decisions.", "tags": ["security", "threat", "memory", "owasp", "asi06"], "resource": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/", "body": "Memory and context poisoning plants adversarial content that survives across turns \u2014 the persistent cousin of goal hijack, corrupting future reasoning.", "color": "#9333ea"}, {"id": "security/threats/asi07-insecure-inter-agent-communication.md", "title": "ASI07: Insecure Inter-Agent Communication", "type": "Threat", "description": "Trust, spoofing, or tampering weaknesses in messaging between agents.", "tags": ["security", "threat", "multi-agent", "owasp", "asi07"], "resource": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/", "body": "In multi-agent systems, the channels between agents become an attack surface: unauthenticated messages, spoofed peers, and tampered hand-offs.", "color": "#9333ea"}, {"id": "security/threats/asi08-cascading-agent-failures.md", "title": "ASI08: Cascading Agent Failures", "type": "Threat", "description": "A local failure or compromise propagates across agents and tools into a systemic failure.", "tags": ["security", "threat", "reliability", "owasp", "asi08"], "resource": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/", "body": "Cascading failures are when one bad output, loop, or outage ripples through dependent agents and tools \u2014 a reliability failure that is also a security one.", "color": "#9333ea"}, {"id": "security/threats/asi09-human-agent-trust-exploitation.md", "title": "ASI09: Human-Agent Trust Exploitation", "type": "Threat", "description": "The agent is used to manipulate the human, or humans over-trust the agent's output.", "tags": ["security", "threat", "human-factors", "owasp", "asi09"], "resource": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/", "body": "Trust exploitation runs both ways: an agent weaponized to socially engineer a person, and humans granting unearned trust to fluent but wrong output.", "color": "#9333ea"}, {"id": "security/threats/asi10-rogue-agents.md", "title": "ASI10: Rogue Agents", "type": "Threat", "description": "Unauthorized or compromised agents operating outside governance and oversight.", "tags": ["security", "threat", "governance", "owasp", "asi10"], "resource": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/", "body": "Rogue agents are those running outside the sanctioned control plane \u2014 unregistered, compromised, or drifted beyond their mandate.", "color": "#9333ea"}], "edges": [{"source": "agents/deepagents.md", "target": "agents/agent.md"}, {"source": "agents/deepagents.md", "target": "agents/harness.md"}, {"source": "agents/deepagents.md", "target": "agents/programmatic-tools.md"}, {"source": "agents/harness.md", "target": "agents/agent.md"}, {"source": "agents/harness.md", "target": "agents/deepagents.md"}, {"source": "agents/harness.md", "target": "agents/programmatic-tools.md"}, {"source": "agents/programmatic-tools.md", "target": "agents/harness.md"}, {"source": "agents/programmatic-tools.md", "target": "agents/agent.md"}, {"source": "agents/programmatic-tools.md", "target": "security/threats/asi05-unexpected-code-execution.md"}, {"source": "ai-engineering.md", "target": "context/mcp.md"}, {"source": "ai-engineering.md", "target": "context/okf.md"}, {"source": "ai-engineering.md", "target": "enterprise/llm-gateway.md"}, {"source": "ai-engineering.md", "target": "enterprise/mcp-gateway.md"}, {"source": "ai-engineering.md", "target": "agents/agent.md"}, {"source": "ai-engineering.md", "target": "agents/deepagents.md"}, {"source": "ai-engineering.md", "target": "agents/harness.md"}, {"source": "ai-engineering.md", "target": "agents/programmatic-tools.md"}, {"source": "ai-engineering.md", "target": "observability/langsmith.md"}, {"source": "ai-engineering.md", "target": "observability/langfuse.md"}, {"source": "ai-engineering.md", "target": "evaluation/langsmith-evals.md"}, {"source": "ai-engineering.md", "target": "security/security.md"}, {"source": "context/mcp.md", "target": "agents/agent.md"}, {"source": "context/mcp.md", "target": "enterprise/llm-gateway.md"}, {"source": "context/mcp.md", "target": "context/okf.md"}, {"source": "context/okf.md", "target": "context/mcp.md"}, {"source": "enterprise/mcp-gateway.md", "target": "context/mcp.md"}, {"source": "enterprise/mcp-gateway.md", "target": "enterprise/llm-gateway.md"}, {"source": "enterprise/mcp-gateway.md", "target": "security/controls/guardrails.md"}, {"source": "enterprise/mcp-gateway.md", "target": "security/controls/pii-masking.md"}, {"source": "enterprise/mcp-gateway.md", "target": "security/threats/asi03-identity-privilege-abuse.md"}, {"source": "evaluation/langsmith-evals.md", "target": "observability/langsmith.md"}, {"source": "observability/langfuse.md", "target": "observability/langsmith.md"}, {"source": "observability/langsmith.md", "target": "observability/langfuse.md"}, {"source": "observability/langsmith.md", "target": "evaluation/langsmith-evals.md"}, {"source": "security/controls/guardrails.md", "target": "security/threats/asi01-agent-goal-hijack.md"}, {"source": "security/controls/guardrails.md", "target": "security/controls/pii-masking.md"}, {"source": "security/security.md", "target": "security/threats/asi01-agent-goal-hijack.md"}, {"source": "security/security.md", "target": "security/threats/asi02-tool-misuse.md"}, {"source": "security/security.md", "target": "security/threats/asi03-identity-privilege-abuse.md"}, {"source": "security/security.md", "target": "security/threats/asi04-supply-chain-compromise.md"}, {"source": "security/security.md", "target": "security/threats/asi05-unexpected-code-execution.md"}, {"source": "security/security.md", "target": "security/threats/asi06-memory-context-poisoning.md"}, {"source": "security/security.md", "target": "security/threats/asi07-insecure-inter-agent-communication.md"}, {"source": "security/security.md", "target": "security/threats/asi08-cascading-agent-failures.md"}, {"source": "security/security.md", "target": "security/threats/asi09-human-agent-trust-exploitation.md"}, {"source": "security/security.md", "target": "security/threats/asi10-rogue-agents.md"}, {"source": "security/security.md", "target": "security/controls/guardrails.md"}, {"source": "security/security.md", "target": "security/controls/pii-masking.md"}, {"source": "security/security.md", "target": "enterprise/llm-gateway.md"}, {"source": "security/security.md", "target": "enterprise/mcp-gateway.md"}], "types": [{"name": "Architecture Pattern", "color": "#3b82f6"}, {"name": "Control", "color": "#ea7317"}, {"name": "Framework", "color": "#16a34a"}, {"name": "Knowledge Format", "color": "#dc2626"}, {"name": "Overview", "color": "#7c3aed"}, {"name": "Protocol", "color": "#0891b2"}, {"name": "Technique", "color": "#ca8a04"}, {"name": "Threat", "color": "#9333ea"}, {"name": "Tool", "color": "#db2777"}], "log": "# Directory Update Log\n\n## 2026-07-05\n\n* **Reorganization**: Renamed the bundle directory `okf/` \u2192 `ai-engineering/` (updated the skill's SKILL.md and the VS Code build task). Site nav now lists concept pages above subdirectories, and the landing link reads \"Index\".\n* **Creation**: Added area overview [Security](#node:security/security.md) (OWASP Agentic Top 10 threats + controls) and a general [AI Engineering](#node:ai-engineering.md) map concept.\n* **Update**: Simplified `security/threats/` \u2014 each ASI concept is now just its definition (dropped the enterprise-framing, design-consideration, and citation sections).\n* **Update**: Renamed `agents/agent-architecture.md` \u2192 [agents/agent.md](#node:agents/agent.md) and repaired all inbound links. Removed the general `observability/observability.md` and `evaluation/evals.md` concepts, stripping the now-dangling links (observability/evals live on as the vendor-tool concepts).\n* **Update**: Trimmed citations across concepts to only genuinely-referenced sources, renamed `# Citations` to `# Resources`. Disabled markdownlint MD013 (line length) alongside MD025/MD041 for the OKF prose style.\n* **Reorganization**: Split the skill from the bundle \u2014 the OKF bundle now lives in `okf/` with `SKILL.md` beside it, so the directory is both a proper agent skill and a fully spec-compliant OKF bundle (no reserved-filename special-casing for `SKILL.md`/`README.md`).\n* **Update**: Site generator \u2014 added a clickable type-color **legend** above the graph (selecting a type highlights all its concepts in the graph and the nav tree), surfaced each concept's `description` on its page, and made the bundle `index.md` the HTML landing page.\n* **Update**: Refactored `SKILL.md` into a lean agent-facing skill (routing + how-to) rather than a site landing description.\n* **Update**: Formatting pass across concepts \u2014 citations rendered as markdown lists (line breaks), and level-2 body headings promoted to level-1 for consistency with `# Citations`. Added a repo-root `.markdownlint.json` disabling MD025/MD041, which OKF's multi-`#` convention intentionally trips.\n* **Reorganization**: Restructured the bundle into `context/`, `enterprise/`, `agents/`, `observability/`, `evaluation/`, and `security/` \u2014 renamed the session-specific `meta/` to `context/` and moved every concept to its new home.\n* **Creation**: Adopted the [OWASP Agentic Top 10](#node:security/threats/asi01-agent-goal-hijack.md) as `security/threats/` (ASI01\u2013ASI10; the former Prompt Injection concept became [ASI01: Agent Goal Hijack](#node:security/threats/asi01-agent-goal-hijack.md)); moved [Guardrails](#node:security/controls/guardrails.md) and [PII Masking](#node:security/controls/pii-masking.md) to `security/controls/`.\n* **Creation**: Scaffolded new concepts \u2014 [MCP Gateway](#node:enterprise/mcp-gateway.md), [deepagents](#node:agents/deepagents.md), [Agent Harness](#node:agents/harness.md), [Programmatic Tools & Code Mode](#node:agents/programmatic-tools.md), [LangSmith](#node:observability/langsmith.md), [Langfuse](#node:observability/langfuse.md), and [LangSmith Evals](#node:evaluation/langsmith-evals.md) \u2014 frontmatter and cross-links complete, bodies to be filled in.\n* **Reorganization**: Moved the bundle into `.agents/skills/okf-ai-engineering/` and converted `README.md` to `SKILL.md` (added skill `name` and `description`), making the knowledge base a discoverable, distributable skill while keeping it a conformant OKF bundle.\n* **Update**: Filled the ASI02\u2013ASI10 threat bodies (enterprise framing + design considerations with cross-links). The vendor/tooling concepts (LangSmith, Langfuse, LangSmith Evals, deepagents, Agent Harness, Programmatic Tools, MCP Gateway) remain scaffolds pending domain input.\n\n## 2026-07-04\n\n* **Initialization**: Created the AI-engineering concept bundle \u2014 a cross-linked, vendor-neutral knowledge graph tuned to enterprise AI-platform work (platform + gateway + PII masker).\n* **Creation**: Added meta concept [Open Knowledge Format](#node:context/okf.md).\n* **Creation**: Added platform concepts [MCP](#node:context/mcp.md), [LLM Gateway](#node:enterprise/llm-gateway.md), and [Agent Architecture](#node:agents/agent.md).\n* **Creation**: Added security concepts [Prompt Injection](#node:security/threats/asi01-agent-goal-hijack.md), [Guardrails](#node:security/controls/guardrails.md), and [PII Masking & Anonymization](#node:security/controls/pii-masking.md).\n* **Creation**: Added lifecycle concepts AI Observability & Tracing and Evals & LLM-as-Judge (later removed; observability/evals now live as the vendor-tool concepts).\n* **Update**: Switched PDF citations to canonical source URLs (Anthropic, LangChain, OWASP) so the bundle stays pure markdown and portable; local PDFs are no longer bundle dependencies.\n* **Creation**: Added a root `SKILL.md` (`type: Overview`) as the knowledge-base landing page.\n* **Update**: Restyled every concept body to clearer sections \u2014 `In an enterprise platform` and `Design considerations` \u2014 replacing the ambiguous \"Why it matters\" / \"Key decisions\" headings.\n", "index": "# Architecture Pattern\n\n* [Agent Architecture](#node:agents/agent.md) - The loop, planning, subagents, tools, and memory that turn an LLM into a task-completing agent.\n* [Agent Harness](#node:agents/harness.md) - The runtime scaffolding around the model loop: tool dispatch, state, sandboxing, and loop control.\n* [LLM Gateway](#node:enterprise/llm-gateway.md) - A control plane sitting between AI clients and models/tools for auth, routing, policy, and observability.\n* [MCP Gateway](#node:enterprise/mcp-gateway.md) - An enterprise gateway multiplexing MCP servers behind auth, permissions, secrets, and audit.\n\n# Control\n\n* [Guardrails](#node:security/controls/guardrails.md) - Input/output controls that constrain LLM behavior to a safe, policy-compliant envelope.\n* [PII Masking & Anonymization](#node:security/controls/pii-masking.md) - Detecting and redacting or tokenizing personal data in LLM inputs/outputs, reversibly where needed.\n\n# Framework\n\n* [deepagents](#node:agents/deepagents.md) - LangChain library packaging planning, subagents, memory, and human-in-the-loop on LangGraph.\n\n# Knowledge Format\n\n* [Open Knowledge Format (OKF)](#node:context/okf.md) - Google's vendor-neutral markdown-plus-frontmatter standard for agent-readable knowledge.\n\n# Overview\n\n* [AI Engineering](#node:ai-engineering.md) - Map of the concepts behind building enterprise-grade AI services \u2014 context, gateways, agents, observability, evaluation, and security.\n* [Security](#node:security/security.md) - How enterprise agent platforms are attacked and defended \u2014 the OWASP Agentic Top 10 threats and the controls that contain them.\n\n# Protocol\n\n* [Model Context Protocol (MCP)](#node:context/mcp.md) - Open protocol standardizing how LLM apps expose and consume tools, resources, and prompts.\n\n# Technique\n\n* [Programmatic Tools & Code Mode](#node:agents/programmatic-tools.md) - Letting agents write and run code \u2014 interpreters, dynamic workflows \u2014 instead of only fixed tool calls.\n\n# Threat\n\n* [ASI01: Agent Goal Hijack](#node:security/threats/asi01-agent-goal-hijack.md) - Adversarial input redirects the agent's plan or objective \u2014 OWASP's\n* [ASI02: Tool Misuse & Exploitation](#node:security/threats/asi02-tool-misuse.md) - The agent invokes tools in ways they were not intended or authorized for.\n* [ASI03: Agent Identity & Privilege Abuse](#node:security/threats/asi03-identity-privilege-abuse.md) - The agent's identity or permissions are misused, impersonated, or escalated.\n* [ASI04: Agentic Supply Chain Compromise](#node:security/threats/asi04-supply-chain-compromise.md) - Malicious or compromised components \u2014 tools, MCP servers, models, dependencies \u2014 enter the agent supply chain.\n* [ASI05: Unexpected Code Execution](#node:security/threats/asi05-unexpected-code-execution.md) - The agent executes attacker-influenced code, e.g. via a code interpreter or a tool with an RCE path.\n* [ASI06: Memory & Context Poisoning](#node:security/threats/asi06-memory-context-poisoning.md) - Malicious content persists in the agent's memory or context and influences later decisions.\n* [ASI07: Insecure Inter-Agent Communication](#node:security/threats/asi07-insecure-inter-agent-communication.md) - Trust, spoofing, or tampering weaknesses in messaging between agents.\n* [ASI08: Cascading Agent Failures](#node:security/threats/asi08-cascading-agent-failures.md) - A local failure or compromise propagates across agents and tools into a systemic failure.\n* [ASI09: Human-Agent Trust Exploitation](#node:security/threats/asi09-human-agent-trust-exploitation.md) - The agent is used to manipulate the human, or humans over-trust the agent's output.\n* [ASI10: Rogue Agents](#node:security/threats/asi10-rogue-agents.md) - Unauthorized or compromised agents operating outside governance and oversight.\n\n# Tool\n\n* [Langfuse](#node:observability/langfuse.md) - Open-source LLM observability and tracing, OpenTelemetry-friendly.\n* [LangSmith](#node:observability/langsmith.md) - LangChain's tracing and evaluation platform for LLM/agent observability.\n* [LangSmith Evals](#node:evaluation/langsmith-evals.md) - Dataset and evaluator tooling in LangSmith for offline and online agent evaluation."};
+const byId = Object.fromEntries(DATA.nodes.map(n => [n.id, n]));
+const main = document.getElementById('main');
+const doc = document.getElementById('doc');
+const caption = document.getElementById('graph-caption');
+
+/* ---------- graph ---------- */
+const cy = cytoscape({
+  container: document.getElementById('graph'),
+  elements: [
+    ...DATA.nodes.map(n => ({ data: { id: n.id, label: n.title, color: n.color } })),
+    ...DATA.edges.map(e => ({ data: { id: e.source + '->' + e.target, source: e.source, target: e.target } })),
+  ],
+  style: [
+    { selector: 'node', style: {
+        'background-color': 'data(color)', 'label': 'data(label)', 'color': '#1f2328',
+        'font-size': '8px', 'text-wrap': 'wrap', 'text-max-width': '80px',
+        'text-valign': 'bottom', 'text-margin-y': 3, 'width': 15, 'height': 15,
+        'border-width': 1.5, 'border-color': '#ffffff' } },
+    { selector: 'edge', style: {
+        'width': 1, 'line-color': '#c8d1da', 'target-arrow-color': '#c8d1da',
+        'target-arrow-shape': 'triangle', 'curve-style': 'bezier', 'arrow-scale': .7 } },
+    { selector: 'node.sel', style: { 'border-color': '#0969da', 'border-width': 3, 'font-size': '10px', 'font-weight': 'bold', 'width': 20, 'height': 20 } },
+    { selector: '.faded', style: { 'opacity': .12 } },
+    { selector: 'node.hidden', style: { 'display': 'none' } },
+  ],
+  wheelSensitivity: 0.2,
+});
+
+function graphLayout() {
+  return { name: 'cose', animate: false, nodeDimensionsIncludeLabels: true,
+           idealEdgeLength: 150, nodeRepulsion: 22000, nodeOverlap: 60,
+           gravity: 0.2, componentSpacing: 160, numIter: 1500, padding: 40 };
+}
+
+// Run the force layout, then a deterministic pass that pushes any still-
+// overlapping nodes apart using their label-inclusive bounding boxes, so labels
+// never sit on top of each other regardless of the force layout's result.
+function runLayout() {
+  const layout = cy.layout(graphLayout());
+  layout.one('layoutstop', () => requestAnimationFrame(() => separateOverlaps()));
+  layout.run();
+}
+
+function separateOverlaps(iterations = 80, pad = 10) {
+  const nodes = cy.nodes();
+  for (let it = 0; it < iterations; it++) {
+    let moved = false;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j];
+        const ba = a.boundingBox({ includeLabels: true });
+        const bb = b.boundingBox({ includeLabels: true });
+        const overlapX = Math.min(ba.x2, bb.x2) - Math.max(ba.x1, bb.x1) + pad;
+        const overlapY = Math.min(ba.y2, bb.y2) - Math.max(ba.y1, bb.y1) + pad;
+        if (overlapX > 0 && overlapY > 0) {
+          let dx = (ba.x1 + ba.x2) / 2 - (bb.x1 + bb.x2) / 2;
+          let dy = (ba.y1 + ba.y2) / 2 - (bb.y1 + bb.y2) / 2;
+          const dist = Math.hypot(dx, dy) || 0.01;
+          const push = Math.min(overlapX, overlapY) / 2;
+          dx /= dist; dy /= dist;
+          a.position({ x: a.position('x') + dx * push, y: a.position('y') + dy * push });
+          b.position({ x: b.position('x') - dx * push, y: b.position('y') - dy * push });
+          moved = true;
+        }
+      }
+    }
+    if (!moved) break;
+  }
+  cy.fit(undefined, 30);
+}
+
+cy.on('tap', 'node', ev => {
+  // Clicking the already-selected node toggles the selection off.
+  if (ev.target.hasClass('sel')) clearHighlight(); else openConcept(ev.target.id());
+});
+cy.on('tap', 'edge', ev => openEdgeLink(ev.target.id()));           // open the source doc at the link that made this edge
+cy.on('tap', ev => { if (ev.target === cy) clearHighlight(); });    // click empty space = deselect node, keep the doc open
+document.getElementById('graph').addEventListener('dblclick', () => {  // double-click anywhere = reset zoom to fit all
+  cy.animate({ fit: { eles: cy.elements(), padding: 30 } }, { duration: 300 });
+});
+
+let activeType = null;
+
+// Reflect the active type (if any) onto the legend chips and the nav tree.
+function paintTypeState() {
+  document.querySelectorAll('#legend .legend-item').forEach(el =>
+    el.classList.toggle('active', el.dataset.type === activeType));
+  document.querySelectorAll('#nav a[data-id]').forEach(a =>
+    a.classList.toggle('typematch', !!activeType && byId[a.dataset.id].type === activeType));
+}
+
+function highlight(id) {
+  const node = cy.getElementById(id);
+  activeType = null;
+  cy.elements().addClass('faded');
+  cy.nodes().removeClass('sel');
+  const near = node.closedNeighborhood();
+  near.removeClass('faded');
+  node.addClass('sel');
+  paintTypeState();
+  caption.textContent = node.data('label') + ' — ' + node.connectedEdges().length + ' links';
+}
+
+// Highlight every concept of one type across the graph and the nav tree.
+function highlightType(type) {
+  activeType = type;
+  cy.nodes().removeClass('sel');
+  cy.elements().addClass('faded');
+  const matching = cy.nodes().filter(n => byId[n.id()].type === type);
+  matching.removeClass('faded');
+  paintTypeState();
+  caption.textContent = type + ' — ' + matching.length + ' concepts';
+}
+
+function clearHighlight() {
+  activeType = null;
+  cy.elements().removeClass('faded');
+  cy.nodes().removeClass('sel');
+  paintTypeState();
+  caption.textContent = cy.nodes().length + ' concepts · ' + cy.edges().length + ' links';
+}
+
+function relayout() {
+  // Only resize/refit on view changes — never re-run the force layout, which
+  // would reshuffle node positions and make the graph jump on every click.
+  requestAnimationFrame(() => { cy.resize(); cy.fit(undefined, 30); });
+}
+
+function focusOn(id) {
+  // Zoom and recenter to the selected node plus its immediate links, instead of
+  // refitting the entire graph.
+  const node = cy.getElementById(id);
+  requestAnimationFrame(() => {
+    cy.resize();
+    if (node.nonempty()) cy.animate({ fit: { eles: node.closedNeighborhood(), padding: 60 } }, { duration: 300 });
+    else cy.fit(undefined, 30);
+  });
+}
+
+/* ---------- reader ---------- */
+// Wire a rendered markdown container: in-bundle links navigate the graph,
+// external links open in a new tab.
+function wireDocLinks(container) {
+  container.querySelectorAll('a[href^="#node:"]').forEach(a => {
+    const target = decodeURIComponent(a.getAttribute('href').slice(6));
+    a.classList.add('xref');
+    a.addEventListener('click', ev => { ev.preventDefault(); openConcept(target); });
+  });
+  container.querySelectorAll('a[href^="http"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
+}
+
+function renderDoc(markdown) {
+  doc.innerHTML = marked.parse(markdown);
+  wireDocLinks(doc);
+  doc.scrollTop = 0;
+}
+
+function openConcept(id) {
+  const n = byId[id];
+  if (!n) return;
+  main.classList.remove('graph-only');
+  const resourceHtml = n.resource
+    ? `<span class="resource">🔗 <a href="${escapeAttr(n.resource)}" title="${escapeAttr(n.resource)}" target="_blank" rel="noopener">${escapeHtml(n.resource)}</a></span>` : '';
+  const tagsHtml = (n.tags && n.tags.length)
+    ? `<span class="tags-inline">${n.tags.map(t => `<code>${escapeHtml(t)}</code>`).join('')}</span>` : '';
+  const summaryHtml = n.description ? `<p class="summary">${escapeHtml(n.description)}</p>` : '';
+  doc.innerHTML =
+    `<h1>${escapeHtml(n.title)}</h1>` +
+    `<div class="meta">` +
+      resourceHtml +
+      `<span class="meta-right">${tagsHtml}` +
+        `<span class="badge" style="background:${n.color}">${escapeHtml(n.type)}</span>` +
+      `</span>` +
+    `</div>` + summaryHtml;
+  const bodyHtml = document.createElement('div');
+  bodyHtml.className = 'prose';
+  bodyHtml.innerHTML = marked.parse(n.body);
+  doc.appendChild(bodyHtml);
+  wireDocLinks(bodyHtml);
+  doc.scrollTop = 0;
+  setActiveNav(id);
+  history.replaceState(null, '', '#' + encodeURIComponent(id));
+  highlight(id);
+  focusOn(id);
+}
+
+function openIndex() {
+  // The bundle-root index.md is the landing page: catalog in the reader, whole graph.
+  main.classList.remove('graph-only');
+  const body = document.createElement('div');
+  body.className = 'prose';
+  body.innerHTML = DATA.index ? marked.parse(DATA.index) : '';
+  doc.innerHTML = '';
+  doc.appendChild(body);
+  wireDocLinks(body);
+  doc.scrollTop = 0;
+  setActiveNav('index');
+  clearHighlight();
+  history.replaceState(null, '', '#index');
+  relayout();
+}
+
+function openEdgeLink(edgeId) {
+  // Open the edge's source concept and scroll to / flash the specific link in
+  // its markdown that produced this edge.
+  const sep = edgeId.indexOf('->');
+  const source = edgeId.slice(0, sep), target = edgeId.slice(sep + 2);
+  openConcept(source);
+  const link = doc.querySelector(`a[href="#node:${target}"]`);
+  if (link) {
+    link.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    link.classList.add('flash');
+    setTimeout(() => link.classList.remove('flash'), 1600);
+  }
+}
+
+function openLog() {
+  if (!DATA.log) return;
+  main.classList.remove('graph-only');
+  renderDoc(DATA.log);
+  setActiveNav('log');
+  clearHighlight();
+  history.replaceState(null, '', '#log');
+  relayout();
+}
+
+function showGraphOnly() {
+  main.classList.add('graph-only');
+  setActiveNav(null);
+  clearHighlight();
+  history.replaceState(null, '', location.pathname);
+  relayout();
+}
+
+/* ---------- sidebar tree ---------- */
+function buildTree(nodes) {
+  const root = { dirs: {}, files: [] };
+  nodes.forEach(n => {
+    const parts = n.id.split('/');
+    let cur = root;
+    for (let i = 0; i < parts.length - 1; i++) {
+      cur.dirs[parts[i]] = cur.dirs[parts[i]] || { dirs: {}, files: [] };
+      cur = cur.dirs[parts[i]];
+    }
+    cur.files.push(n);
+  });
+  return root;
+}
+
+function renderTree(tree) {
+  const ul = document.createElement('ul');
+  // Concept pages first, then subdirectories (so a directory's own overview sits
+  // above its children).
+  tree.files.sort((a, b) => a.title.localeCompare(b.title)).forEach(n => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = '#' + encodeURIComponent(n.id);
+    a.dataset.id = n.id;
+    a.innerHTML = `<span class="dot" style="background:${n.color}"></span><span>${escapeHtml(n.title)}</span>`;
+    a.addEventListener('click', ev => { ev.preventDefault(); openConcept(n.id); });
+    li.appendChild(a);
+    ul.appendChild(li);
+  });
+  Object.keys(tree.dirs).sort().forEach(name => {
+    const li = document.createElement('li');
+    li.className = 'dir';
+    const label = document.createElement('div');
+    label.className = 'label';
+    label.textContent = name.replace(/[-_]/g, ' ');
+    li.appendChild(label);
+    li.appendChild(renderTree(tree.dirs[name]));
+    ul.appendChild(li);
+  });
+  return ul;
+}
+
+function setActiveNav(id) {
+  document.querySelectorAll('#nav a, #loglink a').forEach(a => a.classList.remove('active'));
+  if (id === 'log') { const l = document.querySelector('#loglink a'); l && l.classList.add('active'); return; }
+  if (id === 'index') { const h = document.querySelector('#nav a.homelink'); h && h.classList.add('active'); return; }
+  if (!id) return;
+  const a = document.querySelector(`#nav a[data-id="${cssEscape(id)}"]`);
+  a && a.classList.add('active');
+}
+
+const nav = document.getElementById('nav');
+if (DATA.index) {
+  const home = document.createElement('a');
+  home.href = '#index';
+  home.className = 'homelink';
+  home.innerHTML = '🏠 <span>Index</span>';
+  home.addEventListener('click', ev => { ev.preventDefault(); openIndex(); });
+  nav.appendChild(home);
+}
+nav.appendChild(renderTree(buildTree(DATA.nodes)));
+if (DATA.log) {
+  const link = document.createElement('a');
+  link.href = '#log';
+  link.innerHTML = '📓 <span>Change log</span>';
+  link.addEventListener('click', ev => { ev.preventDefault(); openLog(); });
+  document.getElementById('loglink').appendChild(link);
+}
+
+/* ---------- search ---------- */
+document.getElementById('search').addEventListener('input', ev => {
+  const q = ev.target.value.trim().toLowerCase();
+  DATA.nodes.forEach(n => {
+    const hay = (n.title + ' ' + n.description + ' ' + n.type + ' ' + n.tags.join(' ')).toLowerCase();
+    const hit = !q || hay.includes(q);
+    const navA = document.querySelector(`#nav a[data-id="${cssEscape(n.id)}"]`);
+    navA && navA.classList.toggle('hidden', !hit);
+    if (main.classList.contains('graph-only')) cy.getElementById(n.id).toggleClass('faded', !!q && !hit);
+  });
+});
+
+/* ---------- legend ---------- */
+function buildLegend() {
+  const legend = document.getElementById('legend');
+  const title = document.createElement('span');
+  title.className = 'legend-title';
+  title.textContent = 'Types';
+  legend.appendChild(title);
+  DATA.types.forEach(t => {
+    const item = document.createElement('button');
+    item.className = 'legend-item';
+    item.dataset.type = t.name;
+    item.innerHTML = `<span class="sw" style="background:${t.color}"></span>${escapeHtml(t.name)}`;
+    item.addEventListener('click', () => {
+      if (activeType === t.name) clearHighlight(); else highlightType(t.name);
+    });
+    legend.appendChild(item);
+  });
+}
+
+/* ---------- helpers ---------- */
+function escapeHtml(s) { return String(s).replace(/[&<>]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c])); }
+function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
+function cssEscape(s) { return (window.CSS && CSS.escape) ? CSS.escape(s) : s.replace(/["\\]/g, '\\$&'); }
+
+/* ---------- initial state ---------- */
+runLayout();
+buildLegend();
+clearHighlight();
+const start = decodeURIComponent(location.hash.slice(1));
+if (start === 'log') openLog();
+else if (byId[start]) openConcept(start);
+else if (DATA.index) openIndex();
+else showGraphOnly();
+</script>
+</body>
+</html>

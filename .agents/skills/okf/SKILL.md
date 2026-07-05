@@ -25,9 +25,9 @@ field names, link forms, and conformance rules.
 
 1. Start at the bundle-root `index.md` if present — it is a progressive-disclosure
    listing of what the bundle contains. If absent, walk the tree yourself.
-2. Each non-reserved `.md` file is one concept. Its frontmatter `type` tells you
-   what kind of thing it is; the body holds the detail (often under `# Schema`,
-   `# Examples`, `# Citations`).
+2. Each non-reserved `.md` file is one concept (`index.md` and `log.md` are
+   reserved). Its frontmatter `type` tells you what kind of thing it is; the body
+   holds the detail (often under `# Schema`, `# Examples`, `# Citations`).
 3. Follow markdown links to related concepts. Bundle-relative links begin with
    `/` (from the bundle root); relative links use `./`.
 4. **Consume permissively** (spec §9): never reject a bundle for missing optional
@@ -48,6 +48,11 @@ field names, link forms, and conformance rules.
 - **Links** — prefer the bundle-relative form (`[customers](/tables/customers.md)`).
   Convey the *kind* of relationship in the surrounding prose; the link itself is
   untyped.
+- **Markdown linting** — OKF's convention of several top-level `#` sections
+  (`# Schema`, `# Citations`, `# Related`) alongside a frontmatter `title`
+  intentionally trips markdownlint's MD025 (single H1) and MD041 (first-line
+  heading). Ship a `.markdownlint.json` disabling `MD025` and `MD041` so bundles
+  lint cleanly.
 
 After adding, renaming, moving, or deleting any concept, do BOTH of the following.
 

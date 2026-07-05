@@ -89,10 +89,13 @@ def main() -> int:
         return 0
 
     edges = _build_edges(concepts)
-    log_markdown = _read_log(bundle_root, {concept.id for concept in concepts})
+    known_ids = {concept.id for concept in concepts}
+    log_markdown = _read_log(bundle_root, known_ids)
+    index_markdown = _read_index(bundle_root, known_ids)
     output_path = pathlib.Path(args.output) if args.output else bundle_root / "okf-site.html"
     output_path.write_text(
-        _render_html(bundle_root.name, concepts, edges, log_markdown), encoding="utf-8"
+        _render_html(bundle_root.name, concepts, edges, log_markdown, index_markdown),
+        encoding="utf-8",
     )
 
     print(f"wrote {output_path} ({len(concepts)} concepts, {len(edges)} links)")
@@ -193,6 +196,18 @@ def _read_log(bundle_root: pathlib.Path, known_ids: set[str]) -> str | None:
     return _rewrite_internal_links(log_path.read_text(encoding="utf-8"), "log.md", known_ids)
 
 
+def _read_index(bundle_root: pathlib.Path, known_ids: set[str]) -> str | None:
+    """Return the bundle-root ``index.md`` body (frontmatter stripped, links rewritten)."""
+    index_path = bundle_root / "index.md"
+    if not index_path.is_file():
+        return None
+
+    _, body, error = _split_document(index_path)
+    markdown = index_path.read_text(encoding="utf-8") if error is not None else body
+
+    return _rewrite_internal_links(markdown, "index.md", known_ids)
+
+
 def _rewrite_internal_links(body: str, source_id: str, known_ids: set[str]) -> str:
     """Rewrite links that resolve to a concept in the bundle to ``#node:<id>``.
 
@@ -229,19 +244,18 @@ def _resolve_link(target: str, source_dir: str) -> str | None:
 
 
 def _render_html(
-    bundle_name: str, concepts: list[Concept], edges: list[dict], log_markdown: str | None
+    bundle_name: str,
+    concepts: list[Concept],
+    edges: list[dict],
+    log_markdown: str | None,
+    index_markdown: str | None,
 ) -> str:
     """Assemble the self-contained HTML document."""
     types = sorted({concept.type for concept in concepts})
     type_colors = {concept_type: _TYPE_PALETTE[index % len(_TYPE_PALETTE)] for index, concept_type in enumerate(types)}
 
-    # A root-level README/overview concept becomes the landing page and is kept
-    # out of the graph and nav tree (surfaced as a dedicated "Overview" link).
-    home_id = next((concept.id for concept in concepts if concept.id.lower() in {"readme.md", "overview.md"}), None)
-
     graph_data = {
         "title": bundle_name,
-        "home": home_id,
         "nodes": [
             {
                 "id": concept.id,
@@ -258,6 +272,7 @@ def _render_html(
         "edges": edges,
         "types": [{"name": concept_type, "color": type_colors[concept_type]} for concept_type in types],
         "log": log_markdown,
+        "index": index_markdown,
     }
 
     payload = json.dumps(graph_data).replace("</", "<\\/")
@@ -303,6 +318,7 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #nav a { display:flex; align-items:center; gap:8px; padding:5px 8px; border-radius:6px; color:var(--ink); text-decoration:none; font-size:13px; line-height:1.3; }
   #nav a:hover { background:var(--hover); }
   #nav a.active { background:var(--active); font-weight:600; }
+  #nav a.typematch:not(.active) { background:#fff3bf; }
   #nav a .dot { width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
   #nav a.hidden { display:none; }
   #nav a.homelink { font-weight:600; margin-bottom:6px; }
@@ -315,8 +331,15 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #doc { flex:1 1 auto; overflow-y:auto; padding:26px 36px; min-width:0; }
   #doc > * { max-width:820px; }
   main.graph-only #doc { display:none; }
-  #graph-wrap { flex:0 0 42%; border-left:1px solid var(--line); position:relative; min-height:0; min-width:0; background:var(--bg); }
+  #graph-wrap { flex:0 0 42%; border-left:1px solid var(--line); display:flex; flex-direction:column; min-height:0; min-width:0; background:var(--bg); }
   main.graph-only #graph-wrap { flex:1 1 auto; border-left:none; }
+  #legend { flex:0 0 auto; display:flex; flex-wrap:wrap; align-items:center; gap:2px 6px; padding:8px 12px; border-bottom:1px solid var(--line); }
+  #legend .legend-title { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-right:4px; }
+  #legend .legend-item { display:inline-flex; align-items:center; gap:5px; cursor:pointer; border:0; background:none; font:inherit; font-size:11.5px; color:var(--muted); padding:2px 6px; border-radius:5px; }
+  #legend .legend-item:hover { background:var(--hover); color:var(--ink); }
+  #legend .legend-item.active { background:var(--active); color:var(--ink); font-weight:600; }
+  #legend .sw { width:10px; height:10px; border-radius:3px; flex:0 0 auto; }
+  #graph-container { flex:1 1 auto; position:relative; min-height:0; }
   #graph { position:absolute; inset:0; }
   #graph-caption { position:absolute; top:8px; left:12px; font-size:11px; color:var(--muted); pointer-events:none; }
 
@@ -325,13 +348,15 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #doc .prose h1 { font-size:17px; font-weight:600; margin:1.6em 0 .4em; padding-bottom:5px; border-bottom:1px solid var(--line); }
   #doc .meta { display:flex; align-items:center; gap:10px; margin:8px 0 16px; font-size:12.5px; }
   #doc .badge { flex:0 0 auto; display:inline-block; padding:2px 9px; border-radius:11px; font-size:11px; color:#fff; font-weight:600; }
-  #doc .path { flex:0 0 auto; color:var(--muted); font-size:12px; white-space:nowrap; }
   #doc .resource { flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  #doc .tags-inline { flex:0 0 auto; margin-left:auto; display:flex; gap:5px; }
+  #doc .meta-right { flex:0 0 auto; margin-left:auto; display:flex; align-items:center; gap:8px; }
+  #doc .tags-inline { display:flex; gap:5px; }
   #doc .tags-inline code { color:var(--muted); font-size:11px; }
+  #doc .summary { margin:0 0 18px; color:var(--muted); font-size:14px; line-height:1.5; }
   #doc a { color:var(--accent); text-decoration:none; }
   #doc a:hover { text-decoration:underline; }
   #doc a.xref { border-bottom:1px dotted var(--accent); }
+  #doc a.flash { background:#fff3bf; box-shadow:0 0 0 3px #fff3bf; border-radius:3px; transition:background .3s, box-shadow .3s; }
   #doc table { border-collapse:collapse; font-size:13px; margin:12px 0; }
   #doc th, #doc td { border:1px solid var(--line); padding:6px 10px; text-align:left; }
   #doc th { background:var(--sidebar); }
@@ -354,8 +379,11 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
     <main id="main" class="graph-only">
       <div id="doc"></div>
       <div id="graph-wrap">
-        <div id="graph"></div>
-        <div id="graph-caption"></div>
+        <div id="legend"></div>
+        <div id="graph-container">
+          <div id="graph"></div>
+          <div id="graph-caption"></div>
+        </div>
       </div>
     </main>
   </div>
@@ -371,9 +399,8 @@ const caption = document.getElementById('graph-caption');
 const cy = cytoscape({
   container: document.getElementById('graph'),
   elements: [
-    ...DATA.nodes.filter(n => n.id !== DATA.home).map(n => ({ data: { id: n.id, label: n.title, color: n.color } })),
-    ...DATA.edges.filter(e => e.source !== DATA.home && e.target !== DATA.home)
-        .map(e => ({ data: { id: e.source + '->' + e.target, source: e.source, target: e.target } })),
+    ...DATA.nodes.map(n => ({ data: { id: n.id, label: n.title, color: n.color } })),
+    ...DATA.edges.map(e => ({ data: { id: e.source + '->' + e.target, source: e.source, target: e.target } })),
   ],
   style: [
     { selector: 'node', style: {
@@ -438,21 +465,50 @@ cy.on('tap', 'node', ev => {
   // Clicking the already-selected node toggles the selection off.
   if (ev.target.hasClass('sel')) clearHighlight(); else openConcept(ev.target.id());
 });
-cy.on('tap', ev => { if (ev.target === cy) clearHighlight(); });  // click empty space = deselect node, keep the doc open
+cy.on('tap', 'edge', ev => openEdgeLink(ev.target.id()));           // open the source doc at the link that made this edge
+cy.on('tap', ev => { if (ev.target === cy) clearHighlight(); });    // click empty space = deselect node, keep the doc open
+document.getElementById('graph').addEventListener('dblclick', () => {  // double-click anywhere = reset zoom to fit all
+  cy.animate({ fit: { eles: cy.elements(), padding: 30 } }, { duration: 300 });
+});
+
+let activeType = null;
+
+// Reflect the active type (if any) onto the legend chips and the nav tree.
+function paintTypeState() {
+  document.querySelectorAll('#legend .legend-item').forEach(el =>
+    el.classList.toggle('active', el.dataset.type === activeType));
+  document.querySelectorAll('#nav a[data-id]').forEach(a =>
+    a.classList.toggle('typematch', !!activeType && byId[a.dataset.id].type === activeType));
+}
 
 function highlight(id) {
   const node = cy.getElementById(id);
+  activeType = null;
   cy.elements().addClass('faded');
   cy.nodes().removeClass('sel');
   const near = node.closedNeighborhood();
   near.removeClass('faded');
   node.addClass('sel');
+  paintTypeState();
   caption.textContent = node.data('label') + ' — ' + node.connectedEdges().length + ' links';
 }
 
+// Highlight every concept of one type across the graph and the nav tree.
+function highlightType(type) {
+  activeType = type;
+  cy.nodes().removeClass('sel');
+  cy.elements().addClass('faded');
+  const matching = cy.nodes().filter(n => byId[n.id()].type === type);
+  matching.removeClass('faded');
+  paintTypeState();
+  caption.textContent = type + ' — ' + matching.length + ' concepts';
+}
+
 function clearHighlight() {
+  activeType = null;
   cy.elements().removeClass('faded');
   cy.nodes().removeClass('sel');
+  paintTypeState();
   caption.textContent = cy.nodes().length + ' concepts · ' + cy.edges().length + ' links';
 }
 
@@ -474,14 +530,20 @@ function focusOn(id) {
 }
 
 /* ---------- reader ---------- */
-function renderDoc(markdown) {
-  doc.innerHTML = marked.parse(markdown);
-  doc.querySelectorAll('a[href^="#node:"]').forEach(a => {
+// Wire a rendered markdown container: in-bundle links navigate the graph,
+// external links open in a new tab.
+function wireDocLinks(container) {
+  container.querySelectorAll('a[href^="#node:"]').forEach(a => {
     const target = decodeURIComponent(a.getAttribute('href').slice(6));
     a.classList.add('xref');
     a.addEventListener('click', ev => { ev.preventDefault(); openConcept(target); });
   });
-  doc.querySelectorAll('a[href^="http"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
+  container.querySelectorAll('a[href^="http"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
+}
+
+function renderDoc(markdown) {
+  doc.innerHTML = marked.parse(markdown);
+  wireDocLinks(doc);
   doc.scrollTop = 0;
 }
 
@@ -493,28 +555,55 @@ function openConcept(id) {
     ? `<span class="resource">🔗 <a href="${escapeAttr(n.resource)}" title="${escapeAttr(n.resource)}" target="_blank" rel="noopener">${escapeHtml(n.resource)}</a></span>` : '';
   const tagsHtml = (n.tags && n.tags.length)
     ? `<span class="tags-inline">${n.tags.map(t => `<code>${escapeHtml(t)}</code>`).join('')}</span>` : '';
+  const summaryHtml = n.description ? `<p class="summary">${escapeHtml(n.description)}</p>` : '';
   doc.innerHTML =
     `<h1>${escapeHtml(n.title)}</h1>` +
     `<div class="meta">` +
-      `<span class="badge" style="background:${n.color}">${escapeHtml(n.type)}</span>` +
-      `<span class="path">${escapeHtml(n.id)}</span>` +
-      resourceHtml + tagsHtml +
-    `</div>`;
+      resourceHtml +
+      `<span class="meta-right">${tagsHtml}` +
+        `<span class="badge" style="background:${n.color}">${escapeHtml(n.type)}</span>` +
+      `</span>` +
+    `</div>` + summaryHtml;
   const bodyHtml = document.createElement('div');
   bodyHtml.className = 'prose';
   bodyHtml.innerHTML = marked.parse(n.body);
   doc.appendChild(bodyHtml);
-  bodyHtml.querySelectorAll('a[href^="#node:"]').forEach(a => {
-    const target = decodeURIComponent(a.getAttribute('href').slice(6));
-    a.classList.add('xref');
-    a.addEventListener('click', ev => { ev.preventDefault(); openConcept(target); });
-  });
-  bodyHtml.querySelectorAll('a[href^="http"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
+  wireDocLinks(bodyHtml);
   doc.scrollTop = 0;
   setActiveNav(id);
   history.replaceState(null, '', '#' + encodeURIComponent(id));
-  if (id === DATA.home) { clearHighlight(); relayout(); }   // landing: show whole graph
-  else { highlight(id); focusOn(id); }                       // concept: zoom to its neighborhood
+  highlight(id);
+  focusOn(id);
+}
+
+function openIndex() {
+  // The bundle-root index.md is the landing page: catalog in the reader, whole graph.
+  main.classList.remove('graph-only');
+  const body = document.createElement('div');
+  body.className = 'prose';
+  body.innerHTML = DATA.index ? marked.parse(DATA.index) : '';
+  doc.innerHTML = '';
+  doc.appendChild(body);
+  wireDocLinks(body);
+  doc.scrollTop = 0;
+  setActiveNav('index');
+  clearHighlight();
+  history.replaceState(null, '', '#index');
+  relayout();
+}
+
+function openEdgeLink(edgeId) {
+  // Open the edge's source concept and scroll to / flash the specific link in
+  // its markdown that produced this edge.
+  const sep = edgeId.indexOf('->');
+  const source = edgeId.slice(0, sep), target = edgeId.slice(sep + 2);
+  openConcept(source);
+  const link = doc.querySelector(`a[href="#node:${target}"]`);
+  if (link) {
+    link.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    link.classList.add('flash');
+    setTimeout(() => link.classList.remove('flash'), 1600);
+  }
 }
 
 function openLog() {
@@ -552,16 +641,8 @@ function buildTree(nodes) {
 
 function renderTree(tree) {
   const ul = document.createElement('ul');
-  Object.keys(tree.dirs).sort().forEach(name => {
-    const li = document.createElement('li');
-    li.className = 'dir';
-    const label = document.createElement('div');
-    label.className = 'label';
-    label.textContent = name.replace(/[-_]/g, ' ');
-    li.appendChild(label);
-    li.appendChild(renderTree(tree.dirs[name]));
-    ul.appendChild(li);
-  });
+  // Concept pages first, then subdirectories (so a directory's own overview sits
+  // above its children).
   tree.files.sort((a, b) => a.title.localeCompare(b.title)).forEach(n => {
     const li = document.createElement('li');
     const a = document.createElement('a');
@@ -572,28 +653,38 @@ function renderTree(tree) {
     li.appendChild(a);
     ul.appendChild(li);
   });
+  Object.keys(tree.dirs).sort().forEach(name => {
+    const li = document.createElement('li');
+    li.className = 'dir';
+    const label = document.createElement('div');
+    label.className = 'label';
+    label.textContent = name.replace(/[-_]/g, ' ');
+    li.appendChild(label);
+    li.appendChild(renderTree(tree.dirs[name]));
+    ul.appendChild(li);
+  });
   return ul;
 }
 
 function setActiveNav(id) {
   document.querySelectorAll('#nav a, #loglink a').forEach(a => a.classList.remove('active'));
   if (id === 'log') { const l = document.querySelector('#loglink a'); l && l.classList.add('active'); return; }
+  if (id === 'index') { const h = document.querySelector('#nav a.homelink'); h && h.classList.add('active'); return; }
   if (!id) return;
   const a = document.querySelector(`#nav a[data-id="${cssEscape(id)}"]`);
   a && a.classList.add('active');
 }
 
 const nav = document.getElementById('nav');
-if (DATA.home && byId[DATA.home]) {
+if (DATA.index) {
   const home = document.createElement('a');
-  home.href = '#' + encodeURIComponent(DATA.home);
-  home.dataset.id = DATA.home;
+  home.href = '#index';
   home.className = 'homelink';
-  home.innerHTML = '🏠 <span>' + escapeHtml(byId[DATA.home].title) + '</span>';
-  home.addEventListener('click', ev => { ev.preventDefault(); openConcept(DATA.home); });
+  home.innerHTML = '🏠 <span>Index</span>';
+  home.addEventListener('click', ev => { ev.preventDefault(); openIndex(); });
   nav.appendChild(home);
 }
-nav.appendChild(renderTree(buildTree(DATA.nodes.filter(n => n.id !== DATA.home))));
+nav.appendChild(renderTree(buildTree(DATA.nodes)));
 if (DATA.log) {
   const link = document.createElement('a');
   link.href = '#log';
@@ -614,6 +705,25 @@ document.getElementById('search').addEventListener('input', ev => {
   });
 });
 
+/* ---------- legend ---------- */
+function buildLegend() {
+  const legend = document.getElementById('legend');
+  const title = document.createElement('span');
+  title.className = 'legend-title';
+  title.textContent = 'Types';
+  legend.appendChild(title);
+  DATA.types.forEach(t => {
+    const item = document.createElement('button');
+    item.className = 'legend-item';
+    item.dataset.type = t.name;
+    item.innerHTML = `<span class="sw" style="background:${t.color}"></span>${escapeHtml(t.name)}`;
+    item.addEventListener('click', () => {
+      if (activeType === t.name) clearHighlight(); else highlightType(t.name);
+    });
+    legend.appendChild(item);
+  });
+}
+
 /* ---------- helpers ---------- */
 function escapeHtml(s) { return String(s).replace(/[&<>]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c])); }
 function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
@@ -621,11 +731,12 @@ function cssEscape(s) { return (window.CSS && CSS.escape) ? CSS.escape(s) : s.re
 
 /* ---------- initial state ---------- */
 runLayout();
+buildLegend();
 clearHighlight();
 const start = decodeURIComponent(location.hash.slice(1));
 if (start === 'log') openLog();
 else if (byId[start]) openConcept(start);
-else if (DATA.home && byId[DATA.home]) openConcept(DATA.home);
+else if (DATA.index) openIndex();
 else showGraphOnly();
 </script>
 </body>

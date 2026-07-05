@@ -24,6 +24,39 @@
                 "focus": false,
                 "panel": "shared"
             }
+        },
+        {
+            "label": "OKF AI-engineering: regenerate index",
+            "type": "shell",
+            "detail": "Regenerate index.md for the ai-engineering OKF bundle from concept frontmatter",
+            "command": "uv run --project . python .agents/skills/okf/scripts/okf_index.py .agents/skills/okf-ai-engineering/ai-engineering",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "OKF AI-engineering: build & open site",
+            "type": "shell",
+            "detail": "Regenerate okf-site.html for the ai-engineering OKF bundle and open it in the browser",
+            "command": "uv run --project . python .agents/skills/okf/scripts/okf_site.py .agents/skills/okf-ai-engineering/ai-engineering && open .agents/skills/okf-ai-engineering/ai-engineering/okf-site.html",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "OKF AI-engineering: rebuild & open",
+            "detail": "Regenerate the index, then rebuild and open the site (runs both tasks in sequence)",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "OKF AI-engineering: regenerate index",
+                "OKF AI-engineering: build & open site"
+            ]
         }
     ]
 }

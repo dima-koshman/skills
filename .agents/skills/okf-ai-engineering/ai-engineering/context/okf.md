@@ -1,10 +1,8 @@
 ---
-type: Knowledge Format
+type: Standard
 title: Open Knowledge Format (OKF)
 description: Google's vendor-neutral markdown-plus-frontmatter standard for agent-readable knowledge.
 resource: https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf
-tags: [knowledge, standards, agents]
-timestamp: 2026-07-04T00:00:00Z
 ---
 
 OKF represents knowledge — the metadata and curated context around data and

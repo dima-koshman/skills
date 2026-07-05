@@ -1,10 +1,8 @@
 ---
-type: Protocol
+type: Standard
 title: Model Context Protocol (MCP)
 description: Open protocol standardizing how LLM apps expose and consume tools, resources, and prompts.
 resource: https://modelcontextprotocol.io
-tags: [mcp, protocol, platform, integration]
-timestamp: 2026-07-05T00:00:00Z
 ---
 
 MCP is a JSON-RPC-based protocol that standardizes the boundary between an LLM

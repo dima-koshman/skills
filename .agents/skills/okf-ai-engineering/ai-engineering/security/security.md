@@ -1,37 +1,36 @@
 ---
 type: Overview
 title: Security
-description: How enterprise agent platforms are attacked and defended — the OWASP Agentic Top 10 threats and the controls that contain them.
+description: How enterprise agent platforms are attacked and defended — the OWASP Agentic Top 10 risks and the mitigations that contain them.
 resource: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
-tags: [security, overview, owasp, agents]
-timestamp: 2026-07-05T00:00:00Z
 ---
 
 Agentic systems act with real tools and the user's own permissions, so their
 attack surface is the tool, identity, memory, and communication surface — not
-just the prompt. This area splits into **threats** (how agents are subverted) and
-**controls** (what keeps them inside a safe envelope). The reference model is the
-OWASP Top 10 for Agentic Applications (2026).
+just the prompt. This area splits into **risks** (how agents are subverted) and
+**mitigations** (what keeps them inside a safe envelope — minimizing risk, never
+fully eliminating it). The reference model is the OWASP Top 10 for Agentic
+Applications (2026).
 
-# Threats (OWASP Agentic Top 10)
+# Risks (OWASP Agentic Top 10)
 
-- [Agent Goal Hijack](/security/threats/agent-goal-hijack.md)
-- [Tool Misuse & Exploitation](/security/threats/tool-misuse.md)
-- [Agent Identity & Privilege Abuse](/security/threats/identity-privilege-abuse.md)
-- [Agentic Supply Chain Compromise](/security/threats/supply-chain-compromise.md)
-- [Unexpected Code Execution](/security/threats/unexpected-code-execution.md)
-- [Memory & Context Poisoning](/security/threats/memory-context-poisoning.md)
-- [Insecure Inter-Agent Communication](/security/threats/insecure-inter-agent-communication.md)
-- [Cascading Agent Failures](/security/threats/cascading-agent-failures.md)
-- [Human-Agent Trust Exploitation](/security/threats/human-agent-trust-exploitation.md)
-- [Rogue Agents](/security/threats/rogue-agents.md)
+- [Agent Goal Hijack](/security/risks/agent-goal-hijack.md)
+- [Tool Misuse & Exploitation](/security/risks/tool-misuse.md)
+- [Agent Identity & Privilege Abuse](/security/risks/identity-privilege-abuse.md)
+- [Agentic Supply Chain Compromise](/security/risks/supply-chain-compromise.md)
+- [Unexpected Code Execution](/security/risks/unexpected-code-execution.md)
+- [Memory & Context Poisoning](/security/risks/memory-context-poisoning.md)
+- [Insecure Inter-Agent Communication](/security/risks/insecure-inter-agent-communication.md)
+- [Cascading Agent Failures](/security/risks/cascading-agent-failures.md)
+- [Human-Agent Trust Exploitation](/security/risks/human-agent-trust-exploitation.md)
+- [Rogue Agents](/security/risks/rogue-agents.md)
 
-# Controls
+# Mitigations
 
-- [Guardrails](/security/controls/guardrails.md) — input/output/action policy enforcement around the model.
-- [PII Masking & Anonymization](/security/controls/pii-masking.md) — redacting or tokenizing personal data on the way in and out.
+- [Guardrails](/security/mitigations/guardrails.md) — input/output/action policy enforcement around the model.
+- [PII Masking & Anonymization](/security/mitigations/pii-masking.md) — redacting or tokenizing personal data on the way in and out.
 
-Controls are enforced in practice at the [LLM gateway](/enterprise/llm-gateway.md)
+Mitigations are enforced in practice at the [LLM gateway](/enterprise/llm-gateway.md)
 and [MCP gateway](/enterprise/mcp-gateway.md), under a zero-trust posture: every
 agent action authenticated, authorized, least-privileged, and logged.
 

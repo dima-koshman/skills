@@ -15,16 +15,16 @@ OWASP Top 10 for Agentic Applications (2026).
 
 # Threats (OWASP Agentic Top 10)
 
-- [ASI01: Agent Goal Hijack](/security/threats/asi01-agent-goal-hijack.md)
-- [ASI02: Tool Misuse & Exploitation](/security/threats/asi02-tool-misuse.md)
-- [ASI03: Agent Identity & Privilege Abuse](/security/threats/asi03-identity-privilege-abuse.md)
-- [ASI04: Agentic Supply Chain Compromise](/security/threats/asi04-supply-chain-compromise.md)
-- [ASI05: Unexpected Code Execution](/security/threats/asi05-unexpected-code-execution.md)
-- [ASI06: Memory & Context Poisoning](/security/threats/asi06-memory-context-poisoning.md)
-- [ASI07: Insecure Inter-Agent Communication](/security/threats/asi07-insecure-inter-agent-communication.md)
-- [ASI08: Cascading Agent Failures](/security/threats/asi08-cascading-agent-failures.md)
-- [ASI09: Human-Agent Trust Exploitation](/security/threats/asi09-human-agent-trust-exploitation.md)
-- [ASI10: Rogue Agents](/security/threats/asi10-rogue-agents.md)
+- [Agent Goal Hijack](/security/threats/agent-goal-hijack.md)
+- [Tool Misuse & Exploitation](/security/threats/tool-misuse.md)
+- [Agent Identity & Privilege Abuse](/security/threats/identity-privilege-abuse.md)
+- [Agentic Supply Chain Compromise](/security/threats/supply-chain-compromise.md)
+- [Unexpected Code Execution](/security/threats/unexpected-code-execution.md)
+- [Memory & Context Poisoning](/security/threats/memory-context-poisoning.md)
+- [Insecure Inter-Agent Communication](/security/threats/insecure-inter-agent-communication.md)
+- [Cascading Agent Failures](/security/threats/cascading-agent-failures.md)
+- [Human-Agent Trust Exploitation](/security/threats/human-agent-trust-exploitation.md)
+- [Rogue Agents](/security/threats/rogue-agents.md)
 
 # Controls
 

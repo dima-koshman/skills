@@ -38,6 +38,26 @@
             }
         },
         {
+            "label": "OKF AI-engineering: install skill",
+            "type": "shell",
+            "detail": "Install only the okf-ai-engineering skill globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
+            "command": "npx skills add ./.agents/skills/okf-ai-engineering --agent claude-code --agent opencode --agent codex --global --yes",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "OKF AI-engineering: regenerate index & install skill",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "OKF AI-engineering: regenerate index",
+                "OKF AI-engineering: install skill"
+            ]
+        },
+        {
             "label": "OKF AI-engineering: build & open site",
             "type": "shell",
             "detail": "Regenerate okf-site.html for the ai-engineering OKF bundle and open it in the browser",
@@ -50,11 +70,11 @@
             }
         },
         {
-            "label": "OKF AI-engineering: rebuild & open",
-            "detail": "Regenerate the index, then rebuild and open the site (runs both tasks in sequence)",
+            "label": "OKF AI-engineering: regenerate index, install skill, build and open site",
+            "detail": "Regenerate the index, install the skill, build and open the site (runs all three in sequence)",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "OKF AI-engineering: regenerate index",
+                "OKF AI-engineering: regenerate index & install skill",
                 "OKF AI-engineering: build & open site"
             ]
         }

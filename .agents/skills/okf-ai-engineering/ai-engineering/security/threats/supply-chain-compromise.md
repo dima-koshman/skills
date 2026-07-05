@@ -1,9 +1,9 @@
 ---
 type: Threat
-title: "ASI04: Agentic Supply Chain Compromise"
+title: Agentic Supply Chain Compromise
 description: Malicious or compromised components — tools, MCP servers, models, dependencies — enter the agent supply chain.
 resource: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
-tags: [security, threat, supply-chain, owasp, asi04]
+tags: [security, threat, supply-chain, owasp]
 timestamp: 2026-07-05T00:00:00Z
 ---
 

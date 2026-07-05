@@ -1,9 +1,9 @@
 ---
 type: Threat
-title: "ASI01: Agent Goal Hijack"
-description: Adversarial input redirects the agent's plan or objective — OWASP's #1 agentic risk, prompt injection being the primary mechanism.
+title: Agent Goal Hijack
+description: "Adversarial input redirects the agent's plan or objective — OWASP's #1 agentic risk, prompt injection being the primary mechanism."
 resource: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
-tags: [security, threat, agents, owasp, asi01]
+tags: [security, threat, agents, owasp]
 timestamp: 2026-07-05T00:00:00Z
 ---
 

@@ -1,9 +1,9 @@
 ---
 type: Threat
-title: "ASI06: Memory & Context Poisoning"
+title: Memory & Context Poisoning
 description: Malicious content persists in the agent's memory or context and influences later decisions.
 resource: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
-tags: [security, threat, memory, owasp, asi06]
+tags: [security, threat, memory, owasp]
 timestamp: 2026-07-05T00:00:00Z
 ---
 

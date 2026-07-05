@@ -1,9 +1,9 @@
 ---
 type: Threat
-title: "ASI07: Insecure Inter-Agent Communication"
+title: Insecure Inter-Agent Communication
 description: Trust, spoofing, or tampering weaknesses in messaging between agents.
 resource: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
-tags: [security, threat, multi-agent, owasp, asi07]
+tags: [security, threat, multi-agent, owasp]
 timestamp: 2026-07-05T00:00:00Z
 ---
 

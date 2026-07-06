@@ -1,5 +1,9 @@
 # Directory Update Log
 
+## 2026-07-06
+
+* **Update**: Made the generated knowledge-graph site mobile-friendly with reading-first navigation and on-demand Contents and Graph panels.
+
 ## 2026-07-05
 
 * **Reorganization**: Renamed `security/threats/` → `security/risks/` (type `Threat` → `Security risk`) and `security/controls/` → `security/mitigations/` — "risk" and "mitigation" are the accurate words (mitigations minimize risk, they don't eliminate it). Updated the Security overview wording and repaired all links.

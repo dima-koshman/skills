@@ -307,6 +307,9 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   header { display:flex; gap:14px; align-items:center; padding:9px 16px; border-bottom:1px solid var(--line); background:var(--sidebar); flex:0 0 auto; }
   header h1 { font-size:14px; margin:0; font-weight:600; white-space:nowrap; }
   header h1 span { color:var(--muted); font-weight:400; }
+  #mobile-actions { display:none; }
+  .mobile-toggle { border:1px solid var(--line); border-radius:6px; padding:6px 9px; background:var(--bg); color:var(--ink); font:inherit; font-size:12px; cursor:pointer; }
+  .mobile-toggle[aria-expanded="true"] { background:var(--active); border-color:var(--accent); }
   #search { margin-left:auto; flex:0 0 260px; padding:6px 10px; border-radius:6px; border:1px solid var(--line); background:var(--bg); color:var(--ink); font-size:13px; }
   .below { flex:1 1 auto; display:flex; min-height:0; }
 
@@ -363,12 +366,37 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #doc code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:85%; background:var(--code); padding:.15em .4em; border-radius:5px; }
   #doc pre { background:var(--code); padding:13px; border-radius:8px; overflow-x:auto; }
   #doc pre code { background:none; padding:0; }
+
+  @media (max-width: 860px) {
+    .layout { height:100vh; height:100dvh; }
+    header { flex-wrap:wrap; gap:8px; padding:8px 10px; }
+    header h1 { flex:1 1 auto; overflow:hidden; text-overflow:ellipsis; }
+    #mobile-actions { display:flex; gap:6px; }
+    #search { order:3; flex:1 0 100%; width:100%; margin-left:0; }
+    .below { position:relative; }
+    aside { display:none; position:absolute; inset:0; z-index:10; width:100%; background:var(--sidebar); border-right:0; }
+    body.nav-open aside { display:flex; }
+    main { width:100%; }
+    #doc { padding:20px 16px 32px; }
+    #doc > * { max-width:none; }
+    #doc .meta { align-items:flex-start; flex-wrap:wrap; }
+    #doc .resource { flex-basis:100%; }
+    #doc .meta-right { margin-left:0; }
+    #doc table { display:block; max-width:100%; overflow-x:auto; }
+    #graph-wrap { display:none; flex:1 1 auto; border-left:0; }
+    main.mobile-graph #doc, main.graph-only #doc { display:none; }
+    main.mobile-graph #graph-wrap, main.graph-only #graph-wrap { display:flex; }
+  }
 </style>
 </head>
 <body>
 <div class="layout">
   <header>
     <h1>__TITLE__ <span>· OKF</span></h1>
+    <div id="mobile-actions">
+      <button id="nav-toggle" class="mobile-toggle" type="button" aria-controls="nav" aria-expanded="false">Contents</button>
+      <button id="graph-toggle" class="mobile-toggle" type="button" aria-controls="graph-wrap" aria-expanded="false">Graph</button>
+    </div>
     <input id="search" type="search" placeholder="Search concepts…" autocomplete="off">
   </header>
   <div class="below">
@@ -394,6 +422,30 @@ const byId = Object.fromEntries(DATA.nodes.map(n => [n.id, n]));
 const main = document.getElementById('main');
 const doc = document.getElementById('doc');
 const caption = document.getElementById('graph-caption');
+const navToggle = document.getElementById('nav-toggle');
+const graphToggle = document.getElementById('graph-toggle');
+
+function closeMobilePanels() {
+  document.body.classList.remove('nav-open');
+  main.classList.remove('mobile-graph');
+  navToggle.setAttribute('aria-expanded', 'false');
+  graphToggle.setAttribute('aria-expanded', 'false');
+}
+
+navToggle.addEventListener('click', () => {
+  const willOpen = !document.body.classList.contains('nav-open');
+  closeMobilePanels();
+  document.body.classList.toggle('nav-open', willOpen);
+  navToggle.setAttribute('aria-expanded', String(willOpen));
+});
+
+graphToggle.addEventListener('click', () => {
+  const willOpen = !main.classList.contains('mobile-graph');
+  closeMobilePanels();
+  main.classList.toggle('mobile-graph', willOpen);
+  graphToggle.setAttribute('aria-expanded', String(willOpen));
+  if (willOpen) relayout();
+});
 
 /* ---------- graph ---------- */
 const cy = cytoscape({
@@ -550,6 +602,7 @@ function renderDoc(markdown) {
 function openConcept(id) {
   const n = byId[id];
   if (!n) return;
+  closeMobilePanels();
   main.classList.remove('graph-only');
   const resourceHtml = n.resource
     ? `<span class="resource">🔗 <a href="${escapeAttr(n.resource)}" title="${escapeAttr(n.resource)}" target="_blank" rel="noopener">${escapeHtml(n.resource)}</a></span>` : '';
@@ -578,6 +631,7 @@ function openConcept(id) {
 
 function openIndex() {
   // The bundle-root index.md is the landing page: catalog in the reader, whole graph.
+  closeMobilePanels();
   main.classList.remove('graph-only');
   const body = document.createElement('div');
   body.className = 'prose';
@@ -608,6 +662,7 @@ function openEdgeLink(edgeId) {
 
 function openLog() {
   if (!DATA.log) return;
+  closeMobilePanels();
   main.classList.remove('graph-only');
   renderDoc(DATA.log);
   setActiveNav('log');

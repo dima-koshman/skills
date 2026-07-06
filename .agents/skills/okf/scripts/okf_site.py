@@ -750,6 +750,11 @@ if (DATA.log) {
 
 /* ---------- search ---------- */
 document.getElementById('search').addEventListener('input', ev => {
+  if (window.matchMedia('(max-width: 860px)').matches) {
+    closeMobilePanels();
+    document.body.classList.add('nav-open');
+    navToggle.setAttribute('aria-expanded', 'true');
+  }
   const q = ev.target.value.trim().toLowerCase();
   DATA.nodes.forEach(n => {
     const hay = (n.title + ' ' + n.description + ' ' + n.type + ' ' + n.tags.join(' ')).toLowerCase();

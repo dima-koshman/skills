@@ -2,6 +2,7 @@
 
 ## 2026-07-06
 
+* **Update**: Made mobile search open the Contents panel as soon as the user types so filtered results are immediately visible.
 * **Update**: Made the generated knowledge-graph site mobile-friendly with reading-first navigation and on-demand Contents and Graph panels.
 
 ## 2026-07-05

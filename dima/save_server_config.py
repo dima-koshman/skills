@@ -17,6 +17,11 @@ CONSUL_KEY_TEMPLATE = f"config/prometheus-kafka-exporter/{CONSUL_CONFIG_LOADER_A
 CONSUL_PROD_KEY = f"config/aiplatform/{CONSUL_CONFIG_LOADER_APP}/application-prod.yaml"
 CONSUL_CONFIG_LOADER_URL = f"https://gitlab.kapitalbank.az/DevOps-Projects/devops-services/ai-automations/consul-config-loader/-/tree/main/config/aiplatform/{CONSUL_CONFIG_LOADER_APP}"
 
+VAULT_URL = os.getenv("VAULT_URL", "")
+VAULT_VERSION = os.getenv("VAULT_VERSION", "")
+VAULT_ROLE_ID = os.getenv("VAULT_ROLE_ID", "")
+VAULT_SECRET_ID = os.getenv("VAULT_SECRET_ID", "")
+
 
 def save_config(config: dict, config_id: str, Config: type, prod_config_id: str = "prod"):
     Config(**config)
@@ -34,6 +39,10 @@ def save_config(config: dict, config_id: str, Config: type, prod_config_id: str 
         CONSUL_HOST={CONSUL_PROD_HOST}
         CONSUL_KEY={CONSUL_PROD_KEY}
         CONSUL_TOKEN={CONSUL_PROD_READ_TOKEN_TOKEN}
+        VAULT_URL={VAULT_URL}
+        VAULT_VERSION={VAULT_VERSION}
+        VAULT_ROLE_ID={VAULT_ROLE_ID}
+        VAULT_SECRET_ID={VAULT_SECRET_ID}
     """
     rich.print(inspect.cleandoc(prod_env_vars))
 

@@ -1,0 +1,15 @@
+repos:
+  - repo: local
+    hooks:
+      - id: okf-ai-engineering-regenerate-index
+        name: OKF AI-engineering - regenerate index
+        entry: uv run --project . python .agents/skills/okf/scripts/okf_index.py .agents/skills/okf-ai-engineering/ai-engineering
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: okf-ai-engineering-build-site
+        name: OKF AI-engineering - build site
+        entry: uv run --project . python .agents/skills/okf/scripts/okf_site.py .agents/skills/okf-ai-engineering/ai-engineering
+        language: system
+        pass_filenames: false
+        always_run: true

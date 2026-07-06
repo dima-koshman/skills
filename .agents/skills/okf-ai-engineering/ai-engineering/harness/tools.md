@@ -2,6 +2,7 @@
 type: Overview
 title: Tools
 description: The primitive that turns an LLM into an agent — functions the model can call to act on and read from its environment.
+resource: https://docs.langchain.com/oss/python/deepagents/tools
 ---
 
 Tools are the main thing needed to convert an LLM into a capable agent. Without
@@ -21,8 +22,8 @@ Tools for LLMs can be generally organized by where they execute:
 - **Client-side tools** — executed by the client.
   - **Backend tools** — executed on the client's backend; the majority of tools
     fall into this category.
-  - **[Frontend tools](/tools/frontend-tools.md)** — executed on the client's
+  - **[Frontend tools](/harness/frontend-tools.md)** — executed on the client's
     frontend, typically for UI interactions; a newer, less standardized category.
-- **[Provider-side tools](/tools/provider-tools.md)** — defined and executed by the
+- **[Provider-side tools](/harness/provider-tools.md)** — defined and executed by the
   model provider (built-in web search, code execution, etc.); clients just enable
   them in API calls.

@@ -2,6 +2,7 @@
 type: Technique
 title: Memory
 description: How an agent carries state across steps and sessions — short-term context plus durable long-term stores.
+resource: https://docs.langchain.com/oss/python/deepagents/memory
 ---
 
 Memory is how an agent retains information beyond a single model call: short-term

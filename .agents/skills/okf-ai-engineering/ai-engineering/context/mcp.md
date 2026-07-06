@@ -7,7 +7,7 @@ resource: https://modelcontextprotocol.io
 
 MCP is a JSON-RPC-based protocol that standardizes the boundary between an LLM
 client and external capabilities — mainly **tools**, but it also supports
-**resources** and **prompts**. Its [tools](/tools/tools.md) are consumed by
+**resources** and **prompts**. Its [tools](/harness/tools.md) are consumed by
 [agent architectures](/agents/agent.md) and, in production, fronted by an
 [MCP gateway](/enterprise/mcp-gateway.md) that multiplexes and secures many
 servers.

@@ -2,6 +2,9 @@
 
 ## 2026-07-06
 
+* **Update**: Added current Claude, OpenAI, and Gemini examples with official documentation to [Provider-Side Tools](/harness/provider-tools.md), clarifying which tools execute on provider infrastructure.
+* **Creation**: Added [Peer Agents](/agents/peer-agents.md), distinguishing independently governed peers from task-scoped subagents while documenting their shared implementation primitives and reduction boundary.
+* **Reorganization**: Moved [Tools](/harness/tools.md), [Provider-Side Tools](/harness/provider-tools.md), and [Frontend Tools](/harness/frontend-tools.md) into `harness/` and repaired inbound links.
 * **Update**: Made mobile search open the Contents panel as soon as the user types so filtered results are immediately visible.
 * **Update**: Made the generated knowledge-graph site mobile-friendly with reading-first navigation and on-demand Contents and Graph panels.
 
@@ -12,12 +15,12 @@
 * **Reorganization**: Split the agents area — `harness/` holds the machinery ([harness](/harness/harness.md), [subagents](/harness/subagents.md), [workflows](/harness/workflows.md)); `agents/` holds [agent architecture](/agents/agent.md) plus the concrete agents. Moved [Memory](/context/memory.md) into `context/`.
 * **Update**: Removed `tags` and `timestamp` from every concept's frontmatter as clutter (the site still renders tags when present).
 * **Update**: Full review pass. Dropped every `# Related` section — cross-references now read as prose in each concept's body (dropped ones that didn't fit). Balanced [MCP](/context/mcp.md) with why it was stateful (one-time negotiation, server-initiated push, local-stdio origin). Fixed the `workflows` description typos; normalized unnecessary title quotes.
-* **Creation**: Added concise concepts [RAG](/context/rag.md), [Context Engineering](/context/context-engineering.md), [Memory](/context/memory.md), [Subagents & Multi-Agent](/harness/subagents.md), [Provider-Side Tools](/tools/provider-tools.md), and [Frontend Tools](/tools/frontend-tools.md) (bare definitions to expand later).
+* **Creation**: Added concise concepts [RAG](/context/rag.md), [Context Engineering](/context/context-engineering.md), [Memory](/context/memory.md), [Subagents & Multi-Agent](/harness/subagents.md), [Provider-Side Tools](/harness/provider-tools.md), and [Frontend Tools](/harness/frontend-tools.md) (bare definitions to expand later).
 * **Reorganization**: Folded `evaluation/` into `observability/` (moved LangSmith Evals); kept `tools/` as its own area and split out provider-side and frontend tools.
 
 * **Update**: Expanded [Agent Architecture](/agents/agent.md) (what distinguishes an agent — the model directs control flow — plus its ingredients) and added a `# Related` section wiring it to the harness, workflows, tools, and deepagents.
 * **Update**: [MCP](/context/mcp.md) — recorded the stateless-by-default redesign with tracking links: requested in SEP-1442, accepted as SEP-2575 (merged May 2026, targeting the 2026-07-28 spec). Revisit when that revision ships.
-* **Creation**: Added foundational concept [Tools](/tools/tools.md) (the primitive behind agents; client-side vs provider-side execution) and wired it into the catalog.
+* **Creation**: Added foundational concept [Tools](/harness/tools.md) (the primitive behind agents; client-side vs provider-side execution) and wired it into the catalog.
 * **Reorganization**: Renamed `agents/programmatic-tools.md` → [agents/workflows.md](/harness/workflows.md) (retitled "Workflows") and repaired inbound links. Dropped the `ASI-NN` prefix from every `security/threats/` filename and title (e.g. `asi01-agent-goal-hijack.md` → `agent-goal-hijack.md`).
 * **Update**: Tightened the [Agent Harness](/harness/harness.md) definition (runtime that drives the model→tool loop) and fixed a YAML-truncated description on [Agent Goal Hijack](/security/risks/agent-goal-hijack.md).
 * **Reorganization**: Renamed the bundle directory `okf/` → `ai-engineering/` (updated the skill's SKILL.md and the VS Code build task). Site nav now lists concept pages above subdirectories, and the landing link reads "Index".

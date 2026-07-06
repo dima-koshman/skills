@@ -10,11 +10,12 @@ description: Personal knowledge base for AI engineering concepts.
   [Open Knowledge Format](/context/okf.md), [RAG](/context/rag.md),
   [context engineering](/context/context-engineering.md), and
   [memory](/context/memory.md).
-- **Tools** — the [tools](/tools/tools.md) primitive, plus
-  [provider-side](/tools/provider-tools.md) and [frontend](/tools/frontend-tools.md) tools.
+- **Tools** — the [tools](/harness/tools.md) primitive, plus
+  [provider-side](/harness/provider-tools.md) and [frontend](/harness/frontend-tools.md) tools.
 - **Enterprise** — the control plane: the [LLM Gateway](/enterprise/llm-gateway.md)
   and the [MCP Gateway](/enterprise/mcp-gateway.md).
 - **Agents** — what an agent is ([agent architecture](/agents/agent.md)) and the
+  [peer-agent](/agents/peer-agents.md) coordination model, plus the
   concrete ones: [deepagents](/agents/deep-agents.md),
   [Claude Code](/agents/claude-code.md), [opencode](/agents/opencode.md),
   [Codex](/agents/codex.md), [Devin](/agents/devin.md), and

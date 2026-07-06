@@ -9,4 +9,4 @@ Workflows give an [agent](/agents/agent.md) a way to make tool calls in a script
 Examples of workflow implementations:
 
 - [Claude Workflows](https://code.claude.com/docs/en/workflows)
-- [LangChain Interpreters](https://docs.langchain.com/oss/python/deepagents/interpreters)
+- [LangChain Dynamic Subagents](https://docs.langchain.com/oss/python/deepagents/dynamic-subagents)

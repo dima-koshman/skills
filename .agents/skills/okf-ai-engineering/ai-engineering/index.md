@@ -8,7 +8,7 @@ okf_version: "0.1"
 * [Agent Harness](/harness/harness.md) - The runtime scaffolding around the model loop: tool dispatch, state, sandboxing, and loop control.
 * [AI Engineering](/ai-engineering.md) - Personal knowledge base for AI engineering concepts.
 * [Security](/security/security.md) - How enterprise agent platforms are attacked and defended — the OWASP Agentic Top 10 risks and the mitigations that contain them.
-* [Tools](/tools/tools.md) - The primitive that turns an LLM into an agent — functions the model can call to act on and read from its environment.
+* [Tools](/harness/tools.md) - The primitive that turns an LLM into an agent — functions the model can call to act on and read from its environment.
 
 # Product
 
@@ -45,13 +45,14 @@ okf_version: "0.1"
 # Technique
 
 * [Context Engineering](/context/context-engineering.md) - Deliberately assembling what goes into the model's context window — instructions, tools, retrieved data, memory, and history.
-* [Frontend Tools](/tools/frontend-tools.md) - Client-side tools executed in the frontend, typically for UI interactions — a newer, less standardized category.
+* [Frontend Tools](/harness/frontend-tools.md) - Client-side tools executed in the frontend, typically for UI interactions — a newer, less standardized category.
 * [Guardrails](/security/mitigations/guardrails.md) - Input/output controls that constrain LLM behavior to a safe, policy-compliant envelope.
 * [LLM Gateway](/enterprise/llm-gateway.md) - A control plane sitting between AI clients and models/tools for auth, routing, policy, and observability.
 * [MCP Gateway](/enterprise/mcp-gateway.md) - An enterprise gateway multiplexing MCP servers behind auth, permissions, secrets, and audit.
 * [Memory](/context/memory.md) - How an agent carries state across steps and sessions — short-term context plus durable long-term stores.
+* [Peer Agents](/agents/peer-agents.md) - Independently governed agents that own goals and coordinate as peers rather than through a permanent parent.
 * [PII Masking & Anonymization](/security/mitigations/pii-masking.md) - Detecting and redacting or tokenizing personal data in LLM inputs/outputs, reversibly where needed.
-* [Provider-Side Tools](/tools/provider-tools.md) - Tools defined and executed by the model provider — built-in web search, code execution — that clients just enable.
+* [Provider-Side Tools](/harness/provider-tools.md) - Tools defined and executed by the model provider — built-in web search, code execution — that clients just enable.
 * [RAG](/context/rag.md) - Retrieval-augmented generation — fetching relevant documents at query time and adding them to the model's context.
 * [Subagents](/harness/subagents.md) - Delegating focused subtasks to separate agent instances, and orchestrating multiple agents together.
 * [Workflows](/harness/workflows.md) - Workflows let an agent orchestrate its tool calls programmatically — scripted tool use for lower token cost and long-running tasks.

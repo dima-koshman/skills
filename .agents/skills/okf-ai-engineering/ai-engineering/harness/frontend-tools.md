@@ -4,7 +4,7 @@ title: Frontend Tools
 description: Client-side tools executed in the frontend, typically for UI interactions — a newer, less standardized category.
 ---
 
-Frontend [tools](/tools/tools.md) run on the client's frontend rather than its
+Frontend [tools](/harness/tools.md) run on the client's frontend rather than its
 backend, typically to drive UI interactions (rendering components, reading UI
 state). It is a much newer and less standardized category than backend tools.
 Examples:

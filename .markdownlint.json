@@ -1,6 +1,0 @@
-{
-  "//": "OKF concept bodies use several top-level '#' headings (# Schema, # Resources, # Related) alongside a frontmatter title, and prose is not hard-wrapped — both are intentional and collide with these rules.",
-  "MD025": false,
-  "MD041": false,
-  "MD013": false
-}

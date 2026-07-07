@@ -1,54 +1,37 @@
 {
     "version": "2.0.0",
+    "type": "shell",
+    "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+    },
     "problemMatcher": [],
     "tasks": [
         {
+            "label": "Update and upgrade Homebrew",
+            "command": "brew update && brew upgrade --yes"
+        },
+        {
             "label": "Install skills to all agents",
-            "type": "shell",
             "detail": "Install every .agents/skills/<name>/ dir globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
-            "command": "npx skills add ./.agents/skills --agent claude-code --agent opencode --agent codex --global --yes",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
+            "command": "npx skills add ./.agents/skills --agent claude-code --agent opencode --agent codex --global --yes"
         },
         {
             "label": "Update skills from remote sources",
-            "type": "shell",
             "detail": "Re-fetch all skills tracked in skills-lock.json from their remote sources and re-copy if changed",
-            "command": "npx skills update --yes",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
+            "command": "npx skills update --yes"
         },
         {
             "label": "OKF AI-engineering: regenerate index",
-            "type": "shell",
             "detail": "Regenerate index.md for the ai-engineering OKF bundle from concept frontmatter",
-            "command": "uv run --project . python .agents/skills/okf/scripts/okf_index.py .agents/skills/okf-ai-engineering/ai-engineering",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
+            "command": "uv run --project . python .agents/skills/okf/scripts/okf_index.py .agents/skills/okf-ai-engineering/ai-engineering"
         },
         {
             "label": "OKF AI-engineering: install skill",
-            "type": "shell",
             "detail": "Install only the okf-ai-engineering skill globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
-            "command": "npx skills add ./.agents/skills/okf-ai-engineering --agent claude-code --agent opencode --agent codex --global --yes",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
+            "command": "npx skills add ./.agents/skills/okf-ai-engineering --agent claude-code --agent opencode --agent codex --global --yes"
         },
         {
             "label": "OKF AI-engineering: regenerate index & install skill",
@@ -60,27 +43,13 @@
         },
         {
             "label": "OKF AI-engineering: build site",
-            "type": "shell",
             "detail": "Regenerate okf-site.html for the ai-engineering OKF bundle",
-            "command": "uv run --project . python .agents/skills/okf/scripts/okf_site.py .agents/skills/okf-ai-engineering/ai-engineering",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
+            "command": "uv run --project . python .agents/skills/okf/scripts/okf_site.py .agents/skills/okf-ai-engineering/ai-engineering"
         },
         {
             "label": "OKF AI-engineering: open site",
-            "type": "shell",
             "detail": "Open the generated ai-engineering OKF site in the browser",
-            "command": "open .agents/skills/okf-ai-engineering/ai-engineering/okf-site.html",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
+            "command": "open .agents/skills/okf-ai-engineering/ai-engineering/okf-site.html"
         },
         {
             "label": "OKF AI-engineering: build & open site",

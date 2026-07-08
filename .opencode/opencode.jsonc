@@ -1,0 +1,170 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+    // Gemini 3.5 Flash (High). NOT "gemini-3.5-flash" — that wire ID 404s
+    // ("Requested entity was not found"). See the provider.google block below for why
+    // this odd "-flash-agent" slug is the only reachable 3.5 Flash tier.
+    "model": "google/antigravity-gemini-3-flash-agent",
+    // "model": "openai/gpt-5.5",
+    // "small_model": "openai/gpt-5.4",
+    "formatter": true,
+    // opencode auto-discovers local plugins in .opencode/plugins/.
+    // load-mcp-json.js is our custom bridge that imports non-secret MCPs from .mcp.json;
+    // opencode does not natively read .mcp.json.
+    "plugin": [
+        // https://github.com/obra/superpowers
+        "superpowers@git+https://github.com/obra/superpowers.git",
+        // https://github.com/mohak34/opencode-notifier
+        "@mohak34/opencode-notifier@latest",
+        // https://github.com/NoeFabris/opencode-antigravity-auth
+        // @latest floats; when it bumps, the Antigravity model IDs / tier-stripping may
+        // change — re-verify per the "HOW TO RE-VERIFY / UPDATE" note in provider.google.
+        "opencode-antigravity-auth@latest",
+        // https://github.com/Opencode-DCP/opencode-dynamic-context-pruning
+        "@tarquinen/opencode-dcp@latest",
+    ],
+    "references": {
+        "claude-memory": {
+            "path": ".claude/memory",
+            "description": "Use for prior session notes and local project memory from Claude Code.",
+        },
+    },
+    "compaction": {
+        "auto": true,
+        "prune": false,
+        // opencode uses model metadata input_limit - reserved for auto-compaction.
+        // For GPT-5.5 metadata, 922k input = 1,050k context - 128k max output,
+        // so 500k reserved means opencode compacts around 922k - 500k = 422k tokens.
+        // DCP should reduce context before this; built-in compaction remains
+        // a last-resort safety net near model overflow.
+        "reserved": 100000,
+    },
+    // opencode-antigravity-auth requires model definitions under provider.google
+    // so it can intercept and route requests to the Antigravity OAuth endpoint.
+    // Without these, opencode sends raw model names to Google's API → 404.
+    //
+    // MODEL NAMING — how Antigravity model IDs actually work (verified 2026-07-07):
+    //   The config key here (minus the "antigravity-" prefix) is sent verbatim to the
+    //   backend as the wire model ID, EXCEPT the plugin's model-resolver strips a
+    //   trailing -low/-medium/-high as a "thinking tier". The backend registry is the
+    //   source of truth for valid wire IDs, keyed by the exact slug it accepts.
+    //
+    //   Gemini 3.5 Flash exists but has NO bare "gemini-3.5-flash" ID. Its real tiers:
+    //     gemini-3.5-flash-extra-low  → "Gemini 3.5 Flash (Low)"    [UNREACHABLE*]
+    //     gemini-3.5-flash-low        → "Gemini 3.5 Flash (Medium)" [UNREACHABLE*]
+    //     gemini-3-flash-agent        → "Gemini 3.5 Flash (High)"   [works ✓]
+    //   *The plugin strips the trailing "-low", turning them into non-existent IDs
+    //    (gemini-3.5-flash / gemini-3.5-flash-extra) → 404. "-flash-agent" has no
+    //    tier suffix to strip, so it survives. Hence we can only reach 3.5 Flash High.
+    //   "antigravity-gemini-3-flash" (no -agent) is the OLDER Gemini 3 Flash.
+    //
+    // HOW TO RE-VERIFY / UPDATE when opencode-antigravity-auth bumps (`@latest` above):
+    //   1. Plugin's bundled (often stale) list — the display names shown in opencode:
+    //      ~/.cache/opencode/packages/opencode-antigravity-auth@latest/node_modules/
+    //        opencode-antigravity-auth/dist/src/plugin/config/models.js
+    //   2. Slug-mangling logic (does it still strip -low/-medium/-high for Flash?):
+    //      .../dist/src/plugin/transform/model-resolver.js  (TIER_REGEX, resolveModelWithTier)
+    //   3. Ground truth = live backend registry. Refresh the OAuth token from
+    //      ~/.local/share/opencode/auth.json (google.refresh, split on "|", grant_type=
+    //      refresh_token to https://oauth2.googleapis.com/token with the plugin's
+    //      ANTIGRAVITY_CLIENT_ID/SECRET in .../dist/src/constants.js), then POST
+    //      {"project":"<id>"} to
+    //      https://cloudcode-pa.googleapis.com/v1internal:fetchAvailableModels — the
+    //      response `models` object is keyed by the wire IDs, each with a displayName.
+    //   4. Confirm end-to-end: `opencode run -m google/<key> "Reply with exactly: OK"`.
+    //      (-m only accepts keys registered here, so add the model below first.)
+    //   If a future plugin version stops stripping Flash tiers, switch to
+    //   "antigravity-gemini-3.5-flash-low" (Medium) etc. for lower-latency tiers.
+    "provider": {
+        "google": {
+            "npm": "@ai-sdk/google",
+            "models": {
+                // Gemini 3.5 Flash (High) — see MODEL NAMING note above; "-flash-agent"
+                // is intentional, it is the only 3.5 Flash tier reachable through the plugin.
+                "antigravity-gemini-3-flash-agent": {
+                    "name": "Gemini 3.5 Flash High (Antigravity)",
+                    "limit": { "context": 1048576, "output": 65536 },
+                    "modalities": {
+                        "input": ["text", "image", "pdf"],
+                        "output": ["text"],
+                    },
+                },
+                // Older Gemini 3 Flash (has a bare wire ID + thinkingLevel variants).
+                "antigravity-gemini-3-flash": {
+                    "name": "Gemini 3 Flash (Antigravity)",
+                    "limit": { "context": 1048576, "output": 65536 },
+                    "modalities": {
+                        "input": ["text", "image", "pdf"],
+                        "output": ["text"],
+                    },
+                    "variants": {
+                        "minimal": { "thinkingLevel": "minimal" },
+                        "low": { "thinkingLevel": "low" },
+                        "medium": { "thinkingLevel": "medium" },
+                        "high": { "thinkingLevel": "high" },
+                    },
+                },
+                // Works as-is: "gemini-3.1-pro" + -low/-high tiers resolve cleanly
+                // (Pro keeps the base name and passes the tier as thinkingLevel).
+                "antigravity-gemini-3.1-pro": {
+                    "name": "Gemini 3.1 Pro (Antigravity)",
+                    "limit": { "context": 1048576, "output": 65535 },
+                    "modalities": {
+                        "input": ["text", "image", "pdf"],
+                        "output": ["text"],
+                    },
+                    "variants": {
+                        "low": { "thinkingLevel": "low" },
+                        "high": { "thinkingLevel": "high" },
+                    },
+                },
+                "antigravity-claude-sonnet-4-6": {
+                    "name": "Claude Sonnet 4.6 (Antigravity)",
+                    "limit": { "context": 200000, "output": 64000 },
+                    "modalities": {
+                        "input": ["text", "image", "pdf"],
+                        "output": ["text"],
+                    },
+                },
+                "antigravity-claude-opus-4-6-thinking": {
+                    "name": "Claude Opus 4.6 Thinking (Antigravity)",
+                    "limit": { "context": 200000, "output": 64000 },
+                    "modalities": {
+                        "input": ["text", "image", "pdf"],
+                        "output": ["text"],
+                    },
+                    "variants": {
+                        "minimal": {
+                            "thinkingConfig": { "thinkingBudget": 4096 },
+                        },
+                        "low": { "thinkingConfig": { "thinkingBudget": 8192 } },
+                        "medium": {
+                            "thinkingConfig": { "thinkingBudget": 16384 },
+                        },
+                        "high": {
+                            "thinkingConfig": { "thinkingBudget": 24576 },
+                        },
+                        "max": {
+                            "thinkingConfig": { "thinkingBudget": 32768 },
+                        },
+                    },
+                },
+            },
+        },
+    },
+    "mcp": {
+        "github": {
+            "type": "remote",
+            "url": "https://api.githubcopilot.com/mcp/",
+            "enabled": true,
+            "oauth": false,
+            "headers": {
+                "Authorization": "Bearer {env:GITHUB_PAT}",
+            },
+        },
+    },
+    "lsp": {
+        "pyright": {
+            "command": [".venv/bin/basedpyright-langserver", "--stdio"],
+        },
+    },
+}

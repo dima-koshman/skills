@@ -38,7 +38,7 @@ okf_version: "0.1"
 # Standard
 
 * [Agent Client Protocol](/agents/ACP.md) - ACP standardizes communication between code editors/IDEs and coding agents.
-* [Agent2Agent](/agents/A2A.md) - An open protocol enabling communication and interoperability between opaque agentic applications.
+* [Agent2Agent](/agents/A2A.md) - An protocol designed by Google enabling communication and interoperability between opaque agentic applications.
 * [Model Context Protocol (MCP)](/context/mcp.md) - Open protocol standardizing how LLM apps expose and consume tools, resources, and prompts.
 * [Open Knowledge Format (OKF)](/context/okf.md) - Google's vendor-neutral markdown-plus-frontmatter standard for agent-readable knowledge.
 

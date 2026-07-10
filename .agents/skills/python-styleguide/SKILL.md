@@ -290,8 +290,67 @@ class Foo(pydantic.BaseModel):
 
 ## Multiline strings
 
-For multiline strings (e.g. `description=` in `pydantic.Field`), use
-`inspect.cleandoc("""...""")` rather than parenthesized string concatenation.
+For multiline strings whose content spans several lines (e.g. a `description=` in
+`pydantic.Field`, tool/field help text, prompts), use `inspect.cleandoc("""...""")` rather
+than parenthesized per-line string concatenation. The triple-quoted form is far easier for
+humans to edit: no per-line quotes to balance and no trailing spaces to hand-manage at each
+line break. `cleandoc` strips the common leading indentation and the leading/trailing blank
+lines, so the block can be indented to match its surroundings.
+
+```python
+# Good
+description=inspect.cleandoc("""
+    The ID of the transition to perform.
+    Use the get_transitions tool to find available transition IDs.
+""")
+
+# Bad — quotes and trailing spaces to juggle on every line
+description=(
+    "The ID of the transition to perform. "
+    "Use the get_transitions tool to find available transition IDs."
+)
+```
+
+This applies to strings with genuinely multiple lines of content. A single sentence that
+merely wraps to satisfy the line-length limit is not a multiline string — leave it as one
+string literal (parenthesized if needed for wrapping); do not split a single sentence into a
+`cleandoc` block just because it is long.
+
+## Regular expressions
+
+Prefer `re2` (the `google-re2` package) over the stdlib `re` for **critical** regex code:
+patterns applied to untrusted or user/LLM-supplied input, or complex patterns where
+catastrophic backtracking (ReDoS) or edge-case reliability matters. RE2 guarantees
+linear-time matching and cannot blow up on a pathological pattern or input.
+
+For **simple, fixed, internal** patterns, the stdlib `re` is good enough — reach for `re2`
+where the reliability guarantee actually buys something, not everywhere by reflex. Both are
+acceptable for simple cases; using `re2` there is fine but not required.
+
+Import the module (`import re2`), consistent with the imports rule. A few API differences
+from `re` to keep in mind:
+
+- No `flags=` argument and no `re.IGNORECASE` / `re.DOTALL` constants. Use inline flags at
+    the start of the pattern instead: `(?i)` for case-insensitive, `(?s)` for dotall.
+- A compiled pattern's `.sub()` is `sub(repl, text, count=0)` — there is no `string=` keyword.
+- No backreferences *within the pattern* and no lookahead/lookbehind (RE2's design). A
+    numbered backreference in the *replacement* string (`r"**\1**"`) is fine.
+
+```python
+# Good — untrusted pattern from a tool argument, so RE2's linear-time guarantee matters
+import re2
+
+def filter_lines(lines: list[str], user_pattern: str) -> list[str]:
+    return [line for line in lines if re2.search(user_pattern, line)]
+
+# Good — inline (?i) replaces the flags= argument
+forbidden = re2.compile(r"(?i)\b(DROP|DELETE|TRUNCATE)\b")
+
+# Fine — a simple, fixed, internal pattern; stdlib re is good enough here
+import re
+
+issue_keys = re.findall(r"[A-Z]+-\d+", text)
+```
 
 ## Return statements
 

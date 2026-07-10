@@ -16,7 +16,7 @@
         {
             "label": "Install skills to all agents",
             "detail": "Install every .agents/skills/<name>/ dir globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
-            "command": "npx skills add ./.agents/skills --agent claude-code --agent opencode --agent codex --global --yes"
+            "command": "npx --yes skills add ./.agents/skills --agent claude-code --agent opencode --agent codex --global --yes"
         },
         {
             "label": "Update skills from remote sources",

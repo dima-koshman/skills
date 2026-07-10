@@ -167,4 +167,7 @@
       "command": [".venv/bin/basedpyright-langserver", "--stdio"],
     },
   },
+  "experimental": {
+    "disable_paste_summary": true,
+  },
 }

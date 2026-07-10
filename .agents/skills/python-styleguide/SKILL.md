@@ -264,6 +264,38 @@ logging.basicConfig(
 logging.basicConfig(level=logging.INFO)
 ```
 
+Pin the Rich console width only when there is no tty, for services that run in containers.
+Rich detects the terminal width from the attached tty (and re-detects on every render, so it
+tracks live resizes); when there is none (Kubernetes/ArgoCD, Docker, any piped stdout) it
+cannot, and falls back to 80 columns, wrapping log lines and tracebacks too tightly. A fixed
+`Console(width=...)` fixes the container case but also overrides auto-detection on a real
+terminal — so gate it on `sys.stdout.isatty()`: leave `width=None` (the auto-detecting
+default) on a tty, and pin a wider value only off-tty. Rich also emits no ANSI color into a
+non-tty by default, so container logs stay plain unless you set `force_terminal=True` —
+usually undesirable, since most log viewers (e.g. the ArgoCD logs tab) show raw escape codes
+rather than rendering them.
+
+```python
+import sys
+
+# Good — auto-detects on a local terminal; pins 120 in a container (where it would else be 80)
+handlers=[
+    rich.logging.RichHandler(
+        rich_tracebacks=True,
+        console=rich.console.Console(width=None if sys.stdout.isatty() else 120),
+    ),
+]
+
+# Bad — a fixed width overrides auto-detection everywhere, including local terminals
+console=rich.console.Console(width=120)
+```
+
+Beware double-logging when Rich shares the root logger with another sink that also renders to
+the console. Notably, `logfire.configure()` enables its own console exporter by default, which
+prints every record to stderr in its own format — on top of the RichHandler output — so each
+line appears twice. Pass `console=False` to `logfire.configure(...)` (or the equivalent for
+any other handler) so exactly one sink owns console rendering.
+
 ## String formatting
 
 Prefer f-strings over `%`-style or `.format()` formatting, including in logging calls.
@@ -304,6 +336,40 @@ def foo(self) -> str:
 Do not specify `response_model` in route decorators when it duplicates the return type
 annotation — FastAPI infers it automatically. Only use `response_model` when you need to
 override the serialized type (e.g. returning a subclass but serializing as the base).
+
+## Health endpoints
+
+Web apps and long-running services must expose two health endpoints:
+
+- `GET /livez` — liveness: the process is up. Keep it dependency-free (no DB, models, or
+    downstream calls) so it stays green as long as the process itself is alive, and have it
+    return the project version (see [Package version](#package-version)).
+- `GET /readyz` — readiness: the app is ready to serve traffic. Check what a real request
+    needs — database connections, loaded models, warmed caches — and return a non-200
+    status until they are all ready.
+
+Splitting the two lets an orchestrator restart a genuinely dead process (liveness) without
+pulling a slow-to-warm but healthy instance out of rotation (readiness).
+
+```python
+import fastapi
+
+import myapp  # exposes myapp.__version__
+
+app = fastapi.FastAPI()
+
+@app.get("/livez")
+def livez() -> dict:
+    return {"status": "ok", "version": myapp.__version__}
+
+@app.get("/readyz")
+def readyz(response: fastapi.Response) -> dict:
+    if not model_is_loaded():
+        response.status_code = fastapi.status.HTTP_503_SERVICE_UNAVAILABLE
+        return {"status": "unavailable"}
+
+    return {"status": "ok"}
+```
 
 ## Pydantic fields
 
@@ -590,6 +656,38 @@ from .tool_exposure import ToolExposureMode
 #       no parent module imports them
 from .main import Config, ProvidedConfig, Stage, UserConfigStoreName
 from .tool_exposure import CodeModeConfig, SearchType, ToolExposureMode, ToolSearchConfig
+```
+
+## Package version
+
+Declare the package version in the project root `__init__.py` by reading it from the
+installed distribution metadata rather than hardcoding a literal:
+
+```python
+import importlib.metadata
+
+__version__ = importlib.metadata.version(__name__)
+```
+
+Inside the root `__init__.py`, `__name__` is already the package name, so passing it keeps
+a single source of truth (`pyproject.toml`) and stays correct if the package is renamed —
+no duplicated magic string. `importlib.metadata.version()` looks up a *distribution* name,
+so this only works when the distribution name equals the import name. Keep them identical:
+the `[project] name` in `pyproject.toml` must match the importable package name.
+
+```toml
+# pyproject.toml — distribution name matches the src/<package> import name
+[project]
+name = "myapp"      # -> importlib.metadata.version("myapp"), i.e. version(__name__)
+```
+
+```python
+# Bad — hardcoded string drifts from pyproject and duplicates the name
+__version__ = importlib.metadata.version("myapp")
+
+# Bad — self-import to recover the name; __name__ already is it
+import myapp
+__version__ = importlib.metadata.version(myapp.__name__)
 ```
 
 ## Multiline function arguments

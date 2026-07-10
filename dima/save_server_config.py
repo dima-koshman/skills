@@ -3,6 +3,7 @@ import inspect
 import os
 
 import consul
+import pydantic
 import pyperclip
 import rich
 import yaml
@@ -23,18 +24,19 @@ VAULT_ROLE_ID = os.getenv("VAULT_ROLE_ID", "")
 VAULT_SECRET_ID = os.getenv("VAULT_SECRET_ID", "")
 
 
-def save_config(config: dict, config_id: str, Config: type, prod_config_id: str = "prod"):
-    Config(**config)
+def save_config(config_dict: dict, config_id: str, Config: type, prod_config_id: str = "prod"):
+    config = Config(**config_dict)
     if config_id != prod_config_id:
-        _save_config(config=config, config_id=config_id)
+        _save_config(config=config_dict, config_id=config_id)
         return
 
+    _ensure_no_non_empty_secret_values(config)
     rich.print(
         f"[yellow]Cannot write prod config via API. Config saved to clipboard, create mr in "
         f"{CONSUL_CONFIG_LOADER_URL}[/yellow]",
         flush=True,
     )
-    pyperclip.copy(yaml.safe_dump(config))
+    pyperclip.copy(yaml.safe_dump(config_dict))
     prod_env_vars = f"""
         CONSUL_HOST={CONSUL_PROD_HOST}
         CONSUL_KEY={CONSUL_PROD_KEY}
@@ -53,7 +55,7 @@ def save_config(config: dict, config_id: str, Config: type, prod_config_id: str 
             key=CONSUL_PROD_KEY,
             Config=Config,
         )
-        if fetched_config != Config(**config):
+        if fetched_config != config:
             raise ValueError(
                 f"Config does not match the saved config\n"
                 f"{fetched_config.model_dump_json(indent=2, ensure_ascii=False)}"
@@ -76,6 +78,23 @@ def load_config(host: str, key: str, token: str, Config: type):
     config_dict = consul.get_yaml(key)
     config = Config(**config_dict)  # type:ignore
     return config
+
+
+def _ensure_no_non_empty_secret_values(config: object) -> None:
+    values = [config]
+    while values:
+        value = values.pop()
+        if isinstance(value, pydantic.SecretStr):
+            if value.get_secret_value():
+                raise ValueError("Prod config cannot contain non-empty SecretStr values.")
+            continue
+
+        if isinstance(value, pydantic.BaseModel):
+            values.extend(value.__dict__.values())
+        elif isinstance(value, dict):
+            values.extend(value.values())
+        elif isinstance(value, (list, tuple, set, frozenset)):
+            values.extend(value)
 
 
 class Consul:

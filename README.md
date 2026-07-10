@@ -72,3 +72,19 @@ This is where our own skills live, alongside any third-party skills installed wi
 - Claude Code — `~/.claude/skills/`, project `.claude/skills/`
 - opencode — <https://opencode.ai/docs/skills/>
 - Codex — <https://developers.openai.com/codex/skills>
+
+## Personal preferences
+
+Hook for direnv:
+
+```sh
+eval "$(direnv hook zsh)"
+```
+
+Aliases for common commands:
+
+```sh
+alias ga='git add .'
+alias gs='git status'
+alias gp='git pull'
+```

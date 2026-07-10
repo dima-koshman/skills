@@ -205,6 +205,32 @@ comprehension body is non-trivial or references multiple attributes.
 
 ## Logging
 
+Use `logging` for diagnostics, runtime events, warnings, errors, and anything that should
+be filterable, redirectable, or useful after the fact. Use `print` only when stdout output
+is the user-facing result itself: CLI output, one-off scripts, notebooks, demos, or
+human-readable inspection while debugging.
+
+When `rich` is an available dependency and the output is meant for humans in a terminal,
+prefer `rich.print(...)` over built-in `print(...)`. Keep built-in `print` or write to
+`sys.stdout` directly for machine-readable stdout, exact byte/text protocols, tests that
+assert literal output, or places where Rich markup, color detection, wrapping, or pretty
+rendering would be surprising.
+
+```python
+# Good — human-facing CLI output
+import json
+
+import rich
+
+rich.print({"status": "ok", "items": 3})
+
+# Fine — stdout is the command's stable machine-readable output
+print(json.dumps(payload, sort_keys=True))
+
+# Bad — diagnostics should be log records
+print(f"Sample failed: {result}")
+```
+
 Use `logging` directly rather than a per-module `logger = logging.getLogger(__name__)`.
 Since the formatter already includes location info (`%(filename)s`, `%(lineno)d`), named
 loggers add no practical benefit for an app.
@@ -216,6 +242,26 @@ logging.warning(f"Sample failed: {result}")
 # Bad
 logger = logging.getLogger(__name__)
 logger.warning(f"Sample failed: {result}")
+```
+
+For command-line apps and other entry points that own console logging setup, prefer Rich's
+logging handler for readable terminal logs and rich tracebacks. Configure this once in the
+entry point, not at library import time.
+
+```python
+# Good
+import logging
+
+import rich.logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(message)s",
+    handlers=[rich.logging.RichHandler(rich_tracebacks=True)],
+)
+
+# Bad — plain console formatting when Rich is already available
+logging.basicConfig(level=logging.INFO)
 ```
 
 ## String formatting

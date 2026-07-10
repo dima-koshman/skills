@@ -8,3 +8,9 @@ While strictly speaking retrieval-augmented generation doesn't have to be based 
 
 RAG is one of the techniques used in
 [context engineering](/context/context-engineering.md).
+
+Some discussions about RAG highlighting the need for custom approaches and complex data engineering pipelines, as well as retrieval techniques:
+
+- > [retrieval is not a vector store](https://www.reddit.com/r/Rag/s/KDBqvK7pMb)
+
+- > [metadata is everything](https://www.reddit.com/r/Rag/comments/1m890yk/i_made_60k_building_rag_projects_in_3_months/)

@@ -1,5 +1,9 @@
 # Directory Update Log
 
+## 2026-07-11
+
+* **Creation**: Refactored the new provider pricing notes [Claude](/providers/claude.md), [OpenAI](/providers/gpt.md), and [Gemini](/providers/gemini.md) from plain markdown into OKF concepts — added `Product` frontmatter with `resource` pricing links, dropped the H1 in favor of a linked intro sentence, promoted sections to top-level headings, renamed "Official sources" to `# Citations`, and cross-linked the three providers to each other and to [Provider-Side Tools](/harness/provider-tools.md), [Context Engineering](/context/context-engineering.md), and [LLM Gateway](/enterprise/llm-gateway.md).
+
 ## 2026-07-06
 
 * **Update**: Added current Claude, OpenAI, and Gemini examples with official documentation to [Provider-Side Tools](/harness/provider-tools.md), clarifying which tools execute on provider infrastructure.

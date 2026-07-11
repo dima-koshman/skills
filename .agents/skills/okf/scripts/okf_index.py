@@ -10,10 +10,15 @@ any existing file is overwritten, so the concept documents' frontmatter is
 the single source of truth. Human-written prose belongs in the concept
 files, not in ``index.md``.
 
-By default a single catalog is written to ``<bundle>/index.md`` listing every
-concept in the tree grouped by ``type``. With ``--per-directory`` an
-``index.md`` is written into each directory that contains concepts, listing
-that directory's own documents and its subdirectories.
+By default a single catalog is written to ``<bundle>/index.md`` mirroring the
+bundle's directory hierarchy: each directory becomes a heading whose level
+reflects its depth (top-level dirs are ``#``, their subdirectories ``##``, and
+so on), with that directory's concepts listed beneath it. Each concept's
+``type`` is shown as an inline ``` `[Type]` ``` tag before its description,
+since Markdown cannot color-code entries the way the HTML site does. With
+``--per-directory`` an ``index.md`` is written into each directory that
+contains concepts, listing that directory's own documents and its
+subdirectories.
 
 The bundle-root ``index.md`` is the only index that carries frontmatter; it
 declares ``okf_version`` (spec section 11).
@@ -172,8 +177,8 @@ def _parse_frontmatter(path: pathlib.Path) -> tuple[dict, str | None]:
 
 
 def _write_root_catalog(bundle_root: pathlib.Path, concepts: list[Concept]) -> list[pathlib.Path]:
-    """Write a single ``index.md`` at the bundle root listing every concept."""
-    body = _render_grouped_by_type(concepts, link_for=lambda concept: concept.bundle_path)
+    """Write a single ``index.md`` at the bundle root mirroring the hierarchy."""
+    body = _render_hierarchy(bundle_root, concepts)
     content = _with_root_frontmatter(body)
     index_path = bundle_root / "index.md"
     index_path.write_text(content, encoding="utf-8")
@@ -186,8 +191,8 @@ def _write_per_directory_indexes(
 ) -> list[pathlib.Path]:
     """Write an ``index.md`` into every directory that contains concepts.
 
-    Each index lists the directory's own concept documents (grouped by
-    ``type``, using relative links) followed by links to immediate
+    Each index lists the directory's own concept documents (as a flat,
+    type-tagged list using relative links) followed by links to immediate
     subdirectories that themselves contain concepts.
     """
     by_directory: dict[pathlib.Path, list[Concept]] = {}
@@ -198,8 +203,8 @@ def _write_per_directory_indexes(
     written: list[pathlib.Path] = []
 
     for directory in sorted(directories_with_concepts):
-        own = sorted(by_directory.get(directory, []), key=lambda concept: (concept.type, concept.title))
-        body = _render_grouped_by_type(
+        own = by_directory.get(directory, [])
+        body = _render_concept_list(
             own,
             link_for=lambda concept, base=directory: concept.path.relative_to(base).as_posix(),
         )
@@ -216,27 +221,64 @@ def _write_per_directory_indexes(
     return written
 
 
-def _render_grouped_by_type(concepts, link_for) -> str:
-    """Render concepts as markdown sections grouped by ``type``."""
-    if not concepts:
-        return ""
+_MAX_HEADING_LEVEL = 6
 
-    by_type: dict[str, list[Concept]] = {}
+
+def _render_hierarchy(bundle_root: pathlib.Path, concepts: list[Concept]) -> str:
+    """Render concepts as a heading tree mirroring the directory structure.
+
+    Each directory becomes a heading whose level equals its depth below the
+    bundle root (top-level directories are ``#``, capped at ``######``), with
+    that directory's concepts listed beneath it. Concepts living at the bundle
+    root are listed first, without a heading. Directories are emitted in
+    pre-order so a directory's own concepts sit directly above its
+    subdirectories.
+    """
+    by_directory: dict[pathlib.Path, list[Concept]] = {}
     for concept in concepts:
-        by_type.setdefault(concept.type, []).append(concept)
+        by_directory.setdefault(concept.directory, []).append(concept)
 
-    sections: list[str] = []
-    for concept_type in sorted(by_type):
-        entries = sorted(by_type[concept_type], key=lambda concept: concept.title.lower())
-        lines = [f"# {concept_type}", ""]
-        for concept in entries:
-            link = link_for(concept)
-            suffix = f" - {concept.description}" if concept.description else ""
-            lines.append(f"* [{concept.title}]({link}){suffix}")
+    covered = _directories_covering(bundle_root, by_directory.keys())
+    blocks: list[str] = []
 
-        sections.append("\n".join(lines))
+    root_list = _render_concept_list(
+        by_directory.get(bundle_root, []),
+        link_for=lambda concept: concept.bundle_path,
+    )
+    if root_list:
+        blocks.append(root_list)
 
-    return "\n\n".join(sections)
+    subdirectories = sorted(
+        (directory for directory in covered if directory != bundle_root),
+        key=lambda directory: directory.relative_to(bundle_root).parts,
+    )
+    for directory in subdirectories:
+        parts = directory.relative_to(bundle_root).parts
+        level = min(len(parts), _MAX_HEADING_LEVEL)
+        heading = f"{'#' * level} {parts[-1]}"
+        entries = _render_concept_list(
+            by_directory.get(directory, []),
+            link_for=lambda concept: concept.bundle_path,
+        )
+        block = f"{heading}\n\n{entries}" if entries else heading
+        blocks.append(block)
+
+    return "\n\n".join(blocks)
+
+
+def _render_concept_list(concepts, link_for) -> str:
+    """Render concepts as a flat bullet list, sorted by title, type-tagged."""
+    entries = sorted(concepts, key=lambda concept: concept.title.lower())
+
+    return "\n".join(_render_concept_line(concept, link_for(concept)) for concept in entries)
+
+
+def _render_concept_line(concept: Concept, link: str) -> str:
+    """Render one bullet: link, an inline ``` `[Type]` ``` tag, and description."""
+    tag = f" `[{concept.type}]`"
+    suffix = f" - {concept.description}" if concept.description else ""
+
+    return f"* [{concept.title}]({link}){tag}{suffix}"
 
 
 def _render_subdirectory_links(directory, directories_with_concepts) -> str:

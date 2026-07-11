@@ -87,4 +87,5 @@ Aliases for common commands:
 alias ga='git add .'
 alias gs='git status'
 alias gp='git pull'
+alias gm='git checkout main'
 ```

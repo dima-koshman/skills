@@ -25,6 +25,10 @@ okf_version: "0.1"
 * [Open Knowledge Format (OKF)](/context/okf.md) `[Standard]` - Google's vendor-neutral markdown-plus-frontmatter standard for agent-readable knowledge.
 * [RAG](/context/rag.md) `[Technique]` - Retrieval-augmented generation — fetching relevant documents at query time and adding them to the model's context.
 
+# development
+
+* [Observability-Driven AI-Assisted Development](/development/observability-driven-development.md) `[Technique]` - A development loop where AI agents use real runtime telemetry as evidence for diagnosis, remediation, and verification.
+
 # enterprise
 
 * [LLM Gateway](/enterprise/llm-gateway.md) `[Technique]` - A control plane sitting between AI clients and models/tools for auth, routing, policy, and observability.

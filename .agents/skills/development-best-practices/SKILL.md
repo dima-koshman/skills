@@ -1,12 +1,29 @@
 ---
 name: development-best-practices
-description: Cross-project local development hygiene and preferences — git branch/worktree cleanup, and other day-to-day dev workflow conventions. Use when asked to clean up local git branches, prune merged/deleted branches, tidy worktrees, or when setting up recurring local-dev maintenance.
+description: Cross-project local development hygiene and preferences — git branch/worktree cleanup, and other day-to-day dev workflow conventions. Use when asked to clean up local git branches, prune merged/deleted branches, tidy worktrees, update OpenCode plugins, or set up recurring local-dev maintenance.
 ---
 
 # Development Best Practices
 
 Shared local-development hygiene and workflow preferences across internal projects.
 Ships small, host-agnostic helper scripts under `scripts/`.
+
+## Update OpenCode plugins
+
+OpenCode has no bulk plugin-update command. From the project root, read every external plugin entry
+from `.opencode/opencode.jsonc` and force-install each string spec individually. For a tuple entry,
+use its first element as the spec; preserve its options. Explicit version, tag, and commit pins do
+not move automatically, so change the configured pin first when an upgrade is intended.
+
+```bash
+opencode plugin --force "<plugin-spec>"
+```
+
+Quit and restart OpenCode afterward because plugins are loaded at startup. For npm plugins, check
+the matching cached package's `package.json` against the registry version; for git-backed plugins,
+check the cache package lock's resolved commit against the configured ref. OpenCode can retain stale
+versions despite `--force`. If that happens, quit OpenCode, identify and remove only that plugin's
+exact directory under `~/.cache/opencode/packages/`, then restart OpenCode to reinstall it.
 
 ## Prune merged/deleted local branches
 

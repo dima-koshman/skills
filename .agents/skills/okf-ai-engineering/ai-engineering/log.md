@@ -2,6 +2,7 @@
 
 ## 2026-07-11
 
+* **Creation**: Added [Observability-Driven AI-Assisted Development](/development/observability-driven-development.md), defining the vendor-neutral loop that lets coding agents retrieve and correlate real runtime evidence for reactive debugging, proactive retrospectives, bounded remediation, and verification.
 * **Creation**: Refactored the new provider pricing notes [Claude](/providers/claude.md), [OpenAI](/providers/gpt.md), and [Gemini](/providers/gemini.md) from plain markdown into OKF concepts — added `Product` frontmatter with `resource` pricing links, dropped the H1 in favor of a linked intro sentence, promoted sections to top-level headings, renamed "Official sources" to `# Citations`, and cross-linked the three providers to each other and to [Provider-Side Tools](/harness/provider-tools.md), [Context Engineering](/context/context-engineering.md), and [LLM Gateway](/enterprise/llm-gateway.md).
 
 ## 2026-07-06

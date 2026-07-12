@@ -36,6 +36,7 @@ For discovering new information:
 - [LangChain blog](https://www.langchain.com/blog)
 - [Anthropic Engineering blog](https://www.anthropic.com/engineering)
 - [FastMCP](https://gofastmcp.com)
+- [LangChain's Max Agency podcast](https://www.youtube.com/playlist?list=PLfaIDFEXuae3UwB1QGEjsRAr8BzCQss7s)
 
 Nice general resources:
 

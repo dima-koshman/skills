@@ -68,6 +68,17 @@
                 "OKF AI-engineering: regenerate index & install skill",
                 "OKF AI-engineering: build & open site"
             ]
+        },
+        {
+            "label": "Create worktree in Devin (simple)",
+            "command": "git worktree add ../${workspaceFolderBasename}-${input:worktreeBranch} ${input:worktreeBranch} && ide ../${workspaceFolderBasename}-${input:worktreeBranch}"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "worktreeBranch",
+            "type": "promptString",
+            "description": "Branch name for the new worktree"
         }
     ]
 }

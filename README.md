@@ -89,3 +89,9 @@ alias gs='git status'
 alias gp='git pull'
 alias gm='git checkout main'
 ```
+
+Alias for preferred IDE launcher:
+
+```sh
+alias ide="/Applications/Devin.app/Contents/Resources/app/bin/devin-desktop"
+```

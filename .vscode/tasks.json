@@ -70,8 +70,8 @@
             ]
         },
         {
-            "label": "Create worktree in Devin (simple)",
-            "command": "git worktree add ../${workspaceFolderBasename}-${input:worktreeBranch} ${input:worktreeBranch} && ide ../${workspaceFolderBasename}-${input:worktreeBranch}"
+            "label": "Create worktree and open in IDE",
+            "command": "bash dev/create_worktree.sh ${input:worktreeBranch}"
         }
     ],
     "inputs": [

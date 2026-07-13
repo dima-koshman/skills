@@ -54,6 +54,7 @@ okf_version: "0.1"
 * [Claude](/providers/claude.md) `[Product]` - Anthropic Claude API token pricing and prompt-caching mechanics — cache multipliers, TTLs, and cost-optimization guidance.
 * [Gemini](/providers/gemini.md) `[Product]` - Google Gemini API token pricing plus implicit and explicit context caching, with break-even guidance.
 * [GPT](/providers/gpt.md) `[Product]` - OpenAI GPT API token pricing and prompt caching — the 272K long-context cliff, cache-write fees, and keep-alive economics.
+* [LLM Leaderboards](/providers/leaderboards.md) `[Overview]` - A curated bookmark set and benchmark map for choosing reliable, independent LLM evaluation sources across capabilities.
 
 # security
 

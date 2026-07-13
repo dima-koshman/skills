@@ -1,5 +1,9 @@
 # Directory Update Log
 
+## 2026-07-13
+
+* **Creation**: Refactored [LLM Leaderboards](/providers/leaderboards.md) from plain markdown into an OKF concept — added `Reference` frontmatter (title, description, tags, timestamp), replaced the H1 and "Last updated" line with a linked intro that ties it to [LangSmith Evals](/observability/langsmith-evals.md) and the [Claude](/providers/claude.md)/[GPT](/providers/gpt.md)/[Gemini](/providers/gemini.md) pricing notes, promoted section headings to top-level, and dropped the horizontal-rule separators.
+
 ## 2026-07-11
 
 * **Creation**: Added [Observability-Driven AI-Assisted Development](/development/observability-driven-development.md), defining the vendor-neutral loop that lets coding agents retrieve and correlate real runtime evidence for reactive debugging, proactive retrospectives, bounded remediation, and verification.

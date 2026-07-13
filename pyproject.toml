@@ -1,19 +1,22 @@
 [project]
-name = "dima"
-version = "0.1.0"
-requires-python = ">=3.11"
-dependencies = [
-    "pydantic>=2.0.0",
-    "py-consul>=1.7.1",
-    "pyperclip>=1.11.0",
-    "pyyaml>=6.0.3",
-    "rich>=15.0.0",
-]
+    dependencies = [
+        "py-consul>=1.7.1",
+        "pydantic>=2.0.0",
+        "pyperclip>=1.11.0",
+        "pyyaml>=6.0.3",
+        "rich>=15.0.0",
+    ]
+    name = "dima"
+    requires-python = ">=3.11"
+    version = "0.1.0"
 
 [dependency-groups]
-dev = [
-    "pytest>=8.0.0",
-]
+    dev = [
+        "pytest>=8.0.0",
+    ]
 
-[project.scripts]
-get-venv-packages-size = "dima.get_venv_packages_size:main"
+    [project.scripts]
+        get-venv-packages-size = "dima.get_venv_packages_size:main"
+
+[tool.codespell]
+    skip = "*.html"

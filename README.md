@@ -95,3 +95,9 @@ Alias for preferred IDE launcher:
 ```sh
 alias ide="/Applications/Devin.app/Contents/Resources/app/bin/devin-desktop"
 ```
+
+Alias for uv run python - mostly for coding agents.
+
+```sh
+alias python='uv run python'
+```

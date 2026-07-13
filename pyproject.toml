@@ -20,3 +20,6 @@
 
 [tool.codespell]
     skip = "*.html"
+
+[tool.uv]
+    package = true

@@ -10,8 +10,8 @@
     "problemMatcher": [],
     "tasks": [
         {
-            "label": "Update and upgrade Homebrew",
-            "command": "brew update && brew upgrade --yes"
+            "label": "Update and upgrade Homebrew, npm",
+            "command": "brew update && brew upgrade --yes && npm update -g"
         },
         {
             "label": "Install skills to all agents",
@@ -31,7 +31,7 @@
         {
             "label": "OKF AI-engineering: install skill",
             "detail": "Install only the okf-ai-engineering skill globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
-            "command": "npx skills add ./.agents/skills/okf-ai-engineering --agent claude-code --agent opencode --agent codex --global --yes"
+            "command": "npx --yes skills add ./.agents/skills/okf-ai-engineering --agent claude-code --agent opencode --agent codex --global --yes"
         },
         {
             "label": "OKF AI-engineering: regenerate index & install skill",
@@ -72,6 +72,10 @@
         {
             "label": "Create worktree and open in IDE",
             "command": "bash dev/create_worktree.sh ${input:worktreeBranch}"
+        },
+        {
+            "label": "Show venv package sizes",
+            "command": "uv run get-venv-packages-size"
         }
     ],
     "inputs": [

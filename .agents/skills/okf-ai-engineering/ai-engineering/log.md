@@ -2,6 +2,7 @@
 
 ## 2026-07-13
 
+* **Creation**: Added [OpenWiki](/context/openwiki.md), LangChain's early-stage CLI for synthesizing local sources into agent-facing code and personal-memory wikis, with explicit provenance and primary-evidence boundaries.
 * **Creation**: Refactored [LLM Leaderboards](/providers/leaderboards.md) from plain markdown into an OKF concept — added `Reference` frontmatter (title, description, tags, timestamp), replaced the H1 and "Last updated" line with a linked intro that ties it to [LangSmith Evals](/observability/langsmith-evals.md) and the [Claude](/providers/claude.md)/[GPT](/providers/gpt.md)/[Gemini](/providers/gemini.md) pricing notes, promoted section headings to top-level, and dropped the horizontal-rule separators.
 
 ## 2026-07-11

@@ -23,6 +23,7 @@ okf_version: "0.1"
 * [Memory](/context/memory.md) `[Technique]` - How an agent carries state across steps and sessions — short-term context plus durable long-term stores.
 * [Model Context Protocol (MCP)](/context/mcp.md) `[Standard]` - Open protocol standardizing how LLM apps expose and consume tools, resources, and prompts.
 * [Open Knowledge Format (OKF)](/context/okf.md) `[Standard]` - Google's vendor-neutral markdown-plus-frontmatter standard for agent-readable knowledge.
+* [OpenWiki](/context/openwiki.md) `[Product]` - LangChain's early-stage CLI for generating and maintaining agent-facing Markdown wikis from local knowledge sources.
 * [RAG](/context/rag.md) `[Technique]` - Retrieval-augmented generation — fetching relevant documents at query time and adding them to the model's context.
 
 # development

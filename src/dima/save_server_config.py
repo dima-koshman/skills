@@ -1,8 +1,10 @@
+import collections.abc
 import concurrent.futures
 import inspect
 import os
+import typing
 
-import consul
+import consul  # pyright: ignore[reportMissingTypeStubs]
 import pydantic
 import pyperclip
 import rich
@@ -14,7 +16,9 @@ CONSUL_CONFIG_LOADER_APP = os.environ["CONSUL_CONFIG_LOADER_APP"]
 CONSUL_PROD_HOST = os.environ["CONSUL_PROD_HOST"]
 CONSUL_PROD_READ_TOKEN_TOKEN = os.environ["CONSUL_PROD_READ_TOKEN_TOKEN"]
 
-CONSUL_KEY_TEMPLATE = f"config/prometheus-kafka-exporter/{CONSUL_CONFIG_LOADER_APP}_{{}}.yaml"
+CONSUL_KEY_TEMPLATE = (
+    f"config/prometheus-kafka-exporter/{CONSUL_CONFIG_LOADER_APP}_{{}}.yaml"
+)
 CONSUL_PROD_KEY = f"config/aiplatform/{CONSUL_CONFIG_LOADER_APP}/application-prod.yaml"
 CONSUL_CONFIG_LOADER_URL = f"https://gitlab.kapitalbank.az/DevOps-Projects/devops-services/ai-automations/consul-config-loader/-/tree/main/config/aiplatform/{CONSUL_CONFIG_LOADER_APP}"
 
@@ -24,7 +28,12 @@ VAULT_ROLE_ID = os.getenv("VAULT_ROLE_ID", "")
 VAULT_SECRET_ID = os.getenv("VAULT_SECRET_ID", "")
 
 
-def save_config(config_dict: dict, config_id: str, Config: type, prod_config_id: str = "prod"):
+def save_config(
+    config_dict: collections.abc.Mapping[str, object],
+    config_id: str,
+    Config: type[pydantic.BaseModel],
+    prod_config_id: str = "prod",
+) -> None:
     config = Config(**config_dict)
     if config_id != prod_config_id:
         _save_config(config=config_dict, config_id=config_id)
@@ -32,8 +41,7 @@ def save_config(config_dict: dict, config_id: str, Config: type, prod_config_id:
 
     _ensure_no_non_empty_secret_values(config)
     rich.print(
-        f"[yellow]Cannot write prod config via API. Config saved to clipboard, create mr in "
-        f"{CONSUL_CONFIG_LOADER_URL}[/yellow]",
+        f"[yellow]Cannot write prod config via API. Config saved to clipboard, create mr in {CONSUL_CONFIG_LOADER_URL}[/yellow]",
         flush=True,
     )
     pyperclip.copy(yaml.safe_dump(config_dict))
@@ -57,14 +65,13 @@ def save_config(config_dict: dict, config_id: str, Config: type, prod_config_id:
         )
         if fetched_config != config:
             raise ValueError(
-                f"Config does not match the saved config\n"
-                f"{fetched_config.model_dump_json(indent=2, ensure_ascii=False)}"
+                f"Config does not match the saved config\n{fetched_config.model_dump_json(indent=2, ensure_ascii=False)}"
             )
         else:
             rich.print("[green]Saved config matches the fetched config.[/green]")
 
 
-def _save_config(config: dict, config_id: str):
+def _save_config(config: collections.abc.Mapping[str, object], config_id: str) -> None:
     host = CONSUL_HOST
     key = CONSUL_KEY_TEMPLATE.format(config_id)
     token = CONSUL_TOKEN
@@ -73,28 +80,42 @@ def _save_config(config: dict, config_id: str):
     print(f"Config saved to {key}")
 
 
-def load_config(host: str, key: str, token: str, Config: type):
+def load_config(
+    host: str,
+    key: str,
+    token: str,
+    Config: type[pydantic.BaseModel],
+) -> pydantic.BaseModel:
     consul = Consul(host=host, token=token, verify=False)
     config_dict = consul.get_yaml(key)
-    config = Config(**config_dict)  # type:ignore
-    return config
+    if config_dict is None:
+        raise ValueError(f"Config {key!r} was not found in Consul at {host!r}.")
+
+    return Config(**config_dict)
 
 
 def _ensure_no_non_empty_secret_values(config: object) -> None:
-    values = [config]
+    values: list[object] = [config]
     while values:
         value = values.pop()
         if isinstance(value, pydantic.SecretStr):
             if value.get_secret_value():
-                raise ValueError("Prod config cannot contain non-empty SecretStr values.")
+                raise ValueError(
+                    "Prod config cannot contain non-empty SecretStr values."
+                )
             continue
 
         if isinstance(value, pydantic.BaseModel):
             values.extend(value.__dict__.values())
         elif isinstance(value, dict):
-            values.extend(value.values())
+            values.extend(typing.cast(dict[object, object], value).values())
         elif isinstance(value, (list, tuple, set, frozenset)):
-            values.extend(value)
+            values.extend(
+                typing.cast(
+                    list[object] | tuple[object, ...] | set[object] | frozenset[object],
+                    value,
+                )
+            )
 
 
 class Consul:
@@ -106,10 +127,18 @@ class Consul:
         port: int = 443,
         verify: bool = True,
         timeout: float = 5.0,
-    ) -> None:
-        self.host = host
-        self.timeout = timeout
-        self.client = consul.Consul(host=host, port=port, token=token, scheme=scheme, verify=verify)
+    ):
+        self.host: str = host
+        self.timeout: float = timeout
+        self.client: "_ConsulClient" = typing.cast(
+            "_ConsulClient",
+            typing.cast(
+                object,
+                consul.Consul(
+                    host=host, port=port, token=token, scheme=scheme, verify=verify
+                ),
+            ),
+        )
 
     def get(self, key: str) -> bytes | None:
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
@@ -123,12 +152,22 @@ class Consul:
 
         return data["Value"] if data else None
 
-    def get_yaml(self, key: str) -> dict | None:
+    def get_yaml(self, key: str) -> dict[str, object] | None:
         value = self.get(key)
         if not value:
             return None
 
-        return yaml.safe_load(value.decode("utf-8"))
+        return typing.cast(dict[str, object], yaml.safe_load(value.decode("utf-8")))
 
-    def put_yaml(self, key: str, value: dict) -> None:
-        self.client.kv.put(key, yaml.safe_dump(value))
+    def put_yaml(self, key: str, value: collections.abc.Mapping[str, object]) -> None:
+        _ = self.client.kv.put(key, yaml.safe_dump(value))
+
+
+class _ConsulKv(typing.Protocol):
+    def get(self, key: str) -> tuple[object, dict[str, bytes] | None]: ...
+
+    def put(self, key: str, value: str) -> object: ...
+
+
+class _ConsulClient(typing.Protocol):
+    kv: _ConsulKv

@@ -3,12 +3,12 @@ import pathlib
 
 
 def main() -> None:
-    packages = []
+    packages: list[tuple[str, int]] = []
     for dist in importlib.metadata.distributions():
         size = 0
         if dist.files:
             for file in dist.files:
-                full_path: pathlib.Path = dist.locate_file(file)
+                full_path = pathlib.Path(str(dist.locate_file(file)))
                 if full_path.exists():
                     size += full_path.stat().st_size
 

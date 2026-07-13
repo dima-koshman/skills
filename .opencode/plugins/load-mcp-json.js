@@ -3,7 +3,7 @@ import path from "node:path"
 
 function expandEnvReferences(value) {
   if (typeof value !== "string") return value
-  return value.replace(/\$\{([^}]+)\}/g, "{env:$1}")
+  return value.replace(/\$\{([^}]+)\}/g, (_, name) => process.env[name] ?? "")
 }
 
 function expandStringRecord(record) {

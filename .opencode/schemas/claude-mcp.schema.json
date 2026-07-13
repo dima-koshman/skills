@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Claude Code MCP configuration",
+  "description": "Project-scoped MCP servers loaded by Claude Code from .mcp.json.",
+  "type": "object",
+  "required": ["mcpServers"],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "mcpServers": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9_-]+$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/server"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "stringMap": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "oauth": {
+      "type": "object",
+      "properties": {
+        "clientId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "callbackPort": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "scopes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authServerMetadataUrl": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        }
+      },
+      "additionalProperties": false
+    },
+    "stdioServer": {
+      "type": "object",
+      "required": ["command"],
+      "properties": {
+        "type": {
+          "const": "stdio"
+        },
+        "command": {
+          "type": "string",
+          "minLength": 1
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "env": {
+          "$ref": "#/$defs/stringMap"
+        },
+        "cwd": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timeout": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "alwaysLoad": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "remoteServer": {
+      "type": "object",
+      "required": ["type", "url"],
+      "properties": {
+        "type": {
+          "enum": ["http", "streamable-http", "sse", "ws"]
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "minLength": 1
+        },
+        "headers": {
+          "$ref": "#/$defs/stringMap"
+        },
+        "headersHelper": {
+          "type": "string",
+          "minLength": 1
+        },
+        "oauth": {
+          "$ref": "#/$defs/oauth"
+        },
+        "timeout": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "alwaysLoad": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "server": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/stdioServer"
+        },
+        {
+          "$ref": "#/$defs/remoteServer"
+        }
+      ]
+    }
+  }
+}

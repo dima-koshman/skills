@@ -1,0 +1,5 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+# Trying to stay under the long context limit, which is documented for api usage, but not mentioned directly for subscription usage.
+model_auto_compact_token_limit       = 230000
+model_auto_compact_token_limit_scope = "total"

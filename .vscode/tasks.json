@@ -1,88 +1,97 @@
 {
-    "version": "2.0.0",
-    "type": "shell",
-    "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
+  "version": "2.0.0",
+  "type": "shell",
+  "presentation": {
+    "echo": true,
+    "reveal": "always",
+    "focus": false,
+    "panel": "shared"
+  },
+  "problemMatcher": [],
+  "tasks": [
+    {
+      "label": "Update and upgrade Homebrew, npm",
+      "command": "brew update && brew upgrade --yes && npm update -g"
     },
-    "problemMatcher": [],
-    "tasks": [
-        {
-            "label": "Update and upgrade Homebrew, npm",
-            "command": "brew update && brew upgrade --yes && npm update -g"
-        },
-        {
-            "label": "Install skills to all agents",
-            "detail": "Install every .agents/skills/<name>/ dir globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
-            "command": "npx --yes skills add ./.agents/skills --agent claude-code --agent opencode --agent codex --global --yes"
-        },
-        {
-            "label": "Update skills from remote sources",
-            "detail": "Re-fetch all skills tracked in skills-lock.json from their remote sources and re-copy if changed",
-            "command": "npx skills update --yes"
-        },
-        {
-            "label": "OKF AI-engineering: regenerate index",
-            "detail": "Regenerate index.md for the ai-engineering OKF bundle from concept frontmatter",
-            "command": "uv run --project . python .agents/skills/okf/scripts/okf_index.py .agents/skills/okf-ai-engineering/ai-engineering"
-        },
-        {
-            "label": "OKF AI-engineering: install skill",
-            "detail": "Install only the okf-ai-engineering skill globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
-            "command": "npx --yes skills add ./.agents/skills/okf-ai-engineering --agent claude-code --agent opencode --agent codex --global --yes"
-        },
-        {
-            "label": "OKF AI-engineering: regenerate index & install skill",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "OKF AI-engineering: regenerate index",
-                "OKF AI-engineering: install skill"
-            ]
-        },
-        {
-            "label": "OKF AI-engineering: build site",
-            "detail": "Regenerate okf-site.html for the ai-engineering OKF bundle",
-            "command": "uv run --project . python .agents/skills/okf/scripts/okf_site.py .agents/skills/okf-ai-engineering/ai-engineering"
-        },
-        {
-            "label": "OKF AI-engineering: open site",
-            "detail": "Open the generated ai-engineering OKF site in the browser",
-            "command": "open .agents/skills/okf-ai-engineering/ai-engineering/okf-site.html"
-        },
-        {
-            "label": "OKF AI-engineering: build & open site",
-            "detail": "Build and then open the ai-engineering OKF site",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "OKF AI-engineering: build site",
-                "OKF AI-engineering: open site"
-            ]
-        },
-        {
-            "label": "OKF AI-engineering: regenerate index, install skill, build and open site",
-            "detail": "Regenerate the index, install the skill, build and open the site (runs all three in sequence)",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "OKF AI-engineering: regenerate index & install skill",
-                "OKF AI-engineering: build & open site"
-            ]
-        },
-        {
-            "label": "Create worktree and open in IDE",
-            "command": "bash dev/create_worktree.sh ${input:worktreeBranch}"
-        },
-        {
-            "label": "Show venv package sizes",
-            "command": "uv run get-venv-packages-size"
-        }
-    ],
-    "inputs": [
-        {
-            "id": "worktreeBranch",
-            "type": "promptString",
-            "description": "Branch name for the new worktree"
-        }
-    ]
+    {
+      "label": "Install skills to all agents",
+      "detail": "Install every .agents/skills/<name>/ dir globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
+      "command": "npx --yes skills add ./.agents/skills --agent claude-code --agent opencode --agent codex --global --yes"
+    },
+    {
+      "label": "Update skills from remote sources",
+      "detail": "Re-fetch all skills tracked in skills-lock.json from their remote sources and re-copy if changed",
+      "command": "npx skills update --yes"
+    },
+    {
+      "label": "OKF AI-engineering: regenerate index",
+      "detail": "Regenerate index.md for the ai-engineering OKF bundle from concept frontmatter",
+      "command": "uv run --project . python .agents/skills/okf/scripts/okf_index.py .agents/skills/okf-ai-engineering/ai-engineering"
+    },
+    {
+      "label": "OKF AI-engineering: install skill",
+      "detail": "Install only the okf-ai-engineering skill globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
+      "command": "npx --yes skills add ./.agents/skills/okf-ai-engineering --agent claude-code --agent opencode --agent codex --global --yes"
+    },
+    {
+      "label": "OKF AI-engineering: regenerate index & install skill",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "OKF AI-engineering: regenerate index",
+        "OKF AI-engineering: install skill"
+      ]
+    },
+    {
+      "label": "OKF AI-engineering: build site",
+      "detail": "Regenerate okf-site.html for the ai-engineering OKF bundle",
+      "command": "uv run --project . python .agents/skills/okf/scripts/okf_site.py .agents/skills/okf-ai-engineering/ai-engineering"
+    },
+    {
+      "label": "OKF AI-engineering: open site",
+      "detail": "Open the generated ai-engineering OKF site in the browser",
+      "command": "open .agents/skills/okf-ai-engineering/ai-engineering/okf-site.html"
+    },
+    {
+      "label": "OKF AI-engineering: build & open site",
+      "detail": "Build and then open the ai-engineering OKF site",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "OKF AI-engineering: build site",
+        "OKF AI-engineering: open site"
+      ]
+    },
+    {
+      "label": "OKF AI-engineering: regenerate index, install skill, build and open site",
+      "detail": "Regenerate the index, install the skill, build and open the site (runs all three in sequence)",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "OKF AI-engineering: regenerate index & install skill",
+        "OKF AI-engineering: build & open site"
+      ]
+    },
+    {
+      "label": "Create worktree and open in IDE",
+      "command": "bash dev/create_worktree.sh ${input:worktreeBranch}"
+    },
+    {
+      "label": "Get venv packages size",
+      "command": "uv run python -c \"from dima.get_venv_packages_size import main; main()\""
+    },
+    {
+      "label": "Install pre-commit",
+      "command": "pre-commit install --hook-type pre-commit --hook-type commit-msg --hook-type pre-push",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run pre-commit",
+      "command": "uv run pre-commit run --all-files || uv run pre-commit run --all-files"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "worktreeBranch",
+      "type": "promptString",
+      "description": "Branch name for the new worktree"
+    }
+  ]
 }

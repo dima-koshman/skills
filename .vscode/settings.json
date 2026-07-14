@@ -5,6 +5,9 @@
     "[jsonc]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "[markdown]": {
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    },
     "[python]": {
         "editor.codeActionsOnSave": {
             "source.organizeImports": "explicit"
@@ -22,6 +25,7 @@
         "source.organizeImports.ruff": "always"
     },
     "editor.formatOnSave": true,
+    "editor.minimap.enabled": false,
     "evenBetterToml.formatter.alignComments": true,
     "evenBetterToml.formatter.alignEntries": true,
     "evenBetterToml.formatter.arrayAutoCollapse": false,
@@ -60,12 +64,25 @@
     "git.detectWorktrees": false,
     "indentRainbow.indicatorStyle": "light",
     "indentRainbow.lightIndicatorStyleLineWidth": 4,
+    "json.schemaDownload.trustedDomains": {
+        "https://developer.microsoft.com/json-schemas/": true,
+        "https://json-schema.org/": true,
+        "https://json.schemastore.org/": true,
+        "https://models.dev": true,
+        "https://opencode.ai": true,
+        "https://raw.githubusercontent.com/devcontainers/spec/": true,
+        "https://raw.githubusercontent.com/microsoft/vscode/": true,
+        "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json": true,
+        "https://schemastore.azurewebsites.net/": true,
+        "https://www.schemastore.org/": true
+    },
     "notebook.cellToolbarLocation": {
         "default": "hidden"
     },
     "notebook.formatOnSave.enabled": true,
     "notebook.globalToolbar": false,
     "notebook.showCellStatusBar": "visibleAfterExecute",
+    "prettier.tabWidth": 4,
     "python.analysis.exclude": ["**/.venv/**", "**/__pycache__/**"],
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "ruff.lineLength": 100,
@@ -74,6 +91,10 @@
     },
     "security.promptForLocalFileProtocolHandling": false,
     "sql-formatter.uppercase": true,
+    "task.problemMatchers.neverPrompt": {
+        "python": true,
+        "shell": true
+    },
     "window.autoDetectColorScheme": true,
     "workbench.colorTheme": "Default Light Modern",
     "workbench.preferredDarkColorTheme": "Default Dark Modern"

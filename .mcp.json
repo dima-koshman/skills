@@ -1,16 +1,16 @@
 {
-  "$schema": "./.opencode/schemas/claude-mcp.schema.json",
-  "mcpServers": {
-    "github": {
-      "type": "streamable-http",
-      "url": "https://api.githubcopilot.com/mcp",
-      "headers": {
-        "Authorization": "Bearer ${GITHUB_PAT}"
-      }
-    },
-    "clickup": {
-      "type": "streamable-http",
-      "url": "https://mcp.clickup.com/mcp"
+    "$schema": "file:///Users/koshmandmitry/.config/opencode/schemas/claude-mcp.schema.json",
+    "mcpServers": {
+        "github": {
+            "type": "streamable-http",
+            "url": "https://api.githubcopilot.com/mcp",
+            "headers": {
+                "Authorization": "Bearer ${GITHUB_PAT}"
+            }
+        },
+        "clickup": {
+            "type": "streamable-http",
+            "url": "https://mcp.clickup.com/mcp"
+        }
     }
-  }
 }

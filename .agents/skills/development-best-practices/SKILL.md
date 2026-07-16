@@ -64,11 +64,11 @@ here rather than copied into each repo.
   ```json
   {
     "label": "Prune merged branches",
-    "command": "bash /Users/dima/Projects/skills/.agents/skills/development-best-practices/scripts/prune-merged-branches.sh"
+    "command": "bash /Users/dima/Projects/dima/.agents/skills/development-best-practices/scripts/prune-merged-branches.sh"
   }
   ```
 - **Git alias** (terminal convenience, per-clone):
   ```bash
-  git config alias.prune-gone '!bash /Users/dima/Projects/skills/.agents/skills/development-best-practices/scripts/prune-merged-branches.sh'
+  git config alias.prune-gone '!bash /Users/dima/Projects/dima/.agents/skills/development-best-practices/scripts/prune-merged-branches.sh'
   # then: git prune-gone   (or: git prune-gone --dry-run)
   ```

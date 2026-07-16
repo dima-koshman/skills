@@ -1,5 +1,5 @@
 {
-    "$schema": "file:///Users/koshmandmitry/.config/opencode/schemas/claude-mcp.schema.json",
+    "$schema": "./.opencode/schemas/claude-mcp.schema.json",
     "mcpServers": {
         "github": {
             "type": "streamable-http",
@@ -7,10 +7,6 @@
             "headers": {
                 "Authorization": "Bearer ${GITHUB_PAT}"
             }
-        },
-        "clickup": {
-            "type": "streamable-http",
-            "url": "https://mcp.clickup.com/mcp"
         }
     }
 }

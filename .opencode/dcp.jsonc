@@ -7,7 +7,7 @@
     "pruneNotificationType": "chat",
     "manualMode": {
         "enabled": false,
-        "automaticStrategies": true,
+        "automaticStrategies": true
     },
     "compress": {
         "mode": "range",
@@ -21,18 +21,18 @@
         "nudgeForce": "soft",
         "protectedTools": [],
         "protectTags": false,
-        "protectUserMessages": false,
+        "protectUserMessages": false
     },
     "strategies": {
         "deduplication": {
             "enabled": true,
-            "protectedTools": [],
+            "protectedTools": []
         },
         "purgeErrors": {
             "enabled": true,
             "turns": 4,
-            "protectedTools": [],
-        },
+            "protectedTools": []
+        }
     },
-    "protectedFilePatterns": [".claude/memory/**"],
+    "protectedFilePatterns": [".claude/memory/**"]
 }

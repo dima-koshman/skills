@@ -29,6 +29,16 @@
             "command": "mkdir -p \"$HOME/.config/opencode/plugins\" \"$HOME/.config/opencode/schemas\" && cp -f \"${workspaceFolder}/.opencode/opencode.jsonc\" \"$HOME/.config/opencode/opencode.jsonc\" && cp -f \"${workspaceFolder}/.opencode/tui.json\" \"$HOME/.config/opencode/tui.json\" && cp -f \"${workspaceFolder}/.opencode/dcp.jsonc\" \"$HOME/.config/opencode/dcp.jsonc\" && cp -f \"${workspaceFolder}/.opencode/plugins/load-mcp-json.js\" \"$HOME/.config/opencode/plugins/load-mcp-json.js\" && cp -f \"${workspaceFolder}/.opencode/schemas/claude-mcp.schema.json\" \"$HOME/.config/opencode/schemas/claude-mcp.schema.json\""
         },
         {
+            "label": "List running OpenCode processes",
+            "detail": "Print the PID and working directory of each running OpenCode process",
+            "command": "bash \"${workspaceFolder}/scripts/list-opencode-processes.sh\""
+        },
+        {
+            "label": "Caffeinate process",
+            "detail": "Prevent idle system sleep until the process with the provided PID exits",
+            "command": "caffeinate -i -w ${input:pid}"
+        },
+        {
             "label": "OKF AI-engineering: regenerate index",
             "detail": "Regenerate index.md for the ai-engineering OKF bundle from concept frontmatter",
             "command": "uv run --project . python .agents/skills/okf/scripts/okf_index.py .agents/skills/okf-ai-engineering/ai-engineering"
@@ -97,6 +107,11 @@
             "id": "worktreeBranch",
             "type": "promptString",
             "description": "Branch name for the new worktree"
+        },
+        {
+            "id": "pid",
+            "type": "promptString",
+            "description": "PID of the process to caffeinate"
         }
     ]
 }

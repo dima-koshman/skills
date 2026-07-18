@@ -5,11 +5,26 @@
     // this odd "-flash-agent" slug is the only reachable 3.5 Flash tier.
     // "model": "google/antigravity-gemini-3-flash-agent",
     "model": "openai/gpt-5.6-sol",
+    // For meta tasks, like generating session title
     "small_model": "openai/gpt-5.6-luna",
     "agent": {
         "plan": { "model": "openai/gpt-5.6-sol", "variant": "high" },
         "build": { "model": "openai/gpt-5.6-sol", "variant": "medium" },
-        "general": { "model": "openai/gpt-5.6-luna", "variant": "medium" },
+        // "general": { "model": "openai/gpt-5.6-luna", "variant": "medium" },
+        "general": { "model": "google/antigravity-gemini-3-flash-agent" },
+        // explore searches and explains your local codebase
+        "explore": { "model": "google/antigravity-gemini-3-flash-agent" },
+        // scout researches external dependencies and upstream documentation
+        "scout": { "model": "google/antigravity-gemini-3-flash-agent" },
+        "reviewer": {
+            "description": "Reviews completed work for specification compliance and code quality.",
+            "mode": "subagent",
+            "model": "openai/gpt-5.6-sol",
+            "variant": "high",
+            "permission": {
+                "edit": "deny"
+            }
+        }
     },
     "formatter": true,
     // opencode auto-discovers local plugins in .opencode/plugins/.
@@ -25,13 +40,13 @@
         // change — re-verify per the "HOW TO RE-VERIFY / UPDATE" note in provider.google.
         "opencode-antigravity-auth@latest",
         // https://github.com/Opencode-DCP/opencode-dynamic-context-pruning
-        "@tarquinen/opencode-dcp@latest",
+        "@tarquinen/opencode-dcp@latest"
     ],
     "references": {
         "claude-memory": {
             "path": ".claude/memory",
-            "description": "Use for prior session notes and local project memory from Claude Code.",
-        },
+            "description": "Use for prior session notes and local project memory from Claude Code."
+        }
     },
     "compaction": {
         "auto": true,
@@ -41,7 +56,7 @@
         // so 500k reserved means opencode compacts around 922k - 500k = 422k tokens.
         // DCP should reduce context before this; built-in compaction remains
         // a last-resort safety net near model overflow.
-        "reserved": 100000,
+        "reserved": 100000
     },
     // opencode-antigravity-auth requires model definitions under provider.google
     // so it can intercept and route requests to the Antigravity OAuth endpoint.
@@ -90,8 +105,8 @@
                     "limit": { "context": 1048576, "output": 65536 },
                     "modalities": {
                         "input": ["text", "image", "pdf"],
-                        "output": ["text"],
-                    },
+                        "output": ["text"]
+                    }
                 },
                 // Older Gemini 3 Flash (has a bare wire ID + thinkingLevel variants).
                 "antigravity-gemini-3-flash": {
@@ -99,14 +114,14 @@
                     "limit": { "context": 1048576, "output": 65536 },
                     "modalities": {
                         "input": ["text", "image", "pdf"],
-                        "output": ["text"],
+                        "output": ["text"]
                     },
                     "variants": {
                         "minimal": { "thinkingLevel": "minimal" },
                         "low": { "thinkingLevel": "low" },
                         "medium": { "thinkingLevel": "medium" },
-                        "high": { "thinkingLevel": "high" },
-                    },
+                        "high": { "thinkingLevel": "high" }
+                    }
                 },
                 // Works as-is: "gemini-3.1-pro" + -low/-high tiers resolve cleanly
                 // (Pro keeps the base name and passes the tier as thinkingLevel).
@@ -115,53 +130,53 @@
                     "limit": { "context": 1048576, "output": 65535 },
                     "modalities": {
                         "input": ["text", "image", "pdf"],
-                        "output": ["text"],
+                        "output": ["text"]
                     },
                     "variants": {
                         "low": { "thinkingLevel": "low" },
-                        "high": { "thinkingLevel": "high" },
-                    },
+                        "high": { "thinkingLevel": "high" }
+                    }
                 },
                 "antigravity-claude-sonnet-4-6": {
                     "name": "Claude Sonnet 4.6 (Antigravity)",
                     "limit": { "context": 200000, "output": 64000 },
                     "modalities": {
                         "input": ["text", "image", "pdf"],
-                        "output": ["text"],
-                    },
+                        "output": ["text"]
+                    }
                 },
                 "antigravity-claude-opus-4-6-thinking": {
                     "name": "Claude Opus 4.6 Thinking (Antigravity)",
                     "limit": { "context": 200000, "output": 64000 },
                     "modalities": {
                         "input": ["text", "image", "pdf"],
-                        "output": ["text"],
+                        "output": ["text"]
                     },
                     "variants": {
                         "minimal": {
-                            "thinkingConfig": { "thinkingBudget": 4096 },
+                            "thinkingConfig": { "thinkingBudget": 4096 }
                         },
                         "low": { "thinkingConfig": { "thinkingBudget": 8192 } },
                         "medium": {
-                            "thinkingConfig": { "thinkingBudget": 16384 },
+                            "thinkingConfig": { "thinkingBudget": 16384 }
                         },
                         "high": {
-                            "thinkingConfig": { "thinkingBudget": 24576 },
+                            "thinkingConfig": { "thinkingBudget": 24576 }
                         },
                         "max": {
-                            "thinkingConfig": { "thinkingBudget": 32768 },
-                        },
-                    },
-                },
-            },
-        },
+                            "thinkingConfig": { "thinkingBudget": 32768 }
+                        }
+                    }
+                }
+            }
+        }
     },
     "lsp": {
         "pyright": {
-            "command": [".venv/bin/basedpyright-langserver", "--stdio"],
-        },
+            "command": [".venv/bin/basedpyright-langserver", "--stdio"]
+        }
     },
     "experimental": {
-        "disable_paste_summary": true,
-    },
+        "disable_paste_summary": true
+    }
 }

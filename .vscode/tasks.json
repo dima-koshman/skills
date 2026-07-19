@@ -86,7 +86,7 @@
         },
         {
             "label": "Create worktree and open in IDE",
-            "command": "bash src/create_worktree.sh ${input:worktreeBranch}"
+            "command": "bash src/create_worktree.sh ${input:worktreeBranch} ${input:worktreeDir}"
         },
         {
             "label": "Get venv packages size",
@@ -107,6 +107,11 @@
             "id": "worktreeBranch",
             "type": "promptString",
             "description": "Branch name for the new worktree"
+        },
+        {
+            "id": "worktreeDir",
+            "type": "promptString",
+            "description": "Optional worktree directory (absolute or relative to repo; defaults to normalized branch name)"
         },
         {
             "id": "pid",

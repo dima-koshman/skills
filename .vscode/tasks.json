@@ -113,6 +113,10 @@
         {
             "label": "Login to aws docker registry",
             "command": "aws --profile ${AWS_PROFILE} ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${DOCKER_REPO}"
+        },
+        {
+            "label": "Get opencode stats",
+            "command": "opencode stats --project '' --models --days ${input:days}"
         }
     ],
     "inputs": [
@@ -130,6 +134,12 @@
             "id": "pid",
             "type": "promptString",
             "description": "PID of the process to caffeinate"
+        },
+        {
+            "id": "days",
+            "type": "promptString",
+            "description": "Number of days to look back",
+            "default": "7"
         }
     ]
 }

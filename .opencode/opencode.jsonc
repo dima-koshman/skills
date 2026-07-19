@@ -26,6 +26,7 @@
             }
         }
     },
+    "subagent_depth": 1,
     "formatter": true,
     // opencode auto-discovers local plugins in .opencode/plugins/.
     // load-mcp-json.js is our custom bridge that imports non-secret MCPs from .mcp.json;

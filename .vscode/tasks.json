@@ -91,7 +91,7 @@
         },
         {
             "label": "Create worktree and open in IDE",
-            "command": "bash src/create_worktree.sh ${input:worktreeBranch} ${input:worktreeDir}"
+            "command": "bash scripts/create_worktree.sh ${input:worktreeBranch} ${input:worktreeDir}"
         },
         {
             "label": "Get venv packages size",

@@ -15,16 +15,16 @@
         // explore searches and explains your local codebase
         "explore": { "model": "google/antigravity-gemini-3-flash-agent" },
         // scout researches external dependencies and upstream documentation
-        "scout": { "model": "google/antigravity-gemini-3-flash-agent" },
-        "reviewer": {
-            "description": "Reviews completed work for specification compliance and code quality.",
-            "mode": "subagent",
-            "model": "openai/gpt-5.6-sol",
-            "variant": "high",
-            "permission": {
-                "edit": "deny"
-            }
-        }
+        "scout": { "model": "google/antigravity-gemini-3-flash-agent" }
+        // "reviewer": {
+        //     "description": "Reviews completed work for specification compliance and code quality.",
+        //     "mode": "subagent",
+        //     "model": "openai/gpt-5.6-sol",
+        //     "variant": "medium",
+        //     "permission": {
+        //         "edit": "deny"
+        //     }
+        // }
     },
     "subagent_depth": 1,
     "formatter": true,

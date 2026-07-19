@@ -48,6 +48,8 @@
         ".venv/CACHEDIR.TAG": true,
         ".venv/etc": true,
         ".venv/include/": true,
+        ".venv/**/*.pyx": true,
+        ".venv/**/py.typed": true,
         ".venv/pyvenv.cfg": true,
         ".venv/requirements.txt": true,
         ".venv/share": true,

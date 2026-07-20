@@ -101,3 +101,9 @@ Alias for uv run python - mostly for coding agents.
 ```sh
 alias python='uv run python'
 ```
+
+Disable macOS quarantine for Homebrew casks (which causes macOS to prompt for confirmation when opening apps on each update):
+
+```sh
+export HOMEBREW_CASK_OPTS="--no-quarantine"
+```

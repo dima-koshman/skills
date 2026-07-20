@@ -1,0 +1,54 @@
+{
+    "$schema": "https://json.schemastore.org/claude-code-settings.json",
+    "permissions": {
+        "deny": [
+            "Read(.env)",
+            "Read(.env.*)",
+            "Read(**/.env)",
+            "Read(**/.env.*)"
+        ]
+    },
+    "model": "opus",
+    "effortLevel": "high",
+    "switchModelsOnFlag": true,
+    "hooks": {
+        "Stop": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "osascript -e 'display notification \"Turn complete\" with title \"Claude Code\" sound name \"Glass\"'"
+                    }
+                ]
+            }
+        ],
+        "Notification": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "osascript -e 'display notification \"Claude needs your input\" with title \"Claude Code\" sound name \"Glass\"'"
+                    }
+                ]
+            }
+        ]
+    },
+    "enabledPlugins": {
+        "context7@claude-plugins-official": true,
+        "github@claude-plugins-official": true,
+        "playwright@claude-plugins-official": true,
+        "superpowers@claude-plugins-official": true,
+        "gitlab@claude-plugins-official": true,
+        "claude-md-management@claude-plugins-official": true,
+        "claude-code-setup@claude-plugins-official": true,
+        "langsmith-tracing@langsmith-claude-code-plugins": true
+    },
+    "extraKnownMarketplaces": {
+        "langsmith-claude-code-plugins": {
+            "source": {
+                "source": "github",
+                "repo": "langchain-ai/langsmith-claude-code-plugins"
+            }
+        }
+    }
+}

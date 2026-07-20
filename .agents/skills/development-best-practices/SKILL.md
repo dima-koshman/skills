@@ -1,6 +1,6 @@
 ---
 name: development-best-practices
-description: Cross-project local development hygiene and preferences — git branch/worktree cleanup, and other day-to-day dev workflow conventions. Use when asked to clean up local git branches, prune merged/deleted branches, tidy worktrees, update OpenCode plugins, or set up recurring local-dev maintenance.
+description: Cross-project local development hygiene and preferences — the worktree-to-main workflow, git branch/worktree cleanup, and other day-to-day dev workflow conventions. Use when starting feature work in a worktree, finishing a branch, merging to main, pushing to main, monitoring or fixing a GitHub Actions run after a push, cleaning up local git branches, pruning merged/deleted branches, tidying worktrees, updating OpenCode plugins, or setting up recurring local-dev maintenance.
 ---
 
 # Development Best Practices
@@ -24,6 +24,112 @@ the matching cached package's `package.json` against the registry version; for g
 check the cache package lock's resolved commit against the configured ref. OpenCode can retain stale
 versions despite `--force`. If that happens, quit OpenCode, identify and remove only that plugin's
 exact directory under `~/.cache/opencode/packages/`, then restart OpenCode to reinstall it.
+
+## Finishing work in a worktree
+
+Worktrees are created by the user, via the **"Create worktree and open in IDE"** VSCode task.
+Creating one is not your job — but knowing you are in one is, because it changes how work gets
+integrated.
+
+Check at the point you finish a piece of work:
+
+```bash
+[ "$(git rev-parse --path-format=absolute --git-dir)" != \
+  "$(git rev-parse --path-format=absolute --git-common-dir)" ] \
+  && echo "linked worktree" || echo "primary checkout"
+```
+
+If you are in a linked worktree, prefer landing the work with a local merge into `main` over
+opening a PR.
+
+**The agent in the worktree owns the merge.** It did the work, so it is the one that can resolve a
+semantic conflict or diagnose a CI failure without re-deriving intent from a diff. Hand off to
+whoever holds the primary checkout only when several branches must land together, or when the
+worktree session is gone.
+
+1. **Verify first.** Full check suite green in the worktree. Do not start integrating on a red tree.
+
+2. **Check the primary checkout is clean.** Git will not let two worktrees check out `main` at
+   once, so the merge runs against the primary checkout's working tree from here. If someone — or
+   another agent — has work in progress there, merging into it is destructive.
+
+   ```bash
+   MAIN_ROOT="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
+   git -C "$MAIN_ROOT" status --porcelain
+   ```
+
+   **Agent safety rule: if that prints anything, stop and tell the user. Do not merge into a dirty
+   primary checkout.**
+
+3. **Merge locally.**
+
+   ```bash
+   git -C "$MAIN_ROOT" merge --no-ff <branch-name>
+   ```
+
+   If the merge conflicts, resolve it here — you have the context for it. If `main` has moved in a
+   way that makes the merge wrong rather than merely conflicted, say so instead of forcing it.
+
+4. **Ask before pushing.** A local merge is cheap to undo; a push to `main` is not, and it can
+   trigger deploys. **Agent safety rule: never push to `main` unprompted — merge locally, report
+   what landed, and ask for approval to push.**
+
+5. **Watch CI if the push triggers it.** After an approved push, check whether a workflow actually
+   started — workflows are often filtered by branch and by `paths:`, so many pushes legitimately
+   trigger nothing. Don't wait on a run that will never exist:
+
+   ```bash
+   gh run list --branch main --limit 3
+   ```
+
+   If a run started, follow it to completion. `--exit-status` makes the command exit non-zero on
+   failure, so it can gate what comes next:
+
+   ```bash
+   gh run watch "$(gh run list --branch main --limit 1 --json databaseId --jq '.[0].databaseId')" --exit-status
+   ```
+
+   On failure, pull the failing step's logs, fix the cause, and push the fix — a red pipeline on
+   `main` is not "done":
+
+   ```bash
+   gh run view <run-id> --log-failed
+   ```
+
+Leave the worktree directory in place when you are done. Stale directories under `.worktrees/` are
+harmless; they get cleaned up in batch (see below), not at the end of each task.
+
+## Working in the primary checkout while worktrees are live
+
+Worktree agents merge into the primary checkout's working tree asynchronously, at a time you do not
+control. Check before starting work on `main`:
+
+```bash
+git worktree list   # more than one entry => linked worktrees exist
+```
+
+**If linked worktrees exist, treat the primary checkout as an integration point, not a workspace.**
+Do the work in a worktree instead. If you must work on `main`, commit as you go and never leave the
+tree dirty while you wait — an incoming merge only interacts badly with *uncommitted* work.
+
+What git does and does not protect, if a merge lands while you are working:
+
+- A merge that touches a file you have modified **aborts**, leaving `main` where it was. Safe.
+- A merge touching only files you have *not* modified **succeeds**. Your changes survive, but
+  `main` has moved beneath them: anything you verified is now stale, and your next commit lands on
+  a base you never reviewed. Git gives no warning. This is the case to design around.
+- Concurrent git commands collide on `index.lock` and fail outright rather than interleaving, so
+  you get an error, not a corrupted tree.
+- `git branch -f` and `git fetch . <branch>:main` refuse to move a branch that is checked out in
+  another worktree.
+
+**Agent safety rule: never use `git update-ref` to move a checked-out branch.** It bypasses every
+guard above and leaves the primary worktree's index and files disagreeing with `HEAD` — a state
+that looks like unexplained local modifications. Use `git merge` from the checkout that owns the
+branch.
+
+If `main` moved under you mid-task, re-run verification before claiming anything passes — the
+earlier results describe a tree that no longer exists.
 
 ## Prune merged/deleted local branches
 
@@ -54,6 +160,23 @@ Key facts:
   with GitHub, GitLab, Bitbucket, or any remote unchanged.
 - Skips the current branch and prunes stale worktrees afterward.
 - Deletions are recoverable via `git reflog` for a while.
+
+### Clean up merged worktrees
+
+`git worktree prune` only drops metadata for directories that are already gone — it never deletes a
+worktree that still exists on disk. So worktrees for merged branches accumulate under `.worktrees/`.
+That is harmless, and there is no need to tidy up at the end of each task; clear them in batch when
+convenient.
+
+List them, then remove the ones whose work has landed:
+
+```bash
+git worktree list
+git worktree remove .worktrees/<dir>   # add --force if the tree has stray untracked files
+```
+
+A branch cannot be deleted while a worktree still has it checked out, so remove the worktree before
+running the prune script — otherwise its branch survives as a leftover.
 
 ### Wiring it into a project
 

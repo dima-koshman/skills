@@ -14,6 +14,9 @@
         },
         "editor.defaultFormatter": "charliermarsh.ruff"
     },
+    "[shellscript]": {
+        "editor.defaultFormatter": "mkhl.shfmt"
+    },
     "[toml]": {
         "editor.defaultFormatter": "tamasfe.even-better-toml"
     },
@@ -59,7 +62,8 @@
         "**/*.egg-info": true
     },
     "files.watcherExclude": {
-        "**/.venv/**": true
+        "**/.venv/**": true,
+        "**/.worktrees/**": true
     },
     "git.autofetch": true,
     "git.confirmSync": false,
@@ -90,7 +94,8 @@
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "ruff.lineLength": 100,
     "search.exclude": {
-        "**/.venv": true
+        "**/.venv": true,
+        "**/.worktrees": true
     },
     "security.promptForLocalFileProtocolHandling": false,
     "sql-formatter.uppercase": true,

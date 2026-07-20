@@ -19,6 +19,7 @@ okf_version: "0.1"
 
 # context
 
+* [Agent Skills](/context/skills.md) `[Technique]` - Packaged instruction files an agent loads on demand — most useful as behavior control, and a context tax when installed indiscriminately.
 * [Context Engineering](/context/context-engineering.md) `[Technique]` - Deliberately assembling what goes into the model's context window — instructions, tools, retrieved data, memory, and history.
 * [Memory](/context/memory.md) `[Technique]` - How an agent carries state across steps and sessions — short-term context plus durable long-term stores.
 * [Model Context Protocol (MCP)](/context/mcp.md) `[Standard]` - Open protocol standardizing how LLM apps expose and consume tools, resources, and prompts.

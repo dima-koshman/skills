@@ -9,8 +9,6 @@
         ]
     },
     "model": "opus",
-    "effortLevel": "high",
-    "switchModelsOnFlag": true,
     "hooks": {
         "Stop": [
             {
@@ -37,7 +35,7 @@
         "context7@claude-plugins-official": true,
         "github@claude-plugins-official": true,
         "playwright@claude-plugins-official": true,
-        "superpowers@claude-plugins-official": true,
+        "superpowers@claude-plugins-official": false,
         "gitlab@claude-plugins-official": true,
         "claude-md-management@claude-plugins-official": true,
         "claude-code-setup@claude-plugins-official": true,
@@ -50,5 +48,7 @@
                 "repo": "langchain-ai/langsmith-claude-code-plugins"
             }
         }
-    }
+    },
+    "effortLevel": "high",
+    "switchModelsOnFlag": true
 }

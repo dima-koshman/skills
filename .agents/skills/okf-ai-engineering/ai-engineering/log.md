@@ -1,5 +1,9 @@
 # Directory Update Log
 
+## 2026-07-20
+
+* **Creation**: Added [Agent Skills](/context/skills.md), capturing the finding that skills are diverging into two roles — a knowledge source whose value decays as frontier models improve, and behavior control whose value does not — and that skills structurally fail at the second, because an on-demand skill only fires when the agent recognizes the moment, which is precisely what discipline rules cannot rely on. Records the resulting practice: prefer `AGENTS.md` to generic plugins for behavior control, install skills selectively and project-scoped, audit against real invocation counts, extract rules from third-party skills rather than importing them wholesale, and treat installed skills as code-level supply-chain dependencies.
+
 ## 2026-07-13
 
 * **Creation**: Added [OpenWiki](/context/openwiki.md), LangChain's early-stage CLI for synthesizing local sources into agent-facing code and personal-memory wikis, with explicit provenance and primary-evidence boundaries.

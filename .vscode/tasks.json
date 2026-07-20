@@ -14,13 +14,77 @@
             "command": "brew update && brew upgrade --yes && npm update -g"
         },
         {
-            "label": "Install skills to all agents",
-            "detail": "Install every .agents/skills/<name>/ dir globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
-            "command": "npx --yes skills add ./.agents/skills --agent claude-code --agent opencode --agent codex --global --yes"
+            "label": "Install local skills globally: development-best-practices",
+            "detail": "Publish this repo's development-best-practices skill globally (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/). Cross-project by nature: git branch and worktree hygiene, day-to-day dev workflow conventions.",
+            "command": "npx --yes skills add ./.agents/skills/development-best-practices --agent claude-code --agent opencode --agent codex --global --yes"
+        },
+        {
+            "label": "Install local skills globally: python-styleguide",
+            "detail": "Publish this repo's python-styleguide skill globally (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/). Cross-project by nature: shared Python style rules for all internal projects.",
+            "command": "npx --yes skills add ./.agents/skills/python-styleguide --agent claude-code --agent opencode --agent codex --global --yes"
+        },
+        {
+            "label": "Install local skills globally: all",
+            "detail": "Publish every locally-authored skill worth having in all projects (runs each install task in sequence). Always --global by design: these skills already live in .agents/skills/, so a project-scope install would copy them onto themselves and the duplicate would silently drift. Keep this list minimal — OpenCode reads ~/.agents/skills/ directly, so every skill here costs context in every session of every project.",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Install local skills globally: development-best-practices",
+                "Install local skills globally: python-styleguide"
+            ]
+        },
+        {
+            "label": "Link .claude/skills to .agents/skills",
+            "detail": "Symlink the whole .claude/skills directory to .agents/skills, so Claude Code sees every project skill (it only scans .claude/skills/; OpenCode reads .agents/skills/ directly). Linking the directory rather than each skill means new skills need no re-run. Refuses if .claude/skills holds a real entry absent from .agents/skills, which would be lost.",
+            "command": "cd \"${workspaceFolder}\" && if [ -L .claude/skills ]; then echo 'Already a symlink: .claude/skills -> '$(readlink .claude/skills); else if [ -d .claude/skills ]; then orphans=$(for e in .claude/skills/*; do [ -e \"$e\" ] || [ -L \"$e\" ] || continue; n=$(basename \"$e\"); if [ ! -L \"$e\" ] && [ ! -e \".agents/skills/$n\" ]; then echo \"$n\"; fi; done); if [ -n \"$orphans\" ]; then echo \"Refusing: .claude/skills holds entries absent from .agents/skills: $orphans\" >&2; exit 1; fi; fi; rm -rf .claude/skills; mkdir -p .claude; ln -s ../.agents/skills .claude/skills; echo 'Linked .claude/skills -> ../.agents/skills'; fi"
+        },
+        {
+            "label": "Link CLAUDE.md to AGENTS.md",
+            "detail": "Replace CLAUDE.md with a symlink to AGENTS.md so both Claude Code and other agents read one instruction file. Refuses to clobber a CLAUDE.md that holds its own content — delete it manually first if that is intended.",
+            "command": "cd \"${workspaceFolder}\" && if [ -L CLAUDE.md ]; then echo 'CLAUDE.md is already a symlink -> '$(readlink CLAUDE.md); elif [ -s CLAUDE.md ] && [ -n \"$(grep -vE '^\\s*(#.*)?$' CLAUDE.md | grep -viF 'AGENTS.md')\" ]; then echo 'Refusing: CLAUDE.md has its own content. Review and delete it first.' >&2; exit 1; else rm -f CLAUDE.md && ln -s AGENTS.md CLAUDE.md && echo 'Linked CLAUDE.md -> AGENTS.md'; fi"
+        },
+        {
+            "label": "Link Claude Code to project files",
+            "detail": "Point Claude Code at this project's shared agent files: CLAUDE.md -> AGENTS.md and .claude/skills -> .agents/skills (runs both link tasks in sequence). Safe to re-run; both tasks are idempotent.",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Link CLAUDE.md to AGENTS.md",
+                "Link .claude/skills to .agents/skills"
+            ]
+        },
+        {
+            "label": "Install remote skills: logfire",
+            "detail": "Install the upstream logfire skills from pydantic/skills for Claude Code and OpenCode. Skills are named explicitly because the repo also ships unrelated skills. Prompts for install scope (default: this project). Tracked in a skills lock file, so 'Update skills from remote sources' refreshes them.",
+            "command": "npx --yes skills add pydantic/skills --skill logfire-instrumentation --skill logfire-query --skill logfire-ui --agent claude-code --agent opencode ${input:skillScope} --yes"
+        },
+        {
+            "label": "Install remote skills: supabase",
+            "detail": "Install the upstream supabase skills from supabase/agent-skills for Claude Code and OpenCode. Prompts for install scope (default: this project). Tracked in a skills lock file, so 'Update skills from remote sources' refreshes them.",
+            "command": "npx --yes skills add supabase/agent-skills --skill supabase --skill supabase-postgres-best-practices --agent claude-code --agent opencode ${input:skillScope} --yes"
+        },
+        {
+            "label": "Install remote skills: skill-creator",
+            "detail": "Install Anthropic's skill-creator from anthropics/skills for Claude Code and OpenCode. Used instead of superpowers' writing-skills for authoring and evaluating skills. Prompts for install scope (default: this project).",
+            "command": "npx --yes skills add anthropics/skills --skill skill-creator --agent claude-code --agent opencode ${input:skillScope} --yes"
+        },
+        {
+            "label": "Install remote skills: superpowers subset",
+            "detail": "Install the three superpowers skills worth keeping (brainstorming, systematic-debugging, writing-plans) from obra/superpowers, without the plugin's always-on SessionStart context injection. Prompts for install scope (default: this project).",
+            "command": "npx --yes skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill writing-plans --agent claude-code --agent opencode ${input:skillScope} --yes"
+        },
+        {
+            "label": "Install remote skills: all",
+            "detail": "Install every remote-sourced skill (runs all install tasks in sequence). Each prompts for scope. On-demand: these are not installed by default to keep agent context small.",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Install remote skills: logfire",
+                "Install remote skills: supabase",
+                "Install remote skills: skill-creator",
+                "Install remote skills: superpowers subset"
+            ]
         },
         {
             "label": "Update skills from remote sources",
-            "detail": "Re-fetch all skills tracked in skills-lock.json from their remote sources and re-copy if changed",
+            "detail": "Re-fetch all skills tracked in ~/.agents/.skill-lock.json from their remote sources and re-copy if changed",
             "command": "npx skills update --yes"
         },
         {
@@ -129,6 +193,22 @@
             "id": "worktreeDir",
             "type": "promptString",
             "description": "Optional worktree directory (absolute, or relative to <repo>/.worktrees/; defaults to normalized branch name)"
+        },
+        {
+            "id": "skillScope",
+            "type": "pickString",
+            "description": "Install scope for the skill",
+            "options": [
+                {
+                    "label": "This project only (.agents/skills/ + .claude/skills/)",
+                    "value": ""
+                },
+                {
+                    "label": "Globally, all projects (~/.agents/skills/ + ~/.claude/skills/)",
+                    "value": "--global"
+                }
+            ],
+            "default": ""
         },
         {
             "id": "syncConfirm",

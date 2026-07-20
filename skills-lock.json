@@ -1,23 +1,60 @@
 {
   "version": 1,
   "skills": {
-    "logfire-instrumentation": {
-      "source": "pydantic/skills",
-      "sourceType": "github",
-      "skillPath": "skills/logfire-instrumentation/SKILL.md",
-      "computedHash": "732046ab766666495c5ced2b33b802792684fd776402ccd1b8f2853ff8e624dc"
+    "brainstorming": {
+      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "sourceType": "local",
+      "computedHash": "253570c46990ea018dd4520dba80cd77c35f9e5a8654057da1812face7be30cd"
     },
-    "logfire-query": {
-      "source": "pydantic/skills",
-      "sourceType": "github",
-      "skillPath": "skills/logfire-query/SKILL.md",
-      "computedHash": "51ddcfa6016440895c54cb34b43b9ade73e000c0a14e092a2524b4e844cc3397"
+    "development-best-practices": {
+      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "sourceType": "local",
+      "computedHash": "ed9b8fc31b50f24dd2be46ebceed728ccd320101c5f3f02cd0884af0129ab936"
     },
-    "logfire-ui": {
-      "source": "pydantic/skills",
-      "sourceType": "github",
-      "skillPath": "skills/logfire-ui/SKILL.md",
-      "computedHash": "ec9ad81fb607e771b6e21eedae39af01985fc902f8bac03b51f669ad0ddb3f97"
+    "macos-disk-cleanup": {
+      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "sourceType": "local",
+      "computedHash": "61023a8662c5dd8ce77368f3f9d3771e2fa4ffb520352d87b6e2483081a2aa44"
+    },
+    "okf": {
+      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "sourceType": "local",
+      "computedHash": "3eb22637a297367e37f2784bda53f49cfdb226c712b3260a7f2217dc0c735640"
+    },
+    "okf-ai-engineering": {
+      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "sourceType": "local",
+      "computedHash": "151c7617747b446b413e19c9fa214455b8ff94312d751e73f4a7db2f26583bcc"
+    },
+    "openwiki": {
+      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "sourceType": "local",
+      "computedHash": "7ef06c7f4b5a80d7690faa02d9063642c33c69ce1fa950efadf33d6dee935cd7"
+    },
+    "portfolio": {
+      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "sourceType": "local",
+      "computedHash": "83e1c682a8916cd781aab6192b71532698368c13bd0790d653a5c28fb36475cf"
+    },
+    "python-styleguide": {
+      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "sourceType": "local",
+      "computedHash": "4435b1d4c20596c2118241f0ac73558b98bd7d9054602478efbc9bcac663a470"
+    },
+    "skill-creator": {
+      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "sourceType": "local",
+      "computedHash": "5ea13a6d9f0d4bb694405d79acd00cadec0d21bb138c4dd10fcf3c500cb835c2"
+    },
+    "systematic-debugging": {
+      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "sourceType": "local",
+      "computedHash": "792a368e074981d7e3138edb439e138489b2ac247cd1e5739fab52af680fb17b"
+    },
+    "writing-plans": {
+      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "sourceType": "local",
+      "computedHash": "b73b59d43c34c3fc225bfae419c458bb216af80df25fc0c545dfa7fd2a161722"
     }
   }
 }

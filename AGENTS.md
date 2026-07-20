@@ -1,7 +1,5 @@
 # Agent Instructions
 
-Project instructions for all coding agents (Claude Code, OpenCode, Codex).
-
 ## Verification before completion
 
 Evidence before claims, always. If you have not run the verification command in this
@@ -26,8 +24,7 @@ What each claim actually requires:
 | Subagent finished | The diff, read yourself — not the agent's self-report |
 | Requirements met | Each requirement checked off individually |
 
-Do not express satisfaction ("Great!", "Perfect!") before the output is in. Report
-skipped steps and failures plainly; a failed step reported honestly is worth more than
+Report skipped steps and failures plainly; a failed step reported honestly is worth more than
 a green summary that hides it.
 
 ## Receiving code review
@@ -46,6 +43,12 @@ Review feedback is a technical claim to evaluate, not an order to execute.
 - Fix in order: blocking/security, then trivial, then complex. Test each individually.
 - Apply YAGNI to review suggestions too: if a "make this proper" suggestion targets code
   nothing calls, propose deleting it instead.
+
+## Subagents
+
+- Subagents never inherit this session's context. Construct exactly the context they
+  need; a vague delegation produces vague work. Verify results by reading the diff,
+  not the agent's summary.
 
 ## Testing
 
@@ -86,17 +89,3 @@ The `systematic-debugging` skill has the full process and tracing techniques.
 - YAGNI. Remove speculative features from designs before implementing them.
 
 The `brainstorming` and `writing-plans` skills cover the full workflow for larger work.
-
-## Git
-
-- Never start implementation directly on `main` without explicit consent — branch first.
-- Commit only when asked.
-- Frequent, focused commits over one large one.
-- Stop and ask when blocked rather than guessing past a blocker.
-
-## Skills
-
-Skills live in `.agents/skills/`, symlinked into `.claude/skills/`. Remote-sourced skills
-are tracked in `skills-lock.json` and installed via the VSCode "Install remote skills"
-tasks — do not hand-edit vendored skill directories, as updates will overwrite them.
-Use the `skill-creator` skill when authoring or revising a skill.

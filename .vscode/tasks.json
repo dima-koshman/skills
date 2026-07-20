@@ -93,6 +93,11 @@
             "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.opencode/opencode.jsonc\" \"$HOME/.config/opencode/opencode.jsonc\" \"${workspaceFolder}/.opencode/tui.json\" \"$HOME/.config/opencode/tui.json\" \"${workspaceFolder}/.opencode/dcp.jsonc\" \"$HOME/.config/opencode/dcp.jsonc\" \"${workspaceFolder}/.opencode/plugins/load-mcp-json.js\" \"$HOME/.config/opencode/plugins/load-mcp-json.js\" \"${workspaceFolder}/.opencode/schemas/claude-mcp.schema.json\" \"$HOME/.config/opencode/schemas/claude-mcp.schema.json\""
         },
         {
+            "label": "Sync Claude settings globally",
+            "detail": "Copy this project's Claude Code settings to ~/.claude/settings.json. Shows a diff unless you type 'yes'. Note this replaces the file wholesale — any global-only keys (e.g. a permissions.allow list) are dropped, so read the diff before confirming.",
+            "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.claude/settings.json\" \"$HOME/.claude/settings.json\""
+        },
+        {
             "label": "Sync VSCode settings and tasks to Devin User",
             "detail": "Overwrite Devin User settings.json and tasks.json with workspace .vscode config. Shows a diff unless you type 'yes'.",
             "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.vscode/settings.json\" \"$HOME/Library/Application Support/Devin/User/settings.json\" \"${workspaceFolder}/.vscode/tasks.json\" \"$HOME/Library/Application Support/Devin/User/tasks.json\""

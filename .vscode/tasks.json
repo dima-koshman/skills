@@ -34,13 +34,13 @@
         },
         {
             "label": "Link .claude/skills to .agents/skills",
-            "detail": "Symlink the whole .claude/skills directory to .agents/skills, so Claude Code sees every project skill (it only scans .claude/skills/; OpenCode reads .agents/skills/ directly). Linking the directory rather than each skill means new skills need no re-run. Refuses if .claude/skills holds a real entry absent from .agents/skills, which would be lost.",
-            "command": "cd \"${workspaceFolder}\" && if [ -L .claude/skills ]; then echo 'Already a symlink: .claude/skills -> '$(readlink .claude/skills); else if [ -d .claude/skills ]; then orphans=$(for e in .claude/skills/*; do [ -e \"$e\" ] || [ -L \"$e\" ] || continue; n=$(basename \"$e\"); if [ ! -L \"$e\" ] && [ ! -e \".agents/skills/$n\" ]; then echo \"$n\"; fi; done); if [ -n \"$orphans\" ]; then echo \"Refusing: .claude/skills holds entries absent from .agents/skills: $orphans\" >&2; exit 1; fi; fi; rm -rf .claude/skills; mkdir -p .claude; ln -s ../.agents/skills .claude/skills; echo 'Linked .claude/skills -> ../.agents/skills'; fi"
+            "detail": "Symlink the whole .claude/skills directory to .agents/skills, so Claude Code sees every project skill (it only scans .claude/skills/; OpenCode reads .agents/skills/ directly). Linking the directory rather than each skill means new skills need no re-run. Refuses if .agents/skills is missing (the link would dangle), or if .claude/skills holds a real entry absent from .agents/skills, which would be lost.",
+            "command": "link_claude_skills.sh"
         },
         {
             "label": "Link CLAUDE.md to AGENTS.md",
             "detail": "Replace CLAUDE.md with a symlink to AGENTS.md so both Claude Code and other agents read one instruction file. Refuses to clobber a CLAUDE.md that holds its own content — delete it manually first if that is intended.",
-            "command": "cd \"${workspaceFolder}\" && if [ -L CLAUDE.md ]; then echo 'CLAUDE.md is already a symlink -> '$(readlink CLAUDE.md); elif [ -s CLAUDE.md ] && [ -n \"$(grep -vE '^\\s*(#.*)?$' CLAUDE.md | grep -viF 'AGENTS.md')\" ]; then echo 'Refusing: CLAUDE.md has its own content. Review and delete it first.' >&2; exit 1; else rm -f CLAUDE.md && ln -s AGENTS.md CLAUDE.md && echo 'Linked CLAUDE.md -> AGENTS.md'; fi"
+            "command": "link_claude_md.sh"
         },
         {
             "label": "Link Claude Code to project files",
@@ -105,7 +105,7 @@
         {
             "label": "List running OpenCode processes",
             "detail": "Print the PID and working directory of each running OpenCode process",
-            "command": "bash \"${workspaceFolder}/scripts/list-opencode-processes.sh\""
+            "command": "list_opencode_processes.sh"
         },
         {
             "label": "Caffeinate process",
@@ -160,11 +160,12 @@
         },
         {
             "label": "Create worktree and open in IDE",
-            "command": "bash scripts/create_worktree.sh ${input:worktreeBranch} ${input:worktreeDir}"
+            "command": "create_worktree.sh ${input:worktreeBranch} ${input:worktreeDir}"
         },
         {
             "label": "Get venv packages size",
-            "command": "uv run python -c \"from dima.get_venv_packages_size import main; main()\""
+            "detail": "List this project's installed packages by size. Runs under `uv run` so it inspects the current project's venv; the script is found on PATH.",
+            "command": "uv run python \"$(command -v get_venv_packages_size.py)\""
         },
         {
             "label": "Install pre-commit",

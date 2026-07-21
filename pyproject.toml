@@ -15,9 +15,6 @@
         "pytest>=8.0.0",
     ]
 
-    [project.scripts]
-        get-venv-packages-size = "dima.get_venv_packages_size:main"
-
 [tool.codespell]
     skip = "*.html"
 

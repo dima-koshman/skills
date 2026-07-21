@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+"""Print every installed package of the running interpreter's environment, by size.
+
+Stdlib-only, so it can run under any interpreter. Run it with the interpreter whose
+environment you want to inspect, e.g. `uv run python scripts/get_venv_packages_size.py`.
+"""
+
 import importlib.metadata
 import pathlib
 

@@ -33,7 +33,7 @@
     // opencode does not natively read .mcp.json.
     "plugin": [
         // https://github.com/obra/superpowers
-        "superpowers@git+https://github.com/obra/superpowers.git",
+        // "superpowers@git+https://github.com/obra/superpowers.git",
         // https://github.com/mohak34/opencode-notifier
         "@mohak34/opencode-notifier@latest",
         // https://github.com/NoeFabris/opencode-antigravity-auth

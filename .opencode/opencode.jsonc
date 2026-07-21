@@ -4,28 +4,41 @@
     // ("Requested entity was not found"). See the provider.google block below for why
     // this odd "-flash-agent" slug is the only reachable 3.5 Flash tier.
     // "model": "google/antigravity-gemini-3-flash-agent",
+    // "model": "google/antigravity-gemini-3.6-flash-tiered",
     "model": "openai/gpt-5.6-sol",
     // For meta tasks, like generating session title
-    "small_model": "openai/gpt-5.6-luna",
-    // "agent": {
-    //     "plan": { "model": "openai/gpt-5.6-sol", "variant": "high" },
-    //     "build": { "model": "openai/gpt-5.6-sol", "variant": "medium" },
-    //     // "general": { "model": "openai/gpt-5.6-luna", "variant": "medium" },
-    //     "general": { "model": "google/antigravity-gemini-3-flash-agent" },
-    //     // explore searches and explains your local codebase
-    //     "explore": { "model": "google/antigravity-gemini-3-flash-agent" },
-    //     // scout researches external dependencies and upstream documentation
-    //     "scout": { "model": "google/antigravity-gemini-3-flash-agent" },
-    //     "reviewer": {
-    //         "description": "Reviews completed work for specification compliance and code quality.",
-    //         "mode": "subagent",
-    //         "model": "openai/gpt-5.6-sol",
-    //         "variant": "medium",
-    //         "permission": {
-    //             "edit": "deny"
-    //         }
-    //     }
-    // },
+    "small_model": "opencode/nemotron-3-ultra-free",
+    // NOT redundant with "model" above: an agent's own model ALWAYS wins over the top-level
+    // key, and the GLOBAL config (~/.config/opencode/opencode.jsonc) ships an active
+    // "agent" block pinning build -> openai/gpt-5.6-sol. Global agent entries survive into
+    // this project because the two configs merge per-key rather than the project replacing
+    // the global wholesale — so without an override here, "model" above is simply never
+    // consulted for build and sessions silently open on gpt-5.6-sol.
+    // Check with: opencode debug agent build   (prints the resolved providerID/modelID)
+    "agent": {
+        //     "plan": { "model": "openai/gpt-5.6-sol", "variant": "high" },
+        //     "build": { "model": "openai/gpt-5.6-sol", "variant": "medium" },
+        // "general": { "model": "openai/gpt-5.6-luna", "variant": "medium" },
+        // "general": {
+        //     "model": "google/antigravity-gemini-3.6-flash-tiered",
+        //     "variant": "high"
+        // },
+        // "general": { "model": "google/antigravity-gemini-3-flash-agent" },
+        // // explore searches and explains your local codebase
+        // "explore": { "model": "google/antigravity-gemini-3-flash-agent" },
+        // // scout researches external dependencies and upstream documentation
+        // "scout": { "model": "google/antigravity-gemini-3-flash-agent" },
+        // // Custom reviewer agent
+        // "reviewer": {
+        //     "description": "Reviews completed work for specification compliance and code quality.",
+        //     "mode": "subagent",
+        //     "model": "openai/gpt-5.6-sol",
+        //     "variant": "medium",
+        //     "permission": {
+        //         "edit": "deny"
+        //     }
+        // }
+    },
     "subagent_depth": 1,
     // Auto-format after every write/edit. Formatters are OFF unless this key is truthy —
     // omitting it disables them outright. `true` enables the built-in set; an object enables
@@ -95,7 +108,7 @@
         // Reconsider per project: prune earns its keep when the context WINDOW is the binding
         // constraint (small-window model, tool-heavy work), or on a provider that bills cached
         // reads at the same rate as fresh ones, where there is no cache advantage to protect.
-        "prune": false,
+        "prune": false
         // MODEL-SPECIFIC — intentionally left unset in this template. `reserved` is a plain
         // subtraction from model.limit.input (not a max() against max output), so it is a
         // direct "compact at N tokens" dial:
@@ -154,6 +167,37 @@
         "google": {
             "npm": "@ai-sdk/google",
             "models": {
+                // Gemini 3.6 Flash — "-tiered" is intentional and load-bearing, for the SAME
+                // reason as "-flash-agent" below: TIER_REGEX only strips -minimal/-low/-medium/
+                // -high, so "-tiered" survives while "-high" would be mangled into the
+                // nonexistent bare "gemini-3.6-flash" → 404. Verified 2026-07-21 against the
+                // registry: 3.6 has NO bare wire ID, only -low/-medium/-high/-tiered.
+                //
+                // 3.6 is served ONLY by the daily endpoints, not prod:
+                //   cloudcode-pa.googleapis.com                 404 on every 3.6 ID
+                //   daily-cloudcode-pa.googleapis.com           -high/-tiered → 200
+                //   daily-cloudcode-pa.sandbox.googleapis.com   -high/-tiered → 200
+                // That works only because constants.js sets ANTIGRAVITY_ENDPOINT =
+                // ANTIGRAVITY_ENDPOINT_DAILY (the .sandbox host) as the streaming default.
+                // If a plugin bump repoints that to PROD, this model starts 404ing —
+                // that is the first thing to check if it breaks.
+                //
+                // Effort comes from thinkingLevel via variants, NOT from the model ID, so
+                // there is no need for separate -low/-medium/-high entries here.
+                "antigravity-gemini-3.6-flash-tiered": {
+                    "name": "Gemini 3.6 Flash (Antigravity)",
+                    "limit": { "context": 1048576, "output": 65536 },
+                    "modalities": {
+                        "input": ["text", "image", "pdf"],
+                        "output": ["text"]
+                    },
+                    "variants": {
+                        "minimal": { "thinkingLevel": "minimal" },
+                        "low": { "thinkingLevel": "low" },
+                        "medium": { "thinkingLevel": "medium" },
+                        "high": { "thinkingLevel": "high" }
+                    }
+                },
                 // Gemini 3.5 Flash (High) — see MODEL NAMING note above; "-flash-agent"
                 // is intentional, it is the only 3.5 Flash tier reachable through the plugin.
                 "antigravity-gemini-3-flash-agent": {

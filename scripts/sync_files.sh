@@ -27,15 +27,20 @@ if [ "$(printf '%s' "$CONFIRM" | tr '[:upper:]' '[:lower:]')" == "yes" ]; then
 fi
 
 CHANGED=0
+SKIPPED=0
 PAIRS=()
 while [ "$#" -gt 0 ]; do
 	SRC="$1"
 	DEST="$2"
 	shift 2
 
+	# A missing source is informational, not fatal: pairs are supplied by static VS Code
+	# task definitions, so a file deleted from the repo (or a stale synced copy of
+	# tasks.json still naming it) would otherwise abort every remaining pair too.
 	if [ ! -f "$SRC" ]; then
-		echo "Error: source file not found: $SRC" >&2
-		exit 1
+		echo "skipped: source file not found: $SRC"
+		SKIPPED=$((SKIPPED + 1))
+		continue
 	fi
 
 	if [ -f "$DEST" ] && cmp -s "$SRC" "$DEST"; then
@@ -55,13 +60,18 @@ while [ "$#" -gt 0 ]; do
 	echo
 done
 
+SKIPPED_NOTE=""
+if [ "$SKIPPED" -gt 0 ]; then
+	SKIPPED_NOTE=" (${SKIPPED} skipped: source missing)"
+fi
+
 if [ "$CHANGED" -eq 0 ]; then
-	echo "Nothing to do; all destinations are already up to date."
+	echo "Nothing to do; all destinations are already up to date.${SKIPPED_NOTE}"
 	exit 0
 fi
 
 if [ "$APPLY" != true ]; then
-	echo "Dry run: ${CHANGED} file(s) would be overwritten. Nothing was written."
+	echo "Dry run: ${CHANGED} file(s) would be overwritten.${SKIPPED_NOTE} Nothing was written."
 	echo "Re-run with --confirm=yes to apply."
 	exit 0
 fi
@@ -75,4 +85,4 @@ while [ "$#" -gt 0 ]; do
 	cp -f "$SRC" "$DEST"
 	echo "wrote: $DEST"
 done
-echo "Applied ${CHANGED} file(s)."
+echo "Applied ${CHANGED} file(s).${SKIPPED_NOTE}"

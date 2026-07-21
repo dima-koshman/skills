@@ -81,7 +81,6 @@
         "https://opencode.ai": true,
         "https://raw.githubusercontent.com/devcontainers/spec/": true,
         "https://raw.githubusercontent.com/microsoft/vscode/": true,
-        "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json": true,
         "https://schemastore.azurewebsites.net/": true,
         "https://www.schemastore.org/": true
     },

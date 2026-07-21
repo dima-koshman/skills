@@ -89,8 +89,8 @@
         },
         {
             "label": "Sync OpenCode config globally",
-            "detail": "Copy this project's OpenCode, TUI, and DCP configs plus the .mcp.json loader and schema to ~/.config/opencode. Shows a diff unless you type 'yes'.",
-            "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.opencode/opencode.jsonc\" \"$HOME/.config/opencode/opencode.jsonc\" \"${workspaceFolder}/.opencode/tui.json\" \"$HOME/.config/opencode/tui.json\" \"${workspaceFolder}/.opencode/dcp.jsonc\" \"$HOME/.config/opencode/dcp.jsonc\" \"${workspaceFolder}/.opencode/plugins/load-mcp-json.js\" \"$HOME/.config/opencode/plugins/load-mcp-json.js\" \"${workspaceFolder}/.opencode/schemas/claude-mcp.schema.json\" \"$HOME/.config/opencode/schemas/claude-mcp.schema.json\""
+            "detail": "Copy this project's OpenCode and TUI configs plus the .mcp.json loader and schema to ~/.config/opencode. Shows a diff unless you type 'yes'.",
+            "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.opencode/opencode.jsonc\" \"$HOME/.config/opencode/opencode.jsonc\" \"${workspaceFolder}/.opencode/tui.json\" \"$HOME/.config/opencode/tui.json\" \"${workspaceFolder}/.opencode/plugins/load-mcp-json.js\" \"$HOME/.config/opencode/plugins/load-mcp-json.js\" \"${workspaceFolder}/.opencode/schemas/claude-mcp.schema.json\" \"$HOME/.config/opencode/schemas/claude-mcp.schema.json\""
         },
         {
             "label": "Sync Claude settings globally",

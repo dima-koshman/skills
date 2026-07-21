@@ -27,6 +27,25 @@
     //     }
     // },
     "subagent_depth": 1,
+    // Auto-format after every write/edit. Formatters are OFF unless this key is truthy —
+    // omitting it disables them outright. `true` enables the built-in set; an object enables
+    // the built-ins plus per-formatter overrides ({"prettier": {"disabled": true}} or
+    // {"<name>": {"command": [...]}}). ruff and uv are linked: disabling either drops both.
+    //
+    // Each built-in self-activates per project via its own predicate. Some need only the
+    // binary on PATH (gofmt, shfmt, rustfmt, zig, ktlint, nixfmt); others additionally
+    // require a config file that opts in, and stay silently off without one:
+    //   ruff      ruff on PATH AND ([tool.ruff] in pyproject.toml, or ruff.toml/.ruff.toml)
+    //   uv        .py fallback, used ONLY when ruff is not enabled
+    //   prettier  package.json listing prettier in (dev)dependencies
+    //   biome     biome.json / biome.jsonc
+    //   clang     .clang-format
+    // Formatting only — it never runs a lint --fix pass, so a repo whose own task chains
+    // `ruff format` + `ruff check --fix` still needs that task run separately.
+    //
+    // To see what actually resolves in a given project (authoritative, beats guessing):
+    //   opencode serve --port 39517 &
+    //   curl -s "localhost:39517/formatter?directory=$PWD" | jq '.[] | select(.enabled)'
     "formatter": true,
     // opencode auto-discovers local plugins in .opencode/plugins/.
     // load-mcp-json.js is our custom bridge that imports non-secret MCPs from .mcp.json;
@@ -39,25 +58,61 @@
         // https://github.com/NoeFabris/opencode-antigravity-auth
         // @latest floats; when it bumps, the Antigravity model IDs / tier-stripping may
         // change — re-verify per the "HOW TO RE-VERIFY / UPDATE" note in provider.google.
-        "opencode-antigravity-auth@latest",
-        // https://github.com/Opencode-DCP/opencode-dynamic-context-pruning
-        "@tarquinen/opencode-dcp@latest"
+        "opencode-antigravity-auth@latest"
     ],
+    // Active with no env var needed (verified: `opencode debug agent build` lists the resolved
+    // path as an allowed external_directory both with and without OPENCODE_EXPERIMENTAL). There
+    // IS an OPENCODE_EXPERIMENTAL_REFERENCES runtime flag, but it does not gate this block.
+    //
+    // CAUTION: relative paths resolve against the directory holding THIS config file, not the
+    // project root. From .opencode/, "path": "../.claude/memory" resolves to <project>/.claude/memory.
     "references": {
         "claude-memory": {
-            "path": ".claude/memory",
+            "path": "../.claude/memory",
             "description": "Use for prior session notes and local project memory from Claude Code."
         }
     },
+    // Context management. Both values below are opencode's defaults, kept explicit because
+    // the docs misreport prune's. Behavior verified against the opencode 1.18.4 binary
+    // (SessionCompaction.prune and the auto-compaction threshold fn); the schema claims
+    // prune defaults to true, see anomalyco/opencode#24108 (closed, not planned).
     "compaction": {
+        // Auto-compaction: summarize the session into a checkpoint and carry on. Fires when
+        // (input + output + cache read + cache write) >= model.limit.input - reserved.
         "auto": true,
+        // Prune (off, deliberately): clears completed tool outputs beyond the most recent
+        // ~40k tokens, replacing them with "[Old tool result content cleared]". It batches —
+        // the backward scan stops at the first already-pruned part and only commits once
+        // >20k of new output has accrued — so it fires per ~20k of tool output, not per turn.
+        //
+        // Skipped because it invalidates the MIDDLE of the context: the cleared parts sit deep
+        // in the history, so every firing forces a re-prefill of everything after them, and the
+        // context stays large afterward. Auto-compaction invalidates everything but collapses to
+        // a small summary, making its re-prefill cheap — so paying the expensive invalidation
+        // repeatedly to defer one cheap one is a bad trade. Without prune the context is
+        // append-only, the ideal case for prefix caching.
+        //
+        // Reconsider per project: prune earns its keep when the context WINDOW is the binding
+        // constraint (small-window model, tool-heavy work), or on a provider that bills cached
+        // reads at the same rate as fresh ones, where there is no cache advantage to protect.
         "prune": false,
-        // opencode uses model metadata input_limit - reserved for auto-compaction.
-        // For GPT-5.5 metadata, 922k input = 1,050k context - 128k max output,
-        // so 500k reserved means opencode compacts around 922k - 500k = 422k tokens.
-        // DCP should reduce context before this; built-in compaction remains
-        // a last-resort safety net near model overflow.
-        "reserved": 100000
+        // MODEL-SPECIFIC — intentionally left unset in this template. `reserved` is a plain
+        // subtraction from model.limit.input (not a max() against max output), so it is a
+        // direct "compact at N tokens" dial:
+        //
+        //     reserved = model.limit.input - <target context size>
+        //
+        // Choose the target below any tier boundary where the model changes price or serving
+        // behavior, and low enough that attention quality still holds. Worked example for
+        // gpt-5.6-sol (limit.input 922k; input cost doubles above 272k of context):
+        //
+        //     922_000 - 672_000 = compact at ~250k, just under that 272k cliff.
+        //
+        // A 200k-window model needs an entirely different number, so copy the formula rather
+        // than the constant. Unset falls back to reserved = min(20k, model max output tokens),
+        // which on a large-window model means sessions run nearly to the input limit before
+        // compacting — fine for short sessions, expensive for long ones.
+        // "reserved": 672000
     },
     // opencode-antigravity-auth requires model definitions under provider.google
     // so it can intercept and route requests to the Antigravity OAuth endpoint.
@@ -172,11 +227,39 @@
             }
         }
     },
+    // Same true/false/object semantics as "formatter" above: an object enables the built-in
+    // servers AND applies these overrides. LSP drives post-edit diagnostics out of the box.
+    // The interactive `lsp` agent tool — goToDefinition, findReferences, hover, documentSymbol,
+    // workspaceSymbol, goToImplementation, prepareCallHierarchy, incoming/outgoingCalls — is
+    // NOT registered unless OPENCODE_EXPERIMENTAL_LSP_TOOL / OPENCODE_EXPERIMENTAL is set
+    // (see below). When it is, the tool routes to whichever server handles the file, so this
+    // basedpyright override is what answers Python queries.
     "lsp": {
         "pyright": {
             "command": [".venv/bin/basedpyright-langserver", "--stdio"]
         }
     },
+    // This block is ordinary config and needs NO env var — disable_paste_summary applies as-is.
+    //
+    // OPENCODE_EXPERIMENTAL is a separate, env-only switch that does not read from here. Each
+    // gated feature checks its own variable first and falls back to OPENCODE_EXPERIMENTAL when
+    // that variable is unset, so
+    //     export OPENCODE_EXPERIMENTAL=true
+    // opts into the whole set at once. Falling back to it (set the named var to override):
+    //   OPENCODE_EXPERIMENTAL_LSP_TOOL          the `lsp` agent tool (see the lsp block above)
+    //   OPENCODE_EXPERIMENTAL_PLAN_MODE         plan mode (cli client only)
+    //   OPENCODE_EXPERIMENTAL_CODE_MODE         code mode
+    //   OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS
+    //   OPENCODE_EXPERIMENTAL_WORKSPACES
+    //   OPENCODE_EXPERIMENTAL_EVENT_SYSTEM
+    //   OPENCODE_EXPERIMENTAL_OXFMT            the oxfmt formatter (also needs a package.json dep)
+    //   OPENCODE_EXPERIMENTAL_ICON_DISCOVERY
+    //   OPENCODE_EXPERIMENTAL_REFERENCES       declared, but does NOT gate "references" above
+    //   OPENCODE_ENABLE_EXA / OPENCODE_EXPERIMENTAL_EXA
+    // NOT covered — these need their own variable and ignore OPENCODE_EXPERIMENTAL entirely:
+    //   OPENCODE_ENABLE_EXPERIMENTAL_MODELS, OPENCODE_ENABLE_QUESTION_TOOL,
+    //   OPENCODE_EXPERIMENTAL_LSP_TY, OPENCODE_EXPERIMENTAL_NATIVE_LLM,
+    //   OPENCODE_EXPERIMENTAL_WEBSOCKETS, OPENCODE_ENABLE_PARALLEL.
     "experimental": {
         "disable_paste_summary": true
     }

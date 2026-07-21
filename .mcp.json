@@ -7,6 +7,17 @@
             "headers": {
                 "Authorization": "Bearer ${GITHUB_PAT}"
             }
+        },
+        "langfuse": {
+            "type": "streamable-http",
+            "url": "https://langfuse.kapitalbank.az/api/public/mcp",
+            "headers": {
+                "Authorization": "Basic ${LANGFUSE_AUTH_HEADER}"
+            }
+        },
+        "langfuse-docs": {
+            "type": "streamable-http",
+            "url": "https://langfuse.com/api/mcp"
         }
     }
 }

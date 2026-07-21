@@ -72,6 +72,16 @@
             "command": "npx --yes skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill writing-plans --agent claude-code --agent opencode ${input:skillScope} --yes"
         },
         {
+            "label": "Install remote skills: langfuse",
+            "detail": "Install the langfuse skill from langfuse/skills for Claude Code and OpenCode. Prompts for install scope (default: this project).",
+            "command": "npx --yes skills add langfuse/skills --skill langfuse --agent opencode --agent claude-code ${input:skillScope} --yes"
+        },
+        {
+            "label": "Generate Langfuse auth header",
+            "detail": "https://langfuse.com/docs/api-and-data-platform/features/mcp-server#set-up",
+            "command": "echo -n '${env:LANGFUSE_PUBLIC_KEY}:${env:LANGFUSE_SECRET_KEY}' | base64"
+        },
+        {
             "label": "Install remote skills: all",
             "detail": "Install every remote-sourced skill (runs all install tasks in sequence). Each prompts for scope. On-demand: these are not installed by default to keep agent context small.",
             "dependsOrder": "sequence",
@@ -79,7 +89,8 @@
                 "Install remote skills: logfire",
                 "Install remote skills: supabase",
                 "Install remote skills: skill-creator",
-                "Install remote skills: superpowers subset"
+                "Install remote skills: superpowers subset",
+                "Install remote skills: langfuse"
             ]
         },
         {

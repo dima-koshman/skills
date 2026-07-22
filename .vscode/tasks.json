@@ -74,7 +74,7 @@
         {
             "label": "Install remote skills: superpowers subset",
             "detail": "Install the three superpowers skills worth keeping (brainstorming, systematic-debugging, writing-plans) from obra/superpowers, without the plugin's always-on SessionStart context injection. Prompts for install scope (default: this project).",
-            "command": "npx --yes skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill writing-plans --agent claude-code --agent opencode ${input:skillScope} --yes"
+            "command": "npx --yes skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill writing-plans --skill test-driven-development --skill subagent-driven-development --skill requesting-code-review --agent claude-code --agent opencode ${input:skillScope} --yes"
         },
         {
             "label": "Install remote skills: langfuse",

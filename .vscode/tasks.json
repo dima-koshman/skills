@@ -33,6 +33,11 @@
             ]
         },
         {
+            "label": "Setup: link scripts and IDE to ~/.local/bin",
+            "detail": "Bootstrap a fresh clone: symlink this repo's cross-project scripts, plus an `ide` editor launcher, into ~/.local/bin so every task that calls them by bare name resolves. Run this first on a new host — the other tasks assume it has run. Invoked by explicit path because it is what puts the bare names on PATH. Idempotent; refuses to overwrite anything that is not already a symlink. Warns instead of failing if no editor bundle is found.",
+            "command": "bash \"${workspaceFolder}/scripts/setup_local_bin.sh\""
+        },
+        {
             "label": "Link .claude/skills to .agents/skills",
             "detail": "Symlink the whole .claude/skills directory to .agents/skills, so Claude Code sees every project skill (it only scans .claude/skills/; OpenCode reads .agents/skills/ directly). Linking the directory rather than each skill means new skills need no re-run. Refuses if .agents/skills is missing (the link would dangle), or if .claude/skills holds a real entry absent from .agents/skills, which would be lost.",
             "command": "link_claude_skills.sh"

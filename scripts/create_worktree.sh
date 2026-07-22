@@ -23,8 +23,17 @@ case "${DEST}" in
 esac
 mkdir -p "$(dirname "${DEST}")"
 
-echo "Creating worktree at ${DEST} for branch ${BRANCH}..."
-git worktree add -- "${DEST}" "${BRANCH}"
+# An existing branch is checked out as-is. An unknown one is created off the main
+# worktree's HEAD — normally main — so a new branch starts from the integration
+# branch even when this runs from a worktree sitting on unrelated work.
+if git rev-parse --verify --quiet "refs/heads/${BRANCH}" >/dev/null; then
+	echo "Creating worktree at ${DEST} for existing branch ${BRANCH}..."
+	git worktree add -- "${DEST}" "${BRANCH}"
+else
+	START_POINT="$(git -C "${MAIN_ROOT}" rev-parse HEAD)"
+	echo "Creating worktree at ${DEST} for new branch ${BRANCH} (from ${MAIN_ROOT} @ ${START_POINT:0:12})..."
+	git worktree add -b "${BRANCH}" -- "${DEST}" "${START_POINT}"
+fi
 
 # Copy .env if it exists
 if [ -f "${MAIN_ROOT}/.env" ]; then

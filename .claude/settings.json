@@ -17,7 +17,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "/Users/koshmandmitry/.claude/hooks/notify.sh 'Turn complete'"
+                        "command": "osascript -e 'on run argv' -e 'display notification (item 1 of argv) with title \"Claude Code\" subtitle (item 2 of argv) sound name \"Ping\"' -e 'end run' -- 'Turn complete' \"${PWD##*/}\""
                     }
                 ]
             }
@@ -27,7 +27,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "/Users/koshmandmitry/.claude/hooks/notify.sh 'Turn ended with an error'"
+                        "command": "osascript -e 'on run argv' -e 'display notification (item 1 of argv) with title \"Claude Code\" subtitle (item 2 of argv) sound name \"Basso\"' -e 'end run' -- 'Turn ended with an error' \"${PWD##*/}\""
                     }
                 ]
             }
@@ -38,7 +38,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "/Users/koshmandmitry/.claude/hooks/notify.sh 'Claude needs your input'"
+                        "command": "osascript -e 'on run argv' -e 'display notification (item 1 of argv) with title \"Claude Code\" subtitle (item 2 of argv) sound name \"Ping\"' -e 'end run' -- 'Claude needs your input' \"${PWD##*/}\""
                     }
                 ]
             }
@@ -49,7 +49,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "/Users/koshmandmitry/.claude/hooks/notify.sh 'Claude has a question'"
+                        "command": "osascript -e 'on run argv' -e 'display notification (item 1 of argv) with title \"Claude Code\" subtitle (item 2 of argv) sound name \"Ping\"' -e 'end run' -- 'Claude has a question' \"${PWD##*/}\""
                     }
                 ]
             }

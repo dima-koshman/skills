@@ -1,4 +1,5 @@
 {
+    // https://opencode.ai/docs/config
     "$schema": "https://opencode.ai/config.json",
     // Gemini 3.5 Flash (High). NOT "gemini-3.5-flash" — that wire ID 404s
     // ("Requested entity was not found"). See the provider.google block below for why
@@ -6,7 +7,7 @@
     // "model": "google/antigravity-gemini-3-flash-agent",
     // "model": "google/antigravity-gemini-3.6-flash-tiered",
     "model": "openai/gpt-5.6-sol",
-    // For meta tasks, like generating session title
+    // For lightweight meta tasks, like generating session title
     "small_model": "opencode/nemotron-3-ultra-free",
     // NOT redundant with "model" above: an agent's own model ALWAYS wins over the top-level
     // key, and the GLOBAL config (~/.config/opencode/opencode.jsonc) ships an active
@@ -39,7 +40,11 @@
         //     }
         // }
     },
+    "default_agent": "build",
+    // https://opencode.ai/docs/config#subagent-depth
     "subagent_depth": 1,
+    // https://opencode.ai/docs/config/#snapshot
+    "snapshot": false,
     // Auto-format after every write/edit. Formatters are OFF unless this key is truthy —
     // omitting it disables them outright. `true` enables the built-in set; an object enables
     // the built-ins plus per-formatter overrides ({"prettier": {"disabled": true}} or
@@ -67,7 +72,7 @@
         // https://github.com/obra/superpowers
         // "superpowers@git+https://github.com/obra/superpowers.git",
         // https://github.com/mohak34/opencode-notifier
-        "@mohak34/opencode-notifier@latest",
+        // "@mohak34/opencode-notifier@latest",
         // https://github.com/NoeFabris/opencode-antigravity-auth
         // @latest floats; when it bumps, the Antigravity model IDs / tier-stripping may
         // change — re-verify per the "HOW TO RE-VERIFY / UPDATE" note in provider.google.
@@ -109,23 +114,37 @@
         // constraint (small-window model, tool-heavy work), or on a provider that bills cached
         // reads at the same rate as fresh ones, where there is no cache advantage to protect.
         "prune": false
-        // MODEL-SPECIFIC — intentionally left unset in this template. `reserved` is a plain
-        // subtraction from model.limit.input (not a max() against max output), so it is a
-        // direct "compact at N tokens" dial:
+        // MODEL-SPECIFIC. `reserved` is a plain subtraction from model.limit.input (not a
+        // max() against max output), so it is a direct "compact at N tokens" dial:
         //
         //     reserved = model.limit.input - <target context size>
         //
-        // Choose the target below any tier boundary where the model changes price or serving
-        // behavior, and low enough that attention quality still holds. Worked example for
-        // gpt-5.6-sol (limit.input 922k; input cost doubles above 272k of context):
+        // GET limit.input FROM THE RUNNING INSTANCE, NOT FROM models.dev. When the openai
+        // provider is authed by ChatGPT OAuth (auth.json openai.type == "oauth", which is our
+        // case), opencode REPLACES the models.dev limits and zeroes the cost:
+        //     gpt-5.5*  ->  {context: 400_000, input: 272_000}
+        //     gpt-5.6*  ->  {context: 500_000, input: 372_000}
+        // ~/.cache/opencode/models.json still says input 922_000 for gpt-5.6-sol; that value
+        // is NOT what compaction uses here. Authoritative check:
+        //     opencode serve --port 39517 &
+        //     curl -s localhost:39517/config/providers \
+        //       | jq '.providers[]|select(.id=="openai").models["gpt-5.6-sol"].limit'
         //
-        //     922_000 - 672_000 = compact at ~250k, just under that 272k cliff.
+        //     372_000 - 122_000 = compact at ~250k.
         //
-        // A 200k-window model needs an entirely different number, so copy the formula rather
-        // than the constant. Unset falls back to reserved = min(20k, model max output tokens),
-        // which on a large-window model means sessions run nearly to the input limit before
-        // compacting — fine for short sessions, expensive for long ones.
-        // "reserved": 672000
+        // NEVER let reserved >= limit.input. opencode computes the threshold as
+        // Math.max(0, limit.input - reserved), so an oversized reserved clamps it to 0 and
+        // "tokens >= 0" is true on every turn — the session compacts in an infinite loop from
+        // the first message, with no warning. Verified 2026-07-22: reserved 672_000 against
+        // the OAuth limit of 372_000 did exactly this, compacting at 10k tokens.
+        //
+        // Models with NO limit.input (every provider.google entry below, most Anthropic ones)
+        // ignore `reserved` entirely and fall back to limit.context - max output tokens.
+        //
+        // Unset falls back to reserved = min(20k, model max output tokens), which on a
+        // large-window model means sessions run nearly to the input limit before compacting —
+        // fine for short sessions, expensive for long ones.
+        // "reserved": 122000
     },
     // opencode-antigravity-auth requires model definitions under provider.google
     // so it can intercept and route requests to the Antigravity OAuth endpoint.

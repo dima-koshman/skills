@@ -209,7 +209,7 @@
         {
             "id": "worktreeDir",
             "type": "promptString",
-            "description": "Optional worktree directory (absolute, or relative to <repo>/.worktrees/; defaults to normalized branch name)"
+            "description": "Optional worktree directory (absolute, or relative to <main>/.worktrees/ when run from the main worktree, else to the current worktree's parent; defaults to normalized branch name)"
         },
         {
             "id": "skillScope",

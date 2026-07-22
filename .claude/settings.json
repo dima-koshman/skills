@@ -9,6 +9,8 @@
         ]
     },
     "model": "opus",
+    "effortLevel": "high",
+    "showThinkingSummaries": true,
     "hooks": {
         "Stop": [
             {
@@ -71,6 +73,5 @@
             }
         }
     },
-    "effortLevel": "high",
     "switchModelsOnFlag": true
 }

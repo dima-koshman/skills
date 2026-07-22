@@ -4,18 +4,24 @@ set -euo pipefail
 BRANCH="${1:?Usage: $0 <branch-name> [dir]}"
 NORMALIZED="${BRANCH//\//-}"
 
-# All worktrees live under <main-worktree>/.worktrees/, regardless of which
-# worktree the script is invoked from.
 MAIN_ROOT="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
-WORKTREES_DIR="${MAIN_ROOT}/.worktrees"
+CURRENT_ROOT="$(git rev-parse --show-toplevel)"
 
-if [ -n "${2:-}" ]; then
-	DEST="$2"
+# Invoked from the main worktree: nest new worktrees under .worktrees/.
+# Invoked from a linked worktree: put the new one beside it, so worktrees kept
+# outside .worktrees/ stay grouped where they already live.
+if [ "${CURRENT_ROOT}" = "${MAIN_ROOT}" ]; then
+	BASE_DIR="${MAIN_ROOT}/.worktrees"
 else
-	DEST="${NORMALIZED}"
+	BASE_DIR="$(dirname "${CURRENT_ROOT}")"
 fi
-mkdir -p "${WORKTREES_DIR}"
-DEST="$(cd "${WORKTREES_DIR}" && python3 -c "import os,sys; print(os.path.abspath(sys.argv[1]))" "$DEST")"
+
+DEST="${2:-${NORMALIZED}}"
+case "${DEST}" in
+/*) ;;
+*) DEST="${BASE_DIR}/${DEST}" ;;
+esac
+mkdir -p "$(dirname "${DEST}")"
 
 echo "Creating worktree at ${DEST} for branch ${BRANCH}..."
 git worktree add -- "${DEST}" "${BRANCH}"

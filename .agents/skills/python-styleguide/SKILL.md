@@ -785,10 +785,49 @@ def process(items: list[str]) -> None:
 
 ## Test guidelines
 
-- Do **not** use `pytest.skip` in tests. If a prerequisite is missing, fail the test with
-    a clear message using `pytest.fail(...)` or an assertion stating what
-    resource/config is missing.
-- Keep failures actionable — state what resource or config is missing.
+- Keep failures actionable — state what resource or config is missing, naming the exact
+    env var or fixture to set.
+- In **unit tests**, never `pytest.skip`. They have no external prerequisites, so a skip
+    can only mean the test was written to dodge its own setup.
+- In **integration tests**, prefer `pytest.fail(...)` — but `pytest.skip(...)` is
+    acceptable for an optional capability the deployment may genuinely not use.
+
+The distinction is whether the missing thing *should* be there:
+
+- **Fail** when absence indicates a misconfiguration or a broken fixture — the resource
+    exists in any healthy environment. A repository always has files and commits; a
+    Confluence instance always has pages. If those come back empty, something is wrong and
+    you want to hear about it.
+- **Skip** when absence is a legitimate deployment choice. A team that tracks work in Jira
+    may never open a GitLab issue, so `get_issue` has nothing to exercise. That is not a
+    defect, and failing the suite over it trains people to ignore red.
+
+```python
+# Good — the feature may legitimately be unused in this deployment
+if issue_iid is None:
+    pytest.skip("No GitLab issue found; set TEST_GITLAB_ISSUE_IID")
+
+# Bad — every non-empty repository has commits, so this hides a broken fixture
+if commit_sha is None:
+    pytest.skip("No commit SHA available")
+```
+
+**A skip must never absorb flakiness.** If a resource is normally present and the call
+occasionally returns nothing, skipping converts an intermittent backend failure into a
+silent green — the worst outcome, because the suite reports success while coverage quietly
+drops. When unsure, re-run the test several times: if it passes consistently and skipped
+once, the skip is masking instability and belongs as a failure.
+
+Skip the narrowest thing possible. A `pytest.skip` partway through a test also discards the
+assertions that already passed, so the report cannot distinguish "two of three tools
+verified" from "nothing ran". If only the tail of a test is conditional, split it out.
+
+Because a skip is easy to stop noticing, make it visible and explain it:
+
+- Set `addopts = "-ra"` in `[tool.pytest.ini_options]` so every skip prints its reason in
+    the summary. Without it a skip is a bare `s` in the progress line and reads like a pass.
+- Comment any skip that is an exception to the surrounding file's convention, saying why,
+    so it is not later "fixed" into a failure by someone applying this guide literally.
 
 ## Security
 

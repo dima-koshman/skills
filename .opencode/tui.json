@@ -1,9 +1,19 @@
 {
+    // https://opencode.ai/docs/tui
     "$schema": "https://opencode.ai/tui.json",
+    // To send text selection to opencode via sst-dev.opencode vscode plugin, use:
+    // cmd + opt + k
     "keybinds": {
         "messages_next": "down",
         "messages_previous": "up",
         "history_previous": "none",
         "history_next": "none"
+    },
+    // https://opencode.ai/docs/tui/#attention
+    "attention": {
+        "enabled": true,
+        "notifications": true,
+        "sound": true,
+        "volume": 0.4
     }
 }

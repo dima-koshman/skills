@@ -26,12 +26,12 @@
         },
         // explore searches and explains your local codebase
         "explore": {
-            "model": "google/antigravity-gemini-3.6-flash-tiered",
-            "variant": "high"
+            "model": "opencode-go/deepseek-v4-flash",
+            "variant": "max"
         },
         // scout researches external dependencies and upstream documentation
         "scout": {
-            "model": "google/antigravity-gemini-3.6-flash-tiered",
+            "model": "opencode-go/deepseek-v4-flash",
             "variant": "high"
         },
         // Custom reviewer agent

@@ -4,8 +4,8 @@
     // To send text selection to opencode via sst-dev.opencode vscode plugin, use:
     // cmd + opt + k
     "keybinds": {
-        "messages_next": "down",
-        "messages_previous": "up",
+        "messages_next": "ctrl+l",
+        "messages_previous": "ctrl+o",
         "history_previous": "none",
         "history_next": "none"
     },
@@ -13,7 +13,10 @@
     "attention": {
         "enabled": true,
         "notifications": true,
-        "sound": true,
-        "volume": 0.4
+        "sound": false,
+        "volume": 0.4,
+        "sounds": {
+            "subagent_done": "silence.wav"
+        }
     }
 }

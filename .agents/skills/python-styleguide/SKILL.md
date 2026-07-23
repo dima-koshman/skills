@@ -168,6 +168,57 @@ def public_function() -> Result:
     return _helper()
 ```
 
+## Methods that don't use `self` or `cls`
+
+When a method's body never references `self` or `cls`, it does not belong to the class —
+make it a module-level function instead of a `@staticmethod`. A method that ignores the
+instance is not really a method; keeping it on the class implies a dependency on instance
+or class state that isn't there, and forces every caller to route through an instance to
+reach pure logic. A free function states plainly "this is standalone," is directly
+testable and importable without constructing the class, and reuses the module's existing
+public/private layout rather than adding a second visibility axis inside the class.
+
+Prefer a module-level function over `@staticmethod`. A `@staticmethod` is still namespaced
+under the class and reachable only via it, carrying the same "belongs to this class"
+implication with none of the access to state that would justify it. Reach for
+`@staticmethod` only when an external contract requires the callable to live on the class
+(e.g. a framework that looks it up as an attribute, or an override of a base-class
+staticmethod).
+
+Give the extracted function module-private visibility (a leading underscore) when it is
+only an implementation detail of the module, following the [Visibility](#visibility) rules,
+and place it after the public API following [Declaration order](#declaration-order). Update
+call sites from `self._helper(...)` to `_helper(...)`.
+
+Two cases are **not** violations, even though the body ignores `self`:
+
+- **Interface methods.** A base-class default (`return []`) or an `@override` whose body
+    happens not to touch `self` is fixed by the polymorphic contract — the signature must
+    stay an instance method so subclasses and callers can rely on it.
+- **Registered callables.** A method exposed to a framework by binding (an MCP tool, a
+    route handler) must stay a method even if its current body is a stub or a pure wrapper,
+    because the framework registers the bound attribute.
+
+```python
+# Good — pure helper is a module-private function, placed after the public class
+class DashboardTools(BaseMcp):
+    async def get_panels(self) -> dict:
+        panels = _flatten_dashboard_panels(await self.fetch())
+        ...
+
+def _flatten_dashboard_panels(dashboard: dict) -> list[dict]:
+    ...
+
+# Bad — method that never uses self; a staticmethod would still be class-namespaced
+class DashboardTools(BaseMcp):
+    async def get_panels(self) -> dict:
+        panels = self._flatten_dashboard_panels(await self.fetch())
+        ...
+
+    def _flatten_dashboard_panels(self, dashboard: dict) -> list[dict]:
+        ...
+```
+
 ## Blank lines
 
 Add a blank line after the end of an indented block (`for`, `while`, `if`, `with`, `try`)

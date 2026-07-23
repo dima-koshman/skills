@@ -14,6 +14,23 @@
             "command": "brew update && brew upgrade --yes && npm update -g"
         },
         {
+            "label": "Full sync this project to host",
+            "detail": "Run the full local-setup sequence for a host: update package managers, publish local skills, link scripts/IDE and Claude files, refresh and install remote skills, sync OpenCode + VSCode configs, install the daily update LaunchAgent, and install pre-commit. Skips 'Sync Claude settings globally' (it replaces the file wholesale). Prompts once for skill scope and once for sync-confirm — type 'yes' at the sync prompt or the two Sync tasks stay dry-run. Stops if any step exits non-zero (most likely 'Setup: link scripts and IDE' when no editor bundle is found).",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Update and upgrade Homebrew, npm",
+                "Install local skills globally: all",
+                "Setup: link scripts and IDE to ~/.local/bin",
+                "Link Claude Code to project files",
+                "Update skills from remote sources",
+                "Install remote skills: all",
+                "Sync OpenCode config globally",
+                "Sync VSCode settings and tasks to Devin User",
+                "Install daily brew/npm update (launchd)",
+                "Install pre-commit"
+            ]
+        },
+        {
             "label": "Install local skills globally: development-best-practices",
             "detail": "Publish this repo's development-best-practices skill globally (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/). Cross-project by nature: git branch and worktree hygiene, day-to-day dev workflow conventions.",
             "command": "npx --yes skills add ./.agents/skills/development-best-practices --agent claude-code --agent opencode --agent codex --global --yes"
@@ -129,6 +146,16 @@
             "command": "caffeinate -i -w ${input:pid}"
         },
         {
+            "label": "Install daily brew/npm update (launchd)",
+            "detail": "Install a user LaunchAgent that runs 'brew update && brew upgrade --yes && npm update -g' daily at midnight. Uses launchd, not cron: a job missed while the Mac is asleep runs at next wake instead of being silently dropped. Does not wake the Mac. Idempotent; logs to ~/Library/Logs/brew-npm-update.log. Portable across hosts.",
+            "command": "bash \"${workspaceFolder}/scripts/install_update_launchd.sh\""
+        },
+        {
+            "label": "Uninstall daily brew/npm update (launchd)",
+            "detail": "Unload and remove the daily brew/npm update LaunchAgent installed by the task above.",
+            "command": "bash \"${workspaceFolder}/scripts/install_update_launchd.sh\" --uninstall"
+        },
+        {
             "label": "OKF AI-engineering: regenerate index",
             "detail": "Regenerate index.md for the ai-engineering OKF bundle from concept frontmatter",
             "command": "uv run --project . python .agents/skills/okf/scripts/okf_index.py .agents/skills/okf-ai-engineering/ai-engineering"
@@ -203,6 +230,10 @@
         {
             "label": "Get opencode stats",
             "command": "opencode stats --project '' --models --days ${input:days}"
+        },
+        {
+            "label": "Login into Bir ArgoCD",
+            "command": "argocd login apollocd.kapitalbank.az --sso --grpc-web"
         }
     ],
     "inputs": [

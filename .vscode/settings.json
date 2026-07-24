@@ -93,7 +93,6 @@
     "prettier.tabWidth": 4,
     "prettier.trailingComma": "none",
     "python.analysis.exclude": ["**/.venv/**", "**/__pycache__/**"],
-    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "ruff.lineLength": 100,
     "search.exclude": {
         "**/.venv": true,
@@ -107,5 +106,6 @@
     },
     "window.autoDetectColorScheme": true,
     "workbench.colorTheme": "Default Light Modern",
-    "workbench.preferredDarkColorTheme": "Default Dark Modern"
+    "workbench.preferredDarkColorTheme": "Default Dark Modern",
+    "editor.accessibilitySupport": "off"
 }

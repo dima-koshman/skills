@@ -18,6 +18,15 @@
         "langfuse-docs": {
             "type": "streamable-http",
             "url": "https://langfuse.com/api/mcp"
+        },
+        "logfire": {
+            "type": "http",
+            "url": "https://logfire-eu.pydantic.dev/mcp"
+        },
+        "mcp-playwright": {
+            "type": "stdio",
+            "command": "npx",
+            "args": ["-y", "@playwright/mcp@latest"]
         }
     }
 }

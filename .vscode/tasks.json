@@ -55,6 +55,11 @@
             "command": "bash \"${workspaceFolder}/scripts/setup_local_bin.sh\""
         },
         {
+            "label": "Add .env to global gitignore",
+            "detail": "Append '.env' to the machine-wide git ignore file so no repo can stage a .env, without touching any repo's tracked .gitignore. Writes to core.excludesFile when that is configured, else git's XDG default (~/.config/git/ignore), creating it if missing — writing to the wrong one would silently do nothing. Idempotent; prints the resulting file. Per-repo one-offs belong in that repo's .git/info/exclude instead.",
+            "command": "f=$(git config --global core.excludesFile || echo \"${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore\"); f=${f/#\\~/$HOME}; mkdir -p \"$(dirname \"$f\")\"; grep -qxF '.env' \"$f\" 2>/dev/null || printf '.env\\n' >> \"$f\"; echo \"--- $f ---\"; cat \"$f\""
+        },
+        {
             "label": "Link .claude/skills to .agents/skills",
             "detail": "Symlink the whole .claude/skills directory to .agents/skills, so Claude Code sees every project skill (it only scans .claude/skills/; OpenCode reads .agents/skills/ directly). Linking the directory rather than each skill means new skills need no re-run. Refuses if .agents/skills is missing (the link would dangle), or if .claude/skills holds a real entry absent from .agents/skills, which would be lost.",
             "command": "link_claude_skills.sh"

@@ -10,9 +10,27 @@
         "history_next": "none"
     },
     // https://opencode.ai/docs/tui/#attention
+    // "attention" is the TUI's built-in alerting: it marks the session as needing
+    // attention (permission prompt, session done, subagent done, error) and can play a
+    // sound and raise a notification.
+    //
+    // It does NOT talk to the OS notification system. `"notifications": true` only makes
+    // opencode write an OSC 777 escape sequence (`ESC ]777;notify;<title>;<body>`) to
+    // stdout — delivery is entirely up to the terminal emulator reading it:
+    //   - VSCode integrated terminal: swallows it and renders its own in-window toast,
+    //     visible only once you focus that VSCode window. Not in Notification Center.
+    //   - Ghostty / kitty / WezTerm / iTerm2: forward it to the macOS Notification
+    //     Center, i.e. a real system-wide notification from any app.
+    // `sound`/`volume`/`sounds` are played by opencode itself, so those work everywhere.
+    //
+    // For system-wide notifications from the VSCode terminal, use a plugin that shells
+    // out to the OS instead (see @mohak34/opencode-notifier in opencode.jsonc), and set
+    // "notifications": false here to avoid a duplicate VSCode toast.
     "attention": {
         "enabled": true,
-        "notifications": true,
+        // Left off on purpose: @mohak34/opencode-notifier delivers the real system
+        // notification. Turning this on adds a duplicate VSCode in-window toast.
+        "notifications": false,
         "sound": false,
         "volume": 0.4,
         "sounds": {

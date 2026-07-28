@@ -78,7 +78,7 @@
         // https://github.com/obra/superpowers
         // "superpowers@git+https://github.com/obra/superpowers.git",
         // https://github.com/mohak34/opencode-notifier
-        // "@mohak34/opencode-notifier@latest",
+        "@mohak34/opencode-notifier@latest",
         // https://github.com/NoeFabris/opencode-antigravity-auth
         // @latest floats; when it bumps, the Antigravity model IDs / tier-stripping may
         // change — re-verify per the "HOW TO RE-VERIFY / UPDATE" note in provider.google.

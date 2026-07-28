@@ -127,8 +127,8 @@
         },
         {
             "label": "Sync OpenCode config globally",
-            "detail": "Copy this project's OpenCode and TUI configs plus the .mcp.json loader and schema to ~/.config/opencode. Shows a diff unless you type 'yes'.",
-            "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.opencode/opencode.jsonc\" \"$HOME/.config/opencode/opencode.jsonc\" \"${workspaceFolder}/.opencode/tui.json\" \"$HOME/.config/opencode/tui.json\" \"${workspaceFolder}/.opencode/plugins/load-mcp-json.js\" \"$HOME/.config/opencode/plugins/load-mcp-json.js\" \"${workspaceFolder}/.opencode/schemas/claude-mcp.schema.json\" \"$HOME/.config/opencode/schemas/claude-mcp.schema.json\""
+            "detail": "Copy this project's OpenCode, TUI and opencode-notifier configs plus the .mcp.json loader and schema to ~/.config/opencode. Shows a diff unless you type 'yes'. opencode-notifier.json has no project-scoped lookup at all — the plugin hardcodes ~/.config/opencode/opencode-notifier.json (only OPENCODE_NOTIFIER_CONFIG_PATH overrides it), so this task is the only thing that makes the repo copy take effect.",
+            "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.opencode/opencode.jsonc\" \"$HOME/.config/opencode/opencode.jsonc\" \"${workspaceFolder}/.opencode/tui.json\" \"$HOME/.config/opencode/tui.json\" \"${workspaceFolder}/.opencode/opencode-notifier.json\" \"$HOME/.config/opencode/opencode-notifier.json\" \"${workspaceFolder}/.opencode/plugins/load-mcp-json.js\" \"$HOME/.config/opencode/plugins/load-mcp-json.js\" \"${workspaceFolder}/.opencode/schemas/claude-mcp.schema.json\" \"$HOME/.config/opencode/schemas/claude-mcp.schema.json\""
         },
         {
             "label": "Sync Claude settings globally",

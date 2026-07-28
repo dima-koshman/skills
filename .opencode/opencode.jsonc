@@ -36,7 +36,7 @@
         },
         // Custom reviewer agent
         "reviewer": {
-            "description": "Reviews completed work for specification compliance and code quality.",
+            "description": "Reviews substantial completed work for correctness and specification compliance. Each call costs meaningful time and tokens, so reserve it for changes worth reviewing. Use your judgement.",
             "mode": "subagent",
             // "model": "opencode-go/glm-5.2",
             "model": "opencode-go/grok-4.5",

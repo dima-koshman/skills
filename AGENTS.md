@@ -37,9 +37,6 @@ Review feedback is a technical claim to evaluate, not an order to execute.
   existing behavior? Is there a reason the current code is the way it is?
 - Push back with technical reasoning when a suggestion is wrong. Cite the code or test
   that proves it.
-- Skip performative agreement. No "You're absolutely right", no thanks-for-catching-that.
-  State the fix, or just make it.
-- If you pushed back and were wrong, say so in one line and move on.
 - Fix in order: blocking/security, then trivial, then complex. Test each individually.
 - Apply YAGNI to review suggestions too: if a "make this proper" suggestion targets code
   nothing calls, propose deleting it instead.
@@ -89,3 +86,9 @@ The `systematic-debugging` skill has the full process and tracing techniques.
 - YAGNI. Remove speculative features from designs before implementing them.
 
 The `brainstorming` and `writing-plans` skills cover the full workflow for larger work.
+
+## Parallel execution
+
+- Before making tool or subagent calls, check whether they depend on each other's output.
+  If they don't, issue them together in one turn rather than one at a time — it saves
+  latency and token cost.

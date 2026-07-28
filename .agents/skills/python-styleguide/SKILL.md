@@ -100,6 +100,40 @@ from project_name.utils import filter_dict_by_keys
 from .utils import filter_dict_by_keys
 ```
 
+## Module size
+
+Keep modules small. As a rule of thumb, stay under 500 lines, and preferably well below
+that. The number is a smell detector, not a hard limit: a module whose contents are tightly
+coupled — one class and the helpers only it uses, a state machine whose cases must be read
+together — is fine at 600 lines, while a 300-line module holding three unrelated concerns is
+already too big. Modules are bound by logical or functional cohesion, not by line count;
+splitting one along an arbitrary line boundary produces two modules that import each other
+constantly and is worse than the original.
+
+When a module has genuinely grown past what it should own, the ways to shrink it, in
+rough order of preference:
+
+- **Split into sibling modules.** The most common fix: one concern per file, side by side
+    in the same package.
+- **Promote it to a package** (a directory with an `__init__.py` — a *subpackage* when it
+    sits inside another package). Turn `pipeline.py` into `pipeline/` with `base.py`,
+    `stages.py`, `runner.py`, and re-export the public names from `pipeline/__init__.py`
+    following [Public API in `__init__.py`](#public-api-in-__init__py).
+- **Move standalone helpers to `utils`.** Functions in the module that don't depend on its
+    subject matter — string munging, dict filtering, retry wrappers — belong in a shared
+    utils module, not next to the domain logic that happens to call them first.
+- **Use the framework's own decomposition.** Most libraries already offer a seam designed
+    for this, and using it splits the code without inventing a structure: FastAPI
+    `APIRouter`s defined per resource and mounted onto the app with `include_router`,
+    Pydantic models composed from nested field models defined elsewhere, PyTorch
+    `nn.Module`s assembled from smaller `nn.Module`s, Click/Typer sub-commands, pytest
+    fixtures in `conftest.py`. Reach for the seam the package gives you before hand-rolling
+    one.
+
+Splitting is also a visibility exercise: whatever survives the move as importable becomes
+the module's contract, so apply the [Visibility](#visibility) rules to the pieces as you
+separate them.
+
 ## Visibility
 
 A module-level name gets a leading underscore (`_helper`, `_Internal`) when it is part of
@@ -879,11 +913,3 @@ Because a skip is easy to stop noticing, make it visible and explain it:
     the summary. Without it a skip is a bare `s` in the progress line and reads like a pass.
 - Comment any skip that is an exception to the surrounding file's convention, saying why,
     so it is not later "fixed" into a failure by someone applying this guide literally.
-
-## Security
-
-- `.claude/`, `.mcp.json`, and skill files are version-controlled and must **never**
-    contain secrets.
-- Use environment-variable references (e.g. `${LOGFIRE_READ_TOKEN}`) instead of
-    hardcoded tokens anywhere that is committed to git.
-- Review with `git diff` before committing changes to these files.

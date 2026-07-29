@@ -10,164 +10,173 @@
     "problemMatcher": [],
     "tasks": [
         {
-            "label": "Update and upgrade Homebrew, npm",
+            "label": "Setup: update and upgrade Homebrew, npm",
             "command": "brew update && brew upgrade --yes && npm update -g"
         },
         {
-            "label": "Full sync this project to host",
-            "detail": "Run the full local-setup sequence for a host: update package managers, publish local skills, link scripts/IDE and Claude files, refresh and install remote skills, sync OpenCode + VSCode configs, install the daily update LaunchAgent, and install pre-commit. Skips 'Sync Claude settings globally' (it replaces the file wholesale). Prompts once for skill scope and once for sync-confirm — type 'yes' at the sync prompt or the two Sync tasks stay dry-run. Stops if any step exits non-zero (most likely 'Setup: link scripts and IDE' when no editor bundle is found).",
+            "label": "Setup: full sync this project to host",
+            "detail": "Run the full local-setup sequence for a host: update package managers, publish local skills, link scripts/IDE and Claude files, refresh and install remote skills, sync OpenCode + VSCode configs, install the daily update LaunchAgent, and install pre-commit. Skips 'Sync: Claude settings globally' (it replaces the file wholesale). Prompts once for skill scope and once for sync-confirm — type 'yes' at the sync prompt or the two Sync tasks stay dry-run. Stops if any step exits non-zero (most likely 'Setup: link scripts and IDE' when no editor bundle is found).",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "Update and upgrade Homebrew, npm",
-                "Install local skills globally: all",
+                "Setup: update and upgrade Homebrew, npm",
                 "Setup: link scripts and IDE to ~/.local/bin",
-                "Link Claude Code to project files",
-                "Update skills from remote sources",
-                "Install remote skills: all",
-                "Sync OpenCode config globally",
-                "Sync VSCode settings and tasks to Devin User",
-                "Install daily brew/npm update (launchd)",
-                "Install pre-commit"
+                "Setup: add .env to global gitignore",
+                "Setup: install daily brew/npm update (launchd)",
+                "Link: Claude Code to project files",
+                "Skills: install local (all)",
+                "Skills: update from remote sources",
+                "Skills: install remote (all)",
+                "Sync: OpenCode config globally",
+                "Sync: VSCode settings and tasks to Devin User",
+                "Pre-commit: install"
             ]
         },
         {
-            "label": "Install local skills globally: development-best-practices",
+            "label": "Skills: install local (development-best-practices)",
             "detail": "Publish this repo's development-best-practices skill globally (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/). Cross-project by nature: git branch and worktree hygiene, day-to-day dev workflow conventions.",
+            "hide": true,
             "command": "npx --yes skills add ./.agents/skills/development-best-practices --agent claude-code --agent opencode --agent codex --global --yes"
         },
         {
-            "label": "Install local skills globally: python-styleguide",
+            "label": "Skills: install local (python-styleguide)",
             "detail": "Publish this repo's python-styleguide skill globally (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/). Cross-project by nature: shared Python style rules for all internal projects.",
+            "hide": true,
             "command": "npx --yes skills add ./.agents/skills/python-styleguide --agent claude-code --agent opencode --agent codex --global --yes"
         },
         {
-            "label": "Install local skills globally: all",
+            "label": "Skills: install local (all)",
             "detail": "Publish every locally-authored skill worth having in all projects (runs each install task in sequence). Always --global by design: these skills already live in .agents/skills/, so a project-scope install would copy them onto themselves and the duplicate would silently drift. Keep this list minimal — OpenCode reads ~/.agents/skills/ directly, so every skill here costs context in every session of every project.",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "Install local skills globally: development-best-practices",
-                "Install local skills globally: python-styleguide"
+                "Skills: install local (development-best-practices)",
+                "Skills: install local (python-styleguide)"
             ]
         },
         {
             "label": "Setup: link scripts and IDE to ~/.local/bin",
             "detail": "Bootstrap a fresh clone: symlink this repo's cross-project scripts, plus an `ide` editor launcher, into ~/.local/bin so every task that calls them by bare name resolves. Run this first on a new host — the other tasks assume it has run. Invoked by explicit path because it is what puts the bare names on PATH. Idempotent; refuses to overwrite anything that is not already a symlink. Warns instead of failing if no editor bundle is found.",
+            "hide": true,
             "command": "bash \"${workspaceFolder}/scripts/setup_local_bin.sh\""
         },
         {
-            "label": "Add .env to global gitignore",
+            "label": "Setup: add .env to global gitignore",
             "detail": "Append '.env' to the machine-wide git ignore file so no repo can stage a .env, without touching any repo's tracked .gitignore. Writes to core.excludesFile when that is configured, else git's XDG default (~/.config/git/ignore), creating it if missing — writing to the wrong one would silently do nothing. Idempotent; prints the resulting file. Per-repo one-offs belong in that repo's .git/info/exclude instead.",
+            "hide": true,
             "command": "f=$(git config --global core.excludesFile || echo \"${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore\"); f=${f/#\\~/$HOME}; mkdir -p \"$(dirname \"$f\")\"; grep -qxF '.env' \"$f\" 2>/dev/null || printf '.env\\n' >> \"$f\"; echo \"--- $f ---\"; cat \"$f\""
         },
         {
-            "label": "Link .claude/skills to .agents/skills",
+            "label": "Link: .claude/skills to .agents/skills",
             "detail": "Symlink the whole .claude/skills directory to .agents/skills, so Claude Code sees every project skill (it only scans .claude/skills/; OpenCode reads .agents/skills/ directly). Linking the directory rather than each skill means new skills need no re-run. Refuses if .agents/skills is missing (the link would dangle), or if .claude/skills holds a real entry absent from .agents/skills, which would be lost.",
             "command": "link_claude_skills.sh"
         },
         {
-            "label": "Link CLAUDE.md to AGENTS.md",
+            "label": "Link: CLAUDE.md to AGENTS.md",
             "detail": "Replace CLAUDE.md with a symlink to AGENTS.md so both Claude Code and other agents read one instruction file. Refuses to clobber a CLAUDE.md that holds its own content — delete it manually first if that is intended.",
             "command": "link_claude_md.sh"
         },
         {
-            "label": "Link Claude Code to project files",
+            "label": "Link: Claude Code to project files",
             "detail": "Point Claude Code at this project's shared agent files: CLAUDE.md -> AGENTS.md and .claude/skills -> .agents/skills (runs both link tasks in sequence). Safe to re-run; both tasks are idempotent.",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "Link CLAUDE.md to AGENTS.md",
-                "Link .claude/skills to .agents/skills"
+                "Link: CLAUDE.md to AGENTS.md",
+                "Link: .claude/skills to .agents/skills"
             ]
         },
         {
-            "label": "Install remote skills: logfire",
-            "detail": "Install the upstream logfire skills from pydantic/skills for Claude Code and OpenCode. Skills are named explicitly because the repo also ships unrelated skills. Prompts for install scope (default: this project). Tracked in a skills lock file, so 'Update skills from remote sources' refreshes them.",
+            "label": "Skills: install remote (logfire)",
+            "detail": "Install the upstream logfire skills from pydantic/skills for Claude Code and OpenCode. Skills are named explicitly because the repo also ships unrelated skills. Prompts for install scope (default: this project). Tracked in a skills lock file, so 'Skills: update from remote sources' refreshes them.",
             "command": "npx --yes skills add pydantic/skills --skill logfire-instrumentation --skill logfire-query --skill logfire-ui --agent claude-code --agent opencode ${input:skillScope} --yes"
         },
         {
-            "label": "Install remote skills: supabase",
-            "detail": "Install the upstream supabase skills from supabase/agent-skills for Claude Code and OpenCode. Prompts for install scope (default: this project). Tracked in a skills lock file, so 'Update skills from remote sources' refreshes them.",
+            "label": "Skills: install remote (supabase)",
+            "detail": "Install the upstream supabase skills from supabase/agent-skills for Claude Code and OpenCode. Prompts for install scope (default: this project). Tracked in a skills lock file, so 'Skills: update from remote sources' refreshes them.",
             "command": "npx --yes skills add supabase/agent-skills --skill supabase --skill supabase-postgres-best-practices --agent claude-code --agent opencode ${input:skillScope} --yes"
         },
         {
-            "label": "Install remote skills: skill-creator",
+            "label": "Skills: install remote (skill-creator)",
             "detail": "Install Anthropic's skill-creator from anthropics/skills for Claude Code and OpenCode. Used instead of superpowers' writing-skills for authoring and evaluating skills. Prompts for install scope (default: this project).",
             "command": "npx --yes skills add anthropics/skills --skill skill-creator --agent claude-code --agent opencode ${input:skillScope} --yes"
         },
         {
-            "label": "Install remote skills: superpowers subset",
+            "label": "Skills: install remote (superpowers subset)",
             "detail": "Install the three superpowers skills worth keeping (brainstorming, systematic-debugging, writing-plans) from obra/superpowers, without the plugin's always-on SessionStart context injection. Prompts for install scope (default: this project).",
             "command": "npx --yes skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill writing-plans --skill test-driven-development --skill subagent-driven-development --skill requesting-code-review --agent claude-code --agent opencode ${input:skillScope} --yes"
         },
         {
-            "label": "Install remote skills: langfuse",
+            "label": "Skills: install remote (langfuse)",
             "detail": "Install the langfuse skill from langfuse/skills for Claude Code and OpenCode. Prompts for install scope (default: this project).",
             "command": "npx --yes skills add langfuse/skills --skill langfuse --agent opencode --agent claude-code ${input:skillScope} --yes"
         },
         {
-            "label": "Generate Langfuse auth header",
+            "label": "Langfuse: generate auth header",
             "detail": "https://langfuse.com/docs/api-and-data-platform/features/mcp-server#set-up",
             "command": "echo -n '${env:LANGFUSE_PUBLIC_KEY}:${env:LANGFUSE_SECRET_KEY}' | base64"
         },
         {
-            "label": "Install remote skills: all",
+            "label": "Skills: install remote (all)",
             "detail": "Install every remote-sourced skill (runs all install tasks in sequence). Each prompts for scope. On-demand: these are not installed by default to keep agent context small.",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "Install remote skills: logfire",
-                "Install remote skills: supabase",
-                "Install remote skills: skill-creator",
-                "Install remote skills: superpowers subset",
-                "Install remote skills: langfuse"
+                "Skills: install remote (logfire)",
+                "Skills: install remote (supabase)",
+                "Skills: install remote (skill-creator)",
+                "Skills: install remote (superpowers subset)",
+                "Skills: install remote (langfuse)"
             ]
         },
         {
-            "label": "Update skills from remote sources",
+            "label": "Skills: update from remote sources",
             "detail": "Re-fetch all skills tracked in ~/.agents/.skill-lock.json from their remote sources and re-copy if changed",
             "command": "npx skills update --yes"
         },
         {
-            "label": "Sync OpenCode config globally",
+            "label": "Sync: OpenCode config globally",
             "detail": "Copy this project's OpenCode, TUI and opencode-notifier configs plus the .mcp.json loader and schema to ~/.config/opencode. Shows a diff unless you type 'yes'. opencode-notifier.json has no project-scoped lookup at all — the plugin hardcodes ~/.config/opencode/opencode-notifier.json (only OPENCODE_NOTIFIER_CONFIG_PATH overrides it), so this task is the only thing that makes the repo copy take effect.",
             "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.opencode/opencode.jsonc\" \"$HOME/.config/opencode/opencode.jsonc\" \"${workspaceFolder}/.opencode/tui.json\" \"$HOME/.config/opencode/tui.json\" \"${workspaceFolder}/.opencode/opencode-notifier.json\" \"$HOME/.config/opencode/opencode-notifier.json\" \"${workspaceFolder}/.opencode/plugins/load-mcp-json.js\" \"$HOME/.config/opencode/plugins/load-mcp-json.js\" \"${workspaceFolder}/.opencode/schemas/claude-mcp.schema.json\" \"$HOME/.config/opencode/schemas/claude-mcp.schema.json\""
         },
         {
-            "label": "Sync Claude settings globally",
+            "label": "Sync: Claude settings globally",
             "detail": "Copy this project's Claude Code settings to ~/.claude/settings.json. Shows a diff unless you type 'yes'. Note this replaces the file wholesale — any global-only keys (e.g. a permissions.allow list) are dropped, so read the diff before confirming.",
             "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.claude/settings.json\" \"$HOME/.claude/settings.json\""
         },
         {
-            "label": "Sync VSCode settings and tasks to Devin User",
+            "label": "Sync: VSCode settings and tasks to Devin User",
             "detail": "Overwrite Devin User settings.json and tasks.json with workspace .vscode config. Shows a diff unless you type 'yes'.",
             "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.vscode/settings.json\" \"$HOME/Library/Application Support/Devin/User/settings.json\" \"${workspaceFolder}/.vscode/tasks.json\" \"$HOME/Library/Application Support/Devin/User/tasks.json\""
         },
         {
-            "label": "List running OpenCode processes",
+            "label": "OpenCode: list running processes",
             "detail": "Print the PID and working directory of each running OpenCode process",
             "command": "list_opencode_processes.sh"
         },
         {
-            "label": "Caffeinate process",
+            "label": "System: caffeinate process",
             "detail": "Prevent idle system sleep until the process with the provided PID exits",
             "command": "caffeinate -i -w ${input:pid}"
         },
         {
-            "label": "Install daily brew/npm update (launchd)",
+            "label": "Setup: install daily brew/npm update (launchd)",
             "detail": "Install a user LaunchAgent that runs 'brew update && brew upgrade --yes && npm update -g' daily at midnight. Uses launchd, not cron: a job missed while the Mac is asleep runs at next wake instead of being silently dropped. Does not wake the Mac. Idempotent; logs to ~/Library/Logs/brew-npm-update.log. Portable across hosts.",
+            "hide": true,
             "command": "bash \"${workspaceFolder}/scripts/install_update_launchd.sh\""
         },
         {
-            "label": "Uninstall daily brew/npm update (launchd)",
-            "detail": "Unload and remove the daily brew/npm update LaunchAgent installed by the task above.",
+            "label": "Setup: uninstall daily brew/npm update (launchd)",
+            "detail": "Unload and remove the daily brew/npm update LaunchAgent installed by 'Setup: install daily brew/npm update (launchd)'.",
+            "hide": true,
             "command": "bash \"${workspaceFolder}/scripts/install_update_launchd.sh\" --uninstall"
         },
         {
             "label": "OKF AI-engineering: regenerate index",
             "detail": "Regenerate index.md for the ai-engineering OKF bundle from concept frontmatter",
+            "hide": true,
             "command": "uv run --project . python .agents/skills/okf/scripts/okf_index.py .agents/skills/okf-ai-engineering/ai-engineering"
         },
         {
             "label": "OKF AI-engineering: install skill",
             "detail": "Install only the okf-ai-engineering skill globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
+            "hide": true,
             "command": "npx --yes skills add ./.agents/skills/okf-ai-engineering --agent claude-code --agent opencode --agent codex --global --yes"
         },
         {
@@ -181,11 +190,13 @@
         {
             "label": "OKF AI-engineering: build site",
             "detail": "Regenerate okf-site.html for the ai-engineering OKF bundle",
+            "hide": true,
             "command": "uv run --project . python .agents/skills/okf/scripts/okf_site.py .agents/skills/okf-ai-engineering/ai-engineering"
         },
         {
             "label": "OKF AI-engineering: open site",
             "detail": "Open the generated ai-engineering OKF site in the browser",
+            "hide": true,
             "command": "open .agents/skills/okf-ai-engineering/ai-engineering/okf-site.html"
         },
         {
@@ -207,41 +218,45 @@
             ]
         },
         {
-            "label": "Create worktree and open in IDE",
+            "label": "Git: create worktree and open in IDE",
             "command": "create_worktree.sh ${input:worktreeBranch} ${input:worktreeDir}"
         },
         {
-            "label": "Get venv packages size",
+            "label": "Python: list venv packages by size",
             "detail": "List this project's installed packages by size. Runs under `uv run` so it inspects the current project's venv; the script is found on PATH.",
             "command": "uv run python \"$(command -v get_venv_packages_size.py)\""
         },
         {
-            "label": "Install pre-commit",
+            "label": "Pre-commit: install",
             "command": "pre-commit install --hook-type pre-commit --hook-type commit-msg --hook-type pre-push",
             "problemMatcher": []
         },
         {
-            "label": "Run pre-commit",
+            "label": "Pre-commit: run",
             "command": "uv run pre-commit run --all-files || uv run pre-commit run --all-files"
         },
         {
-            "label": "Login to aws",
-            "command": "aws sso login --profile ${AWS_PROFILE}"
+            "label": "AWS: login (SSO)",
+            "command": "aws sso login --profile ${AWS_PROFILE}",
+            "hide": true
         },
         {
-            "label": "Login to aws docker registry",
-            "command": "aws --profile ${AWS_PROFILE} ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${DOCKER_REPO}"
+            "label": "AWS: login to ECR docker registry",
+            "command": "aws --profile ${AWS_PROFILE} ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${DOCKER_REPO}",
+            "hide": true
         },
         {
-            "label": "Get opencode stats",
-            "command": "opencode stats --project '' --models --days ${input:days}"
+            "label": "OpenCode: stats",
+            "command": "opencode stats --project '' --models --days ${input:days}",
+            "hide": true
         },
         {
-            "label": "Login into Bir ArgoCD",
-            "command": "argocd login apollocd.kapitalbank.az --sso --grpc-web"
+            "label": "Bir: login to ArgoCD",
+            "command": "argocd login apollocd.kapitalbank.az --sso --grpc-web",
+            "hide": true
         },
         {
-            "label": "Docker compose up",
+            "label": "Docker: compose up",
             "command": "docker compose up --build"
         }
     ],

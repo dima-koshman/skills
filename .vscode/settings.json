@@ -107,5 +107,6 @@
     "window.autoDetectColorScheme": true,
     "workbench.colorTheme": "Default Light Modern",
     "workbench.preferredDarkColorTheme": "Default Dark Modern",
-    "editor.accessibilitySupport": "off"
+    "editor.accessibilitySupport": "off",
+    "task.autoDetect": "off"
 }

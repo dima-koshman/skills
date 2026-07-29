@@ -35,7 +35,7 @@ then symlinks from there to `~/.claude/skills/` for Claude Code:
 
 ### One-shot setup
 
-Run the **"Install skills to all agents"** VS Code task (`.vscode/tasks.json`), or:
+Run the **"Skills: install local (all)"** VS Code task (`.vscode/tasks.json`), or:
 
 ```bash
 npx skills add ./.agents/skills --agent claude-code --agent opencode --agent codex --global --yes

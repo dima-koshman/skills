@@ -27,7 +27,7 @@ exact directory under `~/.cache/opencode/packages/`, then restart OpenCode to re
 
 ## Finishing work in a worktree
 
-Worktrees are created by the user, via the **"Create worktree and open in IDE"** VSCode task.
+Worktrees are created by the user, via the **"Git: create worktree and open in IDE"** VSCode task.
 Creating one is not your job — but knowing you are in one is, because it changes how work gets
 integrated.
 

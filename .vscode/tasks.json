@@ -239,6 +239,10 @@
         {
             "label": "Login into Bir ArgoCD",
             "command": "argocd login apollocd.kapitalbank.az --sso --grpc-web"
+        },
+        {
+            "label": "Docker compose up",
+            "command": "docker compose up --build"
         }
     ],
     "inputs": [

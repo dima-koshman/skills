@@ -1,6 +1,6 @@
 ---
 name: development-best-practices
-description: Cross-project local development hygiene and preferences — the worktree-to-main workflow, git branch/worktree cleanup, and other day-to-day dev workflow conventions. Use when starting feature work in a worktree, finishing a branch, merging to main, pushing to main, monitoring or fixing a GitHub Actions run after a push, cleaning up local git branches, pruning merged/deleted branches, tidying worktrees, updating OpenCode plugins, or setting up recurring local-dev maintenance.
+description: Cross-project local development hygiene and preferences — the worktree-to-main workflow, git branch/worktree cleanup, and other day-to-day dev workflow conventions. Use when starting feature work in a worktree, finishing a branch, merging to main, pushing to main, monitoring or fixing a GitHub Actions run after a push, cleaning up local git branches, pruning merged/deleted branches, tidying worktrees, updating OpenCode plugins, setting or changing a container's timezone in a Dockerfile or deployment, or setting up recurring local-dev maintenance.
 ---
 
 # Development Best Practices
@@ -195,3 +195,52 @@ here rather than copied into each repo.
   git config alias.prune-gone '!bash /Users/dima/Projects/dima/.agents/skills/development-best-practices/scripts/prune-merged-branches.sh'
   # then: git prune-gone   (or: git prune-gone --dry-run)
   ```
+
+## Container timezone
+
+Containers default to UTC, and the mainstream convention is to leave them there: UTC has no DST,
+so no wall time is ever ambiguous or missing, and logs from every service and region line up
+without conversion. Setting a local `TZ` is therefore a **deliberate deviation**, not a default —
+do not add it to an image reflexively.
+
+Take the deviation for an internal service whose operators all sit in one timezone, where the
+console log is read by humans in that zone (a Kubernetes logs tab, `docker logs`) and local wall
+time is what they want to match against a report of "it broke around 4pm". Prefer the operators'
+zone there — for our projects, `Asia/Baku`:
+
+```dockerfile
+# Render console log timestamps in the operators' zone. The base image ships tzdata, so
+# /usr/share/zoneinfo/Asia/Baku exists and no package install is needed. Timestamps exported
+# over OTLP are unaffected: those are UTC epochs, not local renderings.
+ENV TZ=Asia/Baku
+```
+
+Five things to settle before doing it, in order:
+
+- **Audit every naive datetime in the codebase.** This is the real hazard, and it is silent.
+    `datetime.timestamp()`, `datetime.fromtimestamp()` and `datetime.astimezone()` all resolve a
+    naive value against the *process's* zone, so any code that treats a bare timestamp as UTC
+    shifts by the offset the moment `TZ` changes — including timestamps written to a store or sent
+    to an API. Grep for those three plus `datetime.now()` and `date.today()`, and pin each
+    naive-input assumption explicitly (`replace(tzinfo=datetime.UTC)`) before flipping `TZ`, not
+    after. A test that only ever passes offset-aware strings will not catch this.
+- **Confirm the zone has no DST**, or accept the consequence. `Asia/Baku` has had none since 2016,
+    so its offset is a constant `+04`. In a DST zone, one local hour repeats and another does not
+    exist each year, which is exactly the ambiguity UTC was protecting against.
+- **Always print the offset**, so a line is readable regardless of what the reader assumes. See
+    the Rich logging section of the `python-styleguide` skill for the handler-level format.
+- **Keep exported telemetry in UTC.** OTLP timestamps are UTC epochs and are not affected by `TZ`;
+    do not "fix" that to match the console. The console rendering is a display choice, and the wire
+    format should stay absolute.
+- **Check tzdata is present.** Debian slim images ship it, so `ENV TZ` alone works; Alpine does not
+    — it needs `apk add --no-cache tzdata` or the variable silently does nothing. Verify in the
+    built image rather than assuming:
+
+    ```bash
+    docker run --rm <image> sh -c 'date; ls /usr/share/zoneinfo/$TZ'
+    ```
+
+Do **not** set a local `TZ` on a multi-region service, on anything whose logs are correlated with
+another organization's, or on a batch job whose schedule or partitioning is derived from local
+midnight. Note also that an image's `ENV TZ` is only a default — a Kubernetes Deployment setting
+`TZ` in its own env wins, so check the manifests before concluding the image decides.

@@ -375,6 +375,44 @@ handlers=[
 console=rich.console.Console(width=120)
 ```
 
+Override RichHandler's timestamp format. Its default is `[%x %X]`, a locale date and time —
+`[07/29/26 13:46:30]`, ambiguous between day-first and month-first readings, and with no
+timezone at all. Print an ISO-ordered date and the UTC offset instead, so a log line can be
+correlated with traces and with logs from other machines.
+
+This has to be a **callable**, not a format string: RichHandler renders the timestamp from
+`datetime.fromtimestamp(record.created)`, which is naive local time, so `%z` and `%Z` in a
+format string both render empty. `astimezone()` attaches the system zone — UTC in a container,
+the developer's zone locally — which makes the offset printable. Prefer `%z` (`+0400`) over
+`%Z`, since `astimezone()` on a fixed-offset local zone yields a tzname like `"+04"` anyway.
+
+```python
+import datetime
+
+import rich.text
+
+# Good — ISO-ordered date, explicit offset: [2026-07-29 13:46:30 +0400]
+def _format_rich_log_time(log_time: datetime.datetime) -> rich.text.Text:
+    return rich.text.Text(log_time.astimezone().strftime("[%Y-%m-%d %H:%M:%S %z]"))
+
+handlers=[rich.logging.RichHandler(log_time_format=_format_rich_log_time)]
+
+# Bad — %z is silently empty, because the datetime handed over is naive
+log_time_format="[%Y-%m-%d %H:%M:%S %z]"
+```
+
+Two things that quietly defeat it:
+
+- **A formatter with a `datefmt`.** `RichHandler.render` prefers `self.formatter.datefmt` over
+    the `log_time_format` passed to the constructor. The usual `logging.Formatter("%(message)s")`
+    leaves `datefmt` as `None`, so the callable wins — but setting a `datefmt` on that formatter
+    overrides the timestamp format with no error.
+- **A library logger with its own handlers.** A logger that sets `propagate = False` and installs
+    its own RichHandlers (FastMCP does both, on the `fastmcp` logger) never reaches the root
+    handler, so its records keep the default format and the two sinks disagree. Pass the format
+    into that library's own logging setup too — FastMCP's `configure_logging` splats
+    `**rich_kwargs` into each RichHandler it builds, so `log_time_format=...` reaches both.
+
 Beware double-logging when Rich shares the root logger with another sink that also renders to
 the console. Notably, `logfire.configure()` enables its own console exporter by default, which
 prints every record to stderr in its own format — on top of the RichHandler output — so each

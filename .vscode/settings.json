@@ -23,7 +23,6 @@
     "[toml]": {
         "editor.defaultFormatter": "tamasfe.even-better-toml"
     },
-    "basedpyright.analysis.exclude": ["**/.venv/**", "**/__pycache__/**"],
     "breadcrumbs.enabled": true,
     "chat.disableAIFeatures": true,
     "claudeCode.preferredLocation": "panel",
@@ -92,13 +91,14 @@
     "notebook.showCellStatusBar": "visibleAfterExecute",
     "prettier.tabWidth": 4,
     "prettier.trailingComma": "none",
+    "windsurfPyright.analysis.exclude": ["**/.venv/**", "**/__pycache__/**"],
     "python.analysis.exclude": ["**/.venv/**", "**/__pycache__/**"],
+    "basedpyright.analysis.exclude": ["**/.venv/**", "**/__pycache__/**"],
     "ruff.lineLength": 100,
     "search.exclude": {
         "**/.venv": true,
         "**/.worktrees": true
     },
-    "security.promptForLocalFileProtocolHandling": false,
     "sql-formatter.uppercase": true,
     "task.problemMatchers.neverPrompt": {
         "python": true,
@@ -109,5 +109,5 @@
     "workbench.preferredDarkColorTheme": "Dark Modern",
     "editor.accessibilitySupport": "off",
     "task.autoDetect": "off",
-    "todo-tree.ripgrep": "/opt/homebrew/bin/rg"
+    "todo-tree.ripgrep.ripgrep": "/opt/homebrew/bin/rg"
 }

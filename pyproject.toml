@@ -20,3 +20,6 @@
 
 [tool.uv]
     package = true
+
+[tool.coverage.run]
+    data_file = "runtime/.coverage"

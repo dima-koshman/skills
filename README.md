@@ -62,6 +62,24 @@ npx skills add obra/superpowers@systematic-debugging --global
 Third-party skills are installed the same way — copied to `.agents/skills/` (project) or
 `~/.agents/skills/` (global) and tracked in the lock file for updates.
 
+## Spec-driven development tools (on the radar, not adopted)
+
+Deliberately **not** installed. The superpowers chain (`brainstorming` → `writing-plans` →
+`subagent-driven-development` → `requesting-code-review`) already covers prompt-only spec/plan/execute
+on plain files, with no runtime binary. Revisit these only if a project needs *stricter* specs —
+enforced validation, dependency-ordered artifacts, delta/archive traceability — which prompts can
+describe but can't guarantee:
+
+- **[OpenSpec](https://github.com/Fission-AI/OpenSpec)** — its `openspec-*` skills are just a prompt
+  layer that shells out to the `openspec` CLI (`allowed-tools: Bash(openspec:*)`); the validation and
+  delta/archive logic lives in the binary. Skills without the CLI are non-functional, so adopting it
+  means `npx openspec@latest init` per project, ceremony included.
+- **[Spec Kit](https://github.com/github/spec-kit)** — `specify init` scaffolds slash-command prompts
+  once, then `/speckit.specify|plan|tasks|implement` run in-agent on markdown (no runtime binary).
+  Closer to "SDD as prompts + files," but heavier ceremony than superpowers.
+
+Skip **BMAD-METHOD** for this purpose (full runtime engine, needs Node + Python + uv).
+
 ## Project-scoped skills
 
 Skills in `.agents/skills/` are read by all agents at the project level (Claude, Codex, opencode).

@@ -109,5 +109,8 @@
     "workbench.preferredDarkColorTheme": "Dark Modern",
     "editor.accessibilitySupport": "off",
     "task.autoDetect": "off",
-    "todo-tree.ripgrep.ripgrep": "/opt/homebrew/bin/rg"
+    "todo-tree.ripgrep.ripgrep": "/opt/homebrew/bin/rg",
+    "terminal.integrated.commandsToSkipShell": [
+        "-workbench.action.terminal.selectAll"
+    ]
 }

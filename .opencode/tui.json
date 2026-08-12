@@ -9,6 +9,9 @@
         "history_previous": "none",
         "history_next": "none"
     },
+    // Disable opencode's mouse capture so selecting text uses the terminal's native
+    // behavior and does not automatically overwrite the clipboard.
+    // "mouse": false,
     // https://opencode.ai/docs/tui/#attention
     // "attention" is the TUI's built-in alerting: it marks the session as needing
     // attention (permission prompt, session done, subagent done, error) and can play a

@@ -110,7 +110,7 @@
         },
         {
             "label": "Langfuse: generate auth header",
-            "detail": "https://langfuse.com/docs/api-and-data-platform/features/mcp-server#set-up",
+            "detail": "Base64 Basic-auth header from LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY, for the LANGFUSE_AUTH_HEADER var consumed by the Langfuse docs MCP server in .mcp.json. https://langfuse.com/docs/api-and-data-platform/features/mcp-server#set-up",
             "command": "echo -n '${env:LANGFUSE_PUBLIC_KEY}:${env:LANGFUSE_SECRET_KEY}' | base64"
         },
         {

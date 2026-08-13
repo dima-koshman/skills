@@ -109,10 +109,20 @@ alias gm='git checkout main'
 alias da='direnv allow'
 ```
 
-Alias for preferred IDE launcher:
+Alias for preferred IDE launcher ():
 
 ```sh
-alias ide="/Applications/Devin.app/Contents/Resources/app/bin/devin-desktop"
+alias ide="/Applications/Devin.app/Contents/Resources/app/bin/devin-desktop --new-window"
+```
+
+Aliases to open a whole project group at once — one IDE window per folder, since the launcher opens each
+folder argument in its own window:
+
+```sh
+alias ide-main='ide ~/Projects/consul-config-loader ~/Projects/dima'
+alias ide-mcp='ide ~/Projects/mcp/bir_mcp ~/Projects/mcp/bir_mcp-gateway ~/Projects/mcp/bir_mcp-servers ~/Projects/mcp/bir_mcp-ui'
+alias ide-sanitizer='ide ~/Projects/sanitizer/pii-sanitizer-evaluation ~/Projects/sanitizer/pii-sanitizer-ner ~/Projects/sanitizer/sanitizer'
+alias ide-skills='ide ~/Projects/skills/*/'
 ```
 
 Alias for uv run python - mostly for coding agents.

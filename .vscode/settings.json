@@ -112,5 +112,9 @@
     "todo-tree.ripgrep.ripgrep": "/opt/homebrew/bin/rg",
     "terminal.integrated.commandsToSkipShell": [
         "-workbench.action.terminal.selectAll"
-    ]
+    ],
+    "workbench.editorAssociations": {
+        "*.md": "default",
+        "*.markdown": "default"
+    }
 }

@@ -1,12 +1,52 @@
 ---
 name: development-best-practices
-description: Cross-project local development hygiene and preferences — the worktree-to-main workflow, git branch/worktree cleanup, and other day-to-day dev workflow conventions. Use when starting feature work in a worktree, finishing a branch, merging to main, pushing to main, monitoring or fixing a GitHub Actions run after a push, cleaning up local git branches, pruning merged/deleted branches, tidying worktrees, updating OpenCode plugins, setting or changing a container's timezone in a Dockerfile or deployment, or setting up recurring local-dev maintenance.
+description: Cross-project local development hygiene and preferences — the worktree-to-main workflow, git branch/worktree cleanup, VS Code task conventions, and other day-to-day dev workflow conventions. Use when starting feature work in a worktree, finishing a branch, merging to main, pushing to main, monitoring or fixing a GitHub Actions run after a push, cleaning up local git branches, pruning merged/deleted branches, tidying worktrees, creating or renaming VS Code tasks, updating OpenCode plugins, setting or changing a container's timezone in a Dockerfile or deployment, or setting up recurring local-dev maintenance.
 ---
 
 # Development Best Practices
 
 Shared local-development hygiene and workflow preferences across internal projects.
 Ships small, host-agnostic helper scripts under `scripts/`.
+
+## Name VS Code tasks consistently
+
+Prefer `<Category>: <action>` labels so related tasks group together in the command palette and
+quick-pick lists. Use a stable, capitalized tool or domain category such as `Pytest:`, `Git:`,
+`Docker:`, or `Setup:`.
+
+Name a package's full pytest suite `Pytest: <project-or-package>`. Add a suffix only for a narrower
+scope such as `unit`, and name a workspace-wide aggregate `Pytest: all packages`:
+
+```json
+{
+  "label": "Pytest: sanitizer-core",
+  "command": "uv run pytest packages/sanitizer-core/tests"
+}
+```
+
+Hoist properties shared by every task to the root of `tasks.json` instead of repeating them. This
+commonly applies to `type`, `problemMatcher`, and `presentation`:
+
+```json
+{
+  "version": "2.0.0",
+  "type": "shell",
+  "problemMatcher": [],
+  "tasks": [
+    {
+      "label": "Pytest: sanitizer-core",
+      "command": "uv run pytest packages/sanitizer-core/tests"
+    }
+  ]
+}
+```
+
+Do not add `group` unless the project intentionally uses VS Code task groups or default tasks. The
+category prefix already organizes labels in task pickers; an unused `group` field adds configuration
+without changing the team's workflow.
+
+When renaming a task, update every `dependsOn` reference in the same edit; VS Code resolves
+dependencies by the literal label and does not report stale references until the task runs.
 
 ## Update OpenCode plugins
 

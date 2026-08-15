@@ -1,11 +1,6 @@
 {
     // https://opencode.ai/docs/config
     "$schema": "https://opencode.ai/config.json",
-    // Gemini 3.5 Flash (High). NOT "gemini-3.5-flash" — that wire ID 404s
-    // ("Requested entity was not found"). See the provider.google block below for why
-    // this odd "-flash-agent" slug is the only reachable 3.5 Flash tier.
-    // "model": "google/antigravity-gemini-3-flash-agent",
-    // "model": "google/antigravity-gemini-3.6-flash-tiered",
     "model": "openai/gpt-5.6-sol",
     // For lightweight meta tasks, like generating session title
     "small_model": "opencode/nemotron-3-ultra-free",
@@ -21,7 +16,7 @@
         "build": { "model": "openai/gpt-5.6-sol", "variant": "medium" },
         // "general": { "model": "openai/gpt-5.6-luna", "variant": "medium" },
         "general": {
-            "model": "google/antigravity-gemini-3.6-flash-tiered",
+            "model": "google/antigravity-gemini-3.7-flash-tiered",
             "variant": "high"
         },
         // explore searches and explains your local codebase
@@ -193,6 +188,36 @@
         "google": {
             "npm": "@ai-sdk/google",
             "models": {
+                // Gemini 3.7 Flash (released 2026-08-13) — "-tiered" is load-bearing here for
+                // the SAME reason as 3.6 below: supportsThinkingTiers() matches on the substring
+                // "gemini-3", so 3.7 is subject to TIER_REGEX just like 3.6, and a "-high" suffix
+                // would be stripped to a bare ID.
+                //
+                // Verified end-to-end 2026-08-15 (opencode 1.18.18, plugin @latest as cached):
+                //   antigravity-gemini-3.7-flash-tiered  → 200, "OK"   ✓ (also with variant high)
+                //   antigravity-gemini-3.7-flash (bare)  → 403 PERMISSION_DENIED
+                // NOTE the bare failure mode DIFFERS from 3.6's 404: it comes back as an IAM
+                // error (cloudaicompanion.instances.completeTask denied on the CLI project),
+                // i.e. the bare ID falls through to a Code-Assist path our OAuth can't use,
+                // rather than being an unknown model. Same practical conclusion: use -tiered.
+                //
+                // Limits below are Google's published figures for 3.7 Flash (1,048,576 in /
+                // 65,536 out) and happen to match 3.6. Upstream also lists video+audio input;
+                // kept to text/image/pdf to match the other entries in this file.
+                "antigravity-gemini-3.7-flash-tiered": {
+                    "name": "Gemini 3.7 Flash (Antigravity)",
+                    "limit": { "context": 1048576, "output": 65536 },
+                    "modalities": {
+                        "input": ["text", "image", "pdf"],
+                        "output": ["text"]
+                    },
+                    "variants": {
+                        "minimal": { "thinkingLevel": "minimal" },
+                        "low": { "thinkingLevel": "low" },
+                        "medium": { "thinkingLevel": "medium" },
+                        "high": { "thinkingLevel": "high" }
+                    }
+                },
                 // Gemini 3.6 Flash — "-tiered" is intentional and load-bearing, for the SAME
                 // reason as "-flash-agent" below: TIER_REGEX only strips -minimal/-low/-medium/
                 // -high, so "-tiered" survives while "-high" would be mangled into the

@@ -168,53 +168,53 @@
             "command": "bash \"${workspaceFolder}/scripts/install_update_launchd.sh\" --uninstall"
         },
         {
-            "label": "OKF AI-engineering: regenerate index",
-            "detail": "Regenerate index.md for the ai-engineering OKF bundle from concept frontmatter",
+            "label": "OKF: regenerate index",
+            "detail": "Regenerate index.md for the selected OKF bundle from concept frontmatter",
             "hide": true,
-            "command": "uv run --project . python .agents/skills/okf/scripts/okf_index.py .agents/skills/okf-ai-engineering/ai-engineering"
+            "command": "uv run --project . python .agents/skills/okf/scripts/okf_index.py .agents/skills/okf-${input:okfBundle}/${input:okfBundle}"
         },
         {
-            "label": "OKF AI-engineering: install skill",
-            "detail": "Install only the okf-ai-engineering skill globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
+            "label": "OKF: install skill",
+            "detail": "Install only the selected okf-* skill globally via npx skills (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/)",
             "hide": true,
-            "command": "npx --yes skills add ./.agents/skills/okf-ai-engineering --agent claude-code --agent opencode --agent codex --global --yes"
+            "command": "npx --yes skills add ./.agents/skills/okf-${input:okfBundle} --agent claude-code --agent opencode --agent codex --global --yes"
         },
         {
-            "label": "OKF AI-engineering: regenerate index & install skill",
+            "label": "OKF: regenerate index & install skill",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "OKF AI-engineering: regenerate index",
-                "OKF AI-engineering: install skill"
+                "OKF: regenerate index",
+                "OKF: install skill"
             ]
         },
         {
-            "label": "OKF AI-engineering: build site",
-            "detail": "Regenerate okf-site.html for the ai-engineering OKF bundle",
+            "label": "OKF: build site",
+            "detail": "Regenerate okf-site.html for the selected OKF bundle",
             "hide": true,
-            "command": "uv run --project . python .agents/skills/okf/scripts/okf_site.py .agents/skills/okf-ai-engineering/ai-engineering"
+            "command": "uv run --project . python .agents/skills/okf/scripts/okf_site.py .agents/skills/okf-${input:okfBundle}/${input:okfBundle}"
         },
         {
-            "label": "OKF AI-engineering: open site",
-            "detail": "Open the generated ai-engineering OKF site in the browser",
+            "label": "OKF: open site",
+            "detail": "Open the generated OKF site for the selected bundle in the browser",
             "hide": true,
-            "command": "open .agents/skills/okf-ai-engineering/ai-engineering/okf-site.html"
+            "command": "open .agents/skills/okf-${input:okfBundle}/${input:okfBundle}/okf-site.html"
         },
         {
-            "label": "OKF AI-engineering: build & open site",
-            "detail": "Build and then open the ai-engineering OKF site",
+            "label": "OKF: build & open site",
+            "detail": "Build and then open the selected OKF bundle's site",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "OKF AI-engineering: build site",
-                "OKF AI-engineering: open site"
+                "OKF: build site",
+                "OKF: open site"
             ]
         },
         {
-            "label": "OKF AI-engineering: regenerate index, install skill, build and open site",
-            "detail": "Regenerate the index, install the skill, build and open the site (runs all three in sequence)",
+            "label": "OKF: regenerate index, install skill, build and open site",
+            "detail": "Regenerate the index, install the skill, build and open the site for the selected bundle (runs all three in sequence)",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "OKF AI-engineering: regenerate index & install skill",
-                "OKF AI-engineering: build & open site"
+                "OKF: regenerate index & install skill",
+                "OKF: build & open site"
             ]
         },
         {
@@ -291,6 +291,16 @@
                 }
             ],
             "default": ""
+        },
+        {
+            "id": "okfBundle",
+            "type": "pickString",
+            "description": "Which OKF bundle to act on (skill dir is .agents/skills/okf-<value>/, bundle dir is <value>/ inside it)",
+            "options": [
+                "ai-engineering",
+                "development"
+            ],
+            "default": "ai-engineering"
         },
         {
             "id": "syncConfirm",

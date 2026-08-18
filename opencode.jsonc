@@ -10,16 +10,6 @@
             // Claude models from gemini plan are billed separately.
             // "model": "google/antigravity-claude-opus-4-6-thinking",
             "variant": "high"
-        },
-        // explore searches and explains your local codebase
-        "explore": {
-            "model": "opencode-go/deepseek-v4-flash",
-            "variant": "max"
-        },
-        // scout researches external dependencies and upstream documentation
-        "scout": {
-            "model": "opencode-go/deepseek-v4-flash",
-            "variant": "high"
         }
     }
 }

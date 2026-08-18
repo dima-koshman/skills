@@ -256,7 +256,12 @@
             "hide": true
         },
         {
-            "label": "Bir: login to Vault, copy token and open apollo secrets",
+            "label": "Bir: Vault login via LDAP",
+            "detail": "Authenticates the vault CLI against vault.kapitalbank.az via LDAP and stores the token in ~/.vault-token (valid ~24h). Prompts for username and then password interactively.",
+            "command": "vault login -method=ldap username='${input:vaultLdapUsername}'"
+        },
+        {
+            "label": "Bir: Vault login via approle, copy token and open apollo secrets",
             "detail": "AppRole-login to the Vault at VAULT_ADDR with VAULT_ROLE_ID / VAULT_SECRET_ID, copy the returned token to the clipboard (never printed), then open that same Vault's apollo KV list in the browser. Chained with && so a failed login neither clobbers the clipboard nor opens the page.",
             "command": "token=$(vault write -field=token auth/approle/login role_id=\"$VAULT_ROLE_ID\" secret_id=\"$VAULT_SECRET_ID\") && printf %s \"$token\" | pbcopy && echo \"Vault token from $VAULT_ADDR copied to clipboard\" && open \"${VAULT_ADDR%/}/ui/vault/secrets/secret/kv/list/apollo/\""
         },
@@ -318,6 +323,12 @@
             "type": "promptString",
             "description": "Number of days to look back",
             "default": "7"
+        },
+        {
+            "id": "vaultLdapUsername",
+            "type": "promptString",
+            "description": "LDAP username for Vault login.",
+            "default": "koshmandk"
         }
     ]
 }

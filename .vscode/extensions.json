@@ -30,6 +30,7 @@
         "gitlab.gitlab-workflow",
         "cweijan.vscode-office",
         "samuelcolvin.jinjahtml",
-        "hediet.vscode-drawio"
+        "hediet.vscode-drawio",
+        "sitoi.ai-commit"
     ]
 }

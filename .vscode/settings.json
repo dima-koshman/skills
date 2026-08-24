@@ -24,7 +24,7 @@
         "editor.defaultFormatter": "tamasfe.even-better-toml"
     },
     "breadcrumbs.enabled": true,
-    "chat.disableAIFeatures": true,
+    "chat.disableAIFeatures": false,
     "claudeCode.preferredLocation": "panel",
     "editor.codeActionsOnSave": {
         "source.organizeImports.ruff": "always"
@@ -61,7 +61,9 @@
         ".venv/tests-requirements.txt": true,
         "**/__pycache__": true,
         "**/.ipynb_checkpoints": true,
-        "**/*.egg-info": true
+        "**/*.egg-info": true,
+        ".pytest_cache": true,
+        ".ruff_cache": true
     },
     "files.watcherExclude": {
         "**/.venv/**": true,
@@ -91,9 +93,18 @@
     "notebook.showCellStatusBar": "visibleAfterExecute",
     "prettier.tabWidth": 4,
     "prettier.trailingComma": "none",
-    "windsurfPyright.analysis.exclude": ["**/.venv/**", "**/__pycache__/**"],
-    "python.analysis.exclude": ["**/.venv/**", "**/__pycache__/**"],
-    "basedpyright.analysis.exclude": ["**/.venv/**", "**/__pycache__/**"],
+    "python.analysis.exclude": [
+        "**/.venv/**",
+        "**/__pycache__/**",
+        "**/.*",
+        "**/node_modules"
+    ],
+    "basedpyright.analysis.exclude": [
+        "**/.venv/**",
+        "**/__pycache__/**",
+        "**/.*",
+        "**/node_modules"
+    ],
     "ruff.lineLength": 100,
     "search.exclude": {
         "**/.venv": true,

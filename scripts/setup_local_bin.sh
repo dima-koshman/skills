@@ -33,11 +33,11 @@ SCRIPTS=(
 
 # First hit wins. Add bundles here as needed.
 IDE_CANDIDATES=(
-    "/Applications/Devin.app/Contents/Resources/app/bin/devin-desktop"
-    "/Applications/Antigravity IDE.app/Contents/Resources/app/bin/antigravity-ide"
-    "/Applications/Cursor.app/Contents/Resources/app/bin/cursor"
-    "/Applications/Windsurf.app/Contents/Resources/app/bin/windsurf"
     "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+    "/Applications/Cursor.app/Contents/Resources/app/bin/cursor"
+    "/Applications/Antigravity IDE.app/Contents/Resources/app/bin/antigravity-ide"
+    "/Applications/Windsurf.app/Contents/Resources/app/bin/windsurf"
+    "/Applications/Devin.app/Contents/Resources/app/bin/devin-desktop"
 )
 
 mkdir -p "${TARGET_DIR}"

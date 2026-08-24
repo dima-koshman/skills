@@ -112,7 +112,7 @@ alias da='direnv allow'
 Alias for preferred IDE launcher ():
 
 ```sh
-alias ide="/Applications/Devin.app/Contents/Resources/app/bin/devin-desktop --new-window"
+alias ide='"/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" --new-window'
 ```
 
 Aliases to open a whole project group at once — one IDE window per folder, since the launcher opens each

@@ -1,6 +1,6 @@
 ---
 name: development-best-practices
-description: Cross-project local development hygiene and preferences — the worktree-to-main workflow, git branch/worktree cleanup, VS Code task conventions, and other day-to-day dev workflow conventions. Use when starting feature work in a worktree, finishing a branch, merging to main, pushing to main, monitoring or fixing a GitHub Actions run after a push, cleaning up local git branches, pruning merged/deleted branches, tidying worktrees, creating or renaming VS Code tasks, updating OpenCode plugins, setting or changing a container's timezone in a Dockerfile or deployment, or setting up recurring local-dev maintenance.
+description: Cross-project local development hygiene and preferences — the worktree-to-main workflow, git branch/worktree cleanup, VS Code task conventions, direnv/environment-variable layout, and other day-to-day dev workflow conventions. Use when starting feature work in a worktree, finishing a branch, merging to main, pushing to main, monitoring or fixing a GitHub Actions run after a push, cleaning up local git branches, pruning merged/deleted branches, tidying worktrees, creating or renaming VS Code tasks, writing or changing a project's `.envrc`, deciding where to keep environment variables or credentials for local development, updating OpenCode plugins, setting or changing a container's timezone in a Dockerfile or deployment, or setting up recurring local-dev maintenance.
 ---
 
 # Development Best Practices
@@ -47,6 +47,44 @@ without changing the team's workflow.
 
 When renaming a task, update every `dependsOn` reference in the same edit; VS Code resolves
 dependencies by the literal label and does not report stale references until the task runs.
+
+## Store env var combinations in ~/.config/direnv/env/
+
+Keep every reusable set of environment variables in its own file under `~/.config/direnv/env/`,
+outside any repo, and load it from the project's `.envrc`:
+
+```bash
+dotenv_if_exists .env
+dotenv_if_exists ~/.config/direnv/env/vault-app-role.env
+```
+
+One file per combination, named for what it configures — `<service>.env` for the default set and
+`<service>-<environment>.env` for a variant: `litellm.env`, `litellm-dev.env`, `litellm-sandbox.env`,
+`openwebui.env`, `vault-app-role.env`. Switching a project between environments then means changing
+which line the `.envrc` loads, not editing values in place.
+
+Why this over a project-local `.env`:
+
+- **Credentials never sit in a repo**, so there is nothing for a stray `git add -f` or a
+  misconfigured `.gitignore` to leak.
+- **One source of truth across clones and worktrees.** Every `.worktrees/<branch>` copy of `.envrc`
+  loads the same host file, so a rotated token is updated once, not once per checkout.
+- **Combinations compose.** List several lines to stack them; later files win on duplicate keys, so
+  order the general set first and the override last.
+
+Rules that matter in practice:
+
+- **Use `dotenv_if_exists`, not `dotenv`.** A missing file is normal on a machine that has not been
+  provisioned yet. `dotenv` logs a red `direnv: .env at <path> not found` on every entry into the
+  directory and returns non-zero — harmless on its own, but fatal under an `.envrc` that runs
+  `set -e`, where the remaining `export`s are silently skipped. `dotenv_if_exists` returns quietly.
+- **Keep project-local, non-secret values in the repo's own gitignored `.env`**, loaded first. The
+  host files are for credentials and for anything shared between projects.
+- **Editing a loaded env file does not need `direnv allow` again.** `dotenv_if_exists` registers the
+  file with `watch_file`, so direnv reloads on its next `cd` into the directory. Only changes to
+  `.envrc` itself re-trigger the allow prompt.
+- **Lock the directory down**: `chmod 700 ~/.config/direnv/env`. It holds plaintext secrets.
+- It is not version-controlled by design — back it up with whatever holds your other host secrets.
 
 ## Update OpenCode plugins
 

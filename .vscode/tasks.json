@@ -27,7 +27,7 @@
                 "Skills: update from remote sources",
                 "Skills: install remote (all)",
                 "Sync: OpenCode config globally",
-                "Sync: VSCode settings and tasks to Devin User",
+                "Sync: VSCode settings and tasks to Code User",
                 "Pre-commit: install"
             ]
         },
@@ -141,9 +141,9 @@
             "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.claude/settings.json\" \"$HOME/.claude/settings.json\""
         },
         {
-            "label": "Sync: VSCode settings and tasks to Devin User",
-            "detail": "Overwrite Devin User settings.json and tasks.json with workspace .vscode config. Shows a diff unless you type 'yes'.",
-            "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.vscode/settings.json\" \"$HOME/Library/Application Support/Devin/User/settings.json\" \"${workspaceFolder}/.vscode/tasks.json\" \"$HOME/Library/Application Support/Devin/User/tasks.json\""
+            "label": "Sync: VSCode settings and tasks to Code User",
+            "detail": "Overwrite VS Code User settings.json and tasks.json with workspace .vscode config. Shows a diff unless you type 'yes'.",
+            "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.vscode/settings.json\" \"$HOME/Library/Application Support/Code/User/settings.json\" \"${workspaceFolder}/.vscode/tasks.json\" \"$HOME/Library/Application Support/Code/User/tasks.json\""
         },
         {
             "label": "OpenCode: list running processes",

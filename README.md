@@ -136,3 +136,25 @@ Disable macOS quarantine for Homebrew casks (which causes macOS to prompt for co
 ```sh
 export HOMEBREW_CASK_OPTS="--no-quarantine"
 ```
+
+### Pinned files in VS Code
+
+Keep these frequently edited host config files pinned as editor tabs (right-click tab → Pin, or
+`cmd+K shift+enter`), so they are one click away in any window:
+
+- `~/.zshrc`
+- `~/.zshenv`
+- `~/.claude/settings.json`
+- `~/Library/Application Support/Claude/claude_desktop_config.json`
+- `~/.config/git/ignore`
+
+Pins are per-window workspace state (not settings), so they are not synced by the
+"Sync: VSCode settings and tasks to Code User" task and must be re-pinned once per workspace.
+
+`~/.config/direnv/env/` is also worth keeping at hand, but VS Code cannot pin a directory. Instead,
+add it as an extra workspace folder — File → Add Folder to Workspace — which shows the whole
+directory tree in the Explorer sidebar. Alternatively open all of its files at once from a terminal:
+
+```sh
+code --reuse-window ~/.config/direnv/env/*.env
+```

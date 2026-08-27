@@ -261,9 +261,23 @@
             "command": "vault login -method=ldap username='${input:vaultLdapUsername}'"
         },
         {
+            "label": "Bir: Vault login via approle",
+            "detail": "AppRole-login to the Vault at VAULT_ADDR with VAULT_ROLE_ID / VAULT_SECRET_ID and store the token in ~/.vault-token, so every later `vault` command is authenticated without VAULT_TOKEN in the environment. All three vars come from whichever ~/.config/direnv/env/vault-*.env the current project's .envrc loads, so the same task targets prod or pre-prod depending on where it runs. The write-then-pipe is not a workaround for convenience: AppRole has no CLI login handler, so `vault login -method=approle` fails with 'Unknown auth method'. -no-print keeps the token out of the task output panel. NOTE: ~/.vault-token is one global file shared by every Vault server, so running this against vault-pre replaces the token used by projects pointing at vault.kapitalbank.az.",
+            "command": "vault write -field=token auth/approle/login role_id=\"$VAULT_ROLE_ID\" secret_id=\"$VAULT_SECRET_ID\" | vault login -no-print -"
+        },
+        {
+            "label": "Bir: Vault copy token and open apollo secrets",
+            "detail": "Copy the token currently in use (VAULT_TOKEN, else ~/.vault-token) to the clipboard without printing it, then open that same Vault's apollo KV list in the browser. Pairs with either login task, approle or LDAP. Chained with && so a missing or empty token neither clobbers the clipboard nor opens the page.",
+            "command": "token=$(vault print token) && [ -n \"$token\" ] && printf %s \"$token\" | pbcopy && echo \"Vault token from $VAULT_ADDR copied to clipboard\" && open \"${VAULT_ADDR%/}/ui/vault/secrets/secret/kv/list/apollo/\""
+        },
+        {
             "label": "Bir: Vault login via approle, copy token and open apollo secrets",
-            "detail": "AppRole-login to the Vault at VAULT_ADDR with VAULT_ROLE_ID / VAULT_SECRET_ID, copy the returned token to the clipboard (never printed), then open that same Vault's apollo KV list in the browser. Chained with && so a failed login neither clobbers the clipboard nor opens the page.",
-            "command": "token=$(vault write -field=token auth/approle/login role_id=\"$VAULT_ROLE_ID\" secret_id=\"$VAULT_SECRET_ID\") && printf %s \"$token\" | pbcopy && echo \"Vault token from $VAULT_ADDR copied to clipboard\" && open \"${VAULT_ADDR%/}/ui/vault/secrets/secret/kv/list/apollo/\""
+            "detail": "Run the AppRole login and then the clipboard/browser step in sequence. Unchanged entry point for the original one-shot workflow; either half is also runnable on its own.",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Bir: Vault login via approle",
+                "Bir: Vault copy token and open apollo secrets"
+            ]
         },
         {
             "label": "Docker: compose up",

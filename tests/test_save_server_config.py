@@ -4,14 +4,7 @@ import pydantic
 import pyperclip
 import pytest
 
-for env_var in (
-    "CONSUL_HOST",
-    "CONSUL_TOKEN",
-    "CONSUL_CONFIG_LOADER_APP",
-    "CONSUL_PROD_HOST",
-    "CONSUL_PROD_READ_TOKEN_TOKEN",
-):
-    _ = os.environ.setdefault(env_var, "test")
+_ = os.environ.setdefault("CONSUL_CONFIG_LOADER_APP", "test")
 
 import dima.save_server_config as save_server_config  # noqa: E402
 
@@ -49,6 +42,7 @@ def test_save_config_allows_empty_secret_str(monkeypatch: pytest.MonkeyPatch) ->
     def decline_verification(_prompt: str) -> str:
         return "n"
 
+    monkeypatch.setenv("CONSUL_PROD_READ_TOKEN", "test")
     monkeypatch.setattr(pyperclip, "copy", copied_values.append)
     monkeypatch.setattr("builtins.input", decline_verification)
 

@@ -10,16 +10,8 @@ import pyperclip
 import rich
 import yaml
 
-CONSUL_HOST = os.environ["CONSUL_HOST"]
-CONSUL_TOKEN = os.environ["CONSUL_TOKEN"]
+# Name of the app config
 CONSUL_CONFIG_LOADER_APP = os.environ["CONSUL_CONFIG_LOADER_APP"]
-CONSUL_PROD_HOST = os.environ["CONSUL_PROD_HOST"]
-CONSUL_PROD_READ_TOKEN_TOKEN = os.environ["CONSUL_PROD_READ_TOKEN_TOKEN"]
-
-CONSUL_KEY_TEMPLATE = (
-    f"config/prometheus-kafka-exporter/{CONSUL_CONFIG_LOADER_APP}_{{}}.yaml"
-)
-CONSUL_PROD_KEY = f"config/aiplatform/{CONSUL_CONFIG_LOADER_APP}/application-prod.yaml"
 CONSUL_CONFIG_LOADER_URL = f"https://gitlab.kapitalbank.az/DevOps-Projects/devops-services/ai-automations/consul-config-loader/-/tree/main/config/aiplatform/{CONSUL_CONFIG_LOADER_APP}"
 
 VAULT_URL = os.getenv("VAULT_URL", "")
@@ -28,15 +20,39 @@ VAULT_ROLE_ID = os.getenv("VAULT_ROLE_ID", "")
 VAULT_SECRET_ID = os.getenv("VAULT_SECRET_ID", "")
 
 
+def get_consul_host(config_id: str) -> str:
+    return (
+        "cmap.kapitalbank.az"
+        if config_id.lower() == "prod"
+        else "cmap-pre.kapitalbank.az"
+    )
+
+
+def get_consul_key(config_id: str) -> str:
+    config_id = config_id.lower()
+    return (
+        f"config/prometheus-kafka-exporter/{CONSUL_CONFIG_LOADER_APP}_{config_id}.yaml"
+        if config_id == "debug"
+        else f"config/aiplatform/{CONSUL_CONFIG_LOADER_APP}/application-{config_id}.yaml"
+    )
+
+
+def get_consul_read_token(config_id: str) -> str:
+    return os.environ[f"CONSUL_{config_id.upper()}_READ_TOKEN"]
+
+
+def get_consul_write_token(config_id: str) -> str:
+    return os.environ[f"CONSUL_{config_id.upper()}_WRITE_TOKEN"]
+
+
 def save_config(
     config_dict: collections.abc.Mapping[str, object],
     config_id: str,
     Config: type[pydantic.BaseModel],
-    prod_config_id: str = "prod",
 ) -> None:
     config = Config(**config_dict)
-    if config_id != prod_config_id:
-        _save_config(config=config_dict, config_id=config_id)
+    if config_id.lower() == "debug":
+        _save_config_directly_to_consul(config=config_dict, config_id=config_id)
         return
 
     _ensure_no_non_empty_secret_values(config)
@@ -45,10 +61,13 @@ def save_config(
         flush=True,
     )
     pyperclip.copy(yaml.safe_dump(config_dict))
+    CONSUL_HOST = get_consul_host(config_id)
+    CONSUL_KEY = get_consul_key(config_id)
+    CONSUL_READ_TOKEN = get_consul_read_token(config_id)
     prod_env_vars = f"""
-        CONSUL_HOST={CONSUL_PROD_HOST}
-        CONSUL_KEY={CONSUL_PROD_KEY}
-        CONSUL_TOKEN={CONSUL_PROD_READ_TOKEN_TOKEN}
+        CONSUL_HOST={CONSUL_HOST}
+        CONSUL_KEY={CONSUL_KEY}
+        CONSUL_TOKEN={CONSUL_READ_TOKEN}
         VAULT_URL={VAULT_URL}
         VAULT_VERSION={VAULT_VERSION}
         VAULT_ROLE_ID={VAULT_ROLE_ID}
@@ -58,9 +77,9 @@ def save_config(
 
     if input("Press 'y' to verify the config was saved to Consul...") == "y":
         fetched_config = load_config(
-            host=CONSUL_PROD_HOST,
-            token=CONSUL_PROD_READ_TOKEN_TOKEN,
-            key=CONSUL_PROD_KEY,
+            host=CONSUL_HOST,
+            token=CONSUL_READ_TOKEN,
+            key=CONSUL_KEY,
             Config=Config,
         )
         if fetched_config != config:
@@ -71,11 +90,13 @@ def save_config(
             rich.print("[green]Saved config matches the fetched config.[/green]")
 
 
-def _save_config(config: collections.abc.Mapping[str, object], config_id: str) -> None:
-    host = CONSUL_HOST
-    key = CONSUL_KEY_TEMPLATE.format(config_id)
-    token = CONSUL_TOKEN
-    consul = Consul(host=host, token=token, verify=False)
+def _save_config_directly_to_consul(
+    config: collections.abc.Mapping[str, object], config_id: str
+) -> None:
+    host = get_consul_host(config_id)
+    key = get_consul_key(config_id)
+    write_token = get_consul_write_token(config_id)
+    consul = Consul(host=host, token=write_token, verify=False)
     consul.put_yaml(key=key, value=config)
     print(f"Config saved to {key}")
 
@@ -130,8 +151,8 @@ class Consul:
     ):
         self.host: str = host
         self.timeout: float = timeout
-        self.client: "_ConsulClient" = typing.cast(
-            "_ConsulClient",
+        self.client: _ConsulClient = typing.cast(
+            _ConsulClient,
             typing.cast(
                 object,
                 consul.Consul(

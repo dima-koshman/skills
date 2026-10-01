@@ -22,7 +22,7 @@
                 "Setup: link scripts and IDE to ~/.local/bin",
                 "Setup: add .env to global gitignore",
                 "Setup: install daily brew/npm update (launchd)",
-                "Link: Claude Code to project files",
+                "Link: .claude/skills to .agents/skills",
                 "Skills: install local (all)",
                 "Skills: update from remote sources",
                 "Skills: install remote (all)",
@@ -68,20 +68,6 @@
             "label": "Link: .claude/skills to .agents/skills",
             "detail": "Symlink the whole .claude/skills directory to .agents/skills, so Claude Code sees every project skill (it only scans .claude/skills/; OpenCode reads .agents/skills/ directly). Linking the directory rather than each skill means new skills need no re-run. Refuses if .agents/skills is missing (the link would dangle), or if .claude/skills holds a real entry absent from .agents/skills, which would be lost.",
             "command": "link_claude_skills.sh"
-        },
-        {
-            "label": "Link: CLAUDE.md to AGENTS.md",
-            "detail": "Replace CLAUDE.md with a symlink to AGENTS.md so both Claude Code and other agents read one instruction file. Refuses to clobber a CLAUDE.md that holds its own content — delete it manually first if that is intended.",
-            "command": "link_claude_md.sh"
-        },
-        {
-            "label": "Link: Claude Code to project files",
-            "detail": "Point Claude Code at this project's shared agent files: CLAUDE.md -> AGENTS.md and .claude/skills -> .agents/skills (runs both link tasks in sequence). Safe to re-run; both tasks are idempotent.",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "Link: CLAUDE.md to AGENTS.md",
-                "Link: .claude/skills to .agents/skills"
-            ]
         },
         {
             "label": "Skills: install remote (logfire)",

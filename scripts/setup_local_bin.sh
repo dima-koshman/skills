@@ -26,7 +26,6 @@ TARGET_DIR="${1:-$HOME/.local/bin}"
 SCRIPTS=(
     create_worktree.sh
     get_venv_packages_size.py
-    link_claude_md.sh
     link_claude_skills.sh
     list_opencode_processes.sh
 )

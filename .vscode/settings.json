@@ -115,6 +115,7 @@
         "python": true,
         "shell": true
     },
+    "window.title": "${rootName}",
     "window.autoDetectColorScheme": true,
     "window.newWindowDimensions": "fullscreen",
     "workbench.colorTheme": "Light Modern",

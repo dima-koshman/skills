@@ -10,6 +10,14 @@
     },
     "model": "opus",
     "effortLevel": "high",
+    "modelSettings": {
+        "claude-opus-5-5": { "effortLevel": "high" },
+        "claude-sonnet-5": { "effortLevel": "medium" }
+    },
+    "env": {
+        "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
+    },
+    "autoCompactWindow": 400000,
     "showThinkingSummaries": true,
     "hooks": {
         "Stop": [

@@ -4,6 +4,8 @@ Personal knowledge base for AI engineering concepts.
 
 ## Map
 
+- **Models** — [LLM architecture](models/llm-architecture.md): MoE sparsity,
+  KV-cache-driven attention variants, and multimodal designs.
 - **Decision models** — [Jev](models/jev.md) for typed System One decisions,
   and [CLM](models/clm.md) as an open-source alternative.
 - **Context** — how the model gets its context: [MCP](context/mcp.md), the
@@ -22,6 +24,9 @@ Personal knowledge base for AI engineering concepts.
   [Antigravity](agents/antigravity.md).
 - **Harness** — the machinery that runs them: the [harness](harness/harness.md),
   [subagents](harness/subagents.md), and [workflows](harness/workflows.md).
+- **Development** — how software gets built with agents: the
+  [AI-native SDLC](development/ai-native-sdlc.md) and
+  [observability-driven development](development/observability-driven-development.md).
 - **Observability & evaluation** — tracing and evals with
   [LangSmith](observability/langsmith.md), [Langfuse](observability/langfuse.md),
   and [LangSmith Evals](observability/langsmith-evals.md).

@@ -15,7 +15,7 @@
         },
         {
             "label": "Setup: full sync this project to host",
-            "detail": "Run the full local-setup sequence for a host: update package managers, publish local skills, link scripts/IDE and Claude skills, refresh and install remote skills, sync OpenCode, Antigravity and VSCode configs, install the daily update LaunchAgent, and install pre-commit. Skips 'Sync: Claude settings globally' (it replaces the file wholesale). Prompts once for skill scope and once for sync-confirm — type 'yes' at the sync prompt or the Sync tasks stay dry-run. Stops if any step exits non-zero (most likely 'Setup: link scripts and IDE' when no editor bundle is found).",
+            "detail": "Run the full local-setup sequence for a host: update package managers, publish local skills, link scripts/IDE and Claude skills, refresh and install remote skills, sync OpenCode, Antigravity and VSCode configs, install OpenWiki agent integrations, install the daily update LaunchAgent, and install pre-commit. Skips 'Sync: Claude settings globally' (it replaces the file wholesale). Prompts once for skill scope and once for sync-confirm — type 'yes' at the sync prompt or the Sync tasks stay dry-run. Stops if any step exits non-zero (most likely 'Setup: link scripts and IDE' when no editor bundle is found).",
             "dependsOrder": "sequence",
             "dependsOn": [
                 "Setup: update and upgrade Homebrew, npm",
@@ -29,6 +29,7 @@
                 "Sync: OpenCode config globally",
                 "Sync: Antigravity config globally",
                 "Sync: VSCode settings and tasks to Code User",
+                "OpenWiki: install agent integrations",
                 "Pre-commit: install"
             ]
         },
@@ -244,6 +245,11 @@
             "options": {
                 "cwd": "${workspaceFolder}"
             }
+        },
+        {
+            "label": "OpenWiki: install agent integrations",
+            "detail": "Install the OpenWiki skill and MCP server (`openwiki mcp --host <agent>`) at user level for Claude Code, Codex, OpenCode and Antigravity, so any of them can search, read, init and update the wiki of whichever Git repo it is working in. Does not check that the agent is installed — it just creates the skill dir and MCP config, so a missing agent gets ready-to-use config, not an error. Idempotent; re-run after 'OpenWiki: update CLI' to pick up the new bundled skill. The OpenCode MCP entry also lives verbatim in .opencode/opencode.jsonc, so 'Sync: OpenCode config globally' carries it rather than dropping it. Continues past a failed agent, prints `openwiki integrations list`, and exits non-zero if any install failed.",
+            "command": "rc=0; for agent in claude codex opencode antigravity; do echo \"--- $agent\"; openwiki integrations install \"$agent\" || rc=1; done; echo '--- status'; openwiki integrations list; exit $rc"
         },
         {
             "label": "OpenWiki: init",

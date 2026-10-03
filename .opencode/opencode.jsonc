@@ -75,5 +75,16 @@
         // Maximum subagent nesting depth (v1 had it top-level as "subagent_depth").
         // 1 is the default; it stops subagents from launching subagents.
         "subagent_depth": 1
+    },
+    // Owned by `openwiki integrations install opencode` (task 'OpenWiki: install agent
+    // integrations'). Kept here verbatim so 'Sync: OpenCode config globally' carries the entry
+    // instead of deleting it. The installer accepts only this exact shape — any added key makes
+    // it report the entry as modified and refuse to reinstall.
+    "mcp": {
+        "openwiki": {
+            "type": "local",
+            "command": ["openwiki", "mcp", "--host", "opencode"],
+            "enabled": true
+        }
     }
 }

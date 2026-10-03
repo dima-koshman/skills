@@ -1,8 +1,11 @@
 ---
 type: navigation concept
 title: Quickstart
-description: Routes readers from the AI-engineering and software-engineering maps through architecture, context, integration, operations, distributed systems, and reliability. Use it as a task-routing path; verify concrete decisions against current primary evidence.
-tags: [navigation, quickstart, ai-engineering, software-engineering, architecture, reliability]
+description: Routes readers through the AI-engineering and software-engineering maps, then to synthesized architecture, concepts, integrations, operations, and systems guidance. Use it to choose an investigation path and to find the primary evidence that must be checked before implementation or operational decisions.
+tags: [navigation, quickstart, ai-engineering, software-engineering, architecture, operations]
+verified:
+  - by: openwiki/0.7.0
+    at: 2026-10-03T18:46:29.040Z
 sources:
   - id: openwiki-source-d9d6175b74c75f794b5598b1
     resource: repo://wiki/ai-engineering/ai-engineering.md
@@ -18,95 +21,110 @@ sources:
     resource: repo://wiki/software-engineering/development.md
   - id: openwiki-source-711fcd86217ba6d6b7c209ff
     resource: repo://wiki/software-engineering/infrastructure/service-mesh.md
-  - id: openwiki-source-44a3a287089221f50d654ce9
-    resource: repo://wiki/software-engineering/reliability/simplicity.md
-generated: { by: "openwiki/0.7.0", at: "2026-10-03T16:27:35.648Z" }
-verified:
-  - by: openwiki/0.7.0
-    at: 2026-10-03T16:27:35.648Z
+generated: { by: "openwiki/0.7.0", at: "2026-10-03T18:46:29.040Z" }
 ---
 
 # Quickstart
 
-Use this page as a routing map, not as a subject encyclopedia. Start with the
-map closest to the task, then follow the cross-cutting path for ownership,
-boundaries, operations, and learning.
+Use this page as a task-routing map, not as a subject encyclopedia. Start with the
+map closest to the question, then follow the cross-cutting route for boundaries,
+control flow, operations, and evidence review.
 
 ## 1. Choose a subject map
 
 ### AI engineering
 
-Start with the [AI Engineering map](../wiki/ai-engineering/ai-engineering.md).
-It is organized around:
+Start with the [AI Engineering map](../wiki/ai-engineering/ai-engineering.md),
+the primary source-note map for this subject area. Its scope is broader than
+agents alone:
 
-- **Agents and execution** — agent architecture, concrete agents, harnesses,
-  subagents, and workflows.
-- **Context and capabilities** — context engineering, memory, RAG, MCP, the
-  Open Knowledge Format, and client-, provider-, and frontend-side tools.
-- **Enterprise boundaries** — LLM and MCP gateways.
-- **Quality and risk** — tracing, evaluations, and agent-security risks and
-  mitigations.
+- **Models and decisions** — LLM architecture and decision models such as Jev
+  and CLM.
+- **Context** — MCP, Open Knowledge Format, RAG, context engineering, and
+  memory.
+- **Tools and enterprise boundaries** — client/provider/frontend tools, the LLM
+  gateway, and the MCP gateway.
+- **Agents and execution** — agent architecture, peer agents, concrete agents,
+  harnesses, subagents, and workflows.
+- **Development** — the AI-native SDLC and observability-driven development.
+- **Observability, evaluation, and security** — tracing, evaluations, agentic
+  risks, guardrails, and masking.
 
-For the synthesized architecture view, read [Agent Systems
-Architecture](architecture/agent-systems.md). Use it when you need to locate
-the model loop, harness decisions, tools, state, limits, or delegation.
+Use the synthesized [Agent Systems Architecture](architecture/agent-systems.md)
+when the task involves the model loop, harness ownership, tools, context, state,
+limits, delegation, gateways, or termination. The synthesized page is a routing
+and reasoning aid; the linked source notes remain the authority for what was
+actually documented.
 
 ### Software engineering
 
 Start with the [Software Engineering map](../wiki/software-engineering/development.md)
-for service and distributed-systems material. Its route is:
+for general software-development and distributed-systems concerns, kept distinct
+from model-specific AI notes. Route by the map's concern:
 
+- **Learning** — [LabEx](../wiki/software-engineering/learning/labex.md) for practical
+  exercises and [Linux Foundation Training](../wiki/software-engineering/learning/linux-foundation.md)
+  for a structured Kubernetes introduction.
+- **Reliability** — [SRE](../wiki/software-engineering/reliability/sre.md), including
+  [toil](../wiki/software-engineering/reliability/toil.md) and
+  [simplicity](../wiki/software-engineering/reliability/simplicity.md).
 - **Communication** — [Protocol Buffers](../wiki/software-engineering/communication/protobuf.md)
-  for schema and wire contracts, then [gRPC](../wiki/software-engineering/communication/grpc.md)
-  for typed RPCs, streaming, deadlines, cancellation, and status handling.
+  for schemas and wire contracts, then [gRPC](../wiki/software-engineering/communication/grpc.md)
+  for the RPC layer built on them.
+- **Frontend** — [htmx](../wiki/software-engineering/frontend/htmx.md) for
+  interactivity in server-rendered HTML without a JavaScript framework.
 - **Infrastructure** — [service meshes](../wiki/software-engineering/infrastructure/service-mesh.md)
   and [data, control, and management planes](../wiki/software-engineering/infrastructure/planes.md).
-- **Reliability** — [simplicity](../wiki/software-engineering/reliability/simplicity.md)
-  as a design and operating principle.
-- **Learning** — practical exercises and structured training resources in the map.
 
-For the synthesized systems view, read [Distributed Communication and Service
-Infrastructure](software-engineering/distributed-systems.md), then [Software
-Reliability and Learning Practice](software-engineering/reliability-and-learning.md).
+For a synthesized route through service boundaries and distributed failure
+trade-offs, read [Distributed Communication and Service Infrastructure](software-engineering/distributed-systems.md),
+then [Software Reliability and Learning Practice](software-engineering/reliability-and-learning.md).
 
-## 2. Follow the cross-cutting path
+## 2. Follow the cross-cutting route
 
-These stops connect both maps and are usually the shortest route for a new
-design, integration, incident, or change:
+Both subject maps meet at these generated pages:
 
 1. **Architecture and control flow** — [Agent Systems Architecture](architecture/agent-systems.md)
-   identifies who owns decisions, state, limits, delegation, and failures.
+   identifies ownership of decisions, run state, limits, delegation, effects,
+   observations, and failures.
 2. **Context and durable knowledge** — [Context, Memory, and Knowledge Retrieval](concepts/context-and-knowledge.md)
-   separates working context, memory, RAG, MCP resources, and durable wiki knowledge.
+   distinguishes working context, memory, RAG, MCP resources, and durable wiki
+   knowledge.
 3. **Reusable capabilities** — [Agent Skills and Tooling](concepts/skills-and-tooling.md)
    covers packaging, progressive disclosure, invocation cost, scope, and trust.
 4. **Providers and interoperability** — [Model Providers and Agent Protocols](integrations/models-and-protocols.md)
-   is the boundary between providers, protocols, enterprise gateways, and the harness.
+   covers provider boundaries, protocols, enterprise gateways, and the harness.
 5. **Operations and risk** — [Agent Security, Observability, and Evaluation](operations/security-and-observability.md)
-   connects threats and mitigations with runtime controls, telemetry, tracing, and evaluation.
+   connects threats and mitigations with runtime controls, telemetry, tracing,
+   and evaluation.
 6. **Service boundaries** — [Distributed Communication and Service Infrastructure](software-engineering/distributed-systems.md)
-   covers contracts, RPC traffic, plane separation, mesh boundaries, and distributed failure trade-offs.
+   covers contracts, RPC traffic, plane separation, mesh boundaries, and
+   distributed failure modes.
 7. **Maintenance and improvement** — [Knowledge Maintenance and Provenance](operations/maintenance-and-provenance.md)
-   covers snapshots, manifests, citations, freshness, version pins, and generated-page lifecycle; then
-   [Software Reliability and Learning Practice](software-engineering/reliability-and-learning.md)
-   connects simplicity with observability-driven development and structured learning.
+   covers snapshots, manifests, citations, freshness, version pins, and the
+   generated-page lifecycle; [Software Reliability and Learning Practice](software-engineering/reliability-and-learning.md)
+   connects simplicity with observability-driven development and structured
+   learning.
 
 ## 3. Apply the notes safely
 
-OpenWiki connectors first create deterministic raw snapshots and manifests;
-source-specific runs then synthesize pages while those raw artifacts remain
-available for provenance checks. Generated pages are useful routing and context,
-but generated summaries are leads, not authority: current source files, tests,
-Git history, and runtime evidence take precedence for concrete engineering work.
+Generated pages provide derived routing and context. They do not replace primary
+source files, tests, Git history, or runtime checks. A source-note claim is an
+indication of what a note says, not independent verification of the underlying
+external source.
 
 Use this loop:
 
-1. Find the relevant concept through this page or a subject map.
-2. Read the linked synthesized page for terminology, boundaries, and trade-offs.
-3. Check the cited primary source, current code, tests, Git history, and runtime
-   evidence before changing implementation or operations.
-4. Return to the operations and maintenance pages when freshness, provenance,
-   security, or observability affects the decision.
+1. Find the relevant subject and cross-cutting page through the routes above.
+2. Read the generated page for terminology, ownership boundaries, lifecycle,
+   trade-offs, and likely evidence locations.
+3. Inspect the cited primary source, current code, focused tests, Git history,
+   and runtime evidence before changing implementation or operations.
+4. Return to [Knowledge Maintenance and Provenance](operations/maintenance-and-provenance.md)
+   when freshness, provenance, source disagreement, generated-page status, or
+   verification affects the decision.
 
-For the project background, see the [OpenWiki source note](../wiki/ai-engineering/context/openwiki.md)
-and its [OpenWiki repository](https://github.com/langchain-ai/openwiki).
+The maintenance rule is simple: a new synthesis or generation event does not make
+an old snapshot current. Preserve source identity, capture time, manifest and
+configuration, review status, and stale or superseded boundaries so a later reader
+can distinguish navigation material from evidence.

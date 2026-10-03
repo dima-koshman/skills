@@ -47,12 +47,14 @@ repos:
         pass_filenames: false
         always_run: true
         stages: [pre-push]
+      # Updates .last-update.json with the current timestamp even on no-op update in case openwiki is fresh,
+      # which makes it awkward to use in pre-commit hooks. Use the vscode task to update openwiki for now.
       # Model-backed: review and commit generated changes before retrying a push.
       # Scope this to knowledge inputs so unrelated pushes do not spend tokens.
-      - id: openwiki-update
-        name: OpenWiki - update knowledge
-        entry: openwiki --update --print
-        language: system
-        pass_filenames: false
-        files: ^(wiki/|openwiki/INSTRUCTIONS\.md$|\.openwikiignore$)
-        stages: [pre-push]
+      # - id: openwiki-update
+      #   name: OpenWiki - update knowledge
+      #   entry: openwiki --update --print
+      #   language: system
+      #   pass_filenames: false
+      #   files: ^(wiki/|openwiki/INSTRUCTIONS\.md$|\.openwikiignore$)
+      #   stages: [pre-push]

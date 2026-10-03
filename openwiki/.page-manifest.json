@@ -5,71 +5,71 @@
       "pageVersion": "sha256:de63be8f04397bf3f28d93c7b2d562a79f6ceb57b0405b02c4dc1e1ec9367bcb",
       "completedBy": "openwiki/0.7.0",
       "completedRunId": "6407606e-306d-44ea-a739-14d1adae0e99",
-      "gitHead": "8ed713c727800ca17d062434987fd6b47168bc48",
-      "sourceFingerprint": "sha256:aeb54b762df91b5331da4a3608ac4256dc7506b860cb74399be05f86d431b1eb"
+      "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
+      "sourceFingerprint": "sha256:5de3a205057dbdb0f9585f0e8edbd25ab9a39eec1a68441b6e7e390739b3adb4"
     },
     "/openwiki/concepts/context-and-knowledge.md": {
       "pageVersion": "sha256:3fff5753c69f377015b1b83aae65dfd916799fac8df414a8177ce23c2ceac0ec",
       "completedBy": "openwiki/0.7.0",
       "completedRunId": "6407606e-306d-44ea-a739-14d1adae0e99",
-      "gitHead": "8ed713c727800ca17d062434987fd6b47168bc48",
-      "sourceFingerprint": "sha256:aeb54b762df91b5331da4a3608ac4256dc7506b860cb74399be05f86d431b1eb"
+      "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
+      "sourceFingerprint": "sha256:5de3a205057dbdb0f9585f0e8edbd25ab9a39eec1a68441b6e7e390739b3adb4"
     },
     "/openwiki/concepts/knowledge-format-and-visualization.md": {
       "pageVersion": "sha256:52f6962340198906a144b68a0319cc9b706630a41e9b4f6ec23f2b32dcc6cccd",
       "completedBy": "openwiki/0.7.0",
       "completedRunId": "6407606e-306d-44ea-a739-14d1adae0e99",
-      "gitHead": "8ed713c727800ca17d062434987fd6b47168bc48",
-      "sourceFingerprint": "sha256:aeb54b762df91b5331da4a3608ac4256dc7506b860cb74399be05f86d431b1eb"
+      "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
+      "sourceFingerprint": "sha256:5de3a205057dbdb0f9585f0e8edbd25ab9a39eec1a68441b6e7e390739b3adb4"
     },
     "/openwiki/concepts/skills-and-tooling.md": {
       "pageVersion": "sha256:370310a726df0eb71ec8ea8448ffd79cb1330a86e734e1a5d70e648609f91d06",
       "completedBy": "openwiki/0.7.0",
       "completedRunId": "6407606e-306d-44ea-a739-14d1adae0e99",
-      "gitHead": "8ed713c727800ca17d062434987fd6b47168bc48",
-      "sourceFingerprint": "sha256:aeb54b762df91b5331da4a3608ac4256dc7506b860cb74399be05f86d431b1eb"
+      "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
+      "sourceFingerprint": "sha256:5de3a205057dbdb0f9585f0e8edbd25ab9a39eec1a68441b6e7e390739b3adb4"
     },
     "/openwiki/integrations/models-and-protocols.md": {
       "pageVersion": "sha256:3de05ad86a126577114fad8c5fa677dfe1c05626195e2d9c82bcf003e656c0a4",
       "completedBy": "openwiki/0.7.0",
       "completedRunId": "6407606e-306d-44ea-a739-14d1adae0e99",
-      "gitHead": "8ed713c727800ca17d062434987fd6b47168bc48",
-      "sourceFingerprint": "sha256:aeb54b762df91b5331da4a3608ac4256dc7506b860cb74399be05f86d431b1eb"
+      "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
+      "sourceFingerprint": "sha256:5de3a205057dbdb0f9585f0e8edbd25ab9a39eec1a68441b6e7e390739b3adb4"
     },
     "/openwiki/operations/maintenance-and-provenance.md": {
       "pageVersion": "sha256:000aa81651ba9507e1dc122e5beb854c6b7e212ee5d664bf6fa10cbc7116c1c6",
       "completedBy": "openwiki/0.7.0",
       "completedRunId": "bbf90ab0-92d9-4a7a-9c91-7d72af0ac415",
-      "gitHead": "8ed713c727800ca17d062434987fd6b47168bc48",
-      "sourceFingerprint": "sha256:aeb54b762df91b5331da4a3608ac4256dc7506b860cb74399be05f86d431b1eb"
+      "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
+      "sourceFingerprint": "sha256:5de3a205057dbdb0f9585f0e8edbd25ab9a39eec1a68441b6e7e390739b3adb4"
     },
     "/openwiki/operations/security-and-observability.md": {
       "pageVersion": "sha256:f85c6ef74b0f1a9fc356a5cf27478273be405ae80ce79624fce3e329f4a78378",
       "completedBy": "openwiki/0.7.0",
       "completedRunId": "bbf90ab0-92d9-4a7a-9c91-7d72af0ac415",
-      "gitHead": "8ed713c727800ca17d062434987fd6b47168bc48",
-      "sourceFingerprint": "sha256:aeb54b762df91b5331da4a3608ac4256dc7506b860cb74399be05f86d431b1eb"
+      "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
+      "sourceFingerprint": "sha256:5de3a205057dbdb0f9585f0e8edbd25ab9a39eec1a68441b6e7e390739b3adb4"
     },
     "/openwiki/quickstart.md": {
       "pageVersion": "sha256:de6bb476aa7f72170ac1b3037425a4c4948ee8e85931c2e5cedc125ee4a6d578",
       "completedBy": "openwiki/0.7.0",
       "completedRunId": "bbf90ab0-92d9-4a7a-9c91-7d72af0ac415",
-      "gitHead": "8ed713c727800ca17d062434987fd6b47168bc48",
-      "sourceFingerprint": "sha256:aeb54b762df91b5331da4a3608ac4256dc7506b860cb74399be05f86d431b1eb"
+      "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
+      "sourceFingerprint": "sha256:5de3a205057dbdb0f9585f0e8edbd25ab9a39eec1a68441b6e7e390739b3adb4"
     },
     "/openwiki/software-engineering/distributed-systems.md": {
       "pageVersion": "sha256:33942ccf4c1cf83fd3a2654c531bc1588df07eb7428f65ad379bb34322d34e94",
       "completedBy": "openwiki/0.7.0",
       "completedRunId": "bbf90ab0-92d9-4a7a-9c91-7d72af0ac415",
-      "gitHead": "8ed713c727800ca17d062434987fd6b47168bc48",
-      "sourceFingerprint": "sha256:aeb54b762df91b5331da4a3608ac4256dc7506b860cb74399be05f86d431b1eb"
+      "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
+      "sourceFingerprint": "sha256:5de3a205057dbdb0f9585f0e8edbd25ab9a39eec1a68441b6e7e390739b3adb4"
     },
     "/openwiki/software-engineering/reliability-and-learning.md": {
       "pageVersion": "sha256:5180790e23eeee5703895d4f915c5d638f562350e06936e92cc4deca0cda6e55",
       "completedBy": "openwiki/0.7.0",
       "completedRunId": "bbf90ab0-92d9-4a7a-9c91-7d72af0ac415",
-      "gitHead": "8ed713c727800ca17d062434987fd6b47168bc48",
-      "sourceFingerprint": "sha256:aeb54b762df91b5331da4a3608ac4256dc7506b860cb74399be05f86d431b1eb"
+      "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
+      "sourceFingerprint": "sha256:5de3a205057dbdb0f9585f0e8edbd25ab9a39eec1a68441b6e7e390739b3adb4"
     }
   }
 }

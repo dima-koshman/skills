@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:62517bc5dd2c021e38dd3e3690d5f4dc0ca5291a7be9b3c4f43bb32b50fbbb10",
+  "claims": [
+    {
+      "id": "claim_aca0997befda4e4bac2939de8aea29a5",
+      "statement": "OKF models knowledge as a directory of Markdown files with YAML frontmatter, one concept per file, with the file path serving as the concept identity; `type` is the only always-required core field, and `index.md` and `log.md` are reserved bundle files.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L28-L30",
+          "version": "repo-lines-v1:sha256:571b9b1f2581dadae95df6bf99340d9743017e2819cded9c91d3fbfca1905731:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTRjYTAwYzA0NWYwOWFjYzgwYjBhZDY3ZTYyY2Q5YzAwMWUyN2FlY2E5NjUwOTg2MDMxMDhlZDVhNjYwNmRmMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTQ5YTM2YWQyNGYyODU5ZjdmOThiODhjMGJlNzY5MmU5ZDI5MWU4NGVhYTEyNDE5MzJlY2Y1MWMwMTY1YzE0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDhhOTA1N2M5ZTkzZmQwOGVjNWNiMTBhODhhYmVmYWI4NTIzYzU2ZGQ0ZTgzYWFmYWMwNjVkOTc3NzRlZjQyOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTgzZjkzOGMyMjAxMjgxODE5MDk5NTQyZWU3Y2NiZGUzODMyMzNjMTc5NmYxN2NkYmE1NjgzZDkxNWYxYTI3NyJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L9-L12",
+          "version": "repo-lines-v1:sha256:c2fa634ad8a931742f327ede159b467a43e9fc186fdfaf181856887523cd6f72:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2I0Mjk0NjVhY2E4MWI3OWI1YzFkMjI3MzEzODg4NDQ2NDQwYzI1ZTA4NzExOWIxN2IyNjIzZjQwNDQ5MjdlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdlNTNhMDRjNGZlZDE0MmQxZmFjNzJkZGQ5NjhiNTJkYjc1MzVjOWZiZWZjZjcwZWExZTc4ZjgwZWY0OTgyNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJjMzM0Y2VjYTY2ZTBjMTYxYzhlZDQ3YTdiNjk2MmE1MzgxZjgwYzMwYzQyOGZlYTQwNmFlNDgzNWFjMzk1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjYwMjRhNjRlODg2M2FhOThjMGNiZDJhNzA4YTI4NDc1YTJjZDdkNTA4M2U1ZTczYzIwM2QwY2U4OWJmOWJkMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_86d8fe2e8df449b795fd71656fa2966a",
+      "statement": "The local OKF reference remains pinned to v0.1 while upstream was checked as v0.2 on 2026-09-30: the local condensed reference is a 2026-07-04 snapshot and the index generator still declares `okf_version: \"0.1\"`; the existing bundles were not migrated by that review.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L21-L26",
+          "version": "repo-lines-v1:sha256:ea0c70279299f199a8c0cc3ccd5f581fac4cc7b7042a0536244fff0a892254aa:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjZmMjA4ZGU1ZWQxZjI0NjllZDg3M2UzY2Q1YzhjMzU2NzVhNGQ1YmYzMDZmN2NmMjAxMjhhZjU2NzU4ODU3MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzhmOWRhMjViMjI0YmI0YTRlZGExMzQ5ZGZjZjk3Y2Q2MjZiM2FiMDk1NjNiMjg0MWUxNmY0MDRiMDNhOTk3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTUyYzVkY2UwMWYzYzQ3MjNmZWU1MDc0NDRhNGJmNmEwNmEzOTU2YmM0MDdmNTliYmE5NWY0MjIwMWU4N2RhNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODEyY2Q3ODVlYThlNjBmYmE5Y2ZlODQ2Yjk5ODQ3NDVhNDBiOGIyYmFhZWRjYTE2MTIzYzRjODExY2MwZmIyNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_202ef643943e47b79ea3c9b9fad098b6",
+      "statement": "OKF v0.2 adds machine-readable provenance and trust conventions: `sources`, `generated: { by, at }` with optional `stale_after`, separate `verified` events, `status` lifecycle values, and Attested Computation conventions.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L28-L39",
+          "version": "repo-lines-v1:sha256:5a4969428f06e648d964e69d846ff7845b235d7d2a741fc892d86db18433eb85:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0Y2EwMGMwNDVmMDlhY2M4MGIwYWQ2N2U2MmNkOWMwMDFlMjdhZWNhOTY1MDk4NjAzMTA4ZWQ1YTY2MDZkZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkMTU3OTBhMmMyOTE1ODhmNDMzYTEyYWMyNjAxNTI4MmQyMzZmYWRlMDM1ZWQ2YmI4N2UxYjQzOWUyY2JiMDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4YTkwNTdjOWU5M2ZkMDhlYzVjYjEwYTg4YWJlZmFiODUyM2M1NmRkNGU4M2FhZmFjMDY1ZDk3Nzc0ZWY0MjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1OWIxYTUzOGQxN2I1ZjI2ZWEzNjYzOTQ1MjE1NTYyNTQ4NmM4N2EzZDgxZDkzYTBlNmU3NWFkOTI4M2U3YjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9a668fca62db48d19c8494401d53b808",
+      "statement": "In v0.2, `timestamp` is superseded by `generated.at` and body `# Citations` lists by frontmatter `sources`; v0.2 consumers retain documented fallbacks for v0.1 documents, while `# Resources` links do not automatically populate structured provenance.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L41-L45",
+          "version": "repo-lines-v1:sha256:e4ebb1845063de8c72daeec1ad56b947da40158cb8522150f5f8e870c8e0366f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjRmODAxYTliOWU5NDNmYzk3NGJiODI1NTA5ZWEzNDg5NzVlNTcyYWYxYmQ5ZmM5NGVjZTdkY2QwNTcyNTlmMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTQxYmQ2NzNmZDQ5ZGEzODkxNzRlZjdiOTNjZGZmOTdjNWExMjU5N2MxMzU2YjM3Y2ViMjgwMzliZTlhMDQxZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmRmZTIxMjgyOWI2YWJjMjcxYTIyZjM0NWE0Njg5YmMwZjBkNGI2YjU2NmJmMDQwNDI4NzA0ZTBmNjI3YzEzOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2JmODliNTgzYjg3MDk1YWMwYjUxZmYyYjUwNmQyZmEyN2IxNTNmMGMzMGRiMThhMGJhNTRhMWFkYThjOWFhOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ba0069d753b94bda80b3ba1e0f598dbd",
+      "statement": "A safe local OKF migration updates the pinned reference, authoring skill, and index version together, migrates known provenance without inventing verification events, and checks both renderers; changing only the version constant does not make the current renderer display v0.2 trust fields.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L47-L52",
+          "version": "repo-lines-v1:sha256:0b29deaafca24b84dd571b47b9f3eb79679cb5ad0e495ccb53bc9b3bbeef3035:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjVkNzExNWJmZjI3ZmRiMGFmYTE5YzJmY2VhYWY0ZGM5NjUzNjk0MmM0ZmVlYTQyYWE5YmIyODZiOTY5NWQ1OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzNjNDEzNTBjOGY5Y2Y4NzJlODk4M2U4MDUwNTZjZThmNGI2YTlmZmQxNmQ2ODJmY2FiMDI3ZTQwZjY1OTFiMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Q5MmFlMTYwZTY5ZDQyMGEyNGFjNmQzNzFiZDZhN2E5YWU0MDY3Yzk1MGQyOGEyODRkOGY2MjQwNTgzMDIyOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f6e3c728e7464c3487282632bf3dbb28",
+      "statement": "The local `okf_site.py` renderer provides a graph-and-reader view with directory navigation, index and change-log handling, mobile Contents/Graph controls, metadata search, and dynamic type colors, while the upstream `reference_agent visualize` provides a graph/detail view with computed backlinks, selectable layouts, and v0.2 metadata display.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf-visualizers.md#L15-L28",
+          "version": "repo-lines-v1:sha256:91bb9095e5ff5aad3e834e550a55e682040660e355f88edb58f915f833b3aeac:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzYTg1ZmU4ZDA4MWM5YzQxMDk1MTRlNmZiYzM5YzYwNGM4Mjg0YTFmZGJmNmYwZTUzZjZiNzg4NTZlZWI5NjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkNDMzYTY0NTBjMDAxYmNjNjZiNWU5Y2QxMGQxMmMxZWFhMTBiNTY3YjQ3MDQ3NmMxN2NlZTMxM2YzOTc3NjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM2NzYxYjM1Mjc1MjZiODExMjhlN2M0MzgyZjMwZWM0Zjg4OTcyODhiOTQ1YTdkYTFhMzBmODRmNmFhM2NhOGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2NDg0NGJhYzE3YWM1NmQ0N2ZhNDRiNjc5MzUxNjBhYTUxZmNjYzU1YTYyZTU4MThmZDg0ZTA1M2YyYjAxNTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2778eade09b44b4598226e2c61f9be67",
+      "statement": "The upstream visualizer is not a drop-in replacement for the current bundles: its current extractor skips bundle links whose targets start with `/`, and an unchanged-module comparison on 2026-09-30 produced zero edges for both local bundles while including `log.md` as an Unknown node.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf-visualizers.md#L30-L35",
+          "version": "repo-lines-v1:sha256:a0cce761a4e74c0710b7e7a2f965b282855c00ee3e3fb9c9140f00260eafd67c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmIwZjkyNmI0ZDgyNjFiYzEwYTQ0YzcwMTRkMmU0NzE0MDZiMmM2MWIyODBmY2EyYTZhMjgzZWM0NTA3MjM5NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmFmYmIyYjBkNDAyMDUzODA4ZjVjODk2ZjZlMDg1NzMzNWEyZjJiZDBjZWNhMTc0NzNlY2E0NmQxYzI5NmE4MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODgwMjFiNTUxNmFjNjA2MDkyZTI3ZjU0NDIyZjI3MTc2MjVmY2QwNTVkNTI1YWM1M2Y2OGZlYzc2OWM5NGQ1MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2FjMDExZDhhOWUyZDMyZWQ5NTA1NDUxMDUzOTU1ODJkYzk4NjQ3ZDIwYzgyN2I1MDE1NjZmODgwOTYzNTEwNCJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf-visualizers.md#L37-L53",
+          "version": "repo-lines-v1:sha256:4916c5148675a7371faf1bb0b8ad6ee4c77f41bf81eebfd6da3fc08fc66c0c9a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczMzhhMGQzYWJkMTkyZjAwZDUzNWJiMWJmNzVlYTViZmVlZTNkNzMxZTkzZGQwZDEwMTc3YjA4YjMxYjRmZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjODFmZjc1YmU5YmU3YmU1OGE0ZWZlZTNhMWJmZGZmMDlmNWI4MTE4YzlkODZkMjQyOTFjNmRmMzc3MTc3NzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4MmY5NzMzNGU0ZTIyZDk3MWNlNjgxNDY3NjIyMTRlMzRhMGY1ZmIyMTY0ZTRhMjM5Y2ZiYWIxYzJlYzIzODAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2N2NmNTllZjFmYTFjMTI4ZjJmY2RkOTVlMWE1NDcwMzRiYzBhZTY5MjZiMmFkM2UzZTFkOGMzNTFmNDExZTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_051ff0f34a444a49b806b16e9a197606",
+      "statement": "The documented upstream visualization path clones the open-knowledge-format repository, creates a Python 3.11-or-newer virtual environment, installs the package, and invokes `python -m reference_agent visualize` with a bundle, output path, and name; the full CLI installation is heavier than the local renderer and eagerly imports agent dependencies.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf-visualizers.md#L55-L78",
+          "version": "repo-lines-v1:sha256:86600a1421ad63d81daf0eb4dd475e6d3ae88b8892094a377c803b074d75b3f6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0NzMwOGI5NTZlN2JmZDg0MDgyMjZhN2Q5NWMwNzcyYTQ0YjkxNmVjMThjMmZmYWY2YTEzZDA1MDJjYWYxMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjYWQxNzM0ZTIwOGMyMDQ2YzJjMDFhYzM3Y2EwMjU0YjIxNzIyN2JkNDBkYmYyNTkxYTdhNzI3YmRmMGE4NzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjODZhZTk1ODZkNjc1ZGM3MTE3MzNhNmMzYmUzY2FkOGJiM2QyNmFlMGRkNDEyNjQzODk0M2ZkMjE1NDA5ODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyODY1ZTEyNGM1YzgzMTUwOWViYTBkNmJmOTAwOTQ4MzEwYjRlOThlYTZmZDFhOTVmY2VjYTU2NGEwNGVjZjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f09a107ee90f4818af0a164d33a95cc3",
+      "statement": "The 2026-09-30 verification of upstream visualization was limited to unchanged viewer and document-parser modules with PyYAML in a temporary package layout; it did not install the full agent dependency tree or run the full CLI, and no renderer or build-task replacement was made.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf-visualizers.md#L80-L84",
+          "version": "repo-lines-v1:sha256:52973090d53d509370ccf1416513a48b3eeef66d839abbaa63729d1fb955094b:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2NkMDFiYWNkMDhhNDNiMWU5NDg4MjIxOTZkZDFjNDZlZDQ1NGNmN2RmY2U1MTZhMGE3NmQ0YWRkZWI1NTllYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdhZDQxNDgxYjk5OWIxZjk5ZDhiZDFlMDU2ZDFhZGZiMzJiOTQzY2FjZWYzNGEwZTBiNDAwNjlkZmU4YWFlNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzlkNGE0OTM3ZDQ3YjE3N2Y5ODVjODVmY2I0NjQ3YWVlMDA1ZWIwYWY3MmViM2U2ZTAwMzZhZTgxMGFlOTM3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_dd2950e9e8c94233b6ed9696ae9e9cd0",
+      "statement": "The upstream viewer should be previewed alongside the custom renderer until compatibility work addresses bundle-root links, both reserved filenames, custom type distinction, mobile reading, and index/log access; disposable link conversion can test graph extraction without rewriting canonical bundle identities.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf-visualizers.md#L37-L53",
+          "version": "repo-lines-v1:sha256:4916c5148675a7371faf1bb0b8ad6ee4c77f41bf81eebfd6da3fc08fc66c0c9a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczMzhhMGQzYWJkMTkyZjAwZDUzNWJiMWJmNzVlYTViZmVlZTNkNzMxZTkzZGQwZDEwMTc3YjA4YjMxYjRmZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjODFmZjc1YmU5YmU3YmU1OGE0ZWZlZTNhMWJmZGZmMDlmNWI4MTE4YzlkODZkMjQyOTFjNmRmMzc3MTc3NzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4MmY5NzMzNGU0ZTIyZDk3MWNlNjgxNDY3NjIyMTRlMzRhMGY1ZmIyMTY0ZTRhMjM5Y2ZiYWIxYzJlYzIzODAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2N2NmNTllZjFmYTFjMTI4ZjJmY2RkOTVlMWE1NDcwMzRiYzBhZTY5MjZiMmFkM2UzZTFkOGMzNTFmNDExZTMifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-03T14:38:54.195Z"
+  }
+}

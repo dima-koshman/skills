@@ -28,6 +28,7 @@ SCRIPTS=(
     get_venv_packages_size.py
     link_claude_skills.sh
     list_opencode_processes.sh
+    voice_chat.sh
 )
 
 # First hit wins. Add bundles here as needed.

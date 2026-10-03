@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'on run argv' -e 'display notification (item 1 of argv) with title \"Claude Code\" subtitle (item 2 of argv) sound name \"Ping\"' -e 'end run' -- 'Claude has a question' \"${PWD##*/}\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'on run argv' -e 'display notification (item 1 of argv) with title \"Claude Code\" subtitle (item 2 of argv) sound name \"Ping\"' -e 'end run' -- 'Turn complete' \"${PWD##*/}\""
+          }
+        ]
+      }
+    ]
+  }
+}

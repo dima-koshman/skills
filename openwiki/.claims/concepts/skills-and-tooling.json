@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:9ea6da319941763b34126ca47169653e9932deee959df351ec972e9f78ea8738",
+  "claims": [
+    {
+      "id": "claim_0865eea3c3224d8eac9d5a008b680488",
+      "statement": "A skill is a directory containing a SKILL.md whose name and description remain available to the harness while the detailed body is loaded on demand when the task matches, making skills a progressive-disclosure context mechanism.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/skills.md#L9-L15",
+          "version": "repo-lines-v1:sha256:21a347e03e1ca243fed16d55701397b621435a918da7ad58a5488e8f83d897a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjBiODAzZWRjODZjNGQwN2VhZGNmNWI0OTZkNGU3MWJhZDQzZGFjMWFhMDVjNDZiNzY2MjU2YjIyYzk4M2QyYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM2NjI3NjcwMDk5Y2ZkOWM3MTNiMmQ0ZDlmNzJmZjNjMGEzZTg5YzM5YTM1NTE5ZGE4YjE1NTZlNTk0ZjE3MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjZlNGU0ZDYzNjk1NDMzZGZhZDVjZDc0YTNmOGEzMzBkYjNhYTY0MTRkYzk0MjJkOWU5MWNjNjExZWI5NDYyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTFjODVjNzBhZWNlMzBmYTUzZTM5NzhhMDU3ZGM0Njk2MmJiMWQ5MDhkYzJhOGU2ZTMzZWU2MzFmOWZiOWIyYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8985166f0bf14c0eaf8daaa69a3a484f",
+      "statement": "Skills can supply private or fast-changing knowledge or control agent behavior at decision points, but on-demand invocation makes them unreliable as always-on constraints; project-scoped AGENTS.md or CLAUDE.md files are recommended for always-on requirements.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/skills.md#L22-L51",
+          "version": "repo-lines-v1:sha256:255443b016de222db384b706c4b4ac480fc1ed8b23e94d5aa4d81b12955fb30f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2Mjc0YmQyYjNmMGE0NTE5ZGUxZjJmOTNlMDFjNGMzYjViOGMyMjlkYWNmYmQwMGJjM2JjYjMyOGQ1ODU2NzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwOTkxY2IxMWVkZGU2NzRjYTQyNTJmMjdjOGY5MDQ0YjA5ZmM0YzQ3YmM4NGNjN2E1NzM5MGI1ZjkzNGJlM2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwOGEwODNkMzJmNmQxNjkxNGQ3MDBiYjA4ODM4OGI2YTQ1MjhlY2FkM2Y4NDgzNjRmNjM4YjEwYmM1Mzg3YjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwYmI2MTI3NmYwZTIxMTNkMDdlZjMxZmYyMGUwZTU3ZDVkZWRhNWIzYzJmMDVlN2IzYmJhZGM3ZGM0MTc3MjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_598cf235311042ceb12ba16148faade9",
+      "statement": "Tools extend an LLM into an agent by enabling environment interaction, context retrieval, direct actions, workflow orchestration, and subagent calls, and are exposed through provider APIs and protocols such as MCP.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/harness/tools.md#L7-L15",
+          "version": "repo-lines-v1:sha256:f29cfd0190c65b6c9059084e1812c0f1ddd1adfcc56fe1b735a4848783b360bb:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmZmM2FiMDYzZDI3M2IwMzEzZDQ3YmQ1NWI2YWIyZGNlZTJmYzM1OTFhNGY4YTQ1MmVhNDYxMmRiNjdkZGExMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGYwNDI5NzI2ZDYwN2NhMzVjN2Q3YjIxZWVhNmE4MmI1ZTYwNzQ3YWQ0ZWQxMjNiOTE3MzM2OTI3Mjg3YzA2MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTQxYzgzMjI4NDJhMWU4NzAzZWZjNmZkMGE4ZmFiNmRmNDlmYmY4NTRkYzY4ODZhMzk0ZjAzYjcxNjY0ZjY5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWI4OGU1NGQwZDA1YzUxY2QwMDM2NDI1OTdlN2RhMTY5MGY0NmY1NjdjZDIxZmY1NmU1MjQxNGM4M2ZkZDQ2NyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_35a86aaf92104b32b0290603e9efdc70",
+      "statement": "LLM tools are classified by execution boundary into client-side backend tools, client-side frontend tools, and provider-side tools; frontend tools generally drive UI interactions and are newer and less standardized.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/harness/frontend-tools.md#L3-L7",
+          "version": "repo-lines-v1:sha256:5c2be779c2a9c8e04c1cc53cf51da9cefa28ef94339c32bde20c28c7bd42716e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjUwN2Y4Zjk3M2U2NGM1ODQ3YmQ5ODA4OTc3MTY3YzRmY2FkMjI1NGM5NTg4YjAzOTMyM2VkMTM1MzI1OTk5OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTU4NThiNzUyMGRiM2FiMjdjZmUyYTVhNzUxMWJkNGQ3NjgwMjRlYzVkNjMwNTBkNGYyMTFjNDAwZWJhMDk0MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGRhOGRkMjAxNmVlNzQ4MjY1N2IzODhjMmRlY2MzNmRiMjU4MmYxZjg5MDRjYjY4ZGQxMDY5YTlmMTY3MzU0YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzZjNDA2ODY2MWVjY2E3MTllZTBjNDIwODhmODc1YWIyMzBlZDNkOWU4MWQ3YzZmOTZiMzE2N2M1ODk1ZTExZiJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/harness/tools.md#L17-L27",
+          "version": "repo-lines-v1:sha256:258b81299da5a680c69ac5429c9a10ffa227f9c4627d3f4bdc64c1cbaa093127:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiZTliYjk3YjQxNWVlMjc2YWJjNTJjN2MwM2NiNmFhMzQ5MDFlOGE0OGQ3MWY4NDZlMzdkYjg3MGU3YjBmYzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwOWI1MDJkNzc0NTc5NDQwYmZlYThkM2EwM2ZhOTVkMDQwYjU1YmIzNDFiOTU5MjVkMTNmOGM3ZTJlYmNiZDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwYTcyNzM0YzM2OGQyY2EwMTZhYjEyM2UwMmE1NTk2NThiMGQ4YTBiYmIxNWE5YTdmZDFlYjZhMTE2OWU4NGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyYjJjMWJhYzBjZTg2YjMyMjhlZTE2ZWFlMzUwNjVlNDJiMzA0ZTMwZDY3M2I3YTk1MzUzNDc1YmU1NzNiMjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c73d56b9ae344f2da8c3eeb677f5286e",
+      "statement": "Provider-side tools are defined and executed by the model provider, with the client enabling them and receiving results inline; custom function calls require the client to execute the requested action.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/harness/provider-tools.md#L26-L32",
+          "version": "repo-lines-v1:sha256:54912b6015d93211ede1a50a5d508afd1469e4815926a59f28a58e46f113da75:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjY2MGEwOTc2MTEzNTZlZGMyMzAyMzVmMjU2YmIzM2Q0YzgzYWQ3YmM4MDkxZjBhYjY3YWQ2OWNkNmJlZGRjZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGUyZjg2NzVhMzJiOTMyNTk2ZjU5MDc4MDdjZjQ4YzQ4ZGY3ZWJlYThmODVmZjM0OGY2OGViN2YxMGQ0MTNmZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmIwOWVkODNlMDlkMTM2YjJmMWI0Nzg1NmQyNDFhNmI5NjU1YTJmM2MzNmU1NWU1N2VhYjlhMDYwODE4Y2YxYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/harness/provider-tools.md#L3-L8",
+          "version": "repo-lines-v1:sha256:6f92f291e8584c062c54626b5eebef1774cb442e648e212a02e51e8bd3982083:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDdiODkzZmQxNGI0M2YzOGMxYzViYWNkNDIwYmQ1ZWRiOWJkN2YxNWVkMTBjZDgyMjE1OTQ4M2Y3ZGNmODY5YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjI1YTg0YTQ0Y2VlMjI2N2QzZDQyZmJiZjg4OWMwMzQyMWUyY2YzYjJjYTg1ZTI5ZTNjZDEyMGFjNTc2MjNiZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWExYzJiMzEyMmQyOTMzN2I0YjVhYTQwZWRiZWMyMTk4MjM4NTJlNzc1MDg1Mjg1YTk0MjQxNzFkOTc2OWM2OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTA5ODljYWVhNThmMjM5ODg1ZjFmOTQ3OWJmNzQ3M2UxNmFjZTIyNmY0YzBkZjBjMjRhMmY1NTMwODU5ZjE2NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_07fc2a0c383f4f55816d7301363f198a",
+      "statement": "Skill deployments incur context and operational costs from always-present descriptions, bulk installation, duplicate discovery, plugin bundling, and session-start instruction injection, so skills should be scoped selectively and audited for actual invocation.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/skills.md#L53-L72",
+          "version": "repo-lines-v1:sha256:727362acc766b326a6c308f05b85a41155d1506fdadc7c761cb8b9798cf27dfb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkNDA3ZGU5OWY2NzE2YTY0MTk3MzEzNDNlM2I2ZmZhN2U5NzA3M2I0ZjgxNzc3ZjcxMmU4YTgwMjAwN2VhYzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTkyMDI3MDEwZGRlZTc5NGJmZTg0NDMzOWUxMDQ0N2NlYjM3N2QyMjQ2NzViMDJhNDc0ZmMzZjg0ZjRlOGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjNzZhMjM2MmVkMDM1YmZiOWIyZjhkNGVlYmYyNDU0MTQ2YTZkODQyNjZkMjFiODQ0ZjJmZDdmNjU2ZmZjOGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiY2JmNzE4YjMxYTcwZWY1NzRhYTM4NzFhNjIwZDk1NzNlOWFkOWJlMDY1NzMxNjBlYWE4YzZkMzQ3Mzk5NWUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/skills.md#L78-L97",
+          "version": "repo-lines-v1:sha256:f8db1e1b7f9baf0969df91f3f72ed7497fc5b075004ec20ac05bf8eef1a3e74c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhNDQ4MzcwODg2NjQ1NzA4OWEyNjdkMzNlZGM4YzAwMTk5MmMxZGU5ODMyMGJkNzEwOWIxM2FkNTZjNmNmN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjYzI3YWE0MzI3MDc5MTU4OTMyNzY5MGJiMGIxMmZlZGM3NDk2MGM5YmMxMjliMjY4Y2NlYjg3NDU1YWFhN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyZjgxZTQ2ZmZlZTU0OTAyY2EzMDFmYjNhNTk1NmVlYmUzMWQ1MDI0NjQ5YjZlOGQyNGIzODAxM2M4YmMyNjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2NDVlZjY0ZmM1ZGUxYjZiNjI1YzJmYTgyYTUyYWE2Mjc0NzNmOWQ1M2E4NDVhMGZkZThkZTA1ZjA4ZTQzMDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bb704d510bfb49c69278affd23ff944a",
+      "statement": "Third-party skills execute with full agent permissions and may ship scripts, so they must be treated as code dependencies and evaluated for supply-chain and goal-hijacking risk rather than trusted as documentation.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/skills.md#L69-L75",
+          "version": "repo-lines-v1:sha256:85b190b7935d7cfc1cebfa583dd91b03e6f4e0fd6fcdf5f44f12c8919356028d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjBjNGFlZDFhZDQxZmViNTk1MmRmMjY3ZTE3NzE3MDcyMDE3MTc0YjNiNjVjMDI5NDE4ZjdmNTIzYjU5NzI5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZkM2UxY2UzZjE3ZTBmOTM0YTg0MDgzNGY3MTU1ODg3YjA0YWNmMmIzNTAwNWUxZWJmZGRmYTdmZTQxMjFhYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGQzZjhiMmRmN2IyYmEwYWE1NzhkMDVhOTQ1ZDAzYjkwYTBkNTdlYTJmNGIwMDJkZmNhNDNjNjYwMzg3NzM1YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzQ0MTE2MGZkYzExMzFlZDYxMWU3Y2Y0MGI3YmQ4ZmI2MzI2ZjcxMTVjNmFmNWY2NjNkZTJmZDZiOTNjZDAzMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_085dfaeef4774e61b84176e2d39d3342",
+      "statement": "Tool and skill outputs are context inputs rather than automatic authority; consequential actions require explicit application-level authorization, validation, provenance, and protection against untrusted or adversarial instructions.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/skills.md#L73-L83",
+          "version": "repo-lines-v1:sha256:00ef4a7ed934a969a6959716fb305da5f0ce553e46efd9357007ee11dec23766:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhMzNkZjljNGI1ZjE0M2VlNjI2ZDU5ZjI3Y2JhOTUzNDE2ZmQzYmVkNDVmZGQ4ZDVlN2UwMWNlZjU0MWIwNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYzE3ZjBkYzI4MzkxNjE0ZDlmYWE2MmNkYmVlNjcyOGQ4YTE2MDJmM2ZkNDJlNGEyZWI5N2M4NDMwYzFiNGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE2OGFkNGUwNDYwYTQxZDM0ZDY1NzIyMTEyMWY2ZmI5ZWY3ZTQ5NzQ4MTU5ZTFkYTBhMjI4ZjczMjlhNTNiYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4YTllYzA0ODgzYzQ2YzUwNDdjMDk3OTI1ZTI5NmI5NGQ2ZmY2NDNhZDU0N2E3Nzc0MDY1YTBjMTVjMTljOTgifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/skills.md#L98-L102",
+          "version": "repo-lines-v1:sha256:48075ad44ff05e095cef2fc79cb1afcc0719beceb9d4967c82d925c6c107e581:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzZhZmUwYTk5N2FlZjE1ZjdlNzY1ODNiOTA3NmIzOTM5MGQxZjc0MTBkZTQzNTEwOTBiMzY4OTk4MjVhNzQ5OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGM4Y2YzNDEwOWI2YzA0ZGIwNjdmMmJkZDcwNjRkNDc0MWY3OGZhNjgxZmM2Y2FjOWVmNGUwZjU2N2RlZWUxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGRlNTg4NjIzZGEzNGZhNWUyZjM2MWQ3NDI2M2Y2OWQxMGFjMGQ3YmJhMDBmMWQ5ZTQwY2EzM2Y5ZDMzOTg1ZiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-03T14:38:54.195Z"
+  }
+}

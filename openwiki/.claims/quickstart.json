@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:eba521fc57557024b93649a3f024ff78bba4168ea1bc4072a405adcb454182b3",
+  "claims": [
+    {
+      "id": "claim_af94c9dde28740abb66797bc74b36888",
+      "statement": "The AI-engineering subject map organizes notes around decision models, context, tools, enterprise gateways, agents, harnesses and workflows, observability/evaluation, and security.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/ai-engineering.md#L5-L29",
+          "version": "repo-lines-v1:sha256:1bfa7fe57851bc13c84f2df1606c2c16e44724873187334c256924b8f051b1f1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNDE1MDE3NWIzMzk4MTE0M2E4YTk1ZTJlZWYxYmUyYTRjMDczYzQ0YmVkOGVkYzhiMGNhYzIwOWI0ZDc4NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MTFjNDliNmYyZmM2NjlkMzE3ZDJiMmY0MDE4MDBiMDVkNzJmODZhNDBjMmZmMDU5NjUwMDg2ODkwNzhhNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmMjdjNGUzNjY2YmEwYmRiNzlkNWQyYTIwMjk4YzE0MTc4NGM2M2U1ZjJkMDU4MzJiMmJiMDA5NDM1ZmJkMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_66f8d8a28ef949f1a61b6822b0fece98",
+      "statement": "The software-engineering subject map separates general distributed-systems material from model-specific AI engineering and organizes it into learning, reliability, communication, and infrastructure.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/development.md#L3-L23",
+          "version": "repo-lines-v1:sha256:0467140a22eb6d69c952c1d65a4a70af8007e96fa6d3070a2ff301c2c9b813cf:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4OTJiMDU1NGVlMzhkYjJiODVlMmM1NDJkNjZkZDY1MzQxMmFlNDRhOTIwNjc3OGZlYzA0NjA0YTc2ZGFkYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MmEwMDgzMjg0NzgwNDdlODY3MzdjYjZmYjgxZTMyOTVhNTRmOGM3ZmUwZDY4ZjVhY2Y2YmJkN2Y2ZGJhYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU0NzQ2MTBmODAyYjAwMWUyMWE5OTFjOTRkYWRjNjJkZWUxZGUwZWU0NWM2YWZjMzdhNmJlMTc2OGQ1YTQwMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9f581d50c4584c1f95441c21f29a0ed4",
+      "statement": "OpenWiki's generated pages are organized around durable context and selective context engineering: connectors create deterministic raw snapshots and manifests before source-specific runs synthesize wiki pages, raw artifacts remain available for provenance checks, and generated summaries should be treated as leads while current source files, history, tests, and other primary evidence remain more authoritative for concrete engineering work.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L20-L31",
+          "version": "repo-lines-v1:sha256:001b4e7fda210a6c54e45fb16481c6fbd8fdaeeeaad64b14c43c04895879b33b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzN2FlNTYzMjQ1NDZhYzU2MzJlZDVkNDYzZTg2N2Y0ZWFjYzQ1YmM0ZjM3YWY0Y2ZkYmVlY2NlMzI3MGIzZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1YzQxZWVkMDMzMzk1Yzk1M2FlNmVmM2E3NjZmZGYxNGY5YzE5Mjk0ZGM2N2QwY2RjMDdlNGFiZWE4YmIxOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU2MDljZGRmNDVlNWE3MmMyMTIwYWI4ODc5OGM2NjM5MTlkZjY2YmQzYzYxYWI0OTRmNzFlYjk3NWY3ZmNkYTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L7-L18",
+          "version": "repo-lines-v1:sha256:53b19fe9648e4b0a8943b26dbe9e4174ae7b2e262dd6520033572d919da26353:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiZTlkOTQyYTNmYjE2MGI1MDFmM2JiMmYzNGM1NWU0MjMxODZjNzA1ZDA3Y2I3YWZlMDRiZGFmNGJhMTU0YzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2OWU5Njc4YzMyZDEwODEwMjkwOGQ0ZmMyYmQ1OWE5OWVmZjExZWY4MzhmMDg0ZGIzY2ExZDQ1NzlkOTg4MTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliMDNjZTk5MzMyMjIxMWEyZjAxZjI2YWE1NmU2MmVjMmZiMDczYmU4M2RjZjdhMWM3ZTQ3NDMwYmU2ZGI3YTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzNjgzYTIzNGZlMzQ2MzY0YzYzMDk4OWNhYjMzYTk3NjRkY2Q0YTE5NmRmN2FlNDg2NzY1NzI5Y2ZlMjRkM2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fc08261124454d41a8ae603d7b8ca70a",
+      "statement": "The quickstart connects AI-engineering subject areas to software-engineering concerns because the source maps explicitly place agents, harnesses, workflows, context, tools, observability, and security alongside service communication, infrastructure, reliability, and learning.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/ai-engineering.md#L8-L29",
+          "version": "repo-lines-v1:sha256:c7664cde660f822321bf51243e4da39f60c83af09680021630d2b120adac34ca:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2ZjBlYjFiZjI0MWM3ZjNmNDIwYjc1MGUxNzg5ZmE5ZmY2NmM5NjgxMmIxNmVkNTQ3MDE5NjUzMmUzNmEwNzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MTFjNDliNmYyZmM2NjlkMzE3ZDJiMmY0MDE4MDBiMDVkNzJmODZhNDBjMmZmMDU5NjUwMDg2ODkwNzhhNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1ZDlhZjk0ZTlkYWE1MWNkZjQwNWViMGNmNGEzNzE3YWExZThmNWM3NmU0YjNlMGRiMjZjNWIyZjJlNmI1YzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/development.md#L10-L23",
+          "version": "repo-lines-v1:sha256:143331d66215fffbef6914f8d670c9b059ed697da5efceacbf71296db4aa3065:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNDE1MDE3NWIzMzk4MTE0M2E4YTk1ZTJlZWYxYmUyYTRjMDczYzQ0YmVkOGVkYzhiMGNhYzIwOWI0ZDc4NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MmEwMDgzMjg0NzgwNDdlODY3MzdjYjZmYjgxZTMyOTVhNTRmOGM3ZmUwZDY4ZjVhY2Y2YmJkN2Y2ZGJhYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0OGU0M2ZhYmRhNzlkZDdlN2FiODE2YzMyZTE0MjIyM2E4ZTc2NmY5YTk5MTlkZmRjMzkwNTFlY2Y0ZjBiYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-03T14:38:54.195Z"
+  }
+}

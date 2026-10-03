@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:315c165b145a5db3126db4393b597fe47e818679aff09e77097d659840f155c5",
+  "claims": [
+    {
+      "id": "claim_9f5931820a594ffb915edf0e586c5e1a",
+      "statement": "Simplicity improves reliability by distinguishing essential from accidental complexity, deleting dead code, keeping APIs purposeful, assigning clear module and service responsibilities, preserving compatible interfaces, and releasing small understandable changes.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/reliability/simplicity.md#L9-L26",
+          "version": "repo-lines-v1:sha256:ed79fee4757627323041881dd1d3a9c489ba988110e7e3ad8d3a6ab6fc96ffd0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiMGRkY2RhMGIyNGE2OGJkNWQwYTY5ZmRjNjhkMWQwZTBkYWU0NDFiMDRiMDVlNmRhZmY5YThjYmZjZGEzZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1MTc2MmMwZmQ1ZTQ5YzllZDM5ZWI1ZWJkYmZkOTgyOWEzYTAwMTgwMTAyNDRmOGU4ZTA1MDQwZDkwYWUwZWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiYzMzNGNlY2E2NmUwYzE2MWM4ZWQ0N2E3YjY5NjJhNTM4MWY4MGMzMGM0MjhmZWE0MDZhZTQ4MzVhYzM5NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ2M2QxNjI5ZDVlYTU2MjBkN2U4MDhkZjJiZTY4MmM1NjA4MWU0NDYzMWNjNjMzNDliMTBmYTRlNWQxMjU0MDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_07557f51854047e4b528b6164a9ba968",
+      "statement": "Introducing infrastructure such as a service mesh requires comparing its operational components and complexity against a concrete requirement rather than assuming centralization is automatically simpler.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/reliability/simplicity.md#L28-L31",
+          "version": "repo-lines-v1:sha256:cf65f35a1b920ee596729c1520f4f0dc5bdeacd9acc47b0547d99eafd9a76566:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWZhZjNkMDFiMWQ0ZjcxZTkxNmM1MTJlMzM4ZWQzYTFjODE3MzlkMjQ4YTNhNWE2NjI2YzU3OTMxYWYyNTY0YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRiZjEwY2VlYzllOWFmY2M5OTkyYjhjMWUwZGQxODljMTVlM2UzZWUwNGQ4ZDgzNzZkNTg1MWE2YTI4MjJkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTM5ZWMxODk0MWY5OGY3MzMxMTNhMjEzNTg2YjcyNTk3YTQwYzA0NWMzMDQ4MTM2ZTU1ZmM0MzJmNDliODg0YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7751f02a2d3246798180c4bbf8000b50",
+      "statement": "Observability-driven AI-assisted development is an evidence-driven loop that instruments behavior, retrieves bounded telemetry, correlates it with code and configuration, diagnoses supported causes, makes a bounded change, verifies the result, and records the learning while retaining independent review and deployment gates.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L5-L35",
+          "version": "repo-lines-v1:sha256:f86aaccf7deaf00729301ad6cbc583351bebdf199888a2de4b04ce9356af4c34:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YTdjYTIwMWZkNmY0M2VhMmNjMGE1OWQ1ZGYyZThjY2NiODY3ZjcwYzVmNDdmMDI1NTI0YTVjMjcyYTA0MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNzUwNzc3NjhhNTBjYzE0MjVmNjA2OTk4OWI1NDA2Yzk0ZThmYzEwNTJkYjY0OWI4N2FlNDdiZDc2ZDU5NmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExMGVhODM1YmM2MjJiYmNmMWUyYTFhMjczOWZhNzNlNjQyOTQ1Nzg4MjM4ZDdmODk5OTcyMmYzZjE3NGJiMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyOTYyM2FiNjUxZDNiOWRiMmE1MDYxODIxNTYxZTU4MzlhY2YxNTBkMzUyOGI1YmVmNDkzZjNiMjA3NjFjMWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_54c1acaa42774d038ab54657a9fc8f85",
+      "statement": "AI-layer traces and application observability are complementary: each exposes different parts of behavior, and correlation should prefer shared trace or request identifiers while labeling indirect linkage as probabilistic.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L51-L73",
+          "version": "repo-lines-v1:sha256:f3a49bca43aeb87e76715a6b3317653d58b7b6adfac6ba6839c89abc4e7994e9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkZmQ0NzZiMmMyNWZiNzIwYzBjOTJhZGI1OWI5YTI1NzZjMDY3MGJmZWM0NmU3OGZmZTFkZDFiYWU0NTA5MTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4ZTIyYmQyOGEyMWI1OGE5MDYyOTJjNmFlMGEyMTZkOTMxMDk0MmM5NjlhN2Y5MmRiNzI3OGQzNzg0OTM1ZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkYTQ4MDk2ODE3YmI3ZGE5ZDVkNzJkZDQwYzg0OTY3YjBjNGVmMzc0NjY0MzdkMGZkNTc2ZWUxN2VlZTU1NGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzMTgwNzZlNDk2NzVkNGQxMjMzMWY2NzdkNmNhNjE5OTZmNGExZmMyOWM2MDExY2ZiMTMxZDNlOWJjMmM4YzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5213085fb98545d39ee17cccad9c32db",
+      "statement": "Safe observability-driven development requires structured instrumentation, stable correlation attributes, bounded progressive queries, access to code and tests, separated permissions, and verification gates distinguishing test, pre-deployment, and post-deployment evidence.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L75-L89",
+          "version": "repo-lines-v1:sha256:df5981df4adafdcc868eecf24cbdb96d52b28a899035fa0f5b4fa0295777af58:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1ZWRhOTdmOGNhMGZhYzJlMWQwZjBhM2I4NWY1NTY2ZTdmOTY1OGMxNmI4NzhkOTUyNmVmMTVlOGYyZDlhYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyNmU2ZjkxNzcyYjA0MzZlMWNkMzJmZDNhNmMyOWM5ZDlmNDYxYjM4MTVhZTJlMDVjYjZmNzcwODVkMzZiYmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYwNjk3MzA3ZTU1MTBiMTFjNThmN2FhYzk2NTFhNzA0NDU3YjA3YTY1ZWI3ZTEwMjU5OGM0NjNlYzc3MDgyYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmY2YwNmI1ZTRiYTk3MTJhNTJiNWY1YzU2ZWY1MjdjYzJiOTdiM2JhYjhiYTQ3NGQ4M2E5NjVlNWU2ZjYxOTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e27ef8ccc7094a2398dc3514e3934b9f",
+      "statement": "Telemetry is incomplete and potentially untrusted evidence: missing spans are not proof of health or failure, sensitive data should be minimized or redacted, retrieved content may contain attacker-controlled instructions, and read access must not imply production authority.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L91-L111",
+          "version": "repo-lines-v1:sha256:b6150a080b2850bd0f0fa4a807a0b8253eababd15ff5a259facf9c2a02a7d5ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyZTE1MGI4ODM0ZWYxZmQ5MGYyMGFiNmNlZWYwMDE2ZDM2MTQwMGJmZDQwMWJhYzA0YTQ0OTE0ZDg5M2U2ZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MWVkNjZjMGE3OTNhODcwNTllN2I4YzI3MzE1MDVhZjQ5MmNjZDk5ZTkyZGU5N2ExOGYyMjg3NDk2ZjNlZmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0ZmQzNmYwMjhhZTViYTY2MzIwMmM1YTA2N2Q1YWNkM2JkZjA1YTM4NmYyZTk2YTQ2ZjQxOGU5NTI1OTExYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiZjlkNTIwNDBkZDU2ZTg3YTkyNTU2NzkxYmI5OWY3OWQ0MzNhNTk3NDkyODQ0YzZjMWM0ZjhlYzRiMmMzMTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_53209fd0796e4adfb0b05feb9aae7427",
+      "statement": "Proactive retrospection should scan fixed non-overlapping runtime windows, cluster repeated failures and outliers, reconcile findings with existing work, and persist a checkpoint only after a window is fully triaged.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L44-L49",
+          "version": "repo-lines-v1:sha256:6eb527be4e0a90eb8f96ed084d19d24845d94cc6c9149426a63a07a6f040bd3e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGMwNTNjZWU3NDRkMTA0YTEwNDBmNmRlZjQwNDNlMzI3MDdmMmQ1ZDlhODQ3ZDc3ZDI3ZTQwODUzMWEyZTY0NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzZjMDNkMWZlY2Y5MGU3YWJmNWQyODdmOTE3N2IzNzg1MDU0NGJhODQ3MzNkNzI5OGQ0NjYyZjUzN2ZlNTJlZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjJlODczMzQyZDZkNGY5ZTRjMDYyMzUzNjdiMTkyOWFlMTFjNDQ2ZWI0NDgwMTlmYTczNzE5ZTU2NzcwOGJkZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjFiYmQzNWRjMzlkNDM0MDQ0M2RiNjU1YmJkZTM3Zjg2ZmVlYmMxMTU5OWMyYzcyZjY4ZDYwYmYwZTc3ZWEyNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8cd4119c12bc47b09254ae11b8b90f25",
+      "statement": "LabEx provides browser-based interactive environments, guided labs, skill trees, and projects for practical Linux, DevOps, cybersecurity, programming, container, and Kubernetes exercises; completing a guided lab is practice evidence rather than proof of production experience or certification readiness.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/learning/labex.md#L9-L18",
+          "version": "repo-lines-v1:sha256:65435b5ea257f5b520a161aa4856805d6393cb662eab73671424a6bf6e1927c7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwYWFkZjEyZTFjMjQ3MTZjMDJiY2FhNzIwNTI1MmRiZGI3NDc3MTBkYjlmYzAwYTQwYTZkMzg4Mjk0N2Y5OGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzc0YzQ4YjFmODZmYThjMjJkMTMwOTVlNjUyNjFhZjQ4MmU3NTY3M2Q5YWNlOTE2ZjU3MTFlOTJhMDhhNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiYzMzNGNlY2E2NmUwYzE2MWM4ZWQ0N2E3YjY5NjJhNTM4MWY4MGMzMGM0MjhmZWE0MDZhZTQ4MzVhYzM5NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5394b45cb3ec4fd1821c98546dbd6836",
+      "statement": "Linux Foundation Training's public description of Introduction to Kubernetes (LFS158) presents a free self-paced route covering Kubernetes architecture and components, Minikube cluster access, and deploying and accessing applications, with hands-on labs and assignments.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/learning/linux-foundation.md#L9-L14",
+          "version": "repo-lines-v1:sha256:b1553d871dfefd928da69262c1001da95910df71023778f4ccb0700bdc1187e9:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjQ2ZGM0MDIzZTY5MDI2OTM1MGQ1NDAxNWU3YzZhNWUyYTAyNjk0N2ViYTRmZThjNGYzMTkwNDc4YzhjNDhiZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzlmY2RkMWUxODcwMDVlMDFkMTk5MDI1Yjg2MTViNjBmNTY2MzMwODA2Zjk0ODMwZDQxZGEzMzVjYWY4ZmE2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJjMzM0Y2VjYTY2ZTBjMTYxYzhlZDQ3YTdiNjk2MmE1MzgxZjgwYzMwYzQyOGZlYTQwNmFlNDgzNWFjMzk1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWFjMWI0MDg3MjQ0ZjZlYzBiY2NlNzhjMGU1NzIwMmUzZWFiYzFlYjkwNmNhNzMxN2VlNjM3MGI5Mjg5YTU4NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3e09e6db935245f1bef2e09a76dd68fa",
+      "statement": "The Linux Foundation saved lesson is a navigation bookmark rather than a canonical course URL; its portal may require JavaScript or login/enrollment, and its specific contents were not verified in the source review.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/learning/linux-foundation.md#L22-L32",
+          "version": "repo-lines-v1:sha256:07f39d0a26752822f058a96aa92fe2756f320234ab374bbb6c6c864bae693f8e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3ZDEwODhiZGQxOWU4ZDRiZmRhNDU5NjFiMGEzODFkMzVkMzYwZGU4NzdhZmIzZmI0NmFhMTc0YTkwYzA1NmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhZmJmNmM1OGI5NzI1ODdkNzY5Zjg4N2I2YzBmZGU4NGE5MTlhYmE4ZGVkMDBhNjg0MTc5M2ZjZTk3YWZmMzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ2NDU0YzdmMDRjYTAyY2RjZmIzYzYxNzEwYjgwMGZkZTk5YmY0MWE4MmFhM2Q1MmNmZjJmZDU0MjcyODc5ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-03T14:38:54.195Z"
+  }
+}

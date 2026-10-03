@@ -13,7 +13,6 @@
         "error": { "sound": true, "notification": true },
         "plan_exit": { "sound": false, "notification": true },
         "subagent_complete": { "sound": false, "notification": false },
-        "interrupted": { "sound": false, "notification": false },
         "user_cancelled": { "sound": false, "notification": false },
         "session_started": { "sound": false, "notification": false },
         "user_message": { "sound": false, "notification": false },

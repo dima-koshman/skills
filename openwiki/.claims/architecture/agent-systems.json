@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8496e32c7f646827cc015925922a9a2b6045bde2b9e2d487afe5308d93bcb417",
+  "claims": [
+    {
+      "id": "claim_e0d4a9bbfd72470ba0c17f0530204eb0",
+      "statement": "An agent is generally an LLM in a loop with tools: the model selects an action, invokes a tool, observes the result, and repeats; model-directed control flow distinguishes this architecture from a fixed workflow.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/agent.md#L7-L15",
+          "version": "repo-lines-v1:sha256:9a13fc5d4a598e474c0ea4b680548379eb418d7b7501b351bc6820a1aa7f6639:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjNmZDg2ODdhMmYyOGJkNTA2MTgzYWIyNzJmZTY4MTU5NDM0N2RjODgwMTkyOWViMWY0ZThhNGVjNmVjMjA2NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTkxYjU5OTE0NWY1ZDBhMDMzYTBlZWUxYTU2MDRkOGU5ZjRlZTU0ZjBjOGQ5MTgxM2IyMzQ1MGI4YWNmNGFhNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGYwZGRkYmJiY2ZhMGJlNmNmOGE4M2QwMGVlNmFjYjcxZDViYTgwMDY5YTI0YjIwYTZmYTA3ZmY4ZjFmYjA1NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmU5MGIzMTY4MTQ1NGI2Yzk4ZTNkYTZmNDE3NDI3OTQ3OGQ2YzA5NDM1ZTM2OTg3N2M3N2M1Y2NlOTM1YTBjNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_392392731740478ba2cff205713eed1e",
+      "statement": "The harness is the concrete runtime around the model loop: it parses model responses, dispatches tool calls, feeds results back, manages context and memory, enforces retries, step limits, budgets, and sandboxing, and decides when to stop.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/harness/harness.md#L3-L5",
+          "version": "repo-lines-v1:sha256:5df187e5d0bfe122df29dcc0b7f81e9db8ef5a0f621dfbba015cffa9b7011749:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzljMWQwMjE4Y2Q3YzIzZWRmNDMwOTE4NWUwNjIzZjlmNmE2M2FmMTU3Y2VlYzA2MjMzNTk0NDdmOTRiMjk2ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDMxMGY4ZTIzZTZmMGMwYWM5NjY1MDZhYzBjYTRiM2Y5YWExNDg1MGNiMTAwMTY3ZjNkZGJhMjBhOTM3NzAyMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWU1MWI0Njk3NGFjYmYyNmY4OTQ2OTJlNWIzNzRlMjg4YzU0NGYyZGMwMTQ0M2ZjZmVhOWMxMTNmYTI3NmY5NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3038e3eb207b49e59cab356c1ef9518c",
+      "statement": "Tools let an agent act on its environment and fetch new context, and can be used for direct operations, workflow orchestration, or recursive subagent calling.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/harness/tools.md#L7-L15",
+          "version": "repo-lines-v1:sha256:f29cfd0190c65b6c9059084e1812c0f1ddd1adfcc56fe1b735a4848783b360bb:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmZmM2FiMDYzZDI3M2IwMzEzZDQ3YmQ1NWI2YWIyZGNlZTJmYzM1OTFhNGY4YTQ1MmVhNDYxMmRiNjdkZGExMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGYwNDI5NzI2ZDYwN2NhMzVjN2Q3YjIxZWVhNmE4MmI1ZTYwNzQ3YWQ0ZWQxMjNiOTE3MzM2OTI3Mjg3YzA2MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTQxYzgzMjI4NDJhMWU4NzAzZWZjNmZkMGE4ZmFiNmRmNDlmYmY4NTRkYzY4ODZhMzk0ZjAzYjcxNjY0ZjY5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWI4OGU1NGQwZDA1YzUxY2QwMDM2NDI1OTdlN2RhMTY5MGY0NmY1NjdjZDIxZmY1NmU1MjQxNGM4M2ZkZDQ2NyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_886e2074881f4a7a82a5f658c07ef187",
+      "statement": "Tools have distinct execution boundaries: client-side backend tools, client-side frontend tools, and provider-side tools that are defined and executed by the model provider.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/harness/tools.md#L17-L28",
+          "version": "repo-lines-v1:sha256:de0120095bed51fc7ef12ebbe034f044137d370ea3d1b5648e285a584557f8a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiZTliYjk3YjQxNWVlMjc2YWJjNTJjN2MwM2NiNmFhMzQ5MDFlOGE0OGQ3MWY4NDZlMzdkYjg3MGU3YjBmYzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyYjJjMWJhYzBjZTg2YjMyMjhlZTE2ZWFlMzUwNjVlNDJiMzA0ZTMwZDY3M2I3YTk1MzUzNDc1YmU1NzNiMjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwYTcyNzM0YzM2OGQyY2EwMTZhYjEyM2UwMmE1NTk2NThiMGQ4YTBiYmIxNWE5YTdmZDFlYjZhMTE2OWU4NGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7487824508d64186a37bf5ef18fed1a5",
+      "statement": "Short-term context and durable external memory let an agent carry state across steps and sessions, with durable memory commonly persisted externally and retrieved when relevant.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/memory.md#L7-L10",
+          "version": "repo-lines-v1:sha256:eb8644f779828f4b48a9c6b9ce5c6723809494463be9e063c1d32213981e7591:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGUyYTlmZDJjNDIzOGIzOTg0ZWUwMjJiMzIxMjdiNTZkZGI3YjRhZTliOThiYWY2NjU4NzYyY2IwY2I5OGZiNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODg0NjIyODFmM2VkOTdmMTJhYTg2YjJhNmZkMDQzMzZjYmVmZGJiODczOGUzNjA3YWFhNDNhNDE1Mzg2ZjM2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTg4ZThkYjBkMTBjYTA0OGI0YzUyNjIwYWQ5YWIwYmUwZWFmMTRmMjdkOGM1OTI3NDc1MjBjZGJlNmM1ZDBjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWYzN2UwNGE5NDIzZWRhNGFjOWI4NmY2NTI0MDUyMDcyNGI4ZjA1OWNjMzk5NzhhYjgzZTI2MTVmNzg1YjMzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_da5ef5aaeb624069987b657f00b5b2a0",
+      "statement": "Subagents are separate agent instances delegated focused subtasks by a parent, with their own context; unlike peer agents, they receive task and authority from the parent.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/harness/subagents.md#L7-L11",
+          "version": "repo-lines-v1:sha256:54c4c9fcc6897a0118ddeb0a770d3d7efe6992a039b0122c3f857ee7b3da678e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Y1Y2FhMDYwMGJmMzFkNjE1NTFhNTc1MTc0M2E0NGZjOWRkN2M1N2ZiM2E5NGVmNzU5M2UxZTcyMjBhNDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzgzNjBhYjVjOTY2NjEzYjUzYTIxMThhNDUwMTFhOWEwNDUzNzI5Y2VhNGI1OWFlNGFmOGIwMzNiZTM3M2M5OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmY1N2MxYzQzNGY2NDVhNDliNWQ4YTJkZDE1YTZmODYwODhmYWVhNmE3YjJlOGQ5ZWUzZjdhMTIxNTI2MWI5NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWUzZjY5YmQyNGVjZGJjYjU5YWJiMWVkMTUwN2UwODBmZDM4MzgyYTdlNzAyZmQ4MzlmZmU5MDU3ZDE4ZTZkZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0fa7b075112f4bebbb9aa9571563ca2c",
+      "statement": "Workflows provide scripted tool use for reduced token usage and long-running orchestration, can become more powerful when they spawn subagents, and introduce unexpected-code-execution risk when model-written code runs inside the harness.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/harness/workflows.md#L3-L5",
+          "version": "repo-lines-v1:sha256:68281522d5c4e47045226eed4af46ff32cc2780e5d342866a6fa0e7cd0f58c72:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjFkZjVlMDViMWFhMTBjOTJiNThlOTc1YWU5NzhiZGVhZDM0ODQ0YmMwODMzNjQ4MTgyNTZmOWE4ZDNjNjczNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTI3MjVjNjc2Zjg3ZjZlMDdhMDU1MGI0Njk2OTllZjdkMWVlMDE5YzYwODIxODc0NWIyMzUxMGMxYjNlYmIyNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjY0YmMyYTVkMTZiNjg1NjUyOTdiMmRhOTViMjI0NGE0NjY5NDA0MTQzZTkzNDkyMjA0ZWExM2FkMjkxMGE0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjA0MjNkMTgzMTNhNWI2NzdhYTI0MTJkNjY4OWI0MjIzODE5ODE2NDJmMTg1Y2MwMTljYWIxZTVmYTQ0NDQzOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_757ee6c77e0c4795860e1c72527d9706",
+      "statement": "Deep Agents packages planning, subagents, durable memory, human-in-the-loop, and workflows on top of LangGraph, which serves as its harness.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/deep-agents.md#L3-L7",
+          "version": "repo-lines-v1:sha256:18ea821849ba8e7af874a148209be4f28ab37e68cf2360de33a716613a0e752c:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGU1ZmEzNjk1MDY2MTllMGQzNDRhMTQ5YTBiNThiN2UyNTNlYzNmYzcxZTdiNmIwMGRjZTEyNGExMGU3YjIyMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTJmODNjNTljZTE4ZTFlMjE4NmVjZTJiNDM0OTJiZmZlYzhkZmE4Njc1ZmI4YzIxYzVlMDFiNGYxNTBhN2I5YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDkwNWFkMmY5OThmNDEyMDhhODRlN2I4MmY5NWQ0ODM4Zjk5N2E0YjE5YjQ4MjIzMjQzZjA4YTA5MWE5ZTI1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-03T14:38:54.195Z"
+  }
+}

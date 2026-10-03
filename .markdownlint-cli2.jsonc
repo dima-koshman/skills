@@ -2,7 +2,8 @@
     "config": {
         "MD025": false,
         "MD041": false,
-        "MD013": false
+        "MD013": false,
+        "MD060": false
     },
-    "ignores": ["docs/"]
+    "ignores": ["docs/", "openwiki/"]
 }

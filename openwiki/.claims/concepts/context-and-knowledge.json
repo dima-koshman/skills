@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:0ad08b2351f68394084cd187a1f0efad931b9874e581f0bd301d852afa268a7c",
+  "claims": [
+    {
+      "id": "claim_eb53eaf8ff744e6db9b0aaba296c522a",
+      "statement": "Context engineering assembles a bounded model input from instructions, tool definitions, retrieved data, memory, and conversation history, and therefore includes context selection and window management rather than prompt wording alone.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/context-engineering.md#L7-L10",
+          "version": "repo-lines-v1:sha256:4af21428ed1bb599704b2ea7248ee1f296bdee8a8cdbca5dd911940e16a47aba:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODA2OWVjMWY3ZmYwMzc0ZmZkNGJmYjRhZTUyY2Y1NjVjYTdkNjIyMmU1ZTkwMTNmY2RjYjk4NDQ2ZWYyYmI0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGFlNjY1OWNiN2QwNjA4MGFhMjY3NDAyOTc1MDdjODEwYTBjMDY0NzQxOGQ4M2Y5ODdlMTE4YWQ3ZDEyMDcyYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2RmZWQ1MmMxODc1MzdlZjBiZmRjOGM2OGZiYjQ0YTE3NzE3NjdjN2E2NTk1NjYzODE2NGE2ZDU3ODVkMTNiMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjBiZDE3ZTViNmI3MGMxOGU3NzYxM2JmOTFhNjJlYjgzNjIyYjg2NTkwNzEwMWVkNTIxMDI1YTM3NWU2ZThiOSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/skills.md#L9-L15",
+          "version": "repo-lines-v1:sha256:21a347e03e1ca243fed16d55701397b621435a918da7ad58a5488e8f83d897a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjBiODAzZWRjODZjNGQwN2VhZGNmNWI0OTZkNGU3MWJhZDQzZGFjMWFhMDVjNDZiNzY2MjU2YjIyYzk4M2QyYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM2NjI3NjcwMDk5Y2ZkOWM3MTNiMmQ0ZDlmNzJmZjNjMGEzZTg5YzM5YTM1NTE5ZGE4YjE1NTZlNTk0ZjE3MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjZlNGU0ZDYzNjk1NDMzZGZhZDVjZDc0YTNmOGEzMzBkYjNhYTY0MTRkYzk0MjJkOWU5MWNjNjExZWI5NDYyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTFjODVjNzBhZWNlMzBmYTUzZTM5NzhhMDU3ZGM0Njk2MmJiMWQ5MDhkYzJhOGU2ZTMzZWU2MzFmOWZiOWIyYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_549eeee59466482b9de7b291331999ee",
+      "statement": "OpenWiki uses deterministic local raw snapshots and manifests as inputs to source-specific synthesis, produces agent-oriented Markdown, retains raw artifacts for provenance checks, and can refresh the derived wiki through scheduled ingestion without putting the full source corpus into every context.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L7-L18",
+          "version": "repo-lines-v1:sha256:53b19fe9648e4b0a8943b26dbe9e4174ae7b2e262dd6520033572d919da26353:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiZTlkOTQyYTNmYjE2MGI1MDFmM2JiMmYzNGM1NWU0MjMxODZjNzA1ZDA3Y2I3YWZlMDRiZGFmNGJhMTU0YzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2OWU5Njc4YzMyZDEwODEwMjkwOGQ0ZmMyYmQ1OWE5OWVmZjExZWY4MzhmMDg0ZGIzY2ExZDQ1NzlkOTg4MTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliMDNjZTk5MzMyMjIxMWEyZjAxZjI2YWE1NmU2MmVjMmZiMDczYmU4M2RjZjdhMWM3ZTQ3NDMwYmU2ZGI3YTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzNjgzYTIzNGZlMzQ2MzY0YzYzMDk4OWNhYjMzYTk3NjRkY2Q0YTE5NmRmN2FlNDg2NzY1NzI5Y2ZlMjRkM2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ecf9aaab09eb45c0b3890d1bf4c5101c",
+      "statement": "Pre-synthesized wiki knowledge and query-time RAG have different freshness boundaries: OpenWiki organizes source material before a task, while RAG fetches relevant material at query time; a hybrid can use the wiki for orientation and live retrieval or tools for verification.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L22-L31",
+          "version": "repo-lines-v1:sha256:48328cf5db581f90b194abba94ae08f8f817d0b7286615ea0f123d1873c8e0af:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMDU3MjllNGYxZjUzOWVhYTE3ZTVlNjNlZmJmMWVlZWE3Nzk2MmJlMTQ2YjI0YTM1MDMzMzE0Mjc4MzkwOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1YzQxZWVkMDMzMzk1Yzk1M2FlNmVmM2E3NjZmZGYxNGY5YzE5Mjk0ZGM2N2QwY2RjMDdlNGFiZWE4YmIxOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzNjgzYTIzNGZlMzQ2MzY0YzYzMDk4OWNhYjMzYTk3NjRkY2Q0YTE5NmRmN2FlNDg2NzY1NzI5Y2ZlMjRkM2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/rag.md#L3-L8",
+          "version": "repo-lines-v1:sha256:024ef30524165c496de2fcd58e47c9101b2d7ced6329e7f7bc5d2e34eb24f1ef:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDU4ZDZlM2NkNGJkMTczMmFhZjk0NDliNWZmOWY5YzYxYzBlYjRhMzI0MWRmOTI0NDU2OGFmZjRhOTdiMDRkMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWI0MGQxYTEwMzZhNmQyMWQyMWRkODZiYTI3OGJlODBkYzEzZWQyODJiYjAzNmZmMWY1YmQwZGFiN2JkNDU4OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjU4NTllNmQ0M2ZlZWRiM2Y0MzFmN2ViZGU4MjQ3NTNhZjM1MDg1YTlkMGVlZmJiNmE1N2NiYzU2ZGU0NzczMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjU0OTBiYTU5MTRjNDBiZjkyZTlhMzY5NTZiZTMxYWIxM2I1OWU5ZGIwNmJlZGRkYTMzNTk2MDgxYzg2MmI5NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2311621a454a4aac80f9fc079ed84952",
+      "statement": "RAG is not limited to vector embeddings or semantic similarity; practical retrieval systems also face normalization, structured-data, chunking, index freshness, and maintenance concerns, so direct or specialized retrieval can be preferable for structured or frequently changing data.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/rag.md#L3-L10",
+          "version": "repo-lines-v1:sha256:8a7ae53ba8b968fe76e8fbe8ee0110cfb68a4adb77ca8ba2b691769e8195bfba:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDU4ZDZlM2NkNGJkMTczMmFhZjk0NDliNWZmOWY5YzYxYzBlYjRhMzI0MWRmOTI0NDU2OGFmZjRhOTdiMDRkMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGIxZGYxY2IyZjE1MDFlNzFiNjQxMTc3MDI5Yjc3NjZjYjk2YjMxZDVlZjU2NmMzNjczNTBmZjc4NmUwYjE0YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjU4NTllNmQ0M2ZlZWRiM2Y0MzFmN2ViZGU4MjQ3NTNhZjM1MDg1YTlkMGVlZmJiNmE1N2NiYzU2ZGU0NzczMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzE1ZTRkYTg3MTIyMzBlNDQ3NDNiMTFkZWJjNDE4ZjQ2ZTY0NjhmOTNjMzRkZmMxMTljZDE0ZjE1MzM0OGEzZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_81fe44173d284a4cabf0fa56b6e1dcea",
+      "statement": "Memory carries agent state beyond a single model call through short-term working context and externally persisted long-term stores retrieved when relevant; because persistent memory can be poisoned, recalled memory must be treated as an input requiring provenance and policy rather than unquestioned truth.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/memory.md#L7-L10",
+          "version": "repo-lines-v1:sha256:eb8644f779828f4b48a9c6b9ce5c6723809494463be9e063c1d32213981e7591:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGUyYTlmZDJjNDIzOGIzOTg0ZWUwMjJiMzIxMjdiNTZkZGI3YjRhZTliOThiYWY2NjU4NzYyY2IwY2I5OGZiNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODg0NjIyODFmM2VkOTdmMTJhYTg2YjJhNmZkMDQzMzZjYmVmZGJiODczOGUzNjA3YWFhNDNhNDE1Mzg2ZjM2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTg4ZThkYjBkMTBjYTA0OGI0YzUyNjIwYWQ5YWIwYmUwZWFmMTRmMjdkOGM1OTI3NDc1MjBjZGJlNmM1ZDBjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWYzN2UwNGE5NDIzZWRhNGFjOWI4NmY2NTI0MDUyMDcyNGI4ZjA1OWNjMzk5NzhhYjgzZTI2MTVmNzg1YjMzYyJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/memory-context-poisoning.md#L1-L6",
+          "version": "repo-lines-v1:sha256:033083c3624cb11e67f49823fb89e670707db1c3e576634da9b87cbd4b2ade78:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjZlN2QwMDgzZDNjODQ3MmZmZjc1ODRjNTEzY2JiYjk5ZjQyYTI1NzZjNWE4N2I5MjBkMjIxYzA2YTczNTA0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmE4YmFiOTcyYzRlMmYzN2M0NDEzNTc1M2M3OTU0ZDkwYmNkY2Y2ZWMyODk1ZmUyOGQ4ZDE5ZjVkMmFmYWQ4ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9bc0c1adb35b408ba2c06df18aa871a7",
+      "statement": "MCP is a JSON-RPC boundary that exposes tools, resources, and prompts between an LLM client and external capabilities; its stateful initialization handshake and persistent connection support capability negotiation and server notifications, while session state complicates remote horizontal scaling.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/mcp.md#L7-L27",
+          "version": "repo-lines-v1:sha256:0c17aa00406eb56038706437654f30a80d9f8c2504eb3759255f35a6871cc1ee:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ODA3NDA4Mjg4ZjQ4MjA2MTBjODkzYzgzYWJiODgzOTMwMzA2OGY2NzJiNGI2YzllYWVjYzdhYWNhMDNlM2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjOTYyYzM4OGUxNDQzZTM3ZThlNTZiMmU3YWFiMjlmYzNkMDRlZGM1NDJmMTA1ZTQ0ZTM1NDU1ZDEyMmUxYzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllNGIwMDQxNTFlNWMxYTQxNjUyYTE4MDdhMDI3ZmI3NmZjNDAxMjdjMzI3YmJmZmE3ZGQ4MmQ2NDM3NDIyMzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmMDBmN2U1YjMzNDQxNGQ4ZTNhNTAyNTdiMmExNmM5MTZlN2U2OTkzOTQ0ZWQzZmQ2ZmY5NTYxNzdlYzJiYTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ca219020b8c54a54992bce1aa7e8791c",
+      "statement": "MCP is a transport and capability boundary rather than a memory or truth layer: an MCP gateway can centralize authentication, permissions, secret injection, anonymization, guardrails, and audit in front of multiple servers.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/mcp.md#L7-L12",
+          "version": "repo-lines-v1:sha256:ff675970f5d217e64a8f71c0331114b566c6480feaa451701246c403765d4834:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjc4MDc0MDgyODhmNDgyMDYxMGM4OTNjODNhYmI4ODM5MzAzMDY4ZjY3MmI0YjZjOWVhZWNjN2FhY2EwM2UzYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGUxNjkxMjhhYzhjNTFiZDc2OWQ1NDZkZjIwYTRlYjNhNzBjNWEzZDFlMGIzNjg5ZTQzZGNiMzAyZWUzYjQ1NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWU0YjAwNDE1MWU1YzFhNDE2NTJhMTgwN2EwMjdmYjc2ZmM0MDEyN2MzMjdiYmZmYTdkZDgyZDY0Mzc0MjIzNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGRlOTM2ZmYwODg4YzYxNDU4Y2MzNmNhMTgxNTE5ZjAyNGUwOWM4ODM3NDMxMzcyMDM1ZTBmNGQyMDQ5ZDA3ZSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/enterprise/mcp-gateway.md#L1-L4",
+          "version": "repo-lines-v1:sha256:f0c6b002e5e0466b24883fde0e0e7be39bf8d15ff88807783b8bb0a6e952fcfe:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmUyYjJjZTE1OTI2OGExNGMwMzM0ZWNjM2NjMzhiZDQzYmMwYTZkMDlkZWMzNjY4OTcwOWZlM2RhMDU2MjBjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTBhZDRjNDA3MzU4ZmY3YTUxODUxMjFjZDUzZTJmYjVlOTA2MzdmNGMyMjU2YzU1MDhlYmNkYzY1OWYzZDBiYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9aab8beb231a4b4fa2c3b462467327e8",
+      "statement": "For concrete engineering work, generated summaries are leads and current primary evidence such as source files, Git history, tests, and other current evidence is more authoritative; preserving a reference URL does not establish that the linked page was fetched or revalidated.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L28-L31",
+          "version": "repo-lines-v1:sha256:ce551253ebed3e8e55732cb5bb9a4f92a61c1870ab676386ffc41d3ebc709d80:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDk5ODMxYjQzYWRhYjg3ZmIxYTU3MzQxOTQ5OGRhODg5ZDNmN2VjYjA4OGRjYzFlZTFmZTVjYTc5YjZmZjZhYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTVjNDFlZWQwMzMzOTVjOTUzYWU2ZWYzYTc2NmZkZjE0ZjljMTkyOTRkYzY3ZDBjZGMwN2U0YWJlYThiYjE5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjNkMzY4MWI1N2UwYTI3MzQ2ZjkxMmViYTE5N2JmNTE1Y2M5MDQ4MjBhNTI5ZDQyNmE4ZTg3NDA5ZDFlOTIzNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f78804ff3b3d4c82847b8e98cc78fc24",
+      "statement": "OKF represents durable knowledge as Markdown concepts with YAML frontmatter and a concept path identity, while provenance, authorship and freshness, verification, and lifecycle are distinct concerns in the newer convention.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L28-L45",
+          "version": "repo-lines-v1:sha256:d8b1466efa5ad7cf051bef3e5918077a80ecacac01099853005c6d1b60ac2db3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0Y2EwMGMwNDVmMDlhY2M4MGIwYWQ2N2U2MmNkOWMwMDFlMjdhZWNhOTY1MDk4NjAzMTA4ZWQ1YTY2MDZkZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0MWJkNjczZmQ0OWRhMzg5MTc0ZWY3YjkzY2RmZjk3YzVhMTI1OTdjMTM1NmIzN2NlYjI4MDM5YmU5YTA0MWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4YTkwNTdjOWU5M2ZkMDhlYzVjYjEwYTg4YWJlZmFiODUyM2M1NmRkNGU4M2FhZmFjMDY1ZDk3Nzc0ZWY0MjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiZjg5YjU4M2I4NzA5NWFjMGI1MWZmMmI1MDZkMmZhMjdiMTUzZjBjMzBkYjE4YTBiYTU0YTFhZGE4YzlhYTkifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L9-L12",
+          "version": "repo-lines-v1:sha256:c2fa634ad8a931742f327ede159b467a43e9fc186fdfaf181856887523cd6f72:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2I0Mjk0NjVhY2E4MWI3OWI1YzFkMjI3MzEzODg4NDQ2NDQwYzI1ZTA4NzExOWIxN2IyNjIzZjQwNDQ5MjdlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdlNTNhMDRjNGZlZDE0MmQxZmFjNzJkZGQ5NjhiNTJkYjc1MzVjOWZiZWZjZjcwZWExZTc4ZjgwZWY0OTgyNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJjMzM0Y2VjYTY2ZTBjMTYxYzhlZDQ3YTdiNjk2MmE1MzgxZjgwYzMwYzQyOGZlYTQwNmFlNDgzNWFjMzk1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjYwMjRhNjRlODg2M2FhOThjMGNiZDJhNzA4YTI4NDc1YTJjZDdkNTA4M2U1ZTczYzIwM2QwY2U4OWJmOWJkMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_33188f8d05ca40ddb8fb970c087b3e52",
+      "statement": "Agent skills use progressive disclosure: a harness keeps skill names and descriptions in context and loads the body on demand, making skills a context-engineering mechanism with an always-on listing cost.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/skills.md#L53-L59",
+          "version": "repo-lines-v1:sha256:731ddd0199de7f2766646593483df1c410dc2e2c2b82104ef5a20378321226c4:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ0MDdkZTk5ZjY3MTZhNjQxOTczMTM0M2UzYjZmZmE3ZTk3MDczYjRmODE3NzdmNzEyZThhODAyMDA3ZWFjMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTdiYWJhYjZjYjUxYmRmZjJmMWE4OWEzYjgzZDc0OWQ3NzE1NDI4NzM0M2Q3NmI2MWNkN2Q3N2RjNWU5Y2ZhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWM3NmEyMzYyZWQwMzViZmI5YjJmOGQ0ZWViZjI0NTQxNDZhNmQ4NDI2NmQyMWI4NDRmMmZkN2Y2NTZmZmM4YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGU4ZjU5NTBlMWM0YTQxMDNiOTYwM2UwOGZjZjgzNzhjNjU2NjExZTY4OGQyNzIzY2Q4MDM5NWYzNWVmNmZjYSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/skills.md#L9-L15",
+          "version": "repo-lines-v1:sha256:21a347e03e1ca243fed16d55701397b621435a918da7ad58a5488e8f83d897a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjBiODAzZWRjODZjNGQwN2VhZGNmNWI0OTZkNGU3MWJhZDQzZGFjMWFhMDVjNDZiNzY2MjU2YjIyYzk4M2QyYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM2NjI3NjcwMDk5Y2ZkOWM3MTNiMmQ0ZDlmNzJmZjNjMGEzZTg5YzM5YTM1NTE5ZGE4YjE1NTZlNTk0ZjE3MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjZlNGU0ZDYzNjk1NDMzZGZhZDVjZDc0YTNmOGEzMzBkYjNhYTY0MTRkYzk0MjJkOWU5MWNjNjExZWI5NDYyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTFjODVjNzBhZWNlMzBmYTUzZTM5NzhhMDU3ZGM0Njk2MmJiMWQ5MDhkYzJhOGU2ZTMzZWU2MzFmOWZiOWIyYSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-03T14:38:54.195Z"
+  }
+}

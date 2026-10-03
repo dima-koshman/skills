@@ -16,16 +16,6 @@
       "sourceType": "local",
       "computedHash": "61023a8662c5dd8ce77368f3f9d3771e2fa4ffb520352d87b6e2483081a2aa44"
     },
-    "okf": {
-      "source": "/Users/dima/Projects/dima/.agents/skills",
-      "sourceType": "local",
-      "computedHash": "3eb22637a297367e37f2784bda53f49cfdb226c712b3260a7f2217dc0c735640"
-    },
-    "okf-ai-engineering": {
-      "source": "/Users/dima/Projects/dima/.agents/skills",
-      "sourceType": "local",
-      "computedHash": "151c7617747b446b413e19c9fa214455b8ff94312d751e73f4a7db2f26583bcc"
-    },
     "openwiki": {
       "source": "/Users/dima/Projects/dima/.agents/skills",
       "sourceType": "local",

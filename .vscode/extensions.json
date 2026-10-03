@@ -6,7 +6,6 @@
         "charliermarsh.ruff",
         "christian-kohler.path-intellisense",
         "davidanson.vscode-markdownlint",
-        "detachhead.basedpyright",
         "esbenp.prettier-vscode",
         "github.vscode-github-actions",
         "gruntfuggly.todo-tree",
@@ -22,15 +21,17 @@
         "ms-toolsai.vscode-jupyter-cell-tags",
         "ms-toolsai.vscode-jupyter-slideshow",
         "oderwat.indent-rainbow",
-        "openai.chatgpt",
         "redhat.vscode-yaml",
-        "sst-dev.opencode",
         "tamasfe.even-better-toml",
         "usernamehw.errorlens",
         "gitlab.gitlab-workflow",
         "cweijan.vscode-office",
         "samuelcolvin.jinjahtml",
         "hediet.vscode-drawio",
-        "sitoi.ai-commit"
+        "sitoi.ai-commit",
+        "eamodio.gitlens"
+        // "openai.chatgpt",
+        // "detachhead.basedpyright",
+        // "sst-dev.opencode",
     ]
 }

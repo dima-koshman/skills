@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:68879e2be8eccc7254c075515536969d3ae9870feff1edf626f839b5b66db953",
+  "claims": [
+    {
+      "id": "claim_bba6f46a936040d6acc70023a88e4e88",
+      "statement": "Protocol Buffers define language-neutral structured messages in .proto files and protoc generates native accessors, serializers, parsers, and bindings at build time; application code uses the generated artifacts.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/communication/protobuf.md#L7-L13",
+          "version": "repo-lines-v1:sha256:75b89054d585e3bd26bd4a37fc9ac510a203da74f76ef386ab71468cc93930a0:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGMxM2IwMzk2YjZhMWIxZjQyYzUyNTZiYWI0MTY0YTY0OTgwM2Q5NDVlOGQxZDcyMzQ0ZDZjZmVkOTVlNDgyMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzllOWQxZmZjOTg0MGM2ODdjYzE1MWU2M2Q4MmY5MWVkZDNmNmUyMzI0NTUzMDE3OTRiODBjYzVlMTExZDk3OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDA2NzI5NThiZWE2ZjAwZmIxMWUxZWZkN2IzOWRiZGZhNTQ0MzgwOTg2OGExNWQ1OGFkNDFiZTc5NjZmYmI3MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODljYjM3ZWQwZWFhZjIzZDI0OTc0ZDRmODQyNTMzYmE3YzE2ODcxYjFmNjZlMjM2ODY2Mjg4MDQ3ZTZlZWFiYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_86f2eb23c90849e78bc682de359b03d4",
+      "statement": "Protobuf field numbers are wire identifiers that must not be reused, enabling older readers to ignore unknown fields and newer readers to default absent fields so producers and consumers can be deployed independently.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/communication/protobuf.md#L15-L22",
+          "version": "repo-lines-v1:sha256:30ec646b7862c285c29454bd0b3b5eed3521f412b42e7a31f46b0adaa9bf47ad:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTBiYTRiNzk3YjhjNTFlMTdiNDc5MTI5ODU3ZDgyZjMxNWM1ZjZmMTUzMDY3ZTRmOGQ4NzA1MjlhMWZhNDNjNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTM0OGJmMmJmNTJiMzU5NDZkYjdmNjU2MzdhOWJmZGY1NmY5MTU5YjZmNjdhMGQ5MzAwNDQyZjA4MzVhMjJkYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGRlYmFlMDJkODk4MjBhYTFmMDVlMTg3Y2EyZWY5NzVkNTI5NGZlZTdjOWQxYTM3ZDYzZjQyZGQyMjhjNzg1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWQ0MWFlMDBiZTcyODBmMjIwNGU2MWFmMjRhMGMxMjUwMDU0ZmM4NjE2MDQyZTdlNmEwZTFkYjY1M2Q4Y2FjZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3debcbe8c6434888a3b1043f27606d0a",
+      "statement": "Protobuf payloads are not self-describing and the same logical message can have multiple valid binary encodings, so schema distribution is required and serialized bytes must not be used as message equality, hash, or signature surrogates.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/communication/protobuf.md#L24-L30",
+          "version": "repo-lines-v1:sha256:50ed9edb2c659ea817995c974e975fa5ddace53342fb815c468f8ff09d0c89a0:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTM4NjJkNjY0NGUzZmI1YmZkYzQxYjQzY2M4ZjljMjJkYzBlZGY0ZGNjZjIxMjg3NjRlZDhmYjYzMTg2YWZiNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTQxNDAyZjY2NGM5NTRmYjVkN2VmYThlMmYyYzQ0YWNmNDc0MDRkZTRjYWRhNjMxNjIxODdmNGE3OWZlODJiMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWU1ZTVlOGU0YThlYzUwOTI4YWEyNTczNjM1MzI3N2I3MjVkZTg2NTczMmQxZDg4ZjA5ODgzYzVhYzNkM2QyMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmRhMGMyYTkwZWE2YzIzNTg5Y2IzNDMwMGU3Y2MyMmQ2Y2MyNzE2MjkwOGI2NTA1MDNkMTdjZmViMjhhNmM1YiJ9"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/communication/protobuf.md#L41-L47",
+          "version": "repo-lines-v1:sha256:9e1dfe15e408e363f908689dbb3fb389913ad55aacd06a3d36b59eed1b4e7900:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzI3ZDBjMmVlMTgxMGVhYWUwODMxMWMzMTZkZTU2NTVkMGY5Zjc2YWFiMDU2OGE5NzkyYWUyMDE5OWI0Zjk1NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWZiZTdkOTM0ZmY4NzhmM2EwYzgyMzk2MTJkMjdhMThjZWY4MWI3YzBjNjQ3MjlmNjVlMzgwNmI1YTJmNTUxYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGQxY2NlMjlmNWJmZjcwZDc5ZDE2YTllOGM2MzEyOTdjZDUwOWQ1YjhjNDE2YzMxZDFkYjExMzMwMzM1ZDI0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3150f1f594524173ace9782eb07d15ad",
+      "statement": "gRPC uses Protocol Buffers as an interface definition language: one definition declares messages and services and code generation produces typed client stubs and server skeletons.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/communication/grpc.md#L7-L15",
+          "version": "repo-lines-v1:sha256:58ef366693979b314c22ab7e99c52be86b1c3d4af51fa131081945d89fc06f2d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjY0MDlkMGM4NzI3YzM0ODRhODdjMzRiYjk3ZWIwZDEwMjNmMjM5MWM5MTlmMDEyZWQ2MGMyZTdlNWM5NjYzMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjhjNmFjYmUxOTM1YTQzZTc0NDljZGNkYzgwOWY0OTZhYjkwN2E1M2IwOWEyZGVlMDk3MDJjZDYxMjcwOWMzZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzk5MDAzOWYwMGVkY2NhYzNkZGU0NjdiNGIwMmIxYTJlODJjNGQ2YzlkYzJmOTkxNTZmMmJjN2E3ODhmNDFkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjJmOGEwNjlhNjUxMWMyYmRiNTlhZWYyZTg1NDRmODA1MDY2NDFiNDk4OTkwNzBmMDQxMzNmODMyYmViNjEyZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4031ff868d434f288f76740368c0c747",
+      "statement": "gRPC supports unary, server-streaming, client-streaming, and bidirectional-streaming calls over HTTP/2, and provides first-class deadlines, cancellation, metadata, channels, and fixed status codes.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/communication/grpc.md#L17-L36",
+          "version": "repo-lines-v1:sha256:4b4ec712d94d25a8ae98b2c75081934d3d9b04cdd7bd5cec807e7d7684c3770c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3MmQxYzQyM2FhZjNjMmEwYWRmNmZhMmFmOWZhMjQ4ZTVmOGIwNzFlNDY4Mjg3NWMxNzVmNjExMWIxZGVhY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1NTkxN2MxNjZhNDI0MjlmNDI1MzQ5NThiZDFlNDFmMzIzMzg0ODA2ZDNjZTkzOWIzOTFmZjBiMmYyN2Q1YzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjNjBiY2Y0ODFhNzA0OWI3ZDJmODE3ZDNkMDA4NTA1NDI2ZDE1YTU5YThlNzM4YWYxNGQ4MjBmODQyNjgzODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyYWNlNzljMzFkYzFhOGFjYTNiZGViMTQzZDVlZTdjODAxMDgyZmU3MzgxYzc5YWY1NDQwNGNmOTg1ZGRhODMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1ab619f52c034291ab79aa09a23b505c",
+      "statement": "Long-lived multiplexed HTTP/2 connections make naive connection-level load balancing a poor fit for gRPC, so request-level balancing in a service-mesh data plane is a standard approach.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/communication/grpc.md#L47-L51",
+          "version": "repo-lines-v1:sha256:4b2a7017ad2605f8c339be162c825495280f045ed47bac20eba52a806c17a076:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTU0ODUzZWVhZDZlMTJmZjU4NzczMGNmOWE3ZWFjNTFkYTkzMDM4ODU3NDVmMWJiZTMyM2FlNGNlYTI2MzVlNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjQ5ZjVkYjZhOTA3NTI5M2FhNTkyNjU4ZGMyNWVlYTllMjg2OTIzZTEzMzZiN2UyNWViY2RjOWZhM2U0NTdlZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzNlNjA4ZmI3M2U2NzQ2ZDFjZDI1MGUzN2UyYWUxNDY4ZGQxN2I0MjJiOTU4NjRlNzQyYTJlMDA5YjBiMTJlYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_dd7582a0ba664a2c8ce387e1c8685911",
+      "statement": "The data plane carries application traffic and applies received rules, the control plane decides and distributes policy, and the management plane provides operator configuration, inspection, administration, and monitoring surfaces.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/infrastructure/planes.md#L5-L14",
+          "version": "repo-lines-v1:sha256:14404c3637f0353dc5d231551ef307e700956833ab3cea4c91c5e1a22bb63d33:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlMDJjMzlhZmI5ZjgwZGExNzE5Y2NlYzBlZjRjNzI3OGYwYjgyYjBhZjgyYzk4ZDRmM2M5ZGRkOTUzZDY0OTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzZGE3YWY5YzI0OWQwYzYzYjk0N2Q5NzEwNzk5ZWE2NmM0NjM4ODRhZDUwMDg5YWY0MGJhMjAwNTc4MGZjZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2YzA5OWU0OTEyYzg0ZjU0YmJhZWJjZTBmMmI2ZWE5ODYzZTFkZmJmY2QyOGEyOTE0OGY4OWIxMmUyNzg3YTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM5YWE1MjI0M2E3ZjdjY2Q0OGU2ZTI0ODgxNjllNTVkM2YzNzk5NzZiY2FiMGQ2MTFjMjEwNDFlN2Y5ODFmYzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_86a6202fee254d02b7a25a315450ff34",
+      "statement": "A resilient data plane should continue forwarding with its last known configuration when the control plane is unavailable, while data-plane and control-plane scaling and security concerns differ.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/infrastructure/planes.md#L33-L48",
+          "version": "repo-lines-v1:sha256:ada66bd1a286a41dfe30faebb147e0263cde202a482e2381fc1072f4ecba7e45:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZmNjMjkzYmJkMWRlOGI1ZTFiMjRlYWMwNjYxMzZhMTY4ZmY0MWY1NWIzYWVkNzYxZmJlMmVmNDQzNDEwZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmYjA5ZGFmYzZjYmViZTY1NjA0MDhmMTY4NDc1Y2FlYTY3MjFhNDkwZjEyNmMzOWJiNTQ4YTY3NWM3MWUwYjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0MGVmZTVkMGFhZTgyMWE4NzdmYWZhNDljYzIxYTMyYjZhNzU1N2UyMzg1MTdkNzljZjYyZGUwMzVlNWU3MDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a30016093b474baf931aadd99cac5a7c",
+      "statement": "A service mesh moves shared service-to-service routing, security, reliability, traffic policy, and observability into infrastructure proxies, applying them consistently across languages and services without requiring application source changes.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/infrastructure/service-mesh.md#L5-L14",
+          "version": "repo-lines-v1:sha256:ae518b9ffb442de2bb18c115daeb55782d2582b94720ff1e1a1a803b9101ae9c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxM2NlMTA5MWUwNGRmYzg3OGRhZjM1ZmEwNzQ2MDg1ZmEzNDU2NjkxMDk1NDZmZjZiNGQwNzJjMWNjZWJlZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5YTRiM2QzYzc2OTkzZDliMzE2NDNhZjhhMjhmZjk5MzRmNGFjZDMyOGY0OGZmNjI1NjdhNmQ1ODMwMDM4ZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyMzIyNmNjZTFjNGQ1ZTExYTk2M2FjNWIyOWNiMzkzYTJlOTNjYzc3NTAwOGU4NzNkZDlhOWVkNTdkNjI0ZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjExNGI5YWY4NzFjYmI4N2ZkOTFmYmE1YjFjZjdkMmY5YjQ5YjZhYjRjMjQzNWFhNDcyZmJhZDZjNDljNDYwNGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_043357a7fe194a7296d857ea3a7a37c0",
+      "statement": "In Istio, Envoy sidecars or ambient ztunnel components form the data plane and istiod forms the control plane; sidecars provide L7 interception, while ambient mode uses node-level L4 ztunnel with optional L7 waypoints.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/infrastructure/service-mesh.md#L21-L33",
+          "version": "repo-lines-v1:sha256:71210fd9e38ba91ed59052368ef2721e4b578cf39e33470c13aeccad1cc68d41:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhYWNlY2I1YmRhMzgwZGNjOGU0YjhiZGYxZDA4NGE2MDZhNjAwMzFiMDk1ZjlhYTc2NzI4MDNlZTQxZTI2OGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2MDdiNTc1ODljNTUzZTFiYjRkMjQ4OWIyNmYzZTY5NWE5YWEwNWZjZmEyYjBlY2EwY2I3ODNkOGZlY2VlZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2ZWY5ZjlkMTRlMGI1NDM3Y2Y4OGQxYzYyZGM5NTYwOGM2NWFlZjExZGNkNjcwMjU0ZDgxZmEzMWQwZTBjNTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY5N2IwYWYxYTYzYTU5ODI3NDQ2YTZiMGU5OTliODRlYzA3NTg1NThiZDljNTNmYjE2YzkxMjg0YjZmOWNkNGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1c2b610934c94783af759361446941b7",
+      "statement": "Istio can provide load balancing for gRPC and other protocols, fine-grained routing, retries, failover, fault injection, mutual TLS, identity-based authorization, and automatic metrics, logs, and traces.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/infrastructure/service-mesh.md#L35-L40",
+          "version": "repo-lines-v1:sha256:cd3147a5fc7a4550485a0329b72b3d889d16e2a29692b8ed31267b4772b7f0ec:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmZkZWExMmZlZWEzNWY4NTgyZGQyNTA1ZDQ2YzBlMGE5ZmE2ZjFiYzk1YWIzOTY4MGMzZmZiMTBiNjcyNDVhMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmQwMmRmZmU3ZmEwMzczODAxYjlmNWU2NWU3OWE4MTYyYzA0ZGQwMWRiMzY4ZDY5N2JjYTA4YTI2YzVhNmMyOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGYyODM1ZTIxMjI3MzE4MWM2OWViNjAwMmI4MDJjMjk0NjVlNGJlZGVkNDY5OTYyNTU1YjMyZDA1NDVlNmNlOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzVkZGQxOTdkYjA1ZTQwMjRiZjcwOTQ2YTU3NWRhN2M4ODVlZTI0OWVmYzQ1MTNkNmM5NGFmYzYzMzU1NWQ3NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2a1218b6d673478d8727ad87943c9c55",
+      "statement": "A service mesh adds proxy-hop latency and another distributed control system to operate and debug, so its value depends on service, language, policy, and compliance scale relative to per-service libraries.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/infrastructure/service-mesh.md#L42-L50",
+          "version": "repo-lines-v1:sha256:303119259de5f9c295e3a1b72ba622d4c9fad506f69a701757798aafa854c0ff:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzUwMjliMGNlMjI1YjI5MGJmZDlkZjI3MDRmYzZhZWJlMzFkYzcxMDk4ZDRiZmYxOTc1NGZlNGMzMmJkY2ZmNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcyYjEwNmNmNjQ1ODA0MjFjM2IwZmY2MWM5ODlkZDA3ZDc3NzdmNDFkODQwYzhlOTM1NWFmY2FkNGMzOGUwYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjAwYzk2YTJjOTkxMzFkZTMxMWE5YWM5M2NmN2M0ZjJhYTBmZmI0N2YxY2EzYjMzMmNjYTJmZjZkNDgzMzYwYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-03T14:38:54.195Z"
+  }
+}

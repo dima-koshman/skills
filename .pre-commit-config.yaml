@@ -1,18 +1,15 @@
 repos:
   - repo: local
     hooks:
-      - id: okf-ai-engineering-regenerate-index
-        name: OKF AI-engineering - regenerate index
-        entry: uv run --project . python .agents/skills/okf/scripts/okf_index.py .agents/skills/okf-ai-engineering/ai-engineering
+      # Model-backed: review and commit generated changes before retrying a push.
+      # Scope this to knowledge inputs so unrelated pushes do not spend tokens.
+      - id: openwiki-update
+        name: OpenWiki - update knowledge
+        entry: openwiki --update --print
         language: system
         pass_filenames: false
-        always_run: true
-      - id: okf-ai-engineering-build-site
-        name: OKF AI-engineering - build site
-        entry: uv run --project . python .agents/skills/okf/scripts/okf_site.py .agents/skills/okf-ai-engineering/ai-engineering
-        language: system
-        pass_filenames: false
-        always_run: true
+        files: ^(wiki/|openwiki/INSTRUCTIONS\.md$|\.openwikiignore$)
+        stages: [pre-push]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0

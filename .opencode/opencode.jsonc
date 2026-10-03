@@ -1,89 +1,63 @@
 {
-    // https://opencode.ai/docs/config
-    "$schema": "https://opencode.ai/config.json",
+    // https://opencode.ai/v2/docs/config/ — written with opencode v2's native keys. v2 also
+    // accepts the v1 names (agent, plugin, provider, snapshot, small_model) and normalizes
+    // them in memory; `opencode debug config` prints what each file resolves to.
+    //
+    // No "$schema": as of v2.0.20, https://opencode.ai/config.json is still the v1 schema and
+    // flags every v2 key above as invalid; no v2 config schema has been published yet.
     "model": "openai/gpt-5.6-sol",
-    // For lightweight meta tasks, like generating session title
-    "small_model": "opencode/nemotron-3-ultra-free",
     // NOT redundant with "model" above: an agent's own model ALWAYS wins over the top-level
     // key, and the GLOBAL config (~/.config/opencode/opencode.jsonc) ships an active
-    // "agent" block pinning build -> openai/gpt-5.6-sol. Global agent entries survive into
+    // "agents" block pinning build -> openai/gpt-5.6-sol. Global agent entries survive into
     // this project because the two configs merge per-key rather than the project replacing
     // the global wholesale — so without an override here, "model" above is simply never
     // consulted for build and sessions silently open on gpt-5.6-sol.
-    // Check with: opencode debug agent build   (prints the resolved providerID/modelID)
-    "agent": {
-        "plan": { "model": "openai/gpt-5.6-sol", "variant": "high" },
-        "build": { "model": "openai/gpt-5.6-sol", "variant": "medium" },
-        // "general": { "model": "openai/gpt-5.6-luna", "variant": "medium" },
-        "general": {
-            "model": "google/antigravity-gemini-3.7-flash-tiered",
-            "variant": "high"
-        },
+    // Check with: opencode debug agents   (prints each agent's resolved providerID/model id)
+    //
+    // Models are "provider/model#variant".
+    "agents": {
+        "plan": { "model": "openai/gpt-5.6-sol#high" },
+        "build": { "model": "openai/gpt-5.6-sol#medium" },
+        // For Gemini on the Google (Antigravity) subscription, delegate to the agy CLI via
+        // the cli-subagents skill; no Antigravity auth plugin runs on opencode v2.
+        "general": { "model": "openai/gpt-5.6-luna#medium" },
+        // Lightweight meta tasks such as session titles (v1's top-level "small_model").
+        "title": { "model": "opencode/nemotron-3-ultra-free" }
         // explore searches and explains your local codebase
-        // "explore": {
-        //     "model": "opencode-go/deepseek-v4-flash",
-        //     "variant": "max"
-        // },
+        // "explore": { "model": "opencode-go/deepseek-v4-flash#max" },
         // scout researches external dependencies and upstream documentation
-        // "scout": {
-        //     "model": "opencode-go/deepseek-v4-flash",
-        //     "variant": "high"
-        // }
+        // "scout": { "model": "opencode-go/deepseek-v4-flash#high" },
         // Custom reviewer agent
         // "reviewer": {
         //     "description": "Reviews substantial completed work for correctness and specification compliance. Each call costs meaningful time and tokens, so reserve it for changes worth reviewing. Use your judgement.",
         //     "mode": "subagent",
-        //     // "model": "opencode-go/glm-5.2",
-        //     "model": "opencode-go/grok-4.5",
-        //     "variant": "high",
-        //     "prompt": "You are a read-only code reviewer. First verify the completed work against the supplied specification or requirements, then review correctness, regressions, security, migrations, API usage, and test coverage. Report findings first, ordered by severity, with exact file and line references. Distinguish introduced defects from pre-existing issues. Do not modify files. Do not claim checks passed unless you ran them or received explicit evidence. If there are no findings, state that and list residual risks or testing gaps.",
-        //     "permission": {
-        //         "edit": "deny"
-        //     }
+        //     // "model": "opencode-go/glm-5.2#high",
+        //     "model": "opencode-go/grok-4.5#high",
+        //     "system": "You are a read-only code reviewer. First verify the completed work against the supplied specification or requirements, then review correctness, regressions, security, migrations, API usage, and test coverage. Report findings first, ordered by severity, with exact file and line references. Distinguish introduced defects from pre-existing issues. Do not modify files. Do not claim checks passed unless you ran them or received explicit evidence. If there are no findings, state that and list residual risks or testing gaps.",
+        //     "permissions": [{ "action": "edit", "resource": "*", "effect": "deny" }]
         // }
     },
     "default_agent": "build",
-    // https://opencode.ai/docs/config#subagent-depth
-    "subagent_depth": 1,
-    // https://opencode.ai/docs/config/#snapshot
-    "snapshot": false,
-    // Auto-format after every write/edit. Formatters are OFF unless this key is truthy —
-    // omitting it disables them outright. `true` enables the built-in set; an object enables
-    // the built-ins plus per-formatter overrides ({"prettier": {"disabled": true}} or
-    // {"<name>": {"command": [...]}}). ruff and uv are linked: disabling either drops both.
-    //
-    // Each built-in self-activates per project via its own predicate. Some need only the
-    // binary on PATH (gofmt, shfmt, rustfmt, zig, ktlint, nixfmt); others additionally
-    // require a config file that opts in, and stay silently off without one:
-    //   ruff      ruff on PATH AND ([tool.ruff] in pyproject.toml, or ruff.toml/.ruff.toml)
-    //   uv        .py fallback, used ONLY when ruff is not enabled
-    //   prettier  package.json listing prettier in (dev)dependencies
-    //   biome     biome.json / biome.jsonc
-    //   clang     .clang-format
-    // Formatting only — it never runs a lint --fix pass, so a repo whose own task chains
-    // `ruff format` + `ruff check --fix` still needs that task run separately.
-    //
-    // To see what actually resolves in a given project (authoritative, beats guessing):
-    //   opencode serve --port 39517 &
-    //   curl -s "localhost:39517/formatter?directory=$PWD" | jq '.[] | select(.enabled)'
+    // Filesystem snapshots back undo/revert.
+    "snapshots": false,
+    // Auto-format after every write/edit with the available built-in formatters (ruff,
+    // prettier, shfmt, ...). Formatting only — it never runs a lint --fix pass, so a repo whose
+    // own task chains `ruff format` + `ruff check --fix` still needs that task run separately.
     "formatter": true,
     // opencode auto-discovers local plugins in .opencode/plugins/.
     // load-mcp-json.js is our custom bridge that imports non-secret MCPs from .mcp.json;
     // opencode does not natively read .mcp.json.
-    "plugin": [
+    //
+    // opencode v2 runs only v2-API plugins; a v1 plugin shows up as "failed". Check with:
+    //   opencode api GET /api/plugin -H "x-opencode-directory:$PWD" \
+    //     | jq -c '.data[] | select(.source.type != "builtin") | {id, source, state}'
+    "plugins": [
         // https://github.com/obra/superpowers
         // "superpowers@git+https://github.com/obra/superpowers.git",
         // https://github.com/mohak34/opencode-notifier
-        "@mohak34/opencode-notifier@latest",
-        // https://github.com/NoeFabris/opencode-antigravity-auth
-        // @latest floats; when it bumps, the Antigravity model IDs / tier-stripping may
-        // change — re-verify per the "HOW TO RE-VERIFY / UPDATE" note in provider.google.
-        "opencode-antigravity-auth@latest"
+        // Ships v1 and v2 entrypoints in one package; v2 support since 0.7.0.
+        "@mohak34/opencode-notifier@latest"
     ],
-    // Active with no env var needed (verified: `opencode debug agent build` lists the resolved
-    // path as an allowed external_directory both with and without OPENCODE_EXPERIMENTAL). There
-    // IS an OPENCODE_EXPERIMENTAL_REFERENCES runtime flag, but it does not gate this block.
-    //
     // CAUTION: relative paths resolve against the directory holding THIS config file, not the
     // project root. From .opencode/, "path": "../.claude/memory" resolves to <project>/.claude/memory.
     "references": {
@@ -92,270 +66,14 @@
             "description": "Use for prior session notes and local project memory from Claude Code."
         }
     },
-    // Context management. Both values below are opencode's defaults, kept explicit because
-    // the docs misreport prune's. Behavior verified against the opencode 1.18.4 binary
-    // (SessionCompaction.prune and the auto-compaction threshold fn); the schema claims
-    // prune defaults to true, see anomalyco/opencode#24108 (closed, not planned).
+    // Auto-compaction summarizes the session into a checkpoint and carries on when the
+    // context fills up. v2's tuning knobs are `keep.tokens` and `buffer`; left at defaults.
     "compaction": {
-        // Auto-compaction: summarize the session into a checkpoint and carry on. Fires when
-        // (input + output + cache read + cache write) >= model.limit.input - reserved.
-        "auto": true,
-        // Prune (off, deliberately): clears completed tool outputs beyond the most recent
-        // ~40k tokens, replacing them with "[Old tool result content cleared]". It batches —
-        // the backward scan stops at the first already-pruned part and only commits once
-        // >20k of new output has accrued — so it fires per ~20k of tool output, not per turn.
-        //
-        // Skipped because it invalidates the MIDDLE of the context: the cleared parts sit deep
-        // in the history, so every firing forces a re-prefill of everything after them, and the
-        // context stays large afterward. Auto-compaction invalidates everything but collapses to
-        // a small summary, making its re-prefill cheap — so paying the expensive invalidation
-        // repeatedly to defer one cheap one is a bad trade. Without prune the context is
-        // append-only, the ideal case for prefix caching.
-        //
-        // Reconsider per project: prune earns its keep when the context WINDOW is the binding
-        // constraint (small-window model, tool-heavy work), or on a provider that bills cached
-        // reads at the same rate as fresh ones, where there is no cache advantage to protect.
-        "prune": false
-        // MODEL-SPECIFIC. `reserved` is a plain subtraction from model.limit.input (not a
-        // max() against max output), so it is a direct "compact at N tokens" dial:
-        //
-        //     reserved = model.limit.input - <target context size>
-        //
-        // GET limit.input FROM THE RUNNING INSTANCE, NOT FROM models.dev. When the openai
-        // provider is authed by ChatGPT OAuth (auth.json openai.type == "oauth", which is our
-        // case), opencode REPLACES the models.dev limits and zeroes the cost:
-        //     gpt-5.5*  ->  {context: 400_000, input: 272_000}
-        //     gpt-5.6*  ->  {context: 500_000, input: 372_000}
-        // ~/.cache/opencode/models.json still says input 922_000 for gpt-5.6-sol; that value
-        // is NOT what compaction uses here. Authoritative check:
-        //     opencode serve --port 39517 &
-        //     curl -s localhost:39517/config/providers \
-        //       | jq '.providers[]|select(.id=="openai").models["gpt-5.6-sol"].limit'
-        //
-        //     372_000 - 122_000 = compact at ~250k.
-        //
-        // NEVER let reserved >= limit.input. opencode computes the threshold as
-        // Math.max(0, limit.input - reserved), so an oversized reserved clamps it to 0 and
-        // "tokens >= 0" is true on every turn — the session compacts in an infinite loop from
-        // the first message, with no warning. Verified 2026-07-22: reserved 672_000 against
-        // the OAuth limit of 372_000 did exactly this, compacting at 10k tokens.
-        //
-        // Models with NO limit.input (every provider.google entry below, most Anthropic ones)
-        // ignore `reserved` entirely and fall back to limit.context - max output tokens.
-        //
-        // Unset falls back to reserved = min(20k, model max output tokens), which on a
-        // large-window model means sessions run nearly to the input limit before compacting —
-        // fine for short sessions, expensive for long ones.
-        // "reserved": 122000
+        "auto": true
     },
-    // opencode-antigravity-auth requires model definitions under provider.google
-    // so it can intercept and route requests to the Antigravity OAuth endpoint.
-    // Without these, opencode sends raw model names to Google's API → 404.
-    //
-    // MODEL NAMING — how Antigravity model IDs actually work (verified 2026-07-07):
-    //   The config key here (minus the "antigravity-" prefix) is sent verbatim to the
-    //   backend as the wire model ID, EXCEPT the plugin's model-resolver strips a
-    //   trailing -low/-medium/-high as a "thinking tier". The backend registry is the
-    //   source of truth for valid wire IDs, keyed by the exact slug it accepts.
-    //
-    //   Gemini 3.5 Flash exists but has NO bare "gemini-3.5-flash" ID. Its real tiers:
-    //     gemini-3.5-flash-extra-low  → "Gemini 3.5 Flash (Low)"    [UNREACHABLE*]
-    //     gemini-3.5-flash-low        → "Gemini 3.5 Flash (Medium)" [UNREACHABLE*]
-    //     gemini-3-flash-agent        → "Gemini 3.5 Flash (High)"   [works ✓]
-    //   *The plugin strips the trailing "-low", turning them into non-existent IDs
-    //    (gemini-3.5-flash / gemini-3.5-flash-extra) → 404. "-flash-agent" has no
-    //    tier suffix to strip, so it survives. Hence we can only reach 3.5 Flash High.
-    //   "antigravity-gemini-3-flash" (no -agent) is the OLDER Gemini 3 Flash.
-    //
-    // HOW TO RE-VERIFY / UPDATE when opencode-antigravity-auth bumps (`@latest` above):
-    //   1. Plugin's bundled (often stale) list — the display names shown in opencode:
-    //      ~/.cache/opencode/packages/opencode-antigravity-auth@latest/node_modules/
-    //        opencode-antigravity-auth/dist/src/plugin/config/models.js
-    //   2. Slug-mangling logic (does it still strip -low/-medium/-high for Flash?):
-    //      .../dist/src/plugin/transform/model-resolver.js  (TIER_REGEX, resolveModelWithTier)
-    //   3. Ground truth = live backend registry. Refresh the OAuth token from
-    //      ~/.local/share/opencode/auth.json (google.refresh, split on "|", grant_type=
-    //      refresh_token to https://oauth2.googleapis.com/token with the plugin's
-    //      ANTIGRAVITY_CLIENT_ID/SECRET in .../dist/src/constants.js), then POST
-    //      {"project":"<id>"} to
-    //      https://cloudcode-pa.googleapis.com/v1internal:fetchAvailableModels — the
-    //      response `models` object is keyed by the wire IDs, each with a displayName.
-    //   4. Confirm end-to-end: `opencode run -m google/<key> "Reply with exactly: OK"`.
-    //      (-m only accepts keys registered here, so add the model below first.)
-    //   If a future plugin version stops stripping Flash tiers, switch to
-    //   "antigravity-gemini-3.5-flash-low" (Medium) etc. for lower-latency tiers.
-    "provider": {
-        "google": {
-            "npm": "@ai-sdk/google",
-            "models": {
-                // Gemini 3.7 Flash (released 2026-08-13) — "-tiered" is load-bearing here for
-                // the SAME reason as 3.6 below: supportsThinkingTiers() matches on the substring
-                // "gemini-3", so 3.7 is subject to TIER_REGEX just like 3.6, and a "-high" suffix
-                // would be stripped to a bare ID.
-                //
-                // Verified end-to-end 2026-08-15 (opencode 1.18.18, plugin @latest as cached):
-                //   antigravity-gemini-3.7-flash-tiered  → 200, "OK"   ✓ (also with variant high)
-                //   antigravity-gemini-3.7-flash (bare)  → 403 PERMISSION_DENIED
-                // NOTE the bare failure mode DIFFERS from 3.6's 404: it comes back as an IAM
-                // error (cloudaicompanion.instances.completeTask denied on the CLI project),
-                // i.e. the bare ID falls through to a Code-Assist path our OAuth can't use,
-                // rather than being an unknown model. Same practical conclusion: use -tiered.
-                //
-                // Limits below are Google's published figures for 3.7 Flash (1,048,576 in /
-                // 65,536 out) and happen to match 3.6. Upstream also lists video+audio input;
-                // kept to text/image/pdf to match the other entries in this file.
-                "antigravity-gemini-3.7-flash-tiered": {
-                    "name": "Gemini 3.7 Flash (Antigravity)",
-                    "limit": { "context": 1048576, "output": 65536 },
-                    "modalities": {
-                        "input": ["text", "image", "pdf"],
-                        "output": ["text"]
-                    },
-                    "variants": {
-                        "minimal": { "thinkingLevel": "minimal" },
-                        "low": { "thinkingLevel": "low" },
-                        "medium": { "thinkingLevel": "medium" },
-                        "high": { "thinkingLevel": "high" }
-                    }
-                },
-                // Gemini 3.6 Flash — "-tiered" is intentional and load-bearing, for the SAME
-                // reason as "-flash-agent" below: TIER_REGEX only strips -minimal/-low/-medium/
-                // -high, so "-tiered" survives while "-high" would be mangled into the
-                // nonexistent bare "gemini-3.6-flash" → 404. Verified 2026-07-21 against the
-                // registry: 3.6 has NO bare wire ID, only -low/-medium/-high/-tiered.
-                //
-                // 3.6 is served ONLY by the daily endpoints, not prod:
-                //   cloudcode-pa.googleapis.com                 404 on every 3.6 ID
-                //   daily-cloudcode-pa.googleapis.com           -high/-tiered → 200
-                //   daily-cloudcode-pa.sandbox.googleapis.com   -high/-tiered → 200
-                // That works only because constants.js sets ANTIGRAVITY_ENDPOINT =
-                // ANTIGRAVITY_ENDPOINT_DAILY (the .sandbox host) as the streaming default.
-                // If a plugin bump repoints that to PROD, this model starts 404ing —
-                // that is the first thing to check if it breaks.
-                //
-                // Effort comes from thinkingLevel via variants, NOT from the model ID, so
-                // there is no need for separate -low/-medium/-high entries here.
-                "antigravity-gemini-3.6-flash-tiered": {
-                    "name": "Gemini 3.6 Flash (Antigravity)",
-                    "limit": { "context": 1048576, "output": 65536 },
-                    "modalities": {
-                        "input": ["text", "image", "pdf"],
-                        "output": ["text"]
-                    },
-                    "variants": {
-                        "minimal": { "thinkingLevel": "minimal" },
-                        "low": { "thinkingLevel": "low" },
-                        "medium": { "thinkingLevel": "medium" },
-                        "high": { "thinkingLevel": "high" }
-                    }
-                },
-                // Gemini 3.5 Flash (High) — see MODEL NAMING note above; "-flash-agent"
-                // is intentional, it is the only 3.5 Flash tier reachable through the plugin.
-                "antigravity-gemini-3-flash-agent": {
-                    "name": "Gemini 3.5 Flash High (Antigravity)",
-                    "limit": { "context": 1048576, "output": 65536 },
-                    "modalities": {
-                        "input": ["text", "image", "pdf"],
-                        "output": ["text"]
-                    }
-                },
-                // Older Gemini 3 Flash (has a bare wire ID + thinkingLevel variants).
-                "antigravity-gemini-3-flash": {
-                    "name": "Gemini 3 Flash (Antigravity)",
-                    "limit": { "context": 1048576, "output": 65536 },
-                    "modalities": {
-                        "input": ["text", "image", "pdf"],
-                        "output": ["text"]
-                    },
-                    "variants": {
-                        "minimal": { "thinkingLevel": "minimal" },
-                        "low": { "thinkingLevel": "low" },
-                        "medium": { "thinkingLevel": "medium" },
-                        "high": { "thinkingLevel": "high" }
-                    }
-                },
-                // Works as-is: "gemini-3.1-pro" + -low/-high tiers resolve cleanly
-                // (Pro keeps the base name and passes the tier as thinkingLevel).
-                "antigravity-gemini-3.1-pro": {
-                    "name": "Gemini 3.1 Pro (Antigravity)",
-                    "limit": { "context": 1048576, "output": 65535 },
-                    "modalities": {
-                        "input": ["text", "image", "pdf"],
-                        "output": ["text"]
-                    },
-                    "variants": {
-                        "low": { "thinkingLevel": "low" },
-                        "high": { "thinkingLevel": "high" }
-                    }
-                },
-                "antigravity-claude-sonnet-4-6": {
-                    "name": "Claude Sonnet 4.6 (Antigravity)",
-                    "limit": { "context": 200000, "output": 64000 },
-                    "modalities": {
-                        "input": ["text", "image", "pdf"],
-                        "output": ["text"]
-                    }
-                },
-                "antigravity-claude-opus-4-6-thinking": {
-                    "name": "Claude Opus 4.6 Thinking (Antigravity)",
-                    "limit": { "context": 200000, "output": 64000 },
-                    "modalities": {
-                        "input": ["text", "image", "pdf"],
-                        "output": ["text"]
-                    },
-                    "variants": {
-                        "minimal": {
-                            "thinkingConfig": { "thinkingBudget": 4096 }
-                        },
-                        "low": { "thinkingConfig": { "thinkingBudget": 8192 } },
-                        "medium": {
-                            "thinkingConfig": { "thinkingBudget": 16384 }
-                        },
-                        "high": {
-                            "thinkingConfig": { "thinkingBudget": 24576 }
-                        },
-                        "max": {
-                            "thinkingConfig": { "thinkingBudget": 32768 }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    // Same true/false/object semantics as "formatter" above: an object enables the built-in
-    // servers AND applies these overrides. LSP drives post-edit diagnostics out of the box.
-    // The interactive `lsp` agent tool — goToDefinition, findReferences, hover, documentSymbol,
-    // workspaceSymbol, goToImplementation, prepareCallHierarchy, incoming/outgoingCalls — is
-    // NOT registered unless OPENCODE_EXPERIMENTAL_LSP_TOOL / OPENCODE_EXPERIMENTAL is set
-    // (see below). When it is, the tool routes to whichever server handles the file, so this
-    // basedpyright override is what answers Python queries.
-    "lsp": {
-        "pyright": {
-            "command": [".venv/bin/basedpyright-langserver", "--stdio"]
-        }
-    },
-    // This block is ordinary config and needs NO env var — disable_paste_summary applies as-is.
-    //
-    // OPENCODE_EXPERIMENTAL is a separate, env-only switch that does not read from here. Each
-    // gated feature checks its own variable first and falls back to OPENCODE_EXPERIMENTAL when
-    // that variable is unset, so
-    //     export OPENCODE_EXPERIMENTAL=true
-    // opts into the whole set at once. Falling back to it (set the named var to override):
-    //   OPENCODE_EXPERIMENTAL_LSP_TOOL          the `lsp` agent tool (see the lsp block above)
-    //   OPENCODE_EXPERIMENTAL_PLAN_MODE         plan mode (cli client only)
-    //   OPENCODE_EXPERIMENTAL_CODE_MODE         code mode
-    //   OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS
-    //   OPENCODE_EXPERIMENTAL_WORKSPACES
-    //   OPENCODE_EXPERIMENTAL_EVENT_SYSTEM
-    //   OPENCODE_EXPERIMENTAL_OXFMT            the oxfmt formatter (also needs a package.json dep)
-    //   OPENCODE_EXPERIMENTAL_ICON_DISCOVERY
-    //   OPENCODE_EXPERIMENTAL_REFERENCES       declared, but does NOT gate "references" above
-    //   OPENCODE_ENABLE_EXA / OPENCODE_EXPERIMENTAL_EXA
-    // NOT covered — these need their own variable and ignore OPENCODE_EXPERIMENTAL entirely:
-    //   OPENCODE_ENABLE_EXPERIMENTAL_MODELS, OPENCODE_ENABLE_QUESTION_TOOL,
-    //   OPENCODE_EXPERIMENTAL_LSP_TY, OPENCODE_EXPERIMENTAL_NATIVE_LLM,
-    //   OPENCODE_EXPERIMENTAL_WEBSOCKETS, OPENCODE_ENABLE_PARALLEL.
     "experimental": {
-        "disable_paste_summary": true
+        // Maximum subagent nesting depth (v1 had it top-level as "subagent_depth").
+        // 1 is the default; it stops subagents from launching subagents.
+        "subagent_depth": 1
     }
 }

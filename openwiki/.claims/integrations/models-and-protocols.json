@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:097bfda527a6a842a0003bbe75dc08733462b5194b95dd6b7638e2b2238ad992",
+  "claims": [
+    {
+      "id": "claim_749de6f1b67e45c1bf4b80acdcadcfa1",
+      "statement": "An agent system should keep four boundaries distinct: model/provider integration, agent-to-agent communication, tool/resource transport, and enterprise gateway control; the harness mediates these boundaries and retains authority over tool effects and termination.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/A2A.md#L3-L11",
+          "version": "repo-lines-v1:sha256:0fd3577b51f45d4cb4a321193289f3be0249a0fe7fd6986131798556df683016:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjFiZjdmMmJiMDg3OWQxOWI0NDExOTI5OGUyY2NjOGZkZWIxMGNkZDQwMjE0NjVmNjJiNWVhNjBmYzNhOGU3ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDYxZDM1ODU4NTAwOTZhMTI0ODZjMDRkY2U2ZGVmZGExYTg5MGMzNmRhMDJlYWY1YjZiMjRmZTNkN2UxMDc4NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2E2YWI0YmQ3Yzg0N2Y3ZWM4MTRhNzRkODY4YmNhZmRlYWZmM2E1Y2Y4ZmU2MWMwN2Y0YzZhOTZhODg4NzlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/agents/ACP.md#L1-L7",
+          "version": "repo-lines-v1:sha256:a6e13f2508c96a2cf61c5b572273a231ee005b2dda47eaafd14cf5de7913434d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWM4MDE0OTFiOWI5YTE1NzM0Mzc4ZDhiMTVhY2E3ZjBmYmQ4YTk1N2IyZmVlODc2MTUxZGY3ZGNiZjFlN2Y2MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWExYjhiMjRmZDg3ZjBlZWM3OWZlMTg0MzJlNjlkNjc5YWRmOTFmNmY4NmZlMDQ1MTJkZmU3NTQ4ZDk1NzE2MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/mcp.md#L3-L19",
+          "version": "repo-lines-v1:sha256:daeda2e6b5d53ddfc957e4e9124f0788af78f2b8727334f71abceb2d61234ecf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5ZjA0MjY1NTMxNjRkNjhkNjA3MzkyYzZjMzlhZTYzMzc2ZmJlMGMyYTdjZDZlY2RjMDQ3MGM0NmVkMThhZWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlZDc2NWNjMjU5NjhjMjIyZDFiNDk5Y2RhZGFkZWNjZTY2ZGYyNjdjNjM5Zjc1OTg2ODU4MzUxYzYxNmU1YzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhNjM2Mzc5OTE1ZTgxZTZkMzVmNGU4ZDg4ZTE1YTA5N2ZlNDUyYjRkMWNiOTZlZDFmMGRmOWQ2YzFkOTBjNzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwNmUzYWI4ZDczNzg0ZDM4M2EyMWRmMTllMWI5ZGZhZTdhY2M3MzAxODhlM2EzNWU0OWJiZTIxNjIwOGI4NzUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/enterprise/llm-gateway.md#L3-L10",
+          "version": "repo-lines-v1:sha256:2e91cd91fe7c8c63d3aae594e71d5536110b4c4645e66a9a2ead58ba3bf99d95:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWNiYTVjN2FmNjU5YWIwNjNlZjEwN2U1M2RkYjhjNTBhOWFjOTg1YWQzOGYzOWY1M2VhZDYxNmQ5ZjlkZWZlMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTM2NDZhMWQ0NDFjYWI3ZDAzOGEyMmEzY2U4NWMwZDBiNGVlNjBhOTExNGI3MDljNzhlNGZmMjYyMTFjMzhiYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTkzMTg3OTNmNWIxZDdlZWYwNmQxZDYzYTUzNDEyM2E2ZjIzNjc0MDRjNTMyMjk4YzEzYTBlYjAwZjQ1OTNlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjk3YmI3MDA2ZTliZjljODU4YzA0ZDRiMGE5ODMyMGJlZjE3ZGRiNDY0ZjllYjNlOThlYjJiNmI2OTRiYjQxOSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/enterprise/mcp-gateway.md#L3-L4",
+          "version": "repo-lines-v1:sha256:4d4bf0ad031e129c0dcc740051aa393b6deb071f07e1a98e792a4bd85558ad83:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmU1NmY0NmRhNDI0ZDhkMzg1ZmE1ZjQ1M2FkY2I0NzYzMTg3ZTI0N2NiMDMyNjAwMGExMTViYmY3YThlMDBhMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzEwODI2ZmQ0OTBlMjdhZjJhNDQ0YzM3NzgyNzM2NzNhN2FjOWMyOGZjNTQzZDhiMWNiMWM3ZTVjNDljMTZjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTBhZDRjNDA3MzU4ZmY3YTUxODUxMjFjZDUzZTJmYjVlOTA2MzdmNGMyMjU2YzU1MDhlYmNkYzY1OWYzZDBiYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e11254aed0bf412983f7b931549c2041",
+      "statement": "Anthropic Claude prompt caching is opt-in through `cache_control`, prefix-based, defaults to a five-minute TTL, refreshes that TTL on a successful hit, and offers a higher-priced one-hour TTL; usage distinguishes ordinary input, cache creation, and cache reads.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/providers/claude.md#L25-L42",
+          "version": "repo-lines-v1:sha256:35d906c2e3801ce74a88934682c1a96bce0079f53a083f96cc0345f6dd57cf63:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyZTRkNjQ4NmM2ZDljMzgzNzEwZTU5YjRmNzFiOGU2Nzg3NDYwZjQ2YWUyZGFhZDA5NWM5NzYxY2ExYWUzZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlNzM5ODljNGJiYTI0ZmI3ZmU0OGQyZDQxNTNiYWYxODgwMDczNjIzODRlZjg1NGY0OTgyYjEwZWIyMDY3ZTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkN2IyNjEwZjQ3MDAyOWI3Y2E1OWI3N2Q0MTZkM2IxYTFjNmZhNTRjMTY2YjA4OGVjMDRhMzk4MWYzMWU3YzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxMjg0MmI3MGJmNWQzYmQ1YWRkMGVmNmMxN2NhNzc5OWRmM2Q3ZWFmYTcwN2ZiNWFkODU2ODZkNWM5OTc1MmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2bccec97e38444ee8dd20f5f919f18bb",
+      "statement": "The documented GPT-5.6 pricing applies long-context rates to an entire request above 272,000 input tokens, while caching includes implicit and explicit breakpoints, stable `prompt_cache_key` matching, and only a guaranteed minimum 30-minute eligibility period.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/providers/gpt.md#L44-L67",
+          "version": "repo-lines-v1:sha256:26650d4f66fe8c707b758f33974386bfd2f18186e8c3a9b69181ff704c243fa9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0NjMyNGI4MDk0MDZjMWFlNzg2YTc0YzBlMGI5ODE5YTkwOGRhZTMzYjNjNmNiNGI5NmNjOWU1Y2ViMzEzZTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhYzQzNzU4YTNlM2M2YWZlNjI1MTQxM2U3YjgyZTdjMDVmOTU5MDQ5OWJmZDQ1NmVhZDQyNDI5MWQ1ZGQwMWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4NGFkZWQyYmQwMmIzYmZlYTJjNzViZTBmYTRiYmQxMmI5YmE2ZTljNWQ0OGJmYWI5NGNmNzJkYzA5NDhkMmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczNDNkNTQyZTE3ZmE5YjQxMDMxYTc1MzA3ZWNiZmMwZDM3NmFiYTM2ZWM4YWQ1OGU2ODAxNDgwZWE1ZGI5MmUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/providers/gpt.md#L69-L82",
+          "version": "repo-lines-v1:sha256:8742aaeb081411dc96e9d391df818cbf2c930ca27dc2fdec31831f1759be158d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3YTQ2NGVkZGIzMWMzZDhiOTllODViM2E2OWZlYTk2OTU2YTgwZjYyOTk3MmM3MDlmMmFlNTA2OTZiMWY3NDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2NjU0OGNmMWY2ZDdmMmQwOTFhZjJlNTE5N2VkZGIxZGIwZDQyYzMzNTkyYmY0ZmU5NWI3YjllNzRiNWFiMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxYjAyMDI5NGQ3YjlhMzRlZDhiNzUxNzI0NmZiODdjMGE2YzljMDU2MWY3NGMwZjVkZjRkZDU5Y2ZmOTU0ZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM5NzBjMDgyMmM0YzM5ZTUyMWNhNDdhZWY1NmJjY2FjYjg3OTNkZmYzOGI2ZTg3NzQwMDlkODRlYjAwMTg4ODYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9126cd4df1054ecfae750b15e5b41371",
+      "statement": "Gemini 2.5 and newer models support opportunistic implicit caching, while `generateContent` supports named explicit caches with configurable TTL; Gemini 3.1 Pro Preview has separate request-wide pricing tiers at 200K tokens.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/providers/gemini.md#L32-L64",
+          "version": "repo-lines-v1:sha256:13edef8b1078a4d0b5f60e6fdd5d1d77c299a79b941518a4e9f6b0a2c950956d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkNDBmOGJjMzQ1ODA3NTA0ZWI2MDYxNzIwM2RhYjY5NjlkZGRlOWQ0YzdhMTU3ZGU4YWM1ZDdmODRkMTFlZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0OGM3Zjc0YmFjY2Y3OWM3MjVmNjcyMmQwYmIzZDc1YzdjZmJjZDc5ODE1MGRkMDAzZjUzNWFlYTY0MTBlMTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImExYTkxOGZkMzY0OTE1N2ViY2RmMmZhZTlhMWM2ZDYzMWYzNWEyMmRjZjQ3OTRmMTE3YTFiMWJlYzkzOGM4M2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlMDQzZDExNWI3ODg0NDczNWM4MzJlZWFmMzQ3ZDRlZTFiMzIyZWJiZTExOWM2MGY3YmNiZWQzYTI0ZTMxOTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a4ae06a74eb048009af06525eeff63be",
+      "statement": "No single public LLM leaderboard is simultaneously comprehensive, current, independently evaluated, methodologically consistent, and broad across agentic capabilities, so broad dashboards should be followed by benchmark-owner checks and internal task-specific evaluation.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/providers/leaderboards.md#L9-L25",
+          "version": "repo-lines-v1:sha256:28f9fc3447ad0cb2c8c7be9f3843107d83a8fe2da44163a4e79c2a1bba0a7926:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwNmZkMDA0ZDI0ZTU3YTFlMjAwMjJiYTAzOGYwOWY5MGVhMWMzNzAwM2JiMTQ1Y2RhNjU4NGEwMTBlODRiYzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkNGJmNjM0OTg4NDRkY2QyNTllY2ZlZmQ5ZDM1NWU5ZGRmMGYzZWNmNzViZmZhOWJiYzliY2M4MDUyMWE5MWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcwOWUxZjU5NDAzOWYwMGY1NzBmYzliOTNlYzE2MmViYTg2NWUzYjRlNzI0ZjI3YmQ3NDcxOGY1YWFmNGFhOGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzMTk5ZWYyMjMyMjI1NjVlNzg2MTc4ODg3YTdhY2IzNGZlOTFjYjkyNWYyNGRjMTg3MmUzOGUxNTRmY2QzZjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1550c0c4126f47dea55da15368fee877",
+      "statement": "Jev is a hosted typed decision primitive that evaluates scoped Choice, Score, and Noul questions against a state, while CLM is a separately trained open-source alternative that scores supplied candidates rather than generating arbitrary new actions.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/models/clm.md#L25-L34",
+          "version": "repo-lines-v1:sha256:7b78d6734f03da1c0d9dd1bb603d366d7f6c63e62a2d33bc08cad501bbb5f4a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiOWRkYjgwMjIwZTgwODllY2U0YTUyNjVlMmYwN2YxYzE2NTQ4ZmE3MGM2MzYwNDgwOTNlM2FjZTIxY2I5MzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyNWUxMzMxZTFmZWUxMTExMTAyODcwZmRlN2M1Y2MwNjAwZTBlYTgxMGZiNDg4OTRjODQ2OTc3Mzg2OTI0MjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxZmRkOWVkYWNkZTJkMWFkNGZiOWE0ZTI3OGJlMjAwNmUyZDZjNGJjY2NkNjQyOTMxNDI3MjMxZWZkODlhODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwYTIyOWEwMTg3ZjhjOTkyMDEwODZkNjJlZWFhMTBiY2IxMDM2YjJlZTVjMDc1MWNjYTM3ZThkMTQ5N2I3MzIifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/models/clm.md#L9-L13",
+          "version": "repo-lines-v1:sha256:5ec098900e8e92710f2d8c1291957b7e88c92ae35b2a631da251cc23203059b1:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMThhODY0OGVhZWIzMGQwZGQ2YzNmNDcyNjAxYmRhNDZmOWNlNWNlMWU4ZWNjMjVlMDIyNjQzNjU1MDkyOTU4MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDcwY2RjYzA0MGJiZGE3YjE0MjkzOTJkYjY4ZGY3YjM3MjQwOWFhZDRkZWE5MjJlNDJlNWNhNWQ5MWNjYzE0ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJjMzM0Y2VjYTY2ZTBjMTYxYzhlZDQ3YTdiNjk2MmE1MzgxZjgwYzMwYzQyOGZlYTQwNmFlNDgzNWFjMzk1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWIwMjhiMWFjNTg5MTkzMzM5MWRiYmY0MDIyYjM3OWI5ZTY0NzExMjcwMWYwMDYyNjc0Y2VkNjM5YWYzNWM2ZCJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/models/jev.md#L37-L44",
+          "version": "repo-lines-v1:sha256:cfbc6f19bb036c0582dc88e96e140146549476dd4e49998900a6b9a0bc412bb2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWMzMGI0YzliZjYzNWM1OWU5N2Q0NDQ4NTg0Y2RlYzliZGZkNGQ3MmUwZTQzYjQ2Y2VkZWUwNTNjN2U4YzMxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFlMDZiNzRiMzdjNDc5ODM3NTJjOGRlMmUyZGMyY2RmMzNmNTA2ZjNmZGNjOTA0ODUwZjE3NGU3YjQyNjNiNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTIyYzc2OWFkYWIzMzUwNmU5NjVhMDM0N2VhZjU1MTkzNWU3OTExZWEwNGE4ZjViMDcyNDZlODNhNjhlOGIzOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/models/jev.md#L9-L35",
+          "version": "repo-lines-v1:sha256:d5ec30e5b39eec5c800bacf871a3175840321f842eb06088e6829b4d4477c6e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjYzgzY2E4NWRkY2Q3MzQwZGI2NjA2MzQ2ZTQ4MjNjMzQzNjkwOGI5ZWI1NGE1YjY5YTdiZTRlOWI2YmE5ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0YjliMzEyOGI4NGRlMTJiZDU1Mzg1N2E1NmU0ODdiZTBlOWU5ZmMwNTkzZjA0MTViODY2MTRjZTc3ZmRjNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiYzMzNGNlY2E2NmUwYzE2MWM4ZWQ0N2E3YjY5NjJhNTM4MWY4MGMzMGM0MjhmZWE0MDZhZTQ4MzVhYzM5NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljNDgzZjJmZDgxZWU2MmIwNTQ2ZmVkNTNmMTgzNmExMzA2ZTcyOTg3NWVhNWRjN2VhZjFmNWVhNzBjMTgyOTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d51041e2efa940caa9addf900eb14deb",
+      "statement": "Reported CLM evaluation results are qualified: the authors report comparisons under their workloads and hardware, and the held-out DeepSWE and Terminal-Bench results select among solutions generated by other models rather than demonstrating independent full-benchmark solving.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/models/clm.md#L38-L48",
+          "version": "repo-lines-v1:sha256:ad7c39b1976c16e64ea76e8ed01f481ef9c1f6f347eba73da3907304646d37d1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiYmUyYmFmNzgzZTg3ZmYyZmZkMDQzMTY1MzhiNmYwYzZjMWUyODJjYzA1ZWJjZWY0Zjg3ODk4NmZhNjA3MDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NjFhNWU1OTRhMzlmOGU4NmZiZTczN2RiNGU0MDJlY2U3ODQxNmZkMTgxZTMxYThmZGQxMjVlNjA3ZTM1ZGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwYTIyOWEwMTg3ZjhjOTkyMDEwODZkNjJlZWFhMTBiY2IxMDM2YjJlZTVjMDc1MWNjYTM3ZThkMTQ5N2I3MzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3f6e7ca7caae4c09b0833a3ab83dc8c0",
+      "statement": "A2A is intended for communication and interoperability between opaque, independent agentic applications, with Message and Task data types addressing distinct interaction needs; its adoption note describes stronger emergence inside enterprise platforms than on the open internet.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/A2A.md#L3-L11",
+          "version": "repo-lines-v1:sha256:0fd3577b51f45d4cb4a321193289f3be0249a0fe7fd6986131798556df683016:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjFiZjdmMmJiMDg3OWQxOWI0NDExOTI5OGUyY2NjOGZkZWIxMGNkZDQwMjE0NjVmNjJiNWVhNjBmYzNhOGU3ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDYxZDM1ODU4NTAwOTZhMTI0ODZjMDRkY2U2ZGVmZGExYTg5MGMzNmRhMDJlYWY1YjZiMjRmZTNkN2UxMDc4NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2E2YWI0YmQ3Yzg0N2Y3ZWM4MTRhNzRkODY4YmNhZmRlYWZmM2E1Y2Y4ZmU2MWMwN2Y0YzZhOTZhODg4NzlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_af04c88d87c34ac8b93afa4d3b84ad46",
+      "statement": "ACP standardizes communication between code editors or IDEs and coding agents, making it an IDE-to-coding-agent boundary rather than a general peer-agent protocol.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/ACP.md#L1-L7",
+          "version": "repo-lines-v1:sha256:a6e13f2508c96a2cf61c5b572273a231ee005b2dda47eaafd14cf5de7913434d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWM4MDE0OTFiOWI5YTE1NzM0Mzc4ZDhiMTVhY2E3ZjBmYmQ4YTk1N2IyZmVlODc2MTUxZGY3ZGNiZjFlN2Y2MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWExYjhiMjRmZDg3ZjBlZWM3OWZlMTg0MzJlNjlkNjc5YWRmOTFmNmY4NmZlMDQ1MTJkZmU3NTQ4ZDk1NzE2MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_61a1532874eb414692b646ebd93a20de",
+      "statement": "MCP is a JSON-RPC-based protocol for an LLM client to consume tools, resources, and prompts; its stateful initialization handshake negotiates version and capabilities over a persistent bidirectional connection that can carry server-initiated notifications.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/mcp.md#L3-L19",
+          "version": "repo-lines-v1:sha256:daeda2e6b5d53ddfc957e4e9124f0788af78f2b8727334f71abceb2d61234ecf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5ZjA0MjY1NTMxNjRkNjhkNjA3MzkyYzZjMzlhZTYzMzc2ZmJlMGMyYTdjZDZlY2RjMDQ3MGM0NmVkMThhZWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlZDc2NWNjMjU5NjhjMjIyZDFiNDk5Y2RhZGFkZWNjZTY2ZGYyNjdjNjM5Zjc1OTg2ODU4MzUxYzYxNmU1YzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhNjM2Mzc5OTE1ZTgxZTZkMzVmNGU4ZDg4ZTE1YTA5N2ZlNDUyYjRkMWNiOTZlZDFmMGRmOWQ2YzFkOTBjNzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwNmUzYWI4ZDczNzg0ZDM4M2EyMWRmMTllMWI5ZGZhZTdhY2M3MzAxODhlM2EzNWU0OWJiZTIxNjIwOGI4NzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0d79e5a21d4f4871bf65de55c9ec640a",
+      "statement": "MCP session state complicates remote horizontal scaling and serverless deployment through sticky-session requirements; the notes record SEP-1442 and SEP-2575 as a proposed stateless-by-default redesign with a dated target that should be rechecked against the current specification.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/mcp.md#L21-L28",
+          "version": "repo-lines-v1:sha256:566e3c1a063ea5209c6a5997aeac3e0e5fd3e461a35b4784541667423b0a91b1:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2RjNmM4YzMyNGMwNGM1OTIxNjBiMThlYTMwOWQwOGQ5YmRmMzRkMTMwMzgzZTljM2IyNWUxYzQ5NjJmMWEwMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDQ3NGQ0OGEzYjFlNDVlMjU2ODU1NGRmYjY2Yjk4NTAyNGRkMjRiMDlkOWExZWEzMTJlYzY4ZTQyN2JhMmM4NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Y1OTJhMTcxNTEzMmQ0Y2QyMTdjYzY2MjVmMThjOGQwNjBkMmNjMWQ3ZDFjYTU5ZmI5NGEwN2I2ZGIxYjM3OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/mcp.md#L30-L34",
+          "version": "repo-lines-v1:sha256:6a46db54c70b5db54e21a76b02f4b02fcb74b37d332669f277b710fecb4b1bdb:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTdkMTA4OGJkZDE5ZThkNGJmZGE0NTk2MWIwYTM4MWQzNWQzNjBkZTg3N2FmYjNmYjQ2YWExNzRhOTBjMDU2YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWNlMjM0ZWJlZmIwY2FiOWEwZmRmYjRhZDkyY2Y2N2E5ZWYzNTc1YjFjODMwMmFjNzE2Mzk1MTFlY2E2MGQwOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGFhZTk2NzNhN2VlYmI5YWFkOTVhYzk4ZWU4Zjc5YjdlNjYzMDFhY2UyZDY2NGFlYTY4YmUyZTFkODZkNmI1ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cc5c1113f14945f18be743bec5c17de3",
+      "statement": "An LLM gateway centralizes authentication, authorization, rate limiting, routing and failover, content policy, and audit for model access, while an MCP gateway fronts many MCP servers and applies permissions, secret injection, anonymization, guardrails, and audit for tool-side access.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/enterprise/llm-gateway.md#L3-L10",
+          "version": "repo-lines-v1:sha256:2e91cd91fe7c8c63d3aae594e71d5536110b4c4645e66a9a2ead58ba3bf99d95:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWNiYTVjN2FmNjU5YWIwNjNlZjEwN2U1M2RkYjhjNTBhOWFjOTg1YWQzOGYzOWY1M2VhZDYxNmQ5ZjlkZWZlMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTM2NDZhMWQ0NDFjYWI3ZDAzOGEyMmEzY2U4NWMwZDBiNGVlNjBhOTExNGI3MDljNzhlNGZmMjYyMTFjMzhiYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTkzMTg3OTNmNWIxZDdlZWYwNmQxZDYzYTUzNDEyM2E2ZjIzNjc0MDRjNTMyMjk4YzEzYTBlYjAwZjQ1OTNlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjk3YmI3MDA2ZTliZjljODU4YzA0ZDRiMGE5ODMyMGJlZjE3ZGRiNDY0ZjllYjNlOThlYjJiNmI2OTRiYjQxOSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/enterprise/mcp-gateway.md#L3-L4",
+          "version": "repo-lines-v1:sha256:4d4bf0ad031e129c0dcc740051aa393b6deb071f07e1a98e792a4bd85558ad83:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmU1NmY0NmRhNDI0ZDhkMzg1ZmE1ZjQ1M2FkY2I0NzYzMTg3ZTI0N2NiMDMyNjAwMGExMTViYmY3YThlMDBhMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzEwODI2ZmQ0OTBlMjdhZjJhNDQ0YzM3NzgyNzM2NzNhN2FjOWMyOGZjNTQzZDhiMWNiMWM3ZTVjNDljMTZjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTBhZDRjNDA3MzU4ZmY3YTUxODUxMjFjZDUzZTJmYjVlOTA2MzdmNGMyMjU2YzU1MDhlYmNkYzY1OWYzZDBiYiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-03T14:38:54.195Z"
+  }
+}

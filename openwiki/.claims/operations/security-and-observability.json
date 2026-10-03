@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:40201d2853b9e8afe115bbea134d52ec4ff4f0805c4e02c32d10b59032a56e86",
+  "claims": [
+    {
+      "id": "claim_81154ae772974cd2b6842ba85db82647",
+      "statement": "Agent security should be operated as a threat-to-control-to-signal-to-action loop: risks describe how agents are subverted, mitigations enforce a safe boundary, observability records behavior, and evaluation feeds operational changes.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/observability/langsmith-evals.md#L1-L6",
+          "version": "repo-lines-v1:sha256:180b665a6c734dc73cf54b1512056ae79aa1761b1801cb7d30a66309272677f9:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2IzZTkxMjBlYzVkYzI5MzQ3MzJhMjljNWM5NGY4OGNmNGE5ZTFhYjViY2Q3ZjgzNGZmYTM4YTQ1NzQ4YTkxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGQ5MGU1N2FiNjQxY2IyYTZjYmE5ZGQxNzU0OTAxZmFlODhmNzMzMmRiN2QzMjRiZTkwZDcyYjIzMWE4ODJiYiJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/mitigations/guardrails.md#L5-L12",
+          "version": "repo-lines-v1:sha256:0d72598eb01420b0f717f7e7a7157e84d9ed76c0d5fab06f3a1dc75abf2e5240:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM2NGY0NDdmMDI3OTM5OWI5YWZkNmY5ZDU5NmUyMTk1Mjk4ODAwMDQwYTZmM2Q4YTJhNjg3ZDY0ZTFlNjlmOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmU2ZjEwYzVmNzNkN2RmODRmNWFiZDI2MzkyM2IxNTQ5MDJmOTEwZWZlODU0NTI2ZTM1NGZjZjIyZjU2ZGI2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTk0OGE5MzdhMTlmZjk0ZjE0MDAwZGJkNWE0OTJmZDc4YzkwNTZhMjM2YzQ2MzFjNzllNWY3NjgwZTg2MDA1NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/security.md#L7-L12",
+          "version": "repo-lines-v1:sha256:76e1c9fd52eb723c6293246f045d25348fd5a6df4cd30a00b9cf8bf85e26c27e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTQxZTRjY2FmODU2ZDU5NTFhMDY1MGRkMzA2ZTViYzg1NzhmMzUzNjg5ZjQyYWU4ODc2ODdkZTRlNjdhYWJhZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjE3NWIyYzBmNGU3YzRmYTdmZDVmMjEyZjZjN2ZiNWYwNTg5MjQyZWEzZGFhMTNjZWVmNmE5OWJhMmY1YWI5MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2QzMzcyOGRjZGY2NmNhYzkwYTg0YzY1YzQzYzc4N2FjOWI3YTRmMDliYTA4ZThhN2FmMjllOTY0YzczMWZhMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjY4MThlMTExOTZkOGVjYjY3MTVhNDc5NGMzMTFiNDZmNmY5MjIyMTg3ZjgyNmE1NTQwNmZhMDhhYmZiYmRiYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a7359a510c1a41f287ff2e31ee4bab37",
+      "statement": "The agent security threat surface includes tool misuse, identity and privilege abuse, supply-chain compromise, unexpected code execution, memory and context poisoning, insecure inter-agent communication, cascading failures, human-agent trust exploitation, and rogue agents in addition to goal hijack.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/agent-goal-hijack.md#L7-L13",
+          "version": "repo-lines-v1:sha256:8cace59188ffb7b2e2f2597e8625ffb9757480f99772968e3f5d3991e923b11d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjlmNjY5Njc3ZGVjMjA3ZDVmZDQ4MmQ1MTFkNjVjZjc1YjEyMzA1ZGU4MTUyNGY3YmJlN2UxNGE5ZjA1ODZkNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDBlMDAyNTZjMWYxOWZiMTYwZTFkZThjMzMzYjdkMTgxZDUzYjkzMGU0OWY5MjUwYzU1ODA2Zjk5NWExNDY0MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2QzMzcyOGRjZGY2NmNhYzkwYTg0YzY1YzQzYzc4N2FjOWI3YTRmMDliYTA4ZThhN2FmMjllOTY0YzczMWZhMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/security.md#L14-L25",
+          "version": "repo-lines-v1:sha256:d17f3c0fe692e0d1c34b5c06f28d6dedb678bfd10233a2425867b601036401ca:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmNmExNjM1YWE0NTRkMTA0ZDkyZjIzNTEwNTc4NDI0Yzg4ODVlMmU1YjljYmUwYzUzMTIwN2E5ZTg4ZTJmZTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5OTQ3ZjA2MTc3M2M5OTU2NDkxZjQ0ZDQ1YmRmZDRmMzE5NDAyNGU5NDRjZGE1OGFhMzYyY2E2NDE2YzNhNTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhNzE0ZjhiMTQwOWQxOTk4MzU3MzE4OWY2NGQwODk1MTFhZDUxMTVhNTA0MDQyMzQxOTJjMjhkYzc1MDljZjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmMzQ3ZDFkNTA0MGZjMGJlMGNjMjUyZGJlZTBiODBkNzZlNzA0MWM4MDBmOTUyZmVkMWNjNmUyNzkyZGJlOGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_abc07f8b913b4964bec0bbd6bf7e498e",
+      "statement": "Prompt injection can arrive through retrieved content such as web pages, documents, tool results, or email, and there is no known complete fix because it is a systemic property of models following natural-language instructions.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/agent-goal-hijack.md#L7-L13",
+          "version": "repo-lines-v1:sha256:8cace59188ffb7b2e2f2597e8625ffb9757480f99772968e3f5d3991e923b11d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjlmNjY5Njc3ZGVjMjA3ZDVmZDQ4MmQ1MTFkNjVjZjc1YjEyMzA1ZGU4MTUyNGY3YmJlN2UxNGE5ZjA1ODZkNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDBlMDAyNTZjMWYxOWZiMTYwZTFkZThjMzMzYjdkMTgxZDUzYjkzMGU0OWY5MjUwYzU1ODA2Zjk5NWExNDY0MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2QzMzcyOGRjZGY2NmNhYzkwYTg0YzY1YzQzYzc4N2FjOWI3YTRmMDliYTA4ZThhN2FmMjllOTY0YzczMWZhMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0da832fcc6114491803c8911287ff254",
+      "statement": "Guardrails combine deterministic and model-based input filters, output checks, and action gates; destructive tool calls can require approval, and these controls are distinct from model alignment.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/security/mitigations/guardrails.md#L5-L12",
+          "version": "repo-lines-v1:sha256:0d72598eb01420b0f717f7e7a7157e84d9ed76c0d5fab06f3a1dc75abf2e5240:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM2NGY0NDdmMDI3OTM5OWI5YWZkNmY5ZDU5NmUyMTk1Mjk4ODAwMDQwYTZmM2Q4YTJhNjg3ZDY0ZTFlNjlmOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmU2ZjEwYzVmNzNkN2RmODRmNWFiZDI2MzkyM2IxNTQ5MDJmOTEwZWZlODU0NTI2ZTM1NGZjZjIyZjU2ZGI2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTk0OGE5MzdhMTlmZjk0ZjE0MDAwZGJkNWE0OTJmZDc4YzkwNTZhMjM2YzQ2MzFjNzllNWY3NjgwZTg2MDA1NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4a7943e237994691ab16ad98e68c7500",
+      "statement": "The security posture requires every agent action to be authenticated, authorized, least-privileged, and logged, with enforcement described at the LLM and MCP gateways.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/security/security.md#L27-L34",
+          "version": "repo-lines-v1:sha256:49fb6614df889e45d7ad5bd8a9b9accad2dc9ed7a16c4ad9427939162c7e4189:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2U4Yjg3YzkyN2Y1OTlmZWQ1NzBkMmNkZGNiYjI3ODY5ZDg1NzRhM2ExMDkzODIwOTAxNDY0NDgyNzRiM2M3OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRjNjJjNTk5MDhlODA2NzBhMjhkMGY5MGU1NTg0M2NiODJmYWRjMGMwM2Y1NmJkYWYxMGVlMmVhMzViNzI5MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWM4MDFjZWFkYmM3ZDA0NmNkMWUwY2JlMjMzNmFmMWQ0MDhhOTIzNTkwZjE2OThkNzMwODZhNjAzOWIwY2JiNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_94ae3b5bedcc42b181a8b494c34a2ee7",
+      "statement": "PII masking transforms personal data by redaction, pseudonymization, or reversible tokenization so sensitive fields do not reach a model, log, or third party in clear text, and is treated as a regulatory boundary in the cited banking example.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/security/mitigations/pii-masking.md#L5-L10",
+          "version": "repo-lines-v1:sha256:293c77816fdfd2518d69bfadd0e39816e99cdacd20bbcae5876add58083c564b:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTRlMDRmNWM3YjFjMDAzMTZlNDY4NmUxODlhZmMwOGUzMzFiMWI1ZjI4MTBkZmU2ZmUxMDRhNWJiZTZmZGEwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjZmNGM2MDQ4YTcwNzNiNjc2ZjFkODM2MzEyMDhlODY2MzQwNDg3YTRkMmIwNWNhMmE4NjYwZDhhMTlkZDhkNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTNhOGUxZDdmMjZlOGJiN2NlNWU4ZDk5NWMxMzU3MTAzNWI5ODBlNmZhZThkZDFlOWFmYjE0ZDBiNWIyMzU3NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_47621fb8935644f782e40745b526d2cf",
+      "statement": "LangSmith is documented as a managed platform for tracing, monitoring, and evaluating LLM applications and agents, while Langfuse is documented as an open-source, self-hostable, OpenTelemetry-friendly observability platform and alternative.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/observability/langfuse.md#L1-L7",
+          "version": "repo-lines-v1:sha256:f3e44a72d028c6d8b21da0367d9db50b3a10931b8d1b8c3249f9f2910f40227e:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDUzZDQ2MTkxZDhkZjk0NGRhZDdlZWM1NmU1ZjRlZGYyM2M5NmJjYjE2MTk2M2QzY2Q2MWViNjUxYTJkZmI0NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWVhN2M0MGJjOThmMzQ5M2ExODI0MTNmZGIwYjcyOTcwZTBiN2I4NzdmMjI4ZTQwOTU2M2FiNjJjOTNjYTBkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/observability/langsmith.md#L1-L7",
+          "version": "repo-lines-v1:sha256:852e328a8ba50eb400fc9cc597dd429aeefca617d99db3f08a4cbbec828e7261:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjUwM2Y2M2IwMDVkYjZiZWFjZGU1YTI1M2FmOWI1MzhiNjFmMDdjMDdhNzkwMzliOTczYjU2M2IyMGZhMGUzMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDhlODVlOTRkODRiOWZlZTg2NjgxM2RmMWQ4OTFkMmJhMWVhNzNhZDBjMjkyZGI1YzkxMjM1MWZmYTc1M2NjMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3be75996574d4a8fa87ed9175f8b916f",
+      "statement": "LangSmith evaluation tooling runs datasets, LLM-as-judge evaluators, custom evaluators, and experiments over traces, supporting offline and online evaluation.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/observability/langsmith-evals.md#L1-L6",
+          "version": "repo-lines-v1:sha256:180b665a6c734dc73cf54b1512056ae79aa1761b1801cb7d30a66309272677f9:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2IzZTkxMjBlYzVkYzI5MzQ3MzJhMjljNWM5NGY4OGNmNGE5ZTFhYjViY2Q3ZjgzNGZmYTM4YTQ1NzQ4YTkxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGQ5MGU1N2FiNjQxY2IyYTZjYmE5ZGQxNzU0OTAxZmFlODhmNzMzMmRiN2QzMjRiZTkwZDcyYjIzMWE4ODJiYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4ba1a321b5a04a53ab1c72a7511f9809",
+      "statement": "In multi-agent systems, inter-agent channels are an attack surface because messages may be unauthenticated, peers spoofed, or hand-offs tampered with; bad outputs, loops, and outages can also cascade through dependent agents and tools.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/cascading-agent-failures.md#L1-L7",
+          "version": "repo-lines-v1:sha256:de4a26578a5006e7854e173c7034d8fc9e98c0437cbf1170a9de33b029b09d34:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTFhNzBiNGFiYWE1ZmRiZDQ0MzJmZWZjZTIxMDNkZmEyOWZmYjEwNjk5YjE5N2E5OTg5ZmIzZWZlMTUwZjk4NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWZlYjM2NzYxMzNiOTExNGVlNTE3YThiZjMzNWEyMGI0MWNhMzM3NmMyMjg3NzZiMjgwZmRmY2ExMjYzYzEwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/insecure-inter-agent-communication.md#L1-L7",
+          "version": "repo-lines-v1:sha256:732b8fd133ed63e5e166fd5ccd62918c16f74497294a2a5cff491295ba5cf1ef:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmVhNTk4NTJlZTVkM2UzNTQ0OTI4YjEwOTk2OTFlODI0MjE4YTYxMjJlYThlY2I5MmYyNTY1OWYxZDA4ZDJjYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRkYThjZmJhOWJjNjdiNjhiZGUyODQ2M2YzYjI1ZGZiYjdkYjlkNTU4MDRmODM3MzM1Mjg3ZDk5YmNhMDg1MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ad5502f3f98442c5956410a9a5bd2386",
+      "statement": "Supply-chain compromise can enter through a backdoored MCP server, tampered model, malicious package, or spoofed tool, while rogue agents operate outside the sanctioned control plane because they are unregistered, compromised, or drifted beyond mandate.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/rogue-agents.md#L1-L7",
+          "version": "repo-lines-v1:sha256:f39d029c5b9cbab63d3d2109ae93cd39262aac4eca8fb129e2312ca5d177c119:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmFlNDEwMTczODRlZDY0OGI1ZGJlMGJhMDA0MjI5Y2JmYTE4MjFiNTFhZjM1ZTBmMDE4ZGM1M2VhYjFmYzIzMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODNkNjIzYTNhNGQ1MmNlNTc3MzJhZmExYzJkMmNjZmYwNjdhYjVkMWUzMWM2YWY4OWNjYzNmNDQ0ZTkyNjViZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/supply-chain-compromise.md#L1-L7",
+          "version": "repo-lines-v1:sha256:f23ed388b91d7738aa302716dd35b156d5f14ee71316ffa841a175c8f342a364:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTEyMDZmZDE1NmIzMGRmYTJlYWFjOGU5MjlkMDgyNDc1Yjk1NmExNWNkMTFlZmMxN2FhMTE4ODg0Yjc4YzVmZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjkzYWUxYzA5Y2EzMDBhNjI3YWExYTBjODc2MTQ2NDNlYjg5Y2JiZmNlYTQwMzY1M2UxZWY2MjQ5MTU4OThlMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-03T14:38:54.195Z"
+  }
+}

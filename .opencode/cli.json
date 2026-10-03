@@ -1,0 +1,57 @@
+{
+    // https://opencode.ai/v2/docs/cli/config/
+    //
+    // opencode v2 reads terminal-client settings ONLY from ~/.config/opencode/cli.json —
+    // there is no project-level cli.json, so this file does nothing where it sits. It is
+    // the tracked source of truth; the "Sync: OpenCode config globally" task copies it to
+    // the global path. (v2 migrated this from the v1 tui.json, which it no longer reads.)
+    //
+    // Comments and trailing commas are fine (opencode parses it as JSONC), but a syntax
+    // error makes opencode SILENTLY ignore the whole file — no warning, all defaults.
+    "$schema": "https://opencode.ai/v2/cli.json",
+    "theme": {
+        "name": "opencode"
+    },
+    "keybinds": {
+        "session.message.next": "ctrl+l",
+        "session.message.previous": "ctrl+o",
+        "prompt.history.previous": "none",
+        "prompt.history.next": "none"
+    },
+    // Disable opencode's mouse capture so selecting text uses the terminal's native
+    // behavior and does not automatically overwrite the clipboard.
+    // "mouse": false,
+    //
+    // "attention" is the TUI's built-in alerting: it marks the session as needing
+    // attention (permission prompt, session done, subagent done, error) and can play a
+    // sound and raise a notification. (v1's attention.enabled toggle no longer exists.)
+    //
+    // It does NOT talk to the OS notification system. `"notifications": true` only makes
+    // opencode write an OSC 777 escape sequence (`ESC ]777;notify;<title>;<body>`) to
+    // stdout — delivery is entirely up to the terminal emulator reading it:
+    //   - VSCode integrated terminal: swallows it and renders its own in-window toast,
+    //     visible only once you focus that VSCode window. Not in Notification Center.
+    //   - Ghostty / kitty / WezTerm / iTerm2: forward it to the macOS Notification
+    //     Center, i.e. a real system-wide notification from any app.
+    // `sound`/`volume`/`sounds` are played by opencode itself, so those work everywhere.
+    //
+    // For system-wide notifications from the VSCode terminal, use a plugin that shells
+    // out to the OS instead (see @mohak34/opencode-notifier in opencode.jsonc), and set
+    // "notifications": false here to avoid a duplicate VSCode toast.
+    "attention": {
+        // Left off on purpose: @mohak34/opencode-notifier delivers the real system
+        // notification. Turning this on adds a duplicate VSCode in-window toast.
+        "notifications": false,
+        "sound": false,
+        "volume": 0.4
+    },
+    "diffs": {
+        "wrap": "word"
+    },
+    "session": {
+        "sidebar": "auto",
+        "scrollbar": false,
+        "thinking": "show"
+    },
+    "animations": true
+}

@@ -1,0 +1,6 @@
+# Read only the source notes and OpenWiki's own output/control files.
+**
+!/wiki
+!/wiki/**
+!/openwiki
+!/openwiki/**

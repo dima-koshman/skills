@@ -3,9 +3,6 @@ type: maintenance guide
 title: Knowledge Maintenance and Provenance
 description: Practical rules for maintaining curated notes and generated knowledge without confusing source snapshots, derived summaries, historical tooling, and current behavior. Covers provenance, freshness, version pins, citations, lifecycle, and visualizer compatibility.
 tags: [maintenance, provenance, freshness, citations, versioning, visualization, knowledge]
-verified:
-  - by: openwiki/0.7.0
-    at: 2026-10-03T14:38:54.195Z
 sources:
   - id: openwiki-source-c5419b9bac30b026bd3aae4d
     resource: repo://wiki/ai-engineering/context/okf-visualizers.md

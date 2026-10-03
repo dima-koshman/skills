@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:9ea6da319941763b34126ca47169653e9932deee959df351ec972e9f78ea8738",
+  "pageVersion": "sha256:370310a726df0eb71ec8ea8448ffd79cb1330a86e734e1a5d70e648609f91d06",
   "claims": [
     {
       "id": "claim_0865eea3c3224d8eac9d5a008b680488",
@@ -97,10 +97,76 @@
           "version": "repo-lines-v1:sha256:48075ad44ff05e095cef2fc79cb1afcc0719beceb9d4967c82d925c6c107e581:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzZhZmUwYTk5N2FlZjE1ZjdlNzY1ODNiOTA3NmIzOTM5MGQxZjc0MTBkZTQzNTEwOTBiMzY4OTk4MjVhNzQ5OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGM4Y2YzNDEwOWI2YzA0ZGIwNjdmMmJkZDcwNjRkNDc0MWY3OGZhNjgxZmM2Y2FjOWVmNGUwZjU2N2RlZWUxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGRlNTg4NjIzZGEzNGZhNWUyZjM2MWQ3NDI2M2Y2OWQxMGFjMGQ3YmJhMDBmMWQ5ZTQwY2EzM2Y5ZDMzOTg1ZiJ9"
         }
       ]
+    },
+    {
+      "id": "claim_d00baa62c6f74e46a0ee21dbf79561ac",
+      "statement": "Workflows script tool calls inside the harness to reduce token usage and coordinate long-running tasks; because model-written workflow code executes in the harness, workflows introduce unexpected-code-execution risk.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/harness/harness.md#L3-L4",
+          "version": "repo-lines-v1:sha256:14cff5c4847db69a5d366a6b531d66f963a4aa599200d77381e9a1689c25b810:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzljMWQwMjE4Y2Q3YzIzZWRmNDMwOTE4NWUwNjIzZjlmNmE2M2FmMTU3Y2VlYzA2MjMzNTk0NDdmOTRiMjk2ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWU1MWI0Njk3NGFjYmYyNmY4OTQ2OTJlNWIzNzRlMjg4YzU0NGYyZGMwMTQ0M2ZjZmVhOWMxMTNmYTI3NmY5NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDMxMGY4ZTIzZTZmMGMwYWM5NjY1MDZhYzBjYTRiM2Y5YWExNDg1MGNiMTAwMTY3ZjNkZGJhMjBhOTM3NzAyMyJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/harness/workflows.md#L3-L5",
+          "version": "repo-lines-v1:sha256:68281522d5c4e47045226eed4af46ff32cc2780e5d342866a6fa0e7cd0f58c72:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjFkZjVlMDViMWFhMTBjOTJiNThlOTc1YWU5NzhiZGVhZDM0ODQ0YmMwODMzNjQ4MTgyNTZmOWE4ZDNjNjczNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTI3MjVjNjc2Zjg3ZjZlMDdhMDU1MGI0Njk2OTllZjdkMWVlMDE5YzYwODIxODc0NWIyMzUxMGMxYjNlYmIyNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjY0YmMyYTVkMTZiNjg1NjUyOTdiMmRhOTViMjI0NGE0NjY5NDA0MTQzZTkzNDkyMjA0ZWExM2FkMjkxMGE0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjA0MjNkMTgzMTNhNWI2NzdhYTI0MTJkNjY4OWI0MjIzODE5ODE2NDJmMTg1Y2MwMTljYWIxZTVmYTQ0NDQzOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9e94709ea38748e9a422f49787e533a2",
+      "statement": "Subagents are separate agent instances with their own context that receive task and authority from a parent, keeping parent context cleaner while adding an insecure inter-agent communication attack surface.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/harness/subagents.md#L7-L13",
+          "version": "repo-lines-v1:sha256:60f054189ab767f5329a9904fdcc7f92d30427edc171e8caa9f1199c25f1ac6b:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Y1Y2FhMDYwMGJmMzFkNjE1NTFhNTc1MTc0M2E0NGZjOWRkN2M1N2ZiM2E5NGVmNzU5M2UxZTcyMjBhNDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWYwYjE0ODIzZTdlODUzZjhkMWM0ZGY4YWVhMjA0MWNlZGUxNzI1Yzg1ODlhYWViOWRhOGM2ZjYwZjI3MjA5MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmY1N2MxYzQzNGY2NDVhNDliNWQ4YTJkZDE1YTZmODYwODhmYWVhNmE3YjJlOGQ5ZWUzZjdhMTIxNTI2MWI5NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e2d286ee300b465c8acf94ef4add991f",
+      "statement": "Tool execution ownership is divided among client backends, client frontends, and provider runtimes: provider-side tools are enabled by clients but executed by the provider, whereas custom function calls remain client-executed.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/harness/provider-tools.md#L26-L32",
+          "version": "repo-lines-v1:sha256:54912b6015d93211ede1a50a5d508afd1469e4815926a59f28a58e46f113da75:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjY2MGEwOTc2MTEzNTZlZGMyMzAyMzVmMjU2YmIzM2Q0YzgzYWQ3YmM4MDkxZjBhYjY3YWQ2OWNkNmJlZGRjZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGUyZjg2NzVhMzJiOTMyNTk2ZjU5MDc4MDdjZjQ4YzQ4ZGY3ZWJlYThmODVmZjM0OGY2OGViN2YxMGQ0MTNmZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmIwOWVkODNlMDlkMTM2YjJmMWI0Nzg1NmQyNDFhNmI5NjU1YTJmM2MzNmU1NWU1N2VhYjlhMDYwODE4Y2YxYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/harness/provider-tools.md#L5-L8",
+          "version": "repo-lines-v1:sha256:8737dd4a0f21a793cb9e83ea51993cef337f3d821c048414993a1b531fbce3e2:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGEyZmU4NTczYjYxNjNhZmRkYWFlMmYzZjIxMzRiMjg0ZDdlZjQ4OWFhOTM5OGE5NzU2NzRlODc5YjVjNTM2MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjI1YTg0YTQ0Y2VlMjI2N2QzZDQyZmJiZjg4OWMwMzQyMWUyY2YzYjJjYTg1ZTI5ZTNjZDEyMGFjNTc2MjNiZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGQxNjVlMzNlNDY5NmExMzI0ZjNjZDQ2NzliOTY3NDc4ZWVlMmZkYTBmYmJjNjdlNjViYjNkZmRkODQzNTc2NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTA5ODljYWVhNThmMjM5ODg1ZjFmOTQ3OWJmNzQ3M2UxNmFjZTIyNmY0YzBkZjBjMjRhMmY1NTMwODU5ZjE2NCJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/harness/tools.md#L17-L27",
+          "version": "repo-lines-v1:sha256:258b81299da5a680c69ac5429c9a10ffa227f9c4627d3f4bdc64c1cbaa093127:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiZTliYjk3YjQxNWVlMjc2YWJjNTJjN2MwM2NiNmFhMzQ5MDFlOGE0OGQ3MWY4NDZlMzdkYjg3MGU3YjBmYzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwOWI1MDJkNzc0NTc5NDQwYmZlYThkM2EwM2ZhOTVkMDQwYjU1YmIzNDFiOTU5MjVkMTNmOGM3ZTJlYmNiZDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwYTcyNzM0YzM2OGQyY2EwMTZhYjEyM2UwMmE1NTk2NThiMGQ4YTBiYmIxNWE5YTdmZDFlYjZhMTE2OWU4NGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyYjJjMWJhYzBjZTg2YjMyMjhlZTE2ZWFlMzUwNjVlNDJiMzA0ZTMwZDY3M2I3YTk1MzUzNDc1YmU1NzNiMjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c69a9afa64bb477b8a95d0655f554f04",
+      "statement": "Frontend tools execute on the client's frontend for UI interactions and are newer and less standardized than backend tools.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/harness/frontend-tools.md#L3-L12",
+          "version": "repo-lines-v1:sha256:a3a42c15a65ce6d448601e8b619e47515d6e4ada2397dd9d4888ff3b5b21df48:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1MDdmOGY5NzNlNjRjNTg0N2JkOTgwODk3NzE2N2M0ZmNhZDIyNTRjOTU4OGIwMzkzMjNlZDEzNTMyNTk5OTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhNjcwZmExMzUxYzI5MDUyYzQxMDNmZGVhMzAzNWMzNDZjYjE4YmRkOTVlY2FjYTQxYmRkODJkZGRhNjI3MmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRkYThkZDIwMTZlZTc0ODI2NTdiMzg4YzJkZWNjMzZkYjI1ODJmMWY4OTA0Y2I2OGRkMTA2OWE5ZjE2NzM1NGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4cf45f98ec854679afc807b2dd80a5c3",
+      "statement": "Skills are directories containing SKILL.md with name and description frontmatter; harnesses keep descriptions in context and load the body on demand when the description matches the task, making skills progressively disclosed workflow or knowledge packages rather than always-on constraints.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/skills.md#L40-L51",
+          "version": "repo-lines-v1:sha256:38162b3b09696074c4e60c5cab868a55b5aae30ab0e00737d0de5ca08837b04a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkYjIzZWMyYmY0NzMwOWRlMTMyYzk5MmU4NDU1NDY2ZGQ1ZjBjNDNiZTE1MWVlNzBlYzJiNmI1ZDI2NTgyNmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwOTkxY2IxMWVkZGU2NzRjYTQyNTJmMjdjOGY5MDQ0YjA5ZmM0YzQ3YmM4NGNjN2E1NzM5MGI1ZjkzNGJlM2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3ZmVlNjYwNDU3ZThkNmFiNTViMWUwNmY5OTI0MDAxNGVmMGZiOTkxMzE1MTkwZDBkOTFjNzg3ZDIwODJmYjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwYmI2MTI3NmYwZTIxMTNkMDdlZjMxZmYyMGUwZTU3ZDVkZWRhNWIzYzJmMDVlN2IzYmJhZGM3ZGM0MTc3MjIifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/skills.md#L9-L15",
+          "version": "repo-lines-v1:sha256:21a347e03e1ca243fed16d55701397b621435a918da7ad58a5488e8f83d897a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjBiODAzZWRjODZjNGQwN2VhZGNmNWI0OTZkNGU3MWJhZDQzZGFjMWFhMDVjNDZiNzY2MjU2YjIyYzk4M2QyYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM2NjI3NjcwMDk5Y2ZkOWM3MTNiMmQ0ZDlmNzJmZjNjMGEzZTg5YzM5YTM1NTE5ZGE4YjE1NTZlNTk0ZjE3MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjZlNGU0ZDYzNjk1NDMzZGZhZDVjZDc0YTNmOGEzMzBkYjNhYTY0MTRkYzk0MjJkOWU5MWNjNjExZWI5NDYyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTFjODVjNzBhZWNlMzBmYTUzZTM5NzhhMDU3ZGM0Njk2MmJiMWQ5MDhkYzJhOGU2ZTMzZWU2MzFmOWZiOWIyYSJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-10-03T14:38:54.195Z"
+    "at": "2026-10-03T15:48:59.676Z"
   }
 }

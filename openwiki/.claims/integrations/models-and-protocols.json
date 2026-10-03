@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:097bfda527a6a842a0003bbe75dc08733462b5194b95dd6b7638e2b2238ad992",
+  "pageVersion": "sha256:3de05ad86a126577114fad8c5fa677dfe1c05626195e2d9c82bcf003e656c0a4",
   "claims": [
     {
       "id": "claim_749de6f1b67e45c1bf4b80acdcadcfa1",
@@ -161,10 +161,46 @@
           "version": "repo-lines-v1:sha256:4d4bf0ad031e129c0dcc740051aa393b6deb071f07e1a98e792a4bd85558ad83:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmU1NmY0NmRhNDI0ZDhkMzg1ZmE1ZjQ1M2FkY2I0NzYzMTg3ZTI0N2NiMDMyNjAwMGExMTViYmY3YThlMDBhMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzEwODI2ZmQ0OTBlMjdhZjJhNDQ0YzM3NzgyNzM2NzNhN2FjOWMyOGZjNTQzZDhiMWNiMWM3ZTVjNDljMTZjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTBhZDRjNDA3MzU4ZmY3YTUxODUxMjFjZDUzZTJmYjVlOTA2MzdmNGMyMjU2YzU1MDhlYmNkYzY1OWYzZDBiYiJ9"
         }
       ]
+    },
+    {
+      "id": "claim_ff16a0a56e724b68ba4fd575116ae8a8",
+      "statement": "ACP is the IDE or code-editor-to-coding-agent boundary, A2A is the independent peer-agent delegation boundary, and MCP is the LLM-client-to-tools/resources/prompts boundary; selecting among them depends on the participating roles rather than the generic label “agent protocol”.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/A2A.md#L3-L11",
+          "version": "repo-lines-v1:sha256:0fd3577b51f45d4cb4a321193289f3be0249a0fe7fd6986131798556df683016:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjFiZjdmMmJiMDg3OWQxOWI0NDExOTI5OGUyY2NjOGZkZWIxMGNkZDQwMjE0NjVmNjJiNWVhNjBmYzNhOGU3ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDYxZDM1ODU4NTAwOTZhMTI0ODZjMDRkY2U2ZGVmZGExYTg5MGMzNmRhMDJlYWY1YjZiMjRmZTNkN2UxMDc4NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2E2YWI0YmQ3Yzg0N2Y3ZWM4MTRhNzRkODY4YmNhZmRlYWZmM2E1Y2Y4ZmU2MWMwN2Y0YzZhOTZhODg4NzlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/agents/ACP.md#L3-L7",
+          "version": "repo-lines-v1:sha256:26894e7603e8b18ab65035dd0a05c6a34983e42aaf88656e17e10e7b92ad458e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDJlNWUxYTZmNTM4ZTM2MmVlNmMxMWFkYWM3Zjg5ZDU4ZjBlNjIwOWM4NGNkNmE3Y2QyODk3NjQwZThmNzM1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWExYjhiMjRmZDg3ZjBlZWM3OWZlMTg0MzJlNjlkNjc5YWRmOTFmNmY4NmZlMDQ1MTJkZmU3NTQ4ZDk1NzE2MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODEwNmQ2YTA0ZGI2NWVjNDMzZmYwYzg4MDVjMzE5YmJkNzdiMjM3NTBhMGVjMzVkZWNhNjM5ODUyNDczYTUyYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/mcp.md#L3-L19",
+          "version": "repo-lines-v1:sha256:daeda2e6b5d53ddfc957e4e9124f0788af78f2b8727334f71abceb2d61234ecf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5ZjA0MjY1NTMxNjRkNjhkNjA3MzkyYzZjMzlhZTYzMzc2ZmJlMGMyYTdjZDZlY2RjMDQ3MGM0NmVkMThhZWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlZDc2NWNjMjU5NjhjMjIyZDFiNDk5Y2RhZGFkZWNjZTY2ZGYyNjdjNjM5Zjc1OTg2ODU4MzUxYzYxNmU1YzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhNjM2Mzc5OTE1ZTgxZTZkMzVmNGU4ZDg4ZTE1YTA5N2ZlNDUyYjRkMWNiOTZlZDFmMGRmOWQ2YzFkOTBjNzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwNmUzYWI4ZDczNzg0ZDM4M2EyMWRmMTllMWI5ZGZhZTdhY2M3MzAxODhlM2EzNWU0OWJiZTIxNjIwOGI4NzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_04eea0a21d4b4157b4c365ec6c2aacea",
+      "statement": "Jev and CLM are harness-internal decision-model components rather than protocol or effect-authority boundaries: Jev evaluates bounded typed Choice, Score, and Noul questions, while CLM exposes compatible HTTP decision endpoints including POST /v1/systemone and POST /v1/rank and ranks supplied candidates rather than generating arbitrary actions.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/models/clm.md#L25-L34",
+          "version": "repo-lines-v1:sha256:7b78d6734f03da1c0d9dd1bb603d366d7f6c63e62a2d33bc08cad501bbb5f4a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiOWRkYjgwMjIwZTgwODllY2U0YTUyNjVlMmYwN2YxYzE2NTQ4ZmE3MGM2MzYwNDgwOTNlM2FjZTIxY2I5MzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyNWUxMzMxZTFmZWUxMTExMTAyODcwZmRlN2M1Y2MwNjAwZTBlYTgxMGZiNDg4OTRjODQ2OTc3Mzg2OTI0MjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxZmRkOWVkYWNkZTJkMWFkNGZiOWE0ZTI3OGJlMjAwNmUyZDZjNGJjY2NkNjQyOTMxNDI3MjMxZWZkODlhODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwYTIyOWEwMTg3ZjhjOTkyMDEwODZkNjJlZWFhMTBiY2IxMDM2YjJlZTVjMDc1MWNjYTM3ZThkMTQ5N2I3MzIifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/models/clm.md#L9-L14",
+          "version": "repo-lines-v1:sha256:225855ff694389ea991f9cd530354f72f014e00c4365ef974fac9fe4d9bd317c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMThhODY0OGVhZWIzMGQwZGQ2YzNmNDcyNjAxYmRhNDZmOWNlNWNlMWU4ZWNjMjVlMDIyNjQzNjU1MDkyOTU4MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJjMzM0Y2VjYTY2ZTBjMTYxYzhlZDQ3YTdiNjk2MmE1MzgxZjgwYzMwYzQyOGZlYTQwNmFlNDgzNWFjMzk1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGE1NGU3ZTRlMjNiY2E2NGMxNWM5ZmNkMTZiNzdiYmNiYWNkN2VlMTI4ZTUwNWY0NDlkZjk1N2M0ZmVjMzE2ZSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/models/jev.md#L9-L35",
+          "version": "repo-lines-v1:sha256:d5ec30e5b39eec5c800bacf871a3175840321f842eb06088e6829b4d4477c6e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjYzgzY2E4NWRkY2Q3MzQwZGI2NjA2MzQ2ZTQ4MjNjMzQzNjkwOGI5ZWI1NGE1YjY5YTdiZTRlOWI2YmE5ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0YjliMzEyOGI4NGRlMTJiZDU1Mzg1N2E1NmU0ODdiZTBlOWU5ZmMwNTkzZjA0MTViODY2MTRjZTc3ZmRjNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiYzMzNGNlY2E2NmUwYzE2MWM4ZWQ0N2E3YjY5NjJhNTM4MWY4MGMzMGM0MjhmZWE0MDZhZTQ4MzVhYzM5NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljNDgzZjJmZDgxZWU2MmIwNTQ2ZmVkNTNmMTgzNmExMzA2ZTcyOTg3NWVhNWRjN2VhZjFmNWVhNzBjMTgyOTIifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-10-03T14:38:54.195Z"
+    "at": "2026-10-03T15:48:59.676Z"
   }
 }

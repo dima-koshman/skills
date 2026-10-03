@@ -3,9 +3,6 @@ type: architecture concept
 title: Distributed Communication and Service Infrastructure
 description: How Protocol Buffers and gRPC define typed service contracts, and how control planes, data planes, and service meshes govern traffic, policy, security, and operations. Use this page to choose boundaries, understand request flow, and reason about compatibility and failure behavior.
 tags: [distributed systems, gRPC, Protocol Buffers, service mesh, control plane, data plane]
-verified:
-  - by: openwiki/0.7.0
-    at: 2026-10-03T14:38:54.195Z
 sources:
   - id: openwiki-source-a9508fe272f48955fedb194b
     resource: repo://wiki/software-engineering/communication/grpc.md

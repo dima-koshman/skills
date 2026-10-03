@@ -3,9 +3,6 @@ type: integration concept
 title: Model Providers and Agent Protocols
 description: Compares model-provider integration and evaluation with agent-to-agent, tool/resource, and enterprise gateway boundaries. Explains how providers, protocols, and gateways connect to an agent harness without conflating their responsibilities.
 tags: [models, providers, protocols, agents, gateways, evaluation]
-verified:
-  - by: openwiki/0.7.0
-    at: 2026-10-03T14:38:54.195Z
 sources:
   - id: openwiki-source-c3433ac96e8a230bd0e7d8f2
     resource: repo://wiki/ai-engineering/agents/A2A.md
@@ -29,7 +26,10 @@ sources:
     resource: repo://wiki/ai-engineering/providers/gpt.md
   - id: openwiki-source-8b28f6162e119393bc5f8bdd
     resource: repo://wiki/ai-engineering/providers/leaderboards.md
-generated: { by: "openwiki/0.7.0", at: "2026-10-03T14:38:54.195Z" }
+generated: { by: "openwiki/0.7.0", at: "2026-10-03T15:48:59.676Z" }
+verified:
+  - by: openwiki/0.7.0
+    at: 2026-10-03T15:48:59.676Z
 ---
 
 # Model Providers and Agent Protocols
@@ -110,6 +110,19 @@ Agent Client Protocol (ACP) standardizes communication between code editors or I
 Model Context Protocol (MCP) is a JSON-RPC-based protocol between an LLM client and external capabilities. It standardizes tools and also supports resources and prompts. MCP was designed as stateful: initialization negotiates protocol version and capabilities over a persistent, bidirectional session, which permits server notifications and features such as sampling, elicitation, progress, and resource or tool-list changes. Local stdio servers fit this lifecycle naturally.
 
 That statefulness complicates remote horizontal scaling: per-session state can require sticky sessions and makes serverless deployment harder. A proposed stateless-by-default redesign is recorded in SEP-1442 and SEP-2575; its target revision and merge date are dated source claims, so verify the current MCP specification before relying on them. MCP standardizes transport and capability semantics, not authorization: the harness or gateway must still validate arguments, enforce permissions, apply timeouts and budgets, and audit effects.
+
+### Compatibility checklist
+
+Choose the boundary from the participants, not from the fact that all four integrations may be called “agent protocols”:
+
+| If the initiating participant is… | Use… | Do not infer… |
+| --- | --- | --- |
+| An IDE or code editor talking to a coding agent | ACP | Peer-agent federation or general tool discovery |
+| An independent agent application delegating to another agent | A2A | That the peer is a local function, database, or trusted subagent |
+| An LLM client consuming external tools, resources, or prompts | MCP | That discovery grants authorization or that the server is stateless |
+| Many model or capability backends behind shared policy | An LLM or MCP gateway | That the gateway makes model context, cache, execution location, or session semantics interchangeable |
+
+The concrete decision-model clients fit inside the harness rather than beside these protocols: a Jev request asks bounded typed questions about harness state, while CLM's documented service ranks supplied candidates through `POST /v1/rank` and exposes compatible `Choice`, `Score`, and `Noul` endpoints. Neither interface delegates effects or owns run termination. CLM is separately trained and its reported benchmark results are candidate-selection results, so compatibility with Jev's API should not be treated as equivalence of model behavior, calibration, or quality.
 
 ## Gateways and control flow
 

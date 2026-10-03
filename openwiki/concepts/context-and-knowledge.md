@@ -1,12 +1,14 @@
 ---
 type: conceptual guide
 title: Context, Memory, and Knowledge Retrieval
-description: A practical model for assembling agent context from instructions, history, memory, RAG, MCP, and durable wiki knowledge. Distinguishes pre-synthesized knowledge from query-time retrieval and identifies which evidence should be trusted when they disagree.
+description: A practical boundary model for assembling agent context and choosing among working state, memory, query-time retrieval, MCP resources, and durable knowledge. Explains freshness, authority, provenance, security, and verification decisions.
 tags: [context engineering, memory, retrieval, RAG, MCP, knowledge, provenance]
 verified:
   - by: openwiki/0.7.0
-    at: 2026-10-03T14:38:54.195Z
+    at: 2026-10-03T15:48:59.676Z
 sources:
+  - id: openwiki-source-043a62540cbbf96ce8d0c5fc
+    resource: repo://wiki/ai-engineering/agents/agent.md
   - id: openwiki-source-5461874b02987509f6a133b4
     resource: repo://wiki/ai-engineering/context/context-engineering.md
   - id: openwiki-source-f5ea58f5e5025bdce1665ec1
@@ -25,107 +27,119 @@ sources:
     resource: repo://wiki/ai-engineering/enterprise/mcp-gateway.md
   - id: openwiki-source-b1ced3092c14a578894c1b0d
     resource: repo://wiki/ai-engineering/security/risks/memory-context-poisoning.md
-generated: { by: "openwiki/0.7.0", at: "2026-10-03T14:38:54.195Z" }
+generated: { by: "openwiki/0.7.0", at: "2026-10-03T15:48:59.676Z" }
 ---
 
 # Context, Memory, and Knowledge Retrieval
 
-An agent's context is the evidence and control material presented to the model for one step. **Context engineering** is the deliberate selection, ordering, and budgeting of that material: instructions, tool definitions, conversation history, retrieved documents, memory, and task state. It is broader than prompt writing because it also decides what is available, when it is loaded, and which source is authoritative.
+An agent's **working context** is the bounded evidence and control material presented to the model for one step. **Context engineering** deliberately selects, orders, compresses, and budgets that material: instructions, tool definitions, conversation history, task state, retrieved documents, memory, and capabilities. It is broader than prompt writing because it also determines what is available, when it is loaded, and which source is authoritative.
 
-This page separates four easily conflated things:
+This page uses the following boundaries:
 
-- **Working context** is the finite input assembled for the current model call.
-- **Memory** is state retained beyond a single call. It may be short-term working state carried across an agent loop or long-term state persisted externally and recalled later.
-- **Retrieval** is the query-time act of selecting source material relevant to the current task. RAG commonly uses embeddings and semantic search, but retrieval can also use metadata, structured queries, keyword search, or application-specific indexes.
-- **Knowledge** is curated, durable information intended to be reused. An OKF-style wiki is a human- and agent-readable representation of that knowledge, not a magical substitute for its underlying evidence.
+- **Working context** is the input assembled for the current model call. It is not a database; omitted information cannot directly influence that call.
+- **Memory** is state retained beyond one call. Short-term memory is working state carried across steps; long-term memory is explicitly persisted and recalled across runs or sessions.
+- **Retrieval** is selecting source material for the current task. RAG often uses embeddings and semantic search, but retrieval can also be keyword, metadata, structured, or application-specific.
+- **MCP resources** are protocol-exposed retrievable content. MCP also exposes tools and prompts; it is a capability boundary, not automatically a memory store or truth layer.
+- **Durable knowledge** is curated or synthesized information intended for reuse. An OpenWiki page is an orientation layer over evidence, not a substitute for that evidence.
 
 ## The assembly boundary
 
-The model does not see an entire corpus or every installed capability. A harness assembles a bounded context for each step, typically combining always-on policy and instructions with selectively loaded skills, available tool schemas, recent history, recalled memory, and task-specific evidence. The result is an input, not a database: anything omitted cannot directly influence that call, and anything included consumes context budget.
+The harness assembles a context for each step from stable policy, selectively loaded skills, tool schemas, current state, recent history, recalled memory, and task-specific evidence. Skills commonly use progressive disclosure: names and descriptions stay cheap to discover, while the body loads on demand. Selection should optimize relevance and trust rather than token count: stable constraints must remain available, large references should load progressively, retrieval should be narrow, and source identity should travel with extracted text. Compression saves budget but introduces loss and must not silently become the authority for a high-consequence decision.
 
 ```mermaid
 flowchart TD
-    Task["Task and current state"] --> Select["Select and prioritize context"]
-    Policy["Always-on instructions"] --> Select
-    Skills["Progressively loaded skill"] --> Select
+    Task["Task and current state"] --> Select["Select and budget context"]
+    Policy["Instructions and policy"] --> Select
+    Skills["Progressively loaded skills"] --> Select
     History["Conversation and loop history"] --> Select
-    Memory["Persisted memory recall"] --> Select
-    RAG["Query-time retrieval"] --> Select
-    Wiki["Pre-synthesized wiki knowledge"] --> Select
-    Tools["Tool and MCP schemas"] --> Select
+    Memory["Recalled durable memory"] --> Select
+    Retrieval["Query-time retrieval or live query"] --> Select
+    Knowledge["Pre-synthesized wiki knowledge"] --> Select
+    MCP["MCP resources and tool schemas"] --> Select
     Select --> Model["Model call"]
-    Model --> Result["Answer or tool action"]
-    Result --> Update["Persist or refresh state"]
-    Update --> Memory
+    Model --> Outcome["Answer or tool proposal"]
+    Outcome --> Persist["Authorized state or memory update"]
+    Persist --> Memory
 ```
 
-*The diagram shows the context assembly boundary and the feedback paths that make memory and knowledge durable.*
+*The flow shows selection at the context boundary; persistence is an explicit feedback path, not an automatic property of model output.*
 
-Selection should optimize usefulness and trust, not merely maximize token count. Put stable constraints and task-relevant instructions where the harness will reliably retain them; load large references progressively; retrieve narrowly; and preserve source identity alongside extracted text. Summaries can reduce context cost, but compression is a transformation with loss and must not silently become the authority for a high-consequence decision.
+The harness remains responsible for validating model proposals, enforcing policy and budgets, dispatching tools, and carrying observations into the next context. A model does not persist state merely because it saw it. See [Agent Systems](../architecture/agent-systems.md) for the run lifecycle and execution boundaries.
 
-## Two retrieval timings
+## Durable knowledge versus query-time retrieval
 
-### Pre-synthesized, durable knowledge
+### Pre-synthesized knowledge
 
-A durable wiki such as OpenWiki ingests configured sources into deterministic local snapshots and manifests, then runs source-specific synthesis to produce agent-oriented Markdown. The raw artifacts remain available for provenance checks. Later tasks can load a concise concept page rather than placing the full source corpus into every context. Scheduled ingestion can refresh the collection without making every agent call pay the indexing cost.
+OpenWiki's source note describes connectors writing deterministic raw snapshots and manifests, followed by source-specific synthesis into agent-oriented Markdown while raw artifacts remain available for provenance checks. A later task can load a concise concept page instead of the full corpus, and scheduled ingestion can refresh the collection without making every agent call pay the indexing cost.
 
-This is **pre-synthesis**: interpretation and organization happen before the task asks a question. It is especially useful for broad context, trends, commitments, cross-project continuity, and stable concepts. Its trade-off is freshness and interpretation risk. A generated page can be stale, omit an exception, or flatten an important qualification; links to evidence are useful leads, not proof that the linked page was fetched or revalidated during the current task.
+This is **pre-synthesis**: interpretation and organization happen before a question is asked. It is useful for vocabulary, relationships, broad context, trends, commitments, and cross-project continuity. Its risks are freshness and interpretation: a page may summarize an old snapshot, omit an exception, or flatten a qualification. A link or citation is a lead unless the underlying evidence was actually inspected; it does not prove that an external page was fetched or independently verified.
 
-The durable knowledge lifecycle is therefore:
+A safe lifecycle is:
 
-1. Connectors capture source snapshots and manifests.
-2. A synthesis run creates or updates concepts and records provenance where supported.
-3. An agent loads relevant pages selectively as context.
-4. For decisions affected by current implementation state, the agent verifies the page against primary evidence.
-5. A later ingestion refreshes the derived page; it does not retroactively make old summaries authoritative.
+1. Capture configured sources into snapshots and manifests.
+2. Synthesize or update concepts while preserving qualifications and provenance where supported.
+3. Load relevant pages selectively as context.
+4. Check current primary evidence when implementation, authorization, or operational details matter.
+5. Refresh later; do not treat a new generation event as retroactive verification of old summaries.
 
 ### Query-time retrieval
 
-RAG and related retrieval systems select material in response to the current query, then add the selected material to the model context. Embeddings and vector similarity are common, but they are not the definition of RAG. Retrieval pipelines also need normalization, chunking, metadata, access filtering, indexing, freshness handling, and a way to map a result back to its original source.
+RAG adds material selected in response to the current query. A useful pipeline must handle normalization, chunking, metadata, access filtering, indexing, freshness, and mapping results back to their original sources. Embeddings are one implementation, not the definition of retrieval.
 
-Query-time retrieval is preferable when the answer depends on rapidly changing or highly specific source material, when the corpus is too large to pre-summarize faithfully, or when access must be evaluated per request. It is not automatically more accurate: poor chunking, stale indexes, weak query formulation, or a missing structured-data path can produce plausible but irrelevant context. For structured or frequently changing data, a direct query or live tool may be safer than embedding a snapshot.
+Use query-time retrieval, a structured query, or a live tool when the answer depends on rapidly changing or highly specific data, the corpus is too large to summarize faithfully, or access must be evaluated per request. RAG is not automatically accurate: poor chunking, stale indexes, weak queries, and missing structured-data paths can produce plausible irrelevance. Frequently changing or structured data is often safer through a direct query or live tool than an embedded snapshot.
 
-A useful hybrid is to use a wiki as the orientation layer—vocabulary, relationships, likely locations, and historical context—then use query-time retrieval or a live tool to verify the narrow claim. The wiki should help find the evidence, not erase the distinction between a derived summary and the source.
+A strong hybrid is to use the wiki as an orientation map—terms, relationships, likely locations, and historical context—then retrieve or query the narrow evidence needed to verify the claim. Durable knowledge and RAG are complementary timings, not competing truth systems.
 
 ## Memory is state, not truth
 
-Short-term memory carries the agent's working state across steps in one run; long-term memory persists facts, preferences, outcomes, or other state in an external store and retrieves it when relevant. A vector store is one implementation, not a requirement. Memory can be explicit structured records, documents, a relational store, or an event log.
+Short-term memory carries working state across steps in one run. Long-term memory persists facts, preferences, outcomes, or other state externally and retrieves it when relevant. A vector store is optional: structured records, documents, relational stores, and event logs can all implement memory.
 
-Memory changes the agent's future behavior, so writes need ownership and policy: define what may be stored, who may read it, how it expires or is corrected, and whether a user or operator can inspect and delete it. Treat recalled memory as an input with provenance and confidence, not as an instruction. Untrusted or adversarial content can persist across turns as memory or context poisoning. High-impact actions should therefore re-check identity, authorization, and current primary evidence rather than trusting a remembered assertion.
+Because memory changes future behavior, its owner must define what may be written, who may read it, retention and correction rules, and whether users or operators can inspect and delete it. Treat recalled memory as an input with provenance and confidence, never as an instruction or proof. Untrusted content can persist as memory or context poisoning. High-impact actions must re-check identity, authorization, and current primary evidence rather than trusting remembered assertions.
 
-## MCP resources and tools
+## MCP resources, tools, and prompts
 
-[MCP](../architecture/agent-systems.md) is a JSON-RPC protocol boundary between an LLM application and external capabilities. Its tools let the model request an action; its resources expose retrievable external content; and its prompts provide reusable prompt material. MCP is not itself a memory system, vector database, or truth layer. A client decides how returned resource content enters context and how tool results are validated.
+MCP is a JSON-RPC protocol boundary between an LLM application and external capabilities. Its **tools** let the model request an action, **resources** expose retrievable external content, and **prompts** provide reusable prompt material. The client decides how returned resource content enters context and how tool results are validated; MCP itself does not decide whether content is true or durable.
 
-MCP sessions traditionally begin with an initialization handshake that negotiates protocol version and capabilities over a persistent connection. The server can also send progress, sampling, elicitation, and resource or tool-list-change notifications. This stateful model is natural for local stdio servers, but remote horizontal scaling must account for session state and connection affinity. An enterprise MCP gateway can centralize authentication, permissions, secret injection, anonymization, guardrails, and audit before requests reach many servers.
+The repository's MCP note describes a stateful session beginning with an initialization handshake that negotiates protocol version and capabilities over a persistent, bidirectional connection. Servers may send progress, sampling, elicitation, and resource or tool-list-change notifications. This fits local stdio servers naturally, while remote horizontal scaling must account for session state and connection affinity. The note records a future-facing stateless redesign as a dated external status, not as independently verified current behavior; deployments should check the applicable protocol revision.
 
-The important boundary is authority: a tool or resource may be live, but its output is still an observation from an external system. Apply the tool's access policy, retain enough provenance to reproduce the lookup, and do not allow retrieved text to override system or application policy merely because it contains imperative language.
+An MCP gateway can centralize authentication, permissions, secret injection, anonymization, guardrails, and audit before requests reach many servers. That does not make returned content authoritative. Apply access policy, preserve lookup provenance, validate tool arguments and outputs, and reject retrieved imperative text that conflicts with system or application policy.
 
 ## Authority and conflict resolution
 
-Use an explicit evidence hierarchy rather than letting recency, fluency, or retrieval rank decide silently:
+Use an explicit hierarchy instead of allowing recency, fluency, or retrieval rank to decide silently:
 
 1. **Current primary evidence**—the relevant source file, database result, test result, API response, or operator-confirmed state—wins for concrete engineering and operational claims.
-2. **Current, attributable derived evidence**—a generated page with source identity, generation time, and verification status—helps orient and can support broad claims, but should be checked when the detail matters.
-3. **Unverified summaries, recalled memory, and model-generated explanations** are leads. They are useful for search terms and hypotheses, not sufficient evidence for consequential changes.
+2. **Current, attributable derived evidence**—a generated page with source identity, observation or generation time, and verification status—helps orient and may support broad claims, but should be checked when detail matters.
+3. **Unverified summaries, recalled memory, and model-generated explanations** are leads for search terms and hypotheses, not sufficient evidence for consequential changes.
 
-When sources disagree, preserve the disagreement, identify the freshness boundary, and fetch or inspect the higher-authority source. Do not imply that a URL was fetched merely because it is preserved as a reference. Generated summaries should remain explicitly qualified as leads; current primary evidence is more authoritative.
+When sources disagree, preserve the disagreement, identify the freshness and authority boundary, and inspect the higher-authority source. Keep authorship, freshness, generation, and verification separate. A `Resources` link is navigation, not proof of a fetch; a recent generated page is not necessarily based on a recent observation. See [Knowledge Maintenance and Provenance](../operations/maintenance-and-provenance.md) and [Knowledge Format and Visualization](knowledge-format-and-visualization.md).
 
-This also explains why durable knowledge and RAG are complementary rather than competing patterns. The wiki supplies a compact, reusable map; query-time retrieval and live tools supply task-specific detail; memory supplies continuity; and context engineering chooses what the model is allowed to rely on for this step.
+## Choosing safely
 
-## Operating and change guidance
+| Need | Prefer | Why and caution |
+| --- | --- | --- |
+| Stable constraints or capability descriptions | Working context and progressively loaded skills | Always available when required, but consumes budget; enforce policy outside the model. |
+| Continuity across steps | Short-term working state | Exact observations remain in the run; bound growth and normalize errors. |
+| Cross-session preferences or outcomes | Governed long-term memory | Enables continuity; requires retention, access control, correction, deletion, and poisoning defenses. |
+| Broad orientation and durable relationships | Curated or synthesized wiki knowledge | Compact and reusable; may be stale or interpretive, so follow provenance. |
+| Narrow, current, access-sensitive facts | Query-time retrieval, structured query, or live tool | Fresh and request-scoped; still validate results and retain source identity. |
+| External content or actions behind a protocol | MCP resources or tools | Integrates capabilities; session, authorization, output-validation, and gateway behavior remain operational concerns. |
 
-- Keep source identity, generation time, freshness, and verification separate. Authorship of a summary is not verification of its claims.
-- Scope retrieval by tenant, identity, and authorization before ranking or injecting content. Treat documents, memories, skills, tool results, and MCP resources as potentially untrusted input.
-- Monitor context size, retrieval precision and recall, stale-page age, failed or empty retrievals, citation coverage, memory writes, and tool/resource errors. A successful model response is not evidence that retrieval was correct.
-- Refresh embeddings or derived pages when source content changes; retain raw snapshots where provenance and regression investigation require them.
-- Test the boundaries that matter: retrieval with ambiguous and current queries, stale-index behavior, access-filter enforcement, source-to-summary traceability, memory poisoning and deletion, MCP capability negotiation and disconnects, and fallback when no trustworthy evidence is found.
-- Prefer a deterministic workflow or direct query when the required sources and control flow are known. Use an agent loop when adaptive selection and tool use add value, while keeping policy and authorization outside model discretion. See [Agent Systems](../architecture/agent-systems.md), [Knowledge Format and Visualization](knowledge-format-and-visualization.md), [Skills and Tooling](skills-and-tooling.md), and [Security and Observability](../operations/security-and-observability.md) for adjacent system boundaries.
+## Operations and focused tests
+
+- Scope retrieval and memory recall by tenant, identity, and authorization before ranking or injection. Treat documents, memories, skills, tool results, and MCP resources as untrusted input.
+- Monitor context size, retrieval precision and recall, stale-page age, empty retrievals, citation or provenance coverage, memory writes, and tool/resource errors. A successful model response does not prove retrieval correctness.
+- Refresh indexes and derived pages when source content changes; retain snapshots and manifests when reproduction, audit, or regression investigation requires them.
+- Test ambiguous and current queries, stale indexes, access-filter enforcement, source-to-summary traceability, memory poisoning and deletion, MCP negotiation and disconnects, tool failures, and no-trustworthy-evidence fallbacks.
+- Prefer deterministic workflows or direct queries when sources and control flow are known. Use an agent loop when adaptive selection adds value, while keeping authorization and policy outside model discretion.
+
+Adjacent boundaries are documented in [Skills and Tooling](skills-and-tooling.md) and [Agent Systems](../architecture/agent-systems.md). For source-note qualifications and historical evidence, retain the distinctions described in [Knowledge Maintenance and Provenance](../operations/maintenance-and-provenance.md); external references in the seed notes were not independently fetched for this page.
 
 ## Further reading
 
-- [Context engineering](https://docs.langchain.com/oss/python/deepagents/context-engineering)
-- [Memory](https://docs.langchain.com/oss/python/deepagents/memory)
-- [Model Context Protocol](https://modelcontextprotocol.io)
-- [OpenWiki](https://github.com/langchain-ai/openwiki)
-- [Open Knowledge Format](https://github.com/GoogleCloudPlatform/open-knowledge-format)
+- [Context engineering](../../wiki/ai-engineering/context/context-engineering.md)
+- [Memory](../../wiki/ai-engineering/context/memory.md)
+- [Model Context Protocol](../../wiki/ai-engineering/context/mcp.md)
+- [OpenWiki](../../wiki/ai-engineering/context/openwiki.md)
+- [RAG](../../wiki/ai-engineering/context/rag.md)
+- [Open Knowledge Format](../../wiki/ai-engineering/context/okf.md)

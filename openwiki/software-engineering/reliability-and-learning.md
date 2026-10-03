@@ -3,9 +3,6 @@ type: engineering practice
 title: Software Reliability and Learning Practice
 description: A practical guide to reducing accidental complexity, using runtime evidence to improve software safely, and turning hands-on learning into bounded operational practice. It separates reliability principles, observability-driven development, and external learning resources.
 tags: [software reliability, simplicity, observability, engineering learning, operations]
-verified:
-  - by: openwiki/0.7.0
-    at: 2026-10-03T14:38:54.195Z
 sources:
   - id: openwiki-source-14513c346c57990de07c91eb
     resource: repo://wiki/ai-engineering/development/observability-driven-development.md

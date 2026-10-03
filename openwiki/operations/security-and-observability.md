@@ -3,9 +3,6 @@ type: operational security guide
 title: Agent Security, Observability, and Evaluation
 description: A threat-to-control and signal-to-action guide for operating agent systems. Connects OWASP-style agent risks with guardrails, privacy boundaries, tracing, evaluation, incident response, and feedback loops.
 tags: [agent security, observability, evaluations, guardrails, privacy, operations]
-verified:
-  - by: openwiki/0.7.0
-    at: 2026-10-03T14:38:54.195Z
 sources:
   - id: openwiki-source-652e7bb86f0d8e29f6640288
     resource: repo://wiki/ai-engineering/observability/langfuse.md

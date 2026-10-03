@@ -3,9 +3,6 @@ type: navigation concept
 title: Quickstart
 description: Routes readers from the AI-engineering and software-engineering subject maps to the architecture, context, integration, security, observability, distributed-systems, and reliability concepts needed to apply these notes. Use it as a reading path, not as a substitute for current primary evidence.
 tags: [navigation, quickstart, ai-engineering, software-engineering, architecture, reliability]
-verified:
-  - by: openwiki/0.7.0
-    at: 2026-10-03T14:38:54.195Z
 sources:
   - id: openwiki-source-d9d6175b74c75f794b5598b1
     resource: repo://wiki/ai-engineering/ai-engineering.md

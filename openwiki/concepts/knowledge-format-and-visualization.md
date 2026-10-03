@@ -1,17 +1,17 @@
 ---
 type: format and tooling concept
-title: Open Knowledge Format and Visualization
-description: Explains OKF's one-concept-per-Markdown-file model, metadata and lifecycle conventions, bundle navigation, and the compatibility boundary between the local renderer and Google's upstream visualizer.
-tags: [Open Knowledge Format, knowledge bundles, provenance, visualization, metadata, lifecycle]
+title: Knowledge Formats and Visualization
+description: Explains OKF's one-concept-per-Markdown-file model, metadata and provenance boundaries, version compatibility, indexing, and the limits of local and upstream visualizer projections.
+tags: [Open Knowledge Format, knowledge bundles, provenance, visualization, metadata, indexing, lifecycle]
 verified:
   - by: openwiki/0.7.0
-    at: 2026-10-03T14:38:54.195Z
+    at: 2026-10-03T15:48:59.676Z
 sources:
   - id: openwiki-source-c5419b9bac30b026bd3aae4d
     resource: repo://wiki/ai-engineering/context/okf-visualizers.md
   - id: openwiki-source-85f94c8937ba38857c4f3ca6
     resource: repo://wiki/ai-engineering/context/okf.md
-generated: { by: "openwiki/0.7.0", at: "2026-10-03T14:38:54.195Z" }
+generated: { by: "openwiki/0.7.0", at: "2026-10-03T15:48:59.676Z" }
 ---
 
 # Open Knowledge Format and Visualization
@@ -86,6 +86,27 @@ stateDiagram-v2
 *The lifecycle expresses the v0.2 status vocabulary; absence of `status` is treated as stable.*
 
 The lifecycle state is not a trust score. `status: stable` does not mean that every assertion was human-reviewed, and `generated.at` does not mean the content is fresh forever. Consumers need the separate provenance, freshness, and verification signals to decide how much checking is required.
+
+## Indexes and generated representations
+
+An index is a navigation projection over a bundle, not a second source of truth. The concept files retain identity, body text, links, and metadata; `index.md` and `log.md` provide reserved navigation and history surfaces. A renderer then projects those inputs into an HTML graph, reader, or detail panel. That projection can omit fields, mis-handle a link convention, or classify a reserved file differently without changing the OKF concepts themselves.
+
+```mermaid
+flowchart TD
+    Knowledge["Canonical concept Markdown"] --> Index["Bundle index and log"]
+    Knowledge --> Extract["Visualizer extraction"]
+    Index --> Local["Local renderer"]
+    Extract --> Local
+    Extract --> Upstream["Upstream static visualizer"]
+    Local --> HTML["Generated HTML view"]
+    Upstream --> HTML
+    HTML --> Reader["Navigation and reading projection"]
+    Reader -.-> Verify["Recheck primary evidence"]
+```
+
+*The index and visualizers are derived navigation and presentation layers; they do not upgrade generated content into independent evidence.*
+
+Generated representations are useful for discovery, backlinks, layout, and reading, but they are lossy and implementation-specific. Preserve canonical bundle paths and metadata, keep disposable exports separate when adapting links for a viewer, and inspect the underlying source when a consequential decision depends on a rendered page. A successful render proves only that a representation was produced; it does not prove that every concept was indexed, every link was extracted, or every claim was verified.
 
 ## Bundle navigation and visualizers
 

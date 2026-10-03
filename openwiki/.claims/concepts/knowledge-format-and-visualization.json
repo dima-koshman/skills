@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:62517bc5dd2c021e38dd3e3690d5f4dc0ca5291a7be9b3c4f43bb32b50fbbb10",
+  "pageVersion": "sha256:52f6962340198906a144b68a0319cc9b706630a41e9b4f6ec23f2b32dcc6cccd",
   "claims": [
     {
       "id": "claim_aca0997befda4e4bac2939de8aea29a5",
@@ -109,10 +109,42 @@
           "version": "repo-lines-v1:sha256:4916c5148675a7371faf1bb0b8ad6ee4c77f41bf81eebfd6da3fc08fc66c0c9a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczMzhhMGQzYWJkMTkyZjAwZDUzNWJiMWJmNzVlYTViZmVlZTNkNzMxZTkzZGQwZDEwMTc3YjA4YjMxYjRmZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjODFmZjc1YmU5YmU3YmU1OGE0ZWZlZTNhMWJmZGZmMDlmNWI4MTE4YzlkODZkMjQyOTFjNmRmMzc3MTc3NzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4MmY5NzMzNGU0ZTIyZDk3MWNlNjgxNDY3NjIyMTRlMzRhMGY1ZmIyMTY0ZTRhMjM5Y2ZiYWIxYzJlYzIzODAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2N2NmNTllZjFmYTFjMTI4ZjJmY2RkOTVlMWE1NDcwMzRiYzBhZTY5MjZiMmFkM2UzZTFkOGMzNTFmNDExZTMifQ"
         }
       ]
+    },
+    {
+      "id": "claim_546116b3ebe84f0c859548ede96d5db5",
+      "statement": "OKF indexes and visualizers are derived navigation or presentation projections rather than canonical knowledge: concept Markdown retains identity and content, while reserved index/log surfaces and generated HTML can omit fields, mishandle links, or classify reserved files differently without changing the concepts.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf-visualizers.md#L17-L35",
+          "version": "repo-lines-v1:sha256:d831b16a87eaca3b9521b402f4df857442f8ccb97590f1d32e4f0b2b232661fd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmOTE3MmM2NTBlNGJjZjVlMzgzYzVmOTI1Y2ZlNDAzMzI0ZTg5YjkxM2JkOGM4YWVkOWMwZGQ3ZjVhYTE2MGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhZmJiMmIwZDQwMjA1MzgwOGY1Yzg5NmY2ZTA4NTczMzVhMmYyYmQwY2VjYTE3NDczZWNhNDZkMWMyOTZhODMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxNWQ0YzJjYjdlNGUwY2Y5YWQ2YmMzOTFlY2IxZTYyZGZlMDRhNzAzNGJlNTA5MDRhMWFjY2Q2NzY0YzQxYWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhYzAxMWQ4YTllMmQzMmVkOTUwNTQ1MTA1Mzk1NTgyZGM5ODY0N2QyMGM4MjdiNTAxNTY2Zjg4MDk2MzUxMDQifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L9-L12",
+          "version": "repo-lines-v1:sha256:c2fa634ad8a931742f327ede159b467a43e9fc186fdfaf181856887523cd6f72:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2I0Mjk0NjVhY2E4MWI3OWI1YzFkMjI3MzEzODg4NDQ2NDQwYzI1ZTA4NzExOWIxN2IyNjIzZjQwNDQ5MjdlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdlNTNhMDRjNGZlZDE0MmQxZmFjNzJkZGQ5NjhiNTJkYjc1MzVjOWZiZWZjZjcwZWExZTc4ZjgwZWY0OTgyNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJjMzM0Y2VjYTY2ZTBjMTYxYzhlZDQ3YTdiNjk2MmE1MzgxZjgwYzMwYzQyOGZlYTQwNmFlNDgzNWFjMzk1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjYwMjRhNjRlODg2M2FhOThjMGNiZDJhNzA4YTI4NDc1YTJjZDdkNTA4M2U1ZTczYzIwM2QwY2U4OWJmOWJkMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9d079aa3aec349ceaf1875911b0672e3",
+      "statement": "A successful visualizer render is not independent evidence that every concept, link, or claim was indexed or verified; rendered output is useful for discovery and reading but consequential decisions must be checked against primary evidence.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf-visualizers.md#L30-L35",
+          "version": "repo-lines-v1:sha256:a0cce761a4e74c0710b7e7a2f965b282855c00ee3e3fb9c9140f00260eafd67c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmIwZjkyNmI0ZDgyNjFiYzEwYTQ0YzcwMTRkMmU0NzE0MDZiMmM2MWIyODBmY2EyYTZhMjgzZWM0NTA3MjM5NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmFmYmIyYjBkNDAyMDUzODA4ZjVjODk2ZjZlMDg1NzMzNWEyZjJiZDBjZWNhMTc0NzNlY2E0NmQxYzI5NmE4MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODgwMjFiNTUxNmFjNjA2MDkyZTI3ZjU0NDIyZjI3MTc2MjVmY2QwNTVkNTI1YWM1M2Y2OGZlYzc2OWM5NGQ1MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2FjMDExZDhhOWUyZDMyZWQ5NTA1NDUxMDUzOTU1ODJkYzk4NjQ3ZDIwYzgyN2I1MDE1NjZmODgwOTYzNTEwNCJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf-visualizers.md#L39-L53",
+          "version": "repo-lines-v1:sha256:28ae7c0841382158a28e7b4b5e155ffc8423ca12cc0b25c1e80b20f13163290a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhN2E5MmNkYTU2MTIxMWY4NjA4MjM3NzFkODRjYTkzN2Q2NmEzNDk4YWIxYWM0ZDFhOWQyMTRmNzQxNWMwZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjODFmZjc1YmU5YmU3YmU1OGE0ZWZlZTNhMWJmZGZmMDlmNWI4MTE4YzlkODZkMjQyOTFjNmRmMzc3MTc3NzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhYzAxMWQ4YTllMmQzMmVkOTUwNTQ1MTA1Mzk1NTgyZGM5ODY0N2QyMGM4MjdiNTAxNTY2Zjg4MDk2MzUxMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2N2NmNTllZjFmYTFjMTI4ZjJmY2RkOTVlMWE1NDcwMzRiYzBhZTY5MjZiMmFkM2UzZTFkOGMzNTFmNDExZTMifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf-visualizers.md#L9-L13",
+          "version": "repo-lines-v1:sha256:8c6dbc3488a6a76d36e25025af13dce99b2e81ceee9e1016dd0888b13bd970b6:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjI3MTQ0MzEyZTcxMDY4OTFlOTcwNThiZWEwMzUyNzBhOGNjNmZhNGNjMmFiYjU3OGE3NmI1MDM5NmU5NmIyZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjBlZWRjNzVjMmI0MDNkZGNlNmMxMTVhNDdhZjU3ZTRjYjA2NDc5M2Y2ZGQwMGI0ZTRkMTJmMDNhMzZmNTY1OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJjMzM0Y2VjYTY2ZTBjMTYxYzhlZDQ3YTdiNjk2MmE1MzgxZjgwYzMwYzQyOGZlYTQwNmFlNDgzNWFjMzk1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDE1ZDRjMmNiN2U0ZTBjZjlhZDZiYzM5MWVjYjFlNjJkZmUwNGE3MDM0YmU1MDkwNGExYWNjZDY3NjRjNDFhYiJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-10-03T14:38:54.195Z"
+    "at": "2026-10-03T15:48:59.676Z"
   }
 }

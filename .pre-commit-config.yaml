@@ -1,16 +1,4 @@
 repos:
-  - repo: local
-    hooks:
-      # Model-backed: review and commit generated changes before retrying a push.
-      # Scope this to knowledge inputs so unrelated pushes do not spend tokens.
-      - id: openwiki-update
-        name: OpenWiki - update knowledge
-        entry: openwiki --update --print
-        language: system
-        pass_filenames: false
-        files: ^(wiki/|openwiki/INSTRUCTIONS\.md$|\.openwikiignore$)
-        stages: [pre-push]
-
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
@@ -58,4 +46,16 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+        stages: [pre-push]
+
+  - repo: local
+    hooks:
+      # Model-backed: review and commit generated changes before retrying a push.
+      # Scope this to knowledge inputs so unrelated pushes do not spend tokens.
+      - id: openwiki-update
+        name: OpenWiki - update knowledge
+        entry: openwiki --update --print
+        language: system
+        pass_filenames: false
+        files: ^(wiki/|openwiki/INSTRUCTIONS\.md$|\.openwikiignore$)
         stages: [pre-push]

@@ -4,7 +4,7 @@ okf_version: "0.2"
 
 # Files
 
-- [Quickstart](quickstart.md) - Routes readers from the AI-engineering and software-engineering subject maps to the architecture, context, integration, security, observability, distributed-systems, and reliability concepts needed to apply these notes. Use it as a reading path, not as a substitute for current primary evidence.
+- [Quickstart](quickstart.md) - Routes readers from the AI-engineering and software-engineering maps through architecture, context, integration, operations, distributed systems, and reliability. Use it as a task-routing path; verify concrete decisions against current primary evidence.
 
 # Directories
 

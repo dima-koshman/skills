@@ -3,6 +3,9 @@ type: architecture concept
 title: Distributed Communication and Service Infrastructure
 description: How Protocol Buffers and gRPC define typed service contracts, and how control planes, data planes, and service meshes govern traffic, policy, security, and operations. Use this page to choose boundaries, understand request flow, and reason about compatibility and failure behavior.
 tags: [distributed systems, gRPC, Protocol Buffers, service mesh, control plane, data plane]
+verified:
+  - by: openwiki/0.7.0
+    at: 2026-10-03T16:27:35.648Z
 sources:
   - id: openwiki-source-a9508fe272f48955fedb194b
     resource: repo://wiki/software-engineering/communication/grpc.md
@@ -12,23 +15,21 @@ sources:
     resource: repo://wiki/software-engineering/infrastructure/planes.md
   - id: openwiki-source-711fcd86217ba6d6b7c209ff
     resource: repo://wiki/software-engineering/infrastructure/service-mesh.md
-generated: { by: "openwiki/0.7.0", at: "2026-10-03T14:38:54.195Z" }
+generated: { by: "openwiki/0.7.0", at: "2026-10-03T16:27:35.648Z" }
 ---
 
 # Distributed Communication and Service Infrastructure
 
 Distributed services have two related but distinct concerns: **what messages and
 operations mean** at an interface boundary, and **how traffic is delivered and
-<!-- openwiki: broken internal link [communication/protobuf.md] file "communication/protobuf.md" does not exist. Fix the href or restore the target, then delete this comment. -->
-operated** after it crosses that boundary. [Protocol Buffers](communication/protobuf.md)
-<!-- openwiki: broken internal link [communication/grpc.md] file "communication/grpc.md" does not exist. Fix the href or restore the target, then delete this comment. -->
-provide the schema and wire representation; [gRPC](communication/grpc.md) turns a
-<!-- openwiki: broken internal link [infrastructure/service-mesh.md] file "infrastructure/service-mesh.md" does not exist. Fix the href or restore the target, then delete this comment. -->
-schema into a typed RPC contract and streaming transport; a [service mesh](infrastructure/service-mesh.md)
+operated** after it crosses that boundary. Protocol Buffers provide the schema and
+wire representation; gRPC turns a schema into a typed RPC contract and streaming
+transport; a [service mesh](https://istio.io/latest/docs/overview/what-is-istio/)
 adds infrastructure-level routing, security, reliability, and telemetry. The
-<!-- openwiki: broken internal link [infrastructure/planes.md] file "infrastructure/planes.md" does not exist. Fix the href or restore the target, then delete this comment. -->
-[control/data/management plane](infrastructure/planes.md) distinction explains who
-decides policy, who carries requests, and who exposes operator intent.
+[data/control/management plane](#planes-and-the-service-mesh-boundary) distinction
+explains who decides policy, who carries requests, and who exposes operator intent.
+These are architectural concepts and reference examples, not claims that this
+repository deploys gRPC, Istio, or a particular mesh.
 
 ## The contract and request path
 
@@ -57,7 +58,7 @@ sequenceDiagram
     participant Server as Generated server implementation
     Caller->>Stub: Invoke typed RPC
     Stub->>Stub: Serialize protobuf message
-    Stub->>ProxyA: Send HTTP2 RPC and metadata
+    Stub->>ProxyA: Send HTTP/2 RPC and metadata
     ProxyA->>ProxyB: Route and apply traffic policy
     ProxyB->>Server: Deliver request
     Server-->>ProxyB: Return status and protobuf response

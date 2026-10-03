@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:aef375e6f6e23e5edab5bcac68f5cb3f88f11976f72867031420291236b6b1b5",
+  "pageVersion": "sha256:000aa81651ba9507e1dc122e5beb854c6b7e212ee5d664bf6fa10cbc7116c1c6",
   "claims": [
     {
       "id": "claim_d64a3ec3fe3046d4a31a4201372392db",
@@ -87,10 +87,88 @@
           "version": "repo-lines-v1:sha256:e4ebb1845063de8c72daeec1ad56b947da40158cb8522150f5f8e870c8e0366f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjRmODAxYTliOWU5NDNmYzk3NGJiODI1NTA5ZWEzNDg5NzVlNTcyYWYxYmQ5ZmM5NGVjZTdkY2QwNTcyNTlmMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTQxYmQ2NzNmZDQ5ZGEzODkxNzRlZjdiOTNjZGZmOTdjNWExMjU5N2MxMzU2YjM3Y2ViMjgwMzliZTlhMDQxZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmRmZTIxMjgyOWI2YWJjMjcxYTIyZjM0NWE0Njg5YmMwZjBkNGI2YjU2NmJmMDQwNDI4NzA0ZTBmNjI3YzEzOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2JmODliNTgzYjg3MDk1YWMwYjUxZmYyYjUwNmQyZmEyN2IxNTNmMGMzMGRiMThhMGJhNTRhMWFkYThjOWFhOSJ9"
         }
       ]
+    },
+    {
+      "id": "claim_10be37b3bd674b37b5482318dc482c13",
+      "statement": "OpenWiki's maintenance boundary separates human-maintained wiki notes, connector-captured snapshots and manifests, source-specific synthesis, generated pages used as derived routing/context, and visualizers; current primary sources, tests, Git history, and runtime evidence remain authoritative for concrete engineering decisions.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L9-L12",
+          "version": "repo-lines-v1:sha256:c2fa634ad8a931742f327ede159b467a43e9fc186fdfaf181856887523cd6f72:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2I0Mjk0NjVhY2E4MWI3OWI1YzFkMjI3MzEzODg4NDQ2NDQwYzI1ZTA4NzExOWIxN2IyNjIzZjQwNDQ5MjdlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdlNTNhMDRjNGZlZDE0MmQxZmFjNzJkZGQ5NjhiNTJkYjc1MzVjOWZiZWZjZjcwZWExZTc4ZjgwZWY0OTgyNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJjMzM0Y2VjYTY2ZTBjMTYxYzhlZDQ3YTdiNjk2MmE1MzgxZjgwYzMwYzQyOGZlYTQwNmFlNDgzNWFjMzk1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjYwMjRhNjRlODg2M2FhOThjMGNiZDJhNzA4YTI4NDc1YTJjZDdkNTA4M2U1ZTczYzIwM2QwY2U4OWJmOWJkMiJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L11-L18",
+          "version": "repo-lines-v1:sha256:61bc342b437b1e0c10e43d3251fa4592f1925657ea232d46957d595220a68aa5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWM4YzZkMzA5YTlmMDJhN2M0MzQwMjAzNjcxOTIyMDk5ZTJlNTI3ZGExZjc0Y2FmZjE5N2EzYmY0ZmIxMWVkMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjY5ZTk2NzhjMzJkMTA4MTAyOTA4ZDRmYzJiZDU5YTk5ZWZmMTFlZjgzOGYwODRkYjNjYTFkNDU3OWQ5ODgxOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWU4NDRkOGE5OWYzNzhjOWZjOTUyNTE0YjIxYzM5YjM3ZGIzYzMzZjJjYTY2NGRkMmE1OTY0NTRhN2M1MjkyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjM2ODNhMjM0ZmUzNDYzNjRjNjMwOTg5Y2FiMzNhOTc2NGRjZDRhMTk2ZGY3YWU0ODY3NjU3MjljZmUyNGQzYyJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L28-L31",
+          "version": "repo-lines-v1:sha256:ce551253ebed3e8e55732cb5bb9a4f92a61c1870ab676386ffc41d3ebc709d80:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDk5ODMxYjQzYWRhYjg3ZmIxYTU3MzQxOTQ5OGRhODg5ZDNmN2VjYjA4OGRjYzFlZTFmZTVjYTc5YjZmZjZhYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTVjNDFlZWQwMzMzOTVjOTUzYWU2ZWYzYTc2NmZkZjE0ZjljMTkyOTRkYzY3ZDBjZGMwN2U0YWJlYThiYjE5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjNkMzY4MWI1N2UwYTI3MzQ2ZjkxMmViYTE5N2JmNTE1Y2M5MDQ4MjBhNTI5ZDQyNmE4ZTg3NDA5ZDFlOTIzNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_649f0d2ac34a46f4bc2ca2f0fef8d25c",
+      "statement": "A safe connector refresh is a lifecycle of source identification, deterministic snapshot and manifest capture, source-specific synthesis, primary-evidence review, publication with freshness and provenance boundaries, refresh or supersession, and audit retention; raw artifacts remain available for provenance checks.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L47-L50",
+          "version": "repo-lines-v1:sha256:75ead4dd355ae4b444e07d5357ca00f176dfc80cffeabdd0b5c659832a1fddf6:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjVkNzExNWJmZjI3ZmRiMGFmYTE5YzJmY2VhYWY0ZGM5NjUzNjk0MmM0ZmVlYTQyYWE5YmIyODZiOTY5NWQ1OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTU3ZTgxNzM1ZTIyZDY3OThiYWIwNWEyMzZlY2Q4MDZkNGEzZWQ4ZjdmNTczZDYzMjBkMmIyY2U4ZjYwYjM1YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Q5MmFlMTYwZTY5ZDQyMGEyNGFjNmQzNzFiZDZhN2E5YWU0MDY3Yzk1MGQyOGEyODRkOGY2MjQwNTgzMDIyOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjJiNWM5NDQyMDg2NWQ0NDQ4Zjk2NGY3NzNhZTJkNDgxODdiMjg5NWRiM2YzNjE3MzJiYzcxYTM5MjRjY2U4YiJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L11-L18",
+          "version": "repo-lines-v1:sha256:61bc342b437b1e0c10e43d3251fa4592f1925657ea232d46957d595220a68aa5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWM4YzZkMzA5YTlmMDJhN2M0MzQwMjAzNjcxOTIyMDk5ZTJlNTI3ZGExZjc0Y2FmZjE5N2EzYmY0ZmIxMWVkMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjY5ZTk2NzhjMzJkMTA4MTAyOTA4ZDRmYzJiZDU5YTk5ZWZmMTFlZjgzOGYwODRkYjNjYTFkNDU3OWQ5ODgxOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWU4NDRkOGE5OWYzNzhjOWZjOTUyNTE0YjIxYzM5YjM3ZGIzYzMzZjJjYTY2NGRkMmE1OTY0NTRhN2M1MjkyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjM2ODNhMjM0ZmUzNDYzNjRjNjMwOTg5Y2FiMzNhOTc2NGRjZDRhMTk2ZGY3YWU0ODY3NjU3MjljZmUyNGQzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_810251aca37d4e5cbdccb13da95ce5ce",
+      "statement": "Refresh records must distinguish observation time, generation authorship, claim provenance, verification, and lifecycle freshness; successful synthesis or a recent generation event does not prove capture completeness or retroactively verify an old summary.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L33-L45",
+          "version": "repo-lines-v1:sha256:29b997cb0c236c396b637a47ac057305fea94ede33101c430ffc27623ce6c7e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2YzdkMjIxZTlmMTJmMjAzMzkxYjA5M2JjY2ZkNmQ3ZDQwMTkxMjU4M2VmYWMzOTZjNTU4ZjNkYWM0MWVhOGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0MWJkNjczZmQ0OWRhMzg5MTc0ZWY3YjkzY2RmZjk3YzVhMTI1OTdjMTM1NmIzN2NlYjI4MDM5YmU5YTA0MWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4OTRlZjZhNWY0MzZkOWQzNGRlMjNmOGI0NGIzYjQ1MTkwMjM4NGMyYjRmM2NlMTM4NDMxYWEwYzYxZjExZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiZjg5YjU4M2I4NzA5NWFjMGI1MWZmMmI1MDZkMmZhMjdiMTUzZjBjMzBkYjE4YTBiYTU0YTFhZGE4YzlhYTkifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L13-L18",
+          "version": "repo-lines-v1:sha256:0342f1ce55a2a4b1c62afc942c6b5218c97f6e64d64cd0b8168a2fa84f067b75:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWE4MzM5MTM4MzNiYTUyZDEyM2ViYjg5YWJhMzdiZWY0NDI3ZDY4YjhiOThlYjQ0Y2Y5NzU1MDdkMTc3MDZlYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjY5ZTk2NzhjMzJkMTA4MTAyOTA4ZDRmYzJiZDU5YTk5ZWZmMTFlZjgzOGYwODRkYjNjYTFkNDU3OWQ5ODgxOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTI1NDNlMDJhMjhmMzI4YmEwYjgwMzBlYjBmYzEyNjI4MTIyYzVmODM4Njk3NTNiZmE0MzQ4NjM0ZmZkMjJkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjM2ODNhMjM0ZmUzNDYzNjRjNjMwOTg5Y2FiMzNhOTc2NGRjZDRhMTk2ZGY3YWU0ODY3NjU3MjljZmUyNGQzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bbca84081fc24ac8ad345c173ad2a0ba",
+      "statement": "The dated OKF migration boundary treats upstream v0.2 as superseding timestamp with generated.at and body Citations lists with frontmatter sources; a safe migration updates the pinned reference, authoring guidance, and index version together and tests consumers rather than only changing a version constant.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L21-L26",
+          "version": "repo-lines-v1:sha256:ea0c70279299f199a8c0cc3ccd5f581fac4cc7b7042a0536244fff0a892254aa:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjZmMjA4ZGU1ZWQxZjI0NjllZDg3M2UzY2Q1YzhjMzU2NzVhNGQ1YmYzMDZmN2NmMjAxMjhhZjU2NzU4ODU3MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzhmOWRhMjViMjI0YmI0YTRlZGExMzQ5ZGZjZjk3Y2Q2MjZiM2FiMDk1NjNiMjg0MWUxNmY0MDRiMDNhOTk3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTUyYzVkY2UwMWYzYzQ3MjNmZWU1MDc0NDRhNGJmNmEwNmEzOTU2YmM0MDdmNTliYmE5NWY0MjIwMWU4N2RhNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODEyY2Q3ODVlYThlNjBmYmE5Y2ZlODQ2Yjk5ODQ3NDVhNDBiOGIyYmFhZWRjYTE2MTIzYzRjODExY2MwZmIyNCJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf.md#L41-L52",
+          "version": "repo-lines-v1:sha256:ccdd320786e16de3d071393f1d72df016340481e8495a0c3b2db3cacf0e6da4a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0ZjgwMWE5YjllOTQzZmM5NzRiYjgyNTUwOWVhMzQ4OTc1ZTU3MmFmMWJkOWZjOTRlY2U3ZGNkMDU3MjU5ZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczYzQxMzUwYzhmOWNmODcyZTg5ODNlODA1MDU2Y2U4ZjRiNmE5ZmZkMTZkNjgyZmNhYjAyN2U0MGY2NTkxYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkZmUyMTI4MjliNmFiYzI3MWEyMmYzNDVhNDY4OWJjMGYwZDRiNmI1NjZiZjA0MDQyODcwNGUwZjYyN2MxMzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b3bc8866b4234d89827a2d10813b56b3",
+      "statement": "The dated visualizer comparison is a historical compatibility test plan rather than current OpenWiki behavior: the inspected upstream viewer was a reference consumer, its unchanged extractor produced zero graph edges for the reviewed bundles and included log as a node, and the full CLI dependency tree was not installed or run.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf-visualizers.md#L30-L35",
+          "version": "repo-lines-v1:sha256:a0cce761a4e74c0710b7e7a2f965b282855c00ee3e3fb9c9140f00260eafd67c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmIwZjkyNmI0ZDgyNjFiYzEwYTQ0YzcwMTRkMmU0NzE0MDZiMmM2MWIyODBmY2EyYTZhMjgzZWM0NTA3MjM5NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmFmYmIyYjBkNDAyMDUzODA4ZjVjODk2ZjZlMDg1NzMzNWEyZjJiZDBjZWNhMTc0NzNlY2E0NmQxYzI5NmE4MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODgwMjFiNTUxNmFjNjA2MDkyZTI3ZjU0NDIyZjI3MTc2MjVmY2QwNTVkNTI1YWM1M2Y2OGZlYzc2OWM5NGQ1MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2FjMDExZDhhOWUyZDMyZWQ5NTA1NDUxMDUzOTU1ODJkYzk4NjQ3ZDIwYzgyN2I1MDE1NjZmODgwOTYzNTEwNCJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf-visualizers.md#L74-L84",
+          "version": "repo-lines-v1:sha256:140f2bf73a9707943566b7b6ab5f5d55123c106b2f58a7c354d6177bad66e22d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0NDg2ZTg0YWMyZDMwMWNjNmI2NmFhY2M5YTg4MzAwYTI5MjMyMDZkMDZhNmQ4MGMwMzVjYjMzZTJmYTA1NzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3YWQ0MTQ4MWI5OTliMWY5OWQ4YmQxZTA1NmQxYWRmYjMyYjk0M2NhY2VmMzRhMGUwYjQwMDY5ZGZlOGFhZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4MDRjZmM5N2QwNTM2ODBlOTVmOWVjZTA4MDNiNDY1NzI2ZjM4ZGVhNDM3OGMxYjgzMjczN2QzMmM1NDgyMDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/okf-visualizers.md#L9-L13",
+          "version": "repo-lines-v1:sha256:8c6dbc3488a6a76d36e25025af13dce99b2e81ceee9e1016dd0888b13bd970b6:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjI3MTQ0MzEyZTcxMDY4OTFlOTcwNThiZWEwMzUyNzBhOGNjNmZhNGNjMmFiYjU3OGE3NmI1MDM5NmU5NmIyZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjBlZWRjNzVjMmI0MDNkZGNlNmMxMTVhNDdhZjU3ZTRjYjA2NDc5M2Y2ZGQwMGI0ZTRkMTJmMDNhMzZmNTY1OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJjMzM0Y2VjYTY2ZTBjMTYxYzhlZDQ3YTdiNjk2MmE1MzgxZjgwYzMwYzQyOGZlYTQwNmFlNDgzNWFjMzk1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDE1ZDRjMmNiN2U0ZTBjZjlhZDZiYzM5MWVjYjFlNjJkZmUwNGE3MDM0YmU1MDkwNGExYWNjZDY3NjRjNDFhYiJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-10-03T14:38:54.195Z"
+    "at": "2026-10-03T16:27:35.648Z"
   }
 }

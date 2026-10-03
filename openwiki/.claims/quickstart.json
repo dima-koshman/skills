@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:eba521fc57557024b93649a3f024ff78bba4168ea1bc4072a405adcb454182b3",
+  "pageVersion": "sha256:de6bb476aa7f72170ac1b3037425a4c4948ee8e85931c2e5cedc125ee4a6d578",
   "claims": [
     {
       "id": "claim_af94c9dde28740abb66797bc74b36888",
@@ -49,10 +49,54 @@
           "version": "repo-lines-v1:sha256:143331d66215fffbef6914f8d670c9b059ed697da5efceacbf71296db4aa3065:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNDE1MDE3NWIzMzk4MTE0M2E4YTk1ZTJlZWYxYmUyYTRjMDczYzQ0YmVkOGVkYzhiMGNhYzIwOWI0ZDc4NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MmEwMDgzMjg0NzgwNDdlODY3MzdjYjZmYjgxZTMyOTVhNTRmOGM3ZmUwZDY4ZjVhY2Y2YmJkN2Y2ZGJhYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0OGU0M2ZhYmRhNzlkZDdlN2FiODE2YzMyZTE0MjIyM2E4ZTc2NmY5YTk5MTlkZmRjMzkwNTFlY2Y0ZjBiYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_552a853978044cb181020d0b1eb97ec2",
+      "statement": "The software-engineering route moves from Protocol Buffers schema and wire contracts to gRPC typed RPC behavior, then to service-mesh and plane architecture, with simplicity and structured learning as the reliability path.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/communication/grpc.md#L7-L36",
+          "version": "repo-lines-v1:sha256:d3ea13fe1cec071513966ee15c9ea0ef7fa3009ec80a79dd4069a78515429711:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2NDA5ZDBjODcyN2MzNDg0YTg3YzM0YmI5N2ViMGQxMDIzZjIzOTFjOTE5ZjAxMmVkNjBjMmU3ZTVjOTY2MzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1NTkxN2MxNjZhNDI0MjlmNDI1MzQ5NThiZDFlNDFmMzIzMzg0ODA2ZDNjZTkzOWIzOTFmZjBiMmYyN2Q1YzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM5OTAwMzlmMDBlZGNjYWMzZGRlNDY3YjRiMDJiMWEyZTgyYzRkNmM5ZGMyZjk5MTU2ZjJiYzdhNzg4ZjQxZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyYWNlNzljMzFkYzFhOGFjYTNiZGViMTQzZDVlZTdjODAxMDgyZmU3MzgxYzc5YWY1NDQwNGNmOTg1ZGRhODMifQ"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/communication/protobuf.md#L7-L22",
+          "version": "repo-lines-v1:sha256:80b088a548fa2775de72789663769e901b1064433477b67062216ecf224b8c37:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjMTNiMDM5NmI2YTFiMWY0MmM1MjU2YmFiNDE2NGE2NDk4MDNkOTQ1ZThkMWQ3MjM0NGQ2Y2ZlZDk1ZTQ4MjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzNDhiZjJiZjUyYjM1OTQ2ZGI3ZjY1NjM3YTliZmRmNTZmOTE1OWI2ZjY3YTBkOTMwMDQ0MmYwODM1YTIyZGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwNjcyOTU4YmVhNmYwMGZiMTFlMWVmZDdiMzlkYmRmYTU0NDM4MDk4NjhhMTVkNThhZDQxYmU3OTY2ZmJiNzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkNDFhZTAwYmU3MjgwZjIyMDRlNjFhZjI0YTBjMTI1MDA1NGZjODYxNjA0MmU3ZTZhMGUxZGI2NTNkOGNhY2YifQ"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/development.md#L10-L23",
+          "version": "repo-lines-v1:sha256:143331d66215fffbef6914f8d670c9b059ed697da5efceacbf71296db4aa3065:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNDE1MDE3NWIzMzk4MTE0M2E4YTk1ZTJlZWYxYmUyYTRjMDczYzQ0YmVkOGVkYzhiMGNhYzIwOWI0ZDc4NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MmEwMDgzMjg0NzgwNDdlODY3MzdjYjZmYjgxZTMyOTVhNTRmOGM3ZmUwZDY4ZjVhY2Y2YmJkN2Y2ZGJhYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0OGU0M2ZhYmRhNzlkZDdlN2FiODE2YzMyZTE0MjIyM2E4ZTc2NmY5YTk5MTlkZmRjMzkwNTFlY2Y0ZjBiYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/infrastructure/service-mesh.md#L5-L19",
+          "version": "repo-lines-v1:sha256:87fb7dae26d064552d23901b69aaa73b837abd198c2e25a49903f1a260dfe041:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxM2NlMTA5MWUwNGRmYzg3OGRhZjM1ZmEwNzQ2MDg1ZmEzNDU2NjkxMDk1NDZmZjZiNGQwNzJjMWNjZWJlZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhNDQzZjM2ODQ5NjcwOGQ2YjlhNjg4OTA0YTY5NzE0ZmJmNjUwZDFiZGY5ZmYxMGJjOGNhYWIxZmExOThkZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyMzIyNmNjZTFjNGQ1ZTExYTk2M2FjNWIyOWNiMzkzYTJlOTNjYzc3NTAwOGU4NzNkZDlhOWVkNTdkNjI0ZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwZDg3NDk2YTQwYmU1NWQ4ZjI0MjM2ZDA4YzE3YjM4Yjk4NmMwOWIxZjZlNzAyODY2NTRlZmNhYmE0ZTIwZGUifQ"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/reliability/simplicity.md#L9-L31",
+          "version": "repo-lines-v1:sha256:837bc91bf39ab9a91a7e73ee007bf3d7875673d13f36affa76b2777ab635916a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiMGRkY2RhMGIyNGE2OGJkNWQwYTY5ZmRjNjhkMWQwZTBkYWU0NDFiMDRiMDVlNmRhZmY5YThjYmZjZGEzZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkYmYxMGNlZWM5ZTlhZmNjOTk5MmI4YzFlMGRkMTg5YzE1ZTNlM2VlMDRkOGQ4Mzc2ZDU4NTFhNmEyODIyZGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiYzMzNGNlY2E2NmUwYzE2MWM4ZWQ0N2E3YjY5NjJhNTM4MWY4MGMzMGM0MjhmZWE0MDZhZTQ4MzVhYzM5NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_032f922075b24561b1c7eecc59d29593",
+      "statement": "OpenWiki connectors create deterministic raw snapshots and manifests before source-specific synthesis, while generated summaries remain leads whose concrete engineering claims must be checked against current source, tests, Git history, and runtime evidence.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L28-L31",
+          "version": "repo-lines-v1:sha256:ce551253ebed3e8e55732cb5bb9a4f92a61c1870ab676386ffc41d3ebc709d80:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDk5ODMxYjQzYWRhYjg3ZmIxYTU3MzQxOTQ5OGRhODg5ZDNmN2VjYjA4OGRjYzFlZTFmZTVjYTc5YjZmZjZhYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTVjNDFlZWQwMzMzOTVjOTUzYWU2ZWYzYTc2NmZkZjE0ZjljMTkyOTRkYzY3ZDBjZGMwN2U0YWJlYThiYjE5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjNkMzY4MWI1N2UwYTI3MzQ2ZjkxMmViYTE5N2JmNTE1Y2M5MDQ4MjBhNTI5ZDQyNmE4ZTg3NDA5ZDFlOTIzNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L7-L18",
+          "version": "repo-lines-v1:sha256:53b19fe9648e4b0a8943b26dbe9e4174ae7b2e262dd6520033572d919da26353:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiZTlkOTQyYTNmYjE2MGI1MDFmM2JiMmYzNGM1NWU0MjMxODZjNzA1ZDA3Y2I3YWZlMDRiZGFmNGJhMTU0YzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2OWU5Njc4YzMyZDEwODEwMjkwOGQ0ZmMyYmQ1OWE5OWVmZjExZWY4MzhmMDg0ZGIzY2ExZDQ1NzlkOTg4MTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliMDNjZTk5MzMyMjIxMWEyZjAxZjI2YWE1NmU2MmVjMmZiMDczYmU4M2RjZjdhMWM3ZTQ3NDMwYmU2ZGI3YTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzNjgzYTIzNGZlMzQ2MzY0YzYzMDk4OWNhYjMzYTk3NjRkY2Q0YTE5NmRmN2FlNDg2NzY1NzI5Y2ZlMjRkM2MifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L15-L35",
+          "version": "repo-lines-v1:sha256:de27830fd738377c5755718686dbae3d3e04d12d16b57ad072999c66f3981257:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmMjI2NWNlNGE2M2RmNDBiOGIxMDM0ZGQ4Yzc4MjE3MDMyZDliMDU0MTE0NjI5YTA5MGIxZTlkMTA3MTI0YzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNzUwNzc3NjhhNTBjYzE0MjVmNjA2OTk4OWI1NDA2Yzk0ZThmYzEwNTJkYjY0OWI4N2FlNDdiZDc2ZDU5NmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxY2VmNzFhMmQyNWZhNjZlODQ1YTUzM2ZiMzZjMjI3NWRmNDZkYmU2MGEyNjdmZjBkN2FjYWFmZGNlNjkzMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyOTYyM2FiNjUxZDNiOWRiMmE1MDYxODIxNTYxZTU4MzlhY2YxNTBkMzUyOGI1YmVmNDkzZjNiMjA3NjFjMWEifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-10-03T14:38:54.195Z"
+    "at": "2026-10-03T16:27:35.648Z"
   }
 }

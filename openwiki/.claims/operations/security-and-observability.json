@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:40201d2853b9e8afe115bbea134d52ec4ff4f0805c4e02c32d10b59032a56e86",
+  "pageVersion": "sha256:f85c6ef74b0f1a9fc356a5cf27478273be405ae80ce79624fce3e329f4a78378",
   "claims": [
     {
       "id": "claim_81154ae772974cd2b6842ba85db82647",
@@ -125,10 +125,158 @@
           "version": "repo-lines-v1:sha256:f23ed388b91d7738aa302716dd35b156d5f14ee71316ffa841a175c8f342a364:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTEyMDZmZDE1NmIzMGRmYTJlYWFjOGU5MjlkMDgyNDc1Yjk1NmExNWNkMTFlZmMxN2FhMTE4ODg0Yjc4YzVmZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjkzYWUxYzA5Y2EzMDBhNjI3YWExYTBjODc2MTQ2NDNlYjg5Y2JiZmNlYTQwMzY1M2UxZWY2MjQ5MTU4OThlMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         }
       ]
+    },
+    {
+      "id": "claim_272ee808209747ec8a164a15631a9514",
+      "statement": "The LLM gateway centralizes authentication, authorization, rate limiting, routing and failover, content policy, and audit between AI clients and models, while the MCP gateway applies permissions, secret injection, anonymization, guardrails, and audit in front of MCP servers.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/enterprise/llm-gateway.md#L3-L10",
+          "version": "repo-lines-v1:sha256:2e91cd91fe7c8c63d3aae594e71d5536110b4c4645e66a9a2ead58ba3bf99d95:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWNiYTVjN2FmNjU5YWIwNjNlZjEwN2U1M2RkYjhjNTBhOWFjOTg1YWQzOGYzOWY1M2VhZDYxNmQ5ZjlkZWZlMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTM2NDZhMWQ0NDFjYWI3ZDAzOGEyMmEzY2U4NWMwZDBiNGVlNjBhOTExNGI3MDljNzhlNGZmMjYyMTFjMzhiYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTkzMTg3OTNmNWIxZDdlZWYwNmQxZDYzYTUzNDEyM2E2ZjIzNjc0MDRjNTMyMjk4YzEzYTBlYjAwZjQ1OTNlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjk3YmI3MDA2ZTliZjljODU4YzA0ZDRiMGE5ODMyMGJlZjE3ZGRiNDY0ZjllYjNlOThlYjJiNmI2OTRiYjQxOSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/enterprise/mcp-gateway.md#L3-L4",
+          "version": "repo-lines-v1:sha256:4d4bf0ad031e129c0dcc740051aa393b6deb071f07e1a98e792a4bd85558ad83:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmU1NmY0NmRhNDI0ZDhkMzg1ZmE1ZjQ1M2FkY2I0NzYzMTg3ZTI0N2NiMDMyNjAwMGExMTViYmY3YThlMDBhMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzEwODI2ZmQ0OTBlMjdhZjJhNDQ0YzM3NzgyNzM2NzNhN2FjOWMyOGZjNTQzZDhiMWNiMWM3ZTVjNDljMTZjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTBhZDRjNDA3MzU4ZmY3YTUxODUxMjFjZDUzZTJmYjVlOTA2MzdmNGMyMjU2YzU1MDhlYmNkYzY1OWYzZDBiYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0a2e68f948b94973929111c1d1aa588e",
+      "statement": "Guardrails provide input filters, output checks, schema validation, and approval gates around model calls, and are distinct from model alignment; PII masking transforms personal data so sensitive fields do not reach models, logs, or third parties in clear text.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/security/mitigations/guardrails.md#L5-L12",
+          "version": "repo-lines-v1:sha256:0d72598eb01420b0f717f7e7a7157e84d9ed76c0d5fab06f3a1dc75abf2e5240:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM2NGY0NDdmMDI3OTM5OWI5YWZkNmY5ZDU5NmUyMTk1Mjk4ODAwMDQwYTZmM2Q4YTJhNjg3ZDY0ZTFlNjlmOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmU2ZjEwYzVmNzNkN2RmODRmNWFiZDI2MzkyM2IxNTQ5MDJmOTEwZWZlODU0NTI2ZTM1NGZjZjIyZjU2ZGI2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTk0OGE5MzdhMTlmZjk0ZjE0MDAwZGJkNWE0OTJmZDc4YzkwNTZhMjM2YzQ2MzFjNzllNWY3NjgwZTg2MDA1NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/mitigations/pii-masking.md#L5-L10",
+          "version": "repo-lines-v1:sha256:293c77816fdfd2518d69bfadd0e39816e99cdacd20bbcae5876add58083c564b:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTRlMDRmNWM3YjFjMDAzMTZlNDY4NmUxODlhZmMwOGUzMzFiMWI1ZjI4MTBkZmU2ZmUxMDRhNWJiZTZmZGEwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjZmNGM2MDQ4YTcwNzNiNjc2ZjFkODM2MzEyMDhlODY2MzQwNDg3YTRkMmIwNWNhMmE4NjYwZDhhMTlkZDhkNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTNhOGUxZDdmMjZlOGJiN2NlNWU4ZDk5NWMxMzU3MTAzNWI5ODBlNmZhZThkZDFlOWFmYjE0ZDBiNWIyMzU3NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f7d8a4cd8c5841e49f899384cef3344b",
+      "statement": "The agent security catalogue treats risks and mitigations as distinct and states that mitigations minimize rather than fully eliminate risk, with agent actions authenticated, authorized, least-privileged, and logged under a zero-trust posture.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/security/security.md#L27-L34",
+          "version": "repo-lines-v1:sha256:49fb6614df889e45d7ad5bd8a9b9accad2dc9ed7a16c4ad9427939162c7e4189:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2U4Yjg3YzkyN2Y1OTlmZWQ1NzBkMmNkZGNiYjI3ODY5ZDg1NzRhM2ExMDkzODIwOTAxNDY0NDgyNzRiM2M3OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRjNjJjNTk5MDhlODA2NzBhMjhkMGY5MGU1NTg0M2NiODJmYWRjMGMwM2Y1NmJkYWYxMGVlMmVhMzViNzI5MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWM4MDFjZWFkYmM3ZDA0NmNkMWUwY2JlMjMzNmFmMWQ0MDhhOTIzNTkwZjE2OThkNzMwODZhNjAzOWIwY2JiNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/security.md#L7-L12",
+          "version": "repo-lines-v1:sha256:76e1c9fd52eb723c6293246f045d25348fd5a6df4cd30a00b9cf8bf85e26c27e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTQxZTRjY2FmODU2ZDU5NTFhMDY1MGRkMzA2ZTViYzg1NzhmMzUzNjg5ZjQyYWU4ODc2ODdkZTRlNjdhYWJhZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjE3NWIyYzBmNGU3YzRmYTdmZDVmMjEyZjZjN2ZiNWYwNTg5MjQyZWEzZGFhMTNjZWVmNmE5OWJhMmY1YWI5MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2QzMzcyOGRjZGY2NmNhYzkwYTg0YzY1YzQzYzc4N2FjOWI3YTRmMDliYTA4ZThhN2FmMjllOTY0YzczMWZhMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjY4MThlMTExOTZkOGVjYjY3MTVhNDc5NGMzMTFiNDZmNmY5MjIyMTg3ZjgyNmE1NTQwNmZhMDhhYmZiYmRiYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5bca713f3c0a408a8e7d56a8adec3f74",
+      "statement": "An observability-driven development loop instruments structured telemetry, retrieves bounded evidence, correlates it to code and deployments, changes the smallest coherent unit, and verifies with reproduction, tests, review, and relevant telemetry; review and deployment controls remain independent gates.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L13-L35",
+          "version": "repo-lines-v1:sha256:55b4eeb978d0798ff2df10ee8f8d57c5dcec98b25afc2d320c491252f715a55b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0MDU0OTQ4NmMxNGY1N2QwMDZjZmYyM2VlYWZiNTk2ZTI0YTdhOTBmYzIxZWUyMDMzMDVhN2YxOTU4MjQ3MGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNzUwNzc3NjhhNTBjYzE0MjVmNjA2OTk4OWI1NDA2Yzk0ZThmYzEwNTJkYjY0OWI4N2FlNDdiZDc2ZDU5NmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwNjU3OGQ1ZDM1ODgwMmYwOTU1N2NjZDkzMDhjZTgzYTE2ZDQ3Nzc4OTI5MzMzZmZkMDAxYzRkZGY3ODA5MDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyOTYyM2FiNjUxZDNiOWRiMmE1MDYxODIxNTYxZTU4MzlhY2YxNTBkMzUyOGI1YmVmNDkzZjNiMjA3NjFjMWEifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L75-L89",
+          "version": "repo-lines-v1:sha256:df5981df4adafdcc868eecf24cbdb96d52b28a899035fa0f5b4fa0295777af58:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1ZWRhOTdmOGNhMGZhYzJlMWQwZjBhM2I4NWY1NTY2ZTdmOTY1OGMxNmI4NzhkOTUyNmVmMTVlOGYyZDlhYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyNmU2ZjkxNzcyYjA0MzZlMWNkMzJmZDNhNmMyOWM5ZDlmNDYxYjM4MTVhZTJlMDVjYjZmNzcwODVkMzZiYmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYwNjk3MzA3ZTU1MTBiMTFjNThmN2FhYzk2NTFhNzA0NDU3YjA3YTY1ZWI3ZTEwMjU5OGM0NjNlYzc3MDgyYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmY2YwNmI1ZTRiYTk3MTJhNTJiNWY1YzU2ZWY1MjdjYzJiOTdiM2JhYjhiYTQ3NGQ4M2E5NjVlNWU2ZjYxOTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5485ae088d4646c3b469ab2df2ef3e1f",
+      "statement": "Telemetry is incomplete and untrusted evidence: missing spans do not prove health or fault, logs and tool results may contain attacker-controlled instructions, and correlation without shared identifiers is only probabilistic and must be labeled accordingly.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L64-L68",
+          "version": "repo-lines-v1:sha256:8130b123d648297d37a3081b1c59a1a0acc4910c113f25f4302908d65241c8bd:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgwNGFmNWVkZmNiNzQ0NTdmNTc4NDliNjc3ODMzMDdmMjM3MGIyMTRmZWRiNjFkYjc1MjUxNjdmYTBlMzg4ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc2YzQ2N2U3ODJlNWJhYTM4ZTQ3Njk2YTAwZmJjMGEwOTdiMTlkOGI1MjZhYzc1ZGM5OGQ0MTlmOWQ2NDY3OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGI1ZjY4OTM0MWVlMDdhNmFlYTZkMjdiODg4MzA0ZTIzODdkNmIyNjU1MjA0OWI5NDJlZDU4MDcyMTA5M2IwZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmE3YTFhODQ1YmM0ZDIwMzdhNjk2OGU4OGE0N2U3N2FmNDNmM2U3NWNmZWEwYTdmYWU0MWQ1YTY4MWQxODQ0NCJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L91-L111",
+          "version": "repo-lines-v1:sha256:b6150a080b2850bd0f0fa4a807a0b8253eababd15ff5a259facf9c2a02a7d5ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyZTE1MGI4ODM0ZWYxZmQ5MGYyMGFiNmNlZWYwMDE2ZDM2MTQwMGJmZDQwMWJhYzA0YTQ0OTE0ZDg5M2U2ZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MWVkNjZjMGE3OTNhODcwNTllN2I4YzI3MzE1MDVhZjQ5MmNjZDk5ZTkyZGU5N2ExOGYyMjg3NDk2ZjNlZmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0ZmQzNmYwMjhhZTViYTY2MzIwMmM1YTA2N2Q1YWNkM2JkZjA1YTM4NmYyZTk2YTQ2ZjQxOGU5NTI1OTExYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiZjlkNTIwNDBkZDU2ZTg3YTkyNTU2NzkxYmI5OWY3OWQ0MzNhNTk3NDkyODQ0YzZjMWM0ZjhlYzRiMmMzMTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c6085c3b6c624bf59105dc14e8a8284a",
+      "statement": "A logical agent run should be traceable across model calls, guardrail decisions, memory, tools, approvals, and peer hand-offs with correlation lineage, identities, masked data references, policy decisions, arguments and results, timing and budget data, termination reason, and evaluation outcomes.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L15-L20",
+          "version": "repo-lines-v1:sha256:867cf31ca2f01f73fd659561bd2ee55a979b7a62996a26ae8196b85200013ec6:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmYyMjY1Y2U0YTYzZGY0MGI4YjEwMzRkZDhjNzgyMTcwMzJkOWIwNTQxMTQ2MjlhMDkwYjFlOWQxMDcxMjRjOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRmY2EzZDQ3ODhlYTE5OGFkMTkyOGY5NDQ3MWQwZjM2YWVjNjRiNmYyMDhhNGMzMTc5ZWY5NTI2ZWI2MjlkMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDFjZWY3MWEyZDI1ZmE2NmU4NDVhNTMzZmIzNmMyMjc1ZGY0NmRiZTYwYTI2N2ZmMGQ3YWNhYWZkY2U2OTMzNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGU1MGQzMTJkYTQwMTA4NjM0YTU2NGQ4MDcwZWQ2NGE1NTZmMDEzYTMwNjAyY2RjNjAxZGQ0OWQ5ZjU0MmI1NiJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L77-L89",
+          "version": "repo-lines-v1:sha256:62ef9cd8367145a604dae14c3e0d769b2122163abcf825c03cde0feb48977603:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YmQ0ZDE4MmQ3MWNlODI3ZTk1NWQ0Y2MxOTY3NWM0YzY5Y2NhNWFhMjA3YTVmZDNhZmI0NzJiYjljN2EzNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyNmU2ZjkxNzcyYjA0MzZlMWNkMzJmZDNhNmMyOWM5ZDlmNDYxYjM4MTVhZTJlMDVjYjZmNzcwODVkMzZiYmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzMTgwNzZlNDk2NzVkNGQxMjMzMWY2NzdkNmNhNjE5OTZmNGExZmMyOWM2MDExY2ZiMTMxZDNlOWJjMmM4YzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmY2YwNmI1ZTRiYTk3MTJhNTJiNWY1YzU2ZWY1MjdjYzJiOTdiM2JhYjhiYTQ3NGQ4M2E5NjVlNWU2ZjYxOTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_93e8913a9e7c44feb5cb7130fb257279",
+      "statement": "The repository notes describe LangSmith as a managed tracing, monitoring, and evaluation platform, Langfuse as an open-source self-hostable OpenTelemetry-friendly alternative, and LangSmith Evals as supporting dataset runs, LLM-as-judge evaluators, custom evaluators, and experiments over traces.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/observability/langfuse.md#L3-L7",
+          "version": "repo-lines-v1:sha256:d214478a259c82c21294cad9a84ea353c0278818ff5f6959f44089d34455bfa3:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZkZDQwNDg0YjhiNTUwZWQ1MjY2MzExZjFmOTQ3OWI4YmQ3NzBiNzY0ZWFlMzY4YjY0MGE3MGY0OWZjNTRkOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWVhN2M0MGJjOThmMzQ5M2ExODI0MTNmZGIwYjcyOTcwZTBiN2I4NzdmMjI4ZTQwOTU2M2FiNjJjOTNjYTBkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWE1ZGI2YTUwZmJkMzcxMWUzNjkxZWY0MTM0MzFmNTI4Mzk2YzQ0YWQwODIwZmViNDQwN2I0Zjc3NDhhNTc0NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/observability/langsmith-evals.md#L3-L7",
+          "version": "repo-lines-v1:sha256:edbb48b71b30f2defcf944c7f509d15ac53eed62e367ae3a57483d2da6b71103:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTFjN2JjOTU0Nzc2MjVhMmRiMzE2ZWZlMzYwMTFjMGFhNjNiN2Q4NTIxMjQ4ZDQ4MTU2MzIyNTJkY2Y4ZGZhMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGQ5MGU1N2FiNjQxY2IyYTZjYmE5ZGQxNzU0OTAxZmFlODhmNzMzMmRiN2QzMjRiZTkwZDcyYjIzMWE4ODJiYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzMxNWFiMTMzZWVkNTcwNjNjZjYyOWMwZjgyMmJmYzQ2OTE4YjllZDQ1ODM5MDRkMTNlMzI3YmVhZmExYzhiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/observability/langsmith.md#L3-L7",
+          "version": "repo-lines-v1:sha256:99fdfe7f2ef1b580a9834feaaa7b564389093f20fc64af99887ea212abd931ce:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk2OTljNjA3M2YxODljMTA0NjJlMzQ2ODM2ODQ3OGEwNjM1MDU3YzY2YTYyNWU4NTlhOTYyMTlkZTc4OTk1OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDhlODVlOTRkODRiOWZlZTg2NjgxM2RmMWQ4OTFkMmJhMWVhNzNhZDBjMjkyZGI1YzkxMjM1MWZmYTc1M2NjMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGI1ZDFhMjE2OTk1M2VjMWU0YjBlMDNiZjBmMWNjY2MyN2JiYTYyYTY2MWJhNjg3MjdiOTJlODE0MThmNGI4ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_acdba6296a624db2961af9ad91a67f34",
+      "statement": "Evaluation should use explicit expected outcomes and combine deterministic checks for authorization, schemas, PII, and tool-policy invariants with model-based or human review for semantic quality; passing evaluators do not constitute a security guarantee.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L107-L111",
+          "version": "repo-lines-v1:sha256:cf27c0f893a86b3a7d9dc2e270ed749ad40c6888896acf2be94fac0fdf02a2a7:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjkwZDUwODFkYWMyOTFhMzgzNmM1OTBkNGM4Mjg3MjMwZGYzZTNmOTA1MzEyZTk0YzBhM2M5N2JjM2NlNTQzYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTkxZWQ2NmMwYTc5M2E4NzA1OWU3YjhjMjczMTUwNWFmNDkyY2NkOTllOTJkZTk3YTE4ZjIyODc0OTZmM2VmZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWQxZTY4ZmM5ODE5YzI3MGFhN2E4ZGJmNThmZWNlYmYwZTFhMzM2MjE3YTk5YzhjMDZjNTQyMWYzNDg0ZGJlYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2JmOWQ1MjA0MGRkNTZlODdhOTI1NTY3OTFiYjk5Zjc5ZDQzM2E1OTc0OTI4NDRjNmMxYzRmOGVjNGIyYzMxOSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L70-L73",
+          "version": "repo-lines-v1:sha256:ea4dd0a5ca71e8713ef9b2850f03c6f56d82d71cf384ea8e9569b9d6b57889e7:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTg1NzM5ZGQ0M2JiZTI1YmVhZjhiZWQ5MDBiOGUwNDkyMzQwYzliNTljM2QyZDk4N2U5Mjk5NGRlZDI0MmI4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjhlMjJiZDI4YTIxYjU4YTkwNjI5MmM2YWUwYTIxNmQ5MzEwOTQyYzk2OWE3ZjkyZGI3Mjc4ZDM3ODQ5MzVkMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmMzY2EzY2RiZWZkNzIxYjdkY2NkOTkzYWE1ZWM5MzRmMzZlNTRmZjAwMDJhZjc3N2RjYTI2OTllOWE1OGJkYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjMxODA3NmU0OTY3NWQ0ZDEyMzMxZjY3N2Q2Y2E2MTk5NmY0YTFmYzI5YzYwMTFjZmIxMzFkM2U5YmMyYzhjMCJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/observability/langsmith-evals.md#L3-L7",
+          "version": "repo-lines-v1:sha256:edbb48b71b30f2defcf944c7f509d15ac53eed62e367ae3a57483d2da6b71103:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTFjN2JjOTU0Nzc2MjVhMmRiMzE2ZWZlMzYwMTFjMGFhNjNiN2Q4NTIxMjQ4ZDQ4MTU2MzIyNTJkY2Y4ZGZhMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGQ5MGU1N2FiNjQxY2IyYTZjYmE5ZGQxNzU0OTAxZmFlODhmNzMzMmRiN2QzMjRiZTkwZDcyYjIzMWE4ODJiYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzMxNWFiMTMzZWVkNTcwNjNjZjYyOWMwZjgyMmJmYzQ2OTE4YjllZDQ1ODM5MDRkMTNlMzI3YmVhZmExYzhiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_719a7103f8864eada5570bf80382966b",
+      "statement": "Indirect prompt injection is adversarial instructions embedded in retrieved content such as web pages, documents, tool results, or email, has no known complete fix, and requires bounded controls rather than reliance on instruction following alone.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/security/mitigations/guardrails.md#L5-L12",
+          "version": "repo-lines-v1:sha256:0d72598eb01420b0f717f7e7a7157e84d9ed76c0d5fab06f3a1dc75abf2e5240:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM2NGY0NDdmMDI3OTM5OWI5YWZkNmY5ZDU5NmUyMTk1Mjk4ODAwMDQwYTZmM2Q4YTJhNjg3ZDY0ZTFlNjlmOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmU2ZjEwYzVmNzNkN2RmODRmNWFiZDI2MzkyM2IxNTQ5MDJmOTEwZWZlODU0NTI2ZTM1NGZjZjIyZjU2ZGI2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTk0OGE5MzdhMTlmZjk0ZjE0MDAwZGJkNWE0OTJmZDc4YzkwNTZhMjM2YzQ2MzFjNzllNWY3NjgwZTg2MDA1NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/agent-goal-hijack.md#L7-L13",
+          "version": "repo-lines-v1:sha256:8cace59188ffb7b2e2f2597e8625ffb9757480f99772968e3f5d3991e923b11d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjlmNjY5Njc3ZGVjMjA3ZDVmZDQ4MmQ1MTFkNjVjZjc1YjEyMzA1ZGU4MTUyNGY3YmJlN2UxNGE5ZjA1ODZkNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDBlMDAyNTZjMWYxOWZiMTYwZTFkZThjMzMzYjdkMTgxZDUzYjkzMGU0OWY5MjUwYzU1ODA2Zjk5NWExNDY0MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2QzMzcyOGRjZGY2NmNhYzkwYTg0YzY1YzQzYzc4N2FjOWI3YTRmMDliYTA4ZThhN2FmMjllOTY0YzczMWZhMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8524bdf2e95d487fa405401e8fb29401",
+      "statement": "Agent operations must bound retries, depth, timeouts, and circuit behavior because insecure inter-agent messages and local bad outputs or outages can propagate into cascading failures.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/cascading-agent-failures.md#L3-L7",
+          "version": "repo-lines-v1:sha256:7e1e6dbaf82fbc194c27c7ab16ebe209969b10ce23db432068ccba557633286c:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTlkYjc2ZmFkZTUxYzM4ZWY0Nzc2MGQxZTMwMGQzMjlkYzU2ZmE3ZGE4YjMyMjBiZDlmMDY5Nzc0ODk2YzMwMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWZlYjM2NzYxMzNiOTExNGVlNTE3YThiZjMzNWEyMGI0MWNhMzM3NmMyMjg3NzZiMjgwZmRmY2ExMjYzYzEwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWZkMmM4YzBhNmZmNGQ3ZTIxNTgxMTQ0OWRiODZkYTNkOTIwMTRiMmE2YjliNWFiYTEyZDA3YjNkZTZmZjM0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/insecure-inter-agent-communication.md#L3-L7",
+          "version": "repo-lines-v1:sha256:5407683da597b1246c8d1abba839d6a31f575d6e947d993717ba166d3f638598:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTU5OWU1NzZhNmFjNWIwNmUzM2I0ZDYzYTBlMzU1MWJiOWVkZTQ3YThmYzg2NTVmNDA3ZTBjZjAwZjBlMzRjMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRkYThjZmJhOWJjNjdiNjhiZGUyODQ2M2YzYjI1ZGZiYjdkYjlkNTU4MDRmODM3MzM1Mjg3ZDk5YmNhMDg1MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGYxZWYzMTMxY2YyM2JkYzA3OWVkYThiZTdjYTBhNTM2ZmIxNjkzMjY4NTU5ZGQ4YTM3OTk5YzU1MGQxYzhhZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-10-03T14:38:54.195Z"
+    "at": "2026-10-03T16:27:35.648Z"
   }
 }

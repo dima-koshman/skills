@@ -36,10 +36,10 @@ repos:
       - id: markdownlint-cli2
         exclude: ^(\.claude/|\.agents/skills/)
 
-  # Runs the same offline suite CI runs, at push time (not on every commit, to keep commits
-  # fast) so a red push is caught locally before it blocks the auto-deploy on main.
   - repo: local
     hooks:
+      # Runs the same offline suite CI runs, at push time (not on every commit, to keep commits
+      # fast) so a red push is caught locally before it blocks the auto-deploy on main.
       - id: pytest-offline
         name: pytest (offline suite)
         entry: uv run pytest --ignore=tests/integration
@@ -47,9 +47,6 @@ repos:
         pass_filenames: false
         always_run: true
         stages: [pre-push]
-
-  - repo: local
-    hooks:
       # Model-backed: review and commit generated changes before retrying a push.
       # Scope this to knowledge inputs so unrelated pushes do not spend tokens.
       - id: openwiki-update

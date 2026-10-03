@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:315c165b145a5db3126db4393b597fe47e818679aff09e77097d659840f155c5",
+  "pageVersion": "sha256:5180790e23eeee5703895d4f915c5d638f562350e06936e92cc4deca0cda6e55",
   "claims": [
     {
       "id": "claim_9f5931820a594ffb915edf0e586c5e1a",
@@ -101,10 +101,68 @@
           "version": "repo-lines-v1:sha256:07f39d0a26752822f058a96aa92fe2756f320234ab374bbb6c6c864bae693f8e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3ZDEwODhiZGQxOWU4ZDRiZmRhNDU5NjFiMGEzODFkMzVkMzYwZGU4NzdhZmIzZmI0NmFhMTc0YTkwYzA1NmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhZmJmNmM1OGI5NzI1ODdkNzY5Zjg4N2I2YzBmZGU4NGE5MTlhYmE4ZGVkMDBhNjg0MTc5M2ZjZTk3YWZmMzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ2NDU0YzdmMDRjYTAyY2RjZmIzYzYxNzEwYjgwMGZkZTk5YmY0MWE4MmFhM2Q1MmNmZjJmZDU0MjcyODc5ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_4df7705116ef4557aa354b9873a50d7b",
+      "statement": "OpenWiki connectors write deterministic raw snapshots and manifests before source-specific synthesis, while retaining raw artifacts for provenance checks; a generated page is therefore derived context rather than independent proof of current behavior.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L11-L18",
+          "version": "repo-lines-v1:sha256:61bc342b437b1e0c10e43d3251fa4592f1925657ea232d46957d595220a68aa5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWM4YzZkMzA5YTlmMDJhN2M0MzQwMjAzNjcxOTIyMDk5ZTJlNTI3ZGExZjc0Y2FmZjE5N2EzYmY0ZmIxMWVkMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjY5ZTk2NzhjMzJkMTA4MTAyOTA4ZDRmYzJiZDU5YTk5ZWZmMTFlZjgzOGYwODRkYjNjYTFkNDU3OWQ5ODgxOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWU4NDRkOGE5OWYzNzhjOWZjOTUyNTE0YjIxYzM5YjM3ZGIzYzMzZjJjYTY2NGRkMmE1OTY0NTRhN2M1MjkyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjM2ODNhMjM0ZmUzNDYzNjRjNjMwOTg5Y2FiMzNhOTc2NGRjZDRhMTk2ZGY3YWU0ODY3NjU3MjljZmUyNGQzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cb5d3bbc91a64dd1831cfe8ad0a4c976",
+      "statement": "Runtime telemetry and generated summaries are evidence for symptoms, correlations, and candidate explanations, but causal or implementation claims require rechecking current source, configuration, focused tests or reproduction, and review.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L24-L35",
+          "version": "repo-lines-v1:sha256:609ff5e1f21306af8e24596fd67609d0f149c1c3a8ae52ccf7c4f0d1570483fb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwNzliOTMzMGJmN2RlOGY4YmMzMTRiZWY4OTI2ZGJlMmM2NTk1ZmVjOTRkZDgxMWU5NWU3MmZhM2MzNWYzNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNzUwNzc3NjhhNTBjYzE0MjVmNjA2OTk4OWI1NDA2Yzk0ZThmYzEwNTJkYjY0OWI4N2FlNDdiZDc2ZDU5NmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlNTBkMzEyZGE0MDEwODYzNGE1NjRkODA3MGVkNjRhNTU2ZjAxM2EzMDYwMmNkYzYwMWRkNDlkOWY1NDJiNTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyOTYyM2FiNjUxZDNiOWRiMmE1MDYxODIxNTYxZTU4MzlhY2YxNTBkMzUyOGI1YmVmNDkzZjNiMjA3NjFjMWEifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L91-L111",
+          "version": "repo-lines-v1:sha256:b6150a080b2850bd0f0fa4a807a0b8253eababd15ff5a259facf9c2a02a7d5ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyZTE1MGI4ODM0ZWYxZmQ5MGYyMGFiNmNlZWYwMDE2ZDM2MTQwMGJmZDQwMWJhYzA0YTQ0OTE0ZDg5M2U2ZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MWVkNjZjMGE3OTNhODcwNTllN2I4YzI3MzE1MDVhZjQ5MmNjZDk5ZTkyZGU5N2ExOGYyMjg3NDk2ZjNlZmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0ZmQzNmYwMjhhZTViYTY2MzIwMmM1YTA2N2Q1YWNkM2JkZjA1YTM4NmYyZTk2YTQ2ZjQxOGU5NTI1OTExYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiZjlkNTIwNDBkZDU2ZTg3YTkyNTU2NzkxYmI5OWY3OWQ0MzNhNTk3NDkyODQ0YzZjMWM0ZjhlYzRiMmMzMTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a3ac247db5c1411d84c92c3e7077a4f9",
+      "statement": "LangSmith-style evaluation tooling can turn a production trace into a regression example and evaluate a verified fix across a dataset rather than only against the originally observed failure.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L70-L73",
+          "version": "repo-lines-v1:sha256:ea4dd0a5ca71e8713ef9b2850f03c6f56d82d71cf384ea8e9569b9d6b57889e7:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTg1NzM5ZGQ0M2JiZTI1YmVhZjhiZWQ5MDBiOGUwNDkyMzQwYzliNTljM2QyZDk4N2U5Mjk5NGRlZDI0MmI4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjhlMjJiZDI4YTIxYjU4YTkwNjI5MmM2YWUwYTIxNmQ5MzEwOTQyYzk2OWE3ZjkyZGI3Mjc4ZDM3ODQ5MzVkMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmMzY2EzY2RiZWZkNzIxYjdkY2NkOTkzYWE1ZWM5MzRmMzZlNTRmZjAwMDJhZjc3N2RjYTI2OTllOWE1OGJkYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjMxODA3NmU0OTY3NWQ0ZDEyMzMxZjY3N2Q2Y2E2MTk5NmY0YTFmYzI5YzYwMTFjZmIxMzFkM2U5YmMyYzhjMCJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/observability/langsmith-evals.md#L1-L7",
+          "version": "repo-lines-v1:sha256:89a8e252ea6cec1828e8b5c673bf0136cd636272be3e21c4e0632741be372935:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2IzZTkxMjBlYzVkYzI5MzQ3MzJhMjljNWM5NGY4OGNmNGE5ZTFhYjViY2Q3ZjgzNGZmYTM4YTQ1NzQ4YTkxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGQ5MGU1N2FiNjQxY2IyYTZjYmE5ZGQxNzU0OTAxZmFlODhmNzMzMmRiN2QzMjRiZTkwZDcyYjIzMWE4ODJiYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1d3acce972254c528654ec2864693d87",
+      "statement": "Proactive observability retrospection should scan fixed non-overlapping runtime windows, cluster repeated failures and gaps, reconcile findings with existing work, and persist a checkpoint only after the window is fully triaged.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L44-L49",
+          "version": "repo-lines-v1:sha256:6eb527be4e0a90eb8f96ed084d19d24845d94cc6c9149426a63a07a6f040bd3e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGMwNTNjZWU3NDRkMTA0YTEwNDBmNmRlZjQwNDNlMzI3MDdmMmQ1ZDlhODQ3ZDc3ZDI3ZTQwODUzMWEyZTY0NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzZjMDNkMWZlY2Y5MGU3YWJmNWQyODdmOTE3N2IzNzg1MDU0NGJhODQ3MzNkNzI5OGQ0NjYyZjUzN2ZlNTJlZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjJlODczMzQyZDZkNGY5ZTRjMDYyMzUzNjdiMTkyOWFlMTFjNDQ2ZWI0NDgwMTlmYTczNzE5ZTU2NzcwOGJkZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjFiYmQzNWRjMzlkNDM0MDQ0M2RiNjU1YmJkZTM3Zjg2ZmVlYmMxMTU5OWMyYzcyZjY4ZDYwYmYwZTc3ZWEyNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0411a8613993487dbf908f29aed9374f",
+      "statement": "Simplicity is an operational reliability constraint: small APIs, clear responsibilities, loose coupling, compatible interfaces, and small releases reduce the behavior and possible causes that operators must understand when diagnosing regressions.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/reliability/simplicity.md#L9-L31",
+          "version": "repo-lines-v1:sha256:837bc91bf39ab9a91a7e73ee007bf3d7875673d13f36affa76b2777ab635916a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiMGRkY2RhMGIyNGE2OGJkNWQwYTY5ZmRjNjhkMWQwZTBkYWU0NDFiMDRiMDVlNmRhZmY5YThjYmZjZGEzZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkYmYxMGNlZWM5ZTlhZmNjOTk5MmI4YzFlMGRkMTg5YzE1ZTNlM2VlMDRkOGQ4Mzc2ZDU4NTFhNmEyODIyZGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiYzMzNGNlY2E2NmUwYzE2MWM4ZWQ0N2E3YjY5NjJhNTM4MWY4MGMzMGM0MjhmZWE0MDZhZTQ4MzVhYzM5NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-10-03T14:38:54.195Z"
+    "at": "2026-10-03T16:27:35.648Z"
   }
 }

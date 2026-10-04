@@ -8,6 +8,9 @@
     "[markdown]": {
         "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
     },
+    "[mojo]": {
+        "editor.defaultFormatter": "modular-mojotools.vscode-mojo"
+    },
     "[python]": {
         "editor.codeActionsOnSave": {
             "source.organizeImports": "explicit"
@@ -25,6 +28,7 @@
     },
     "breadcrumbs.enabled": true,
     "chat.disableAIFeatures": false,
+    "claudeCode.hideOnboarding": true,
     "claudeCode.preferredLocation": "panel",
     "editor.codeActionsOnSave": {
         "source.organizeImports.ruff": "always"
@@ -85,6 +89,7 @@
         "https://schemastore.azurewebsites.net/": true,
         "https://www.schemastore.org/": true
     },
+    "jupyter.askForKernelRestart": false,
     "notebook.cellToolbarLocation": {
         "default": "hidden"
     },
@@ -129,5 +134,14 @@
     "workbench.editorAssociations": {
         "*.md": "default",
         "*.markdown": "default"
-    }
+    },
+    "workbench.startupEditor": "none",
+    "yaml.disableSchemaDetection": [
+        "**/.github/workflows/*.yml",
+        "**/.github/workflows/*.yaml",
+        "**/.gitea/workflows/*.yml",
+        "**/.gitea/workflows/*.yaml",
+        "**/.forgejo/workflows/*.yml",
+        "**/.forgejo/workflows/*.yaml"
+    ]
 }

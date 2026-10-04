@@ -62,8 +62,31 @@ dependencies that should not be imported at module load time (e.g. `transformers
 `lingua`) — those may be imported inside the function that uses them, with a comment
 explaining why.
 
-Exceptions: `from __future__ import annotations` and `from typing import ...` are fine
-(type-annotation helpers with no meaningful module to import).
+Exceptions: `from __future__ import annotations`, `from typing import ...` and
+`from collections.abc import ...` are fine. They are type-annotation helpers with no meaningful
+module to import, and `collections.abc` is where `typing`'s deprecated container aliases
+(`typing.Iterable`, `typing.Callable`, …) now live.
+
+The exception covers annotation helpers only, not every standard-library module whose names happen
+to be short. `abc` stays module-qualified: `abc.ABC` and `abc.abstractmethod` are used at runtime,
+as a base class and a decorator, not in annotations.
+
+```python
+# Good
+import abc
+from collections.abc import Callable, Iterable
+
+
+class Store(abc.ABC):
+    @abc.abstractmethod
+    def keys(self) -> Iterable[str]: ...
+
+# Bad
+from abc import ABC, abstractmethod
+import collections.abc
+
+def run(callback: collections.abc.Callable[[], None]) -> None: ...
+```
 
 ### Relative vs absolute imports
 

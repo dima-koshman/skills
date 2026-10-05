@@ -307,11 +307,27 @@ Alias for uv run python - mostly for coding agents.
 alias python='uv run python'
 ```
 
-Disable macOS quarantine for Homebrew casks (which causes macOS to prompt for confirmation when opening apps on each update):
+Clear the macOS quarantine flag from the `claude` and `codex` Homebrew cask binaries after each
+`brew upgrade`. Without this, macOS blocks the new binary until it is allowed in System Settings →
+Privacy & Security:
 
 ```sh
-export HOMEBREW_CASK_OPTS="--no-quarantine"
+unquarantine-claude-codex() {
+ local bin file
+ for bin in claude codex; do
+  file="$(readlink -f "$(command -v "$bin")")"
+  if xattr -p com.apple.quarantine "$file" >/dev/null 2>&1; then
+   xattr -d com.apple.quarantine "$file" && echo "unquarantined $bin"
+  else
+   echo "$bin already clean"
+  fi
+ done
+}
 ```
+
+The prompt appears because both binaries are signed with a Developer ID but not notarized by Apple
+(`spctl -a -vv -t execute <binary>` reports `rejected, source=Unnotarized Developer ID`), and
+Gatekeeper rejects un-notarized files that carry the quarantine flag.
 
 ### Pinned files in VS Code
 

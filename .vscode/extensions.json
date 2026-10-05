@@ -29,10 +29,10 @@
         "cweijan.vscode-office",
         "samuelcolvin.jinjahtml",
         "hediet.vscode-drawio",
-        "sitoi.ai-commit",
-        "eamodio.gitlens"
-        // "openai.chatgpt",
-        // "detachhead.basedpyright",
-        // "sst-dev.opencode",
+        "sitoi.ai-commit"
+        // "eamodio.gitlens", // Most features are already covered by builtin or gitlab, github plugins
+        // "openai.chatgpt", // Using opencode for chatgpt models for now
+        // "detachhead.basedpyright", // Using pylance instead in vanilla vscode
+        // "sst-dev.opencode", // Doesn't support opencode v2 yet
     ]
 }

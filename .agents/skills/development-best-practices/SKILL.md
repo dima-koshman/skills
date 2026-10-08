@@ -175,7 +175,8 @@ worktree session is gone.
    ```
 
 Leave the worktree directory in place when you are done. Stale directories under `.worktrees/` are
-harmless; they get cleaned up in batch (see below), not at the end of each task.
+harmless; they get cleaned up in batch (see "Prune landed worktrees and branches"), not at the
+end of each task.
 
 ## Working in the primary checkout while worktrees are live
 
@@ -209,52 +210,48 @@ branch.
 If `main` moved under you mid-task, re-run verification before claiming anything passes — the
 earlier results describe a tree that no longer exists.
 
-## Prune merged/deleted local branches
+## Prune landed worktrees and branches
 
-Over time, local branches pile up after their PRs/MRs are merged and the remote
-branch is deleted. Delete them with:
-
-```bash
-bash scripts/prune-merged-branches.sh            # delete gone branches
-bash scripts/prune-merged-branches.sh --dry-run  # preview only
-```
-
-**Agent safety rule: always `--dry-run` first, then eyeball the list before the real run.**
-`-D` is a force delete, so git's "refuse unmerged" guard is off by design (needed to catch
-squash-merges). The `[gone]` marker means "remote branch was deleted after prune" — in the normal
-workflow (create local branch → push → merge & delete on the host, no renames, no extra local
-commits after merge) that always equals "safely merged." But if the dry-run list contains anything
-you don't recognize as a merged feature branch — a branch you never pushed, one with local-only
-work, or an unexpectedly large set (a sign the remote was renamed/removed) — **stop and confirm
-with the user** instead of deleting. Deletions are recoverable via `git reflog` for a while.
-
-Key facts:
-
-- **Reliable signal is `[gone]`, not `--merged`.** `git branch --merged main` misses
-  **squash-merged** branches (no commit-ancestry link). The script instead runs
-  `git fetch --prune` and deletes any local branch whose upstream is `[gone]` — the
-  marker git sets once the remote-tracking ref is pruned.
-- **Host-agnostic.** Uses only git plumbing (no `gh`/`glab`/API calls), so it works
-  with GitHub, GitLab, Bitbucket, or any remote unchanged.
-- Skips the current branch and prunes stale worktrees afterward.
-- Deletions are recoverable via `git reflog` for a while.
-
-### Clean up merged worktrees
-
-`git worktree prune` only drops metadata for directories that are already gone — it never deletes a
-worktree that still exists on disk. So worktrees for merged branches accumulate under `.worktrees/`.
-That is harmless, and there is no need to tidy up at the end of each task; clear them in batch when
-convenient.
-
-List them, then remove the ones whose work has landed:
+Worktrees and local branches pile up after their work lands. Clear them in batch when convenient,
+between tasks — there is no need to tidy up at the end of each one:
 
 ```bash
-git worktree list
-git worktree remove .worktrees/<dir>   # add --force if the tree has stray untracked files
+python3 scripts/prune_merged_branches.py --dry-run  # preview only
+python3 scripts/prune_merged_branches.py            # remove landed worktrees, delete landed branches
 ```
 
-A branch cannot be deleted while a worktree still has it checked out, so remove the worktree before
-running the prune script — otherwise its branch survives as a leftover.
+A branch has **landed** when it is merged into the integration branch (whatever the primary
+checkout has checked out, normally `main`), or when its upstream is `[gone]`. The script runs
+`git fetch --prune`, removes the landed linked worktrees, deletes the landed branches that are no
+longer checked out, and finishes with `git worktree prune`. It never touches the primary checkout
+or the worktree it runs from.
+
+**Git's own guards do the safety work:**
+
+- `git worktree remove` refuses a worktree with modified or untracked files. The script keeps it,
+  keeps its branch, and prints git's reason.
+- `git branch -d` refuses an unmerged branch. Git also refuses to delete any branch that a
+  worktree still has checked out — which is why worktrees are removed first.
+- Uncommitted work lives in the worktree directory, not in the branch, so deleting a branch never
+  loses it.
+
+**What the guards do not cover:**
+
+- **Ignored files are deleted with the worktree.** `.env`, `.venv` and caches do not count as
+  dirty. In a worktree made by `create_worktree.sh` that is harmless: `.env` is a copy of the
+  primary checkout's and the rest is rebuilt.
+- **A fresh branch counts as merged.** A worktree created but not yet committed to points at a
+  commit already in `main`, so a clean one is removed. No work is lost, but an agent still planning
+  in it loses its directory — hence "between tasks".
+- **`[gone]` branches are force-deleted (`-D`).** A squash merge leaves no ancestry for `-d` to
+  check, so `[gone]` is the signal instead: in the normal workflow (push → merge and delete on the
+  host) it means "merged". **Agent safety rule: always `--dry-run` first.** If the list contains a
+  branch you don't recognize as landed — one with local-only commits after the merge, or an
+  unexpectedly large set (a sign the remote was renamed or removed) — **stop and confirm with the
+  user** instead of running it. Deleted branches are recoverable via `git reflog` for a while.
+
+The script is host-agnostic: it uses only git, no `gh`/`glab`/API calls, so it works with GitHub,
+GitLab, Bitbucket, or any remote unchanged.
 
 ### Wiring it into a project
 
@@ -264,14 +261,14 @@ here rather than copied into each repo.
 - **VSCode task** (`.vscode/tasks.json`):
   ```json
   {
-    "label": "Prune merged branches",
-    "command": "bash /Users/dima/Projects/dima/.agents/skills/development-best-practices/scripts/prune-merged-branches.sh"
+    "label": "Git: prune landed worktrees and branches",
+    "command": "python3 /Users/dima/Projects/dima/.agents/skills/development-best-practices/scripts/prune_merged_branches.py"
   }
   ```
 - **Git alias** (terminal convenience, per-clone):
   ```bash
-  git config alias.prune-gone '!bash /Users/dima/Projects/dima/.agents/skills/development-best-practices/scripts/prune-merged-branches.sh'
-  # then: git prune-gone   (or: git prune-gone --dry-run)
+  git config alias.prune-landed '!python3 /Users/dima/Projects/dima/.agents/skills/development-best-practices/scripts/prune_merged_branches.py'
+  # then: git prune-landed   (or: git prune-landed --dry-run)
   ```
 
 ## Container timezone

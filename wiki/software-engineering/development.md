@@ -9,6 +9,9 @@ not tutorials.
 
 ## Map
 
+- **Architecture** — [architectural patterns](architecture/architectural-patterns.md)
+  for component boundaries, communication styles, and trade-offs, with selected
+  chapters from Architectural Metapatterns and complementary primary sources.
 - **Learning** — [LabEx](learning/labex.md) for practical exercises and
   [Linux Foundation Training](learning/linux-foundation.md) for a structured
   Kubernetes introduction.

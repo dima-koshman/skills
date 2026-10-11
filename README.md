@@ -283,6 +283,8 @@ alias gs='git status'
 alias gp='git pull'
 alias gm='git checkout main'
 alias da='direnv allow'
+alias bu='brew update && brew upgrade --yes'
+alias nu='npm update -g'
 ```
 
 Alias for preferred IDE launcher ():

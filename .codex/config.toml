@@ -3,10 +3,3 @@ model_auto_compact_token_limit_scope = "total"
 
 [mcp_servers.logfire]
 url = "https://logfire-eu.pydantic.dev/mcp"
-
-[mcp_servers.mcp-playwright]
-command = "npx"
-args = [
-    "-y",
-    "@playwright/mcp@latest",
-]

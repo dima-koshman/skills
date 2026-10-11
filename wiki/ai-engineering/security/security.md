@@ -35,6 +35,6 @@ agent action authenticated, authorized, least-privileged, and logged.
 
 ## Resources
 
-- [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)
+- [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) — [download the report (PDF)](https://genai.owasp.org/download/52117/?tmstv=1765059207).
 - [State of Agentic AI Security and Governance v2.01 — OWASP](https://genai.owasp.org/resource/state-of-agentic-ai-security-and-governance/)
-- [Zero Trust for AI agents — Anthropic](https://claude.com/blog/zero-trust-for-ai-agents)
+- [Zero Trust for AI agents — Anthropic](https://claude.com/resources/articles/zero-trust-for-ai-agents) — online article; the linked resource is HTML, not a PDF download.

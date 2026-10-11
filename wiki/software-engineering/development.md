@@ -12,6 +12,10 @@ not tutorials.
 - **Architecture** — [architectural patterns](architecture/architectural-patterns.md)
   for component boundaries, communication styles, and trade-offs, with selected
   chapters from Architectural Metapatterns and complementary primary sources.
+- **Distributed systems** — [reading map](distributed-systems/distributed-systems.md)
+  for Designing Data-Intensive Applications, Google File System, MapReduce,
+  Bigtable, Dynamo, Raft, and Spanner, with publication versions, selected
+  sections, and public download links.
 - **Learning** — [LabEx](learning/labex.md) for practical exercises and
   [Linux Foundation Training](learning/linux-foundation.md) for a structured
   Kubernetes introduction.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:4dbd27a462bb93b747f3a25e29e6655fb4655d75f14f32df4ae895271d1b79f7",
+  "pageVersion": "sha256:a4c2f809d46d4e5058e0ad1291f74b12508c3b02d08b64b59959930bff101834",
   "claims": [
     {
       "id": "claim_af94c9dde28740abb66797bc74b36888",
@@ -14,11 +14,11 @@
     },
     {
       "id": "claim_66f8d8a28ef949f1a61b6822b0fece98",
-      "statement": "The software-engineering subject map covers general software development and distributed-systems concerns, separate from model-specific AI engineering, and organizes navigation into learning, reliability, communication, frontend, and infrastructure.",
+      "statement": "The software-engineering subject map covers general software development and distributed-systems concepts, kept separate from model-specific AI engineering, and organizes navigation into architecture, distributed systems, learning, reliability, communication, frontend, and infrastructure.",
       "evidence": [
         {
-          "resource": "repo://wiki/software-engineering/development.md#L3-L26",
-          "version": "repo-lines-v1:sha256:5f0c3c70c73dc50bf1be77f54d26dc8a2723cf9a71b6800d112778ce3208c709:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4OTJiMDU1NGVlMzhkYjJiODVlMmM1NDJkNjZkZDY1MzQxMmFlNDRhOTIwNjc3OGZlYzA0NjA0YTc2ZGFkYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MmEwMDgzMjg0NzgwNDdlODY3MzdjYjZmYjgxZTMyOTVhNTRmOGM3ZmUwZDY4ZjVhY2Y2YmJkN2Y2ZGJhYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU0NzQ2MTBmODAyYjAwMWUyMWE5OTFjOTRkYWRjNjJkZWUxZGUwZWU0NWM2YWZjMzdhNmJlMTc2OGQ1YTQwMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://wiki/software-engineering/development.md#L3-L33",
+          "version": "repo-lines-v1:sha256:4870c7982e116f540e7b6a567a5b3395b46d7c1803afb5679de43139b5ab3d51:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4OTJiMDU1NGVlMzhkYjJiODVlMmM1NDJkNjZkZDY1MzQxMmFlNDRhOTIwNjc3OGZlYzA0NjA0YTc2ZGFkYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MmEwMDgzMjg0NzgwNDdlODY3MzdjYjZmYjgxZTMyOTVhNTRmOGM3ZmUwZDY4ZjVhY2Y2YmJkN2Y2ZGJhYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU0NzQ2MTBmODAyYjAwMWUyMWE5OTFjOTRkYWRjNjJkZWUxZGUwZWU0NWM2YWZjMzdhNmJlMTc2OGQ1YTQwMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -38,21 +38,21 @@
     },
     {
       "id": "claim_fc08261124454d41a8ae603d7b8ca70a",
-      "statement": "The quickstart routes readers through both the AI-engineering map and the software-engineering map because the source maps keep model-specific AI material distinct from general software and distributed-systems concerns while offering complementary routes across agents, context, tools, observability, security, learning, reliability, communication, frontend, and infrastructure.",
+      "statement": "The quickstart routes readers through both the AI-engineering map and the software-engineering map because the source maps keep model-specific AI material distinct from general software and distributed-systems concepts while providing complementary routes through models, context, tools, enterprise boundaries, agents, harnesses, development, observability and evaluation, security, architecture, distributed systems, learning, reliability, communication, frontend, and infrastructure.",
       "evidence": [
         {
           "resource": "repo://wiki/ai-engineering/ai-engineering.md#L5-L34",
           "version": "repo-lines-v1:sha256:290818fe89b8fbc5d2978c94e26ec08704f5751a788b38f5d46d40ba3d9bad65:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNDE1MDE3NWIzMzk4MTE0M2E4YTk1ZTJlZWYxYmUyYTRjMDczYzQ0YmVkOGVkYzhiMGNhYzIwOWI0ZDc4NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MTFjNDliNmYyZmM2NjlkMzE3ZDJiMmY0MDE4MDBiMDVkNzJmODZhNDBjMmZmMDU5NjUwMDg2ODkwNzhhNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmMjdjNGUzNjY2YmEwYmRiNzlkNWQyYTIwMjk4YzE0MTc4NGM2M2U1ZjJkMDU4MzJiMmJiMDA5NDM1ZmJkMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
         },
         {
-          "resource": "repo://wiki/software-engineering/development.md#L3-L26",
-          "version": "repo-lines-v1:sha256:5f0c3c70c73dc50bf1be77f54d26dc8a2723cf9a71b6800d112778ce3208c709:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4OTJiMDU1NGVlMzhkYjJiODVlMmM1NDJkNjZkZDY1MzQxMmFlNDRhOTIwNjc3OGZlYzA0NjA0YTc2ZGFkYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MmEwMDgzMjg0NzgwNDdlODY3MzdjYjZmYjgxZTMyOTVhNTRmOGM3ZmUwZDY4ZjVhY2Y2YmJkN2Y2ZGJhYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU0NzQ2MTBmODAyYjAwMWUyMWE5OTFjOTRkYWRjNjJkZWUxZGUwZWU0NWM2YWZjMzdhNmJlMTc2OGQ1YTQwMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://wiki/software-engineering/development.md#L3-L33",
+          "version": "repo-lines-v1:sha256:4870c7982e116f540e7b6a567a5b3395b46d7c1803afb5679de43139b5ab3d51:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4OTJiMDU1NGVlMzhkYjJiODVlMmM1NDJkNjZkZDY1MzQxMmFlNDRhOTIwNjc3OGZlYzA0NjA0YTc2ZGFkYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MmEwMDgzMjg0NzgwNDdlODY3MzdjYjZmYjgxZTMyOTVhNTRmOGM3ZmUwZDY4ZjVhY2Y2YmJkN2Y2ZGJhYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU0NzQ2MTBmODAyYjAwMWUyMWE5OTFjOTRkYWRjNjJkZWUxZGUwZWU0NWM2YWZjMzdhNmJlMTc2OGQ1YTQwMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
     {
       "id": "claim_552a853978044cb181020d0b1eb97ec2",
-      "statement": "The software-engineering route follows the development map's concern categories: learning, reliability, communication through Protocol Buffers and gRPC, frontend, and infrastructure through service meshes and data, control, and management planes.",
+      "statement": "The software-engineering route follows the development map's concern categories: architecture and distributed systems; learning; reliability through SRE, toil, and simplicity; communication through Protocol Buffers and gRPC; frontend through htmx; and infrastructure through service meshes and data, control, and management planes.",
       "evidence": [
         {
           "resource": "repo://wiki/software-engineering/communication/grpc.md#L7-L36",
@@ -63,8 +63,8 @@
           "version": "repo-lines-v1:sha256:80b088a548fa2775de72789663769e901b1064433477b67062216ecf224b8c37:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjMTNiMDM5NmI2YTFiMWY0MmM1MjU2YmFiNDE2NGE2NDk4MDNkOTQ1ZThkMWQ3MjM0NGQ2Y2ZlZDk1ZTQ4MjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzNDhiZjJiZjUyYjM1OTQ2ZGI3ZjY1NjM3YTliZmRmNTZmOTE1OWI2ZjY3YTBkOTMwMDQ0MmYwODM1YTIyZGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwNjcyOTU4YmVhNmYwMGZiMTFlMWVmZDdiMzlkYmRmYTU0NDM4MDk4NjhhMTVkNThhZDQxYmU3OTY2ZmJiNzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkNDFhZTAwYmU3MjgwZjIyMDRlNjFhZjI0YTBjMTI1MDA1NGZjODYxNjA0MmU3ZTZhMGUxZGI2NTNkOGNhY2YifQ"
         },
         {
-          "resource": "repo://wiki/software-engineering/development.md#L10-L26",
-          "version": "repo-lines-v1:sha256:6ea02d8df34de431ea32d38a42648535cdc9d84dd6e9632811ccdff87f28098f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNDE1MDE3NWIzMzk4MTE0M2E4YTk1ZTJlZWYxYmUyYTRjMDczYzQ0YmVkOGVkYzhiMGNhYzIwOWI0ZDc4NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MmEwMDgzMjg0NzgwNDdlODY3MzdjYjZmYjgxZTMyOTVhNTRmOGM3ZmUwZDY4ZjVhY2Y2YmJkN2Y2ZGJhYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0OGU0M2ZhYmRhNzlkZDdlN2FiODE2YzMyZTE0MjIyM2E4ZTc2NmY5YTk5MTlkZmRjMzkwNTFlY2Y0ZjBiYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://wiki/software-engineering/development.md#L10-L33",
+          "version": "repo-lines-v1:sha256:52ebf8d6dfded8065881c872bf8fa1370c2d7df6ad0021a2779e55410b342096:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNDE1MDE3NWIzMzk4MTE0M2E4YTk1ZTJlZWYxYmUyYTRjMDczYzQ0YmVkOGVkYzhiMGNhYzIwOWI0ZDc4NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MmEwMDgzMjg0NzgwNDdlODY3MzdjYjZmYjgxZTMyOTVhNTRmOGM3ZmUwZDY4ZjVhY2Y2YmJkN2Y2ZGJhYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0OGU0M2ZhYmRhNzlkZDdlN2FiODE2YzMyZTE0MjIyM2E4ZTc2NmY5YTk5MTlkZmRjMzkwNTFlY2Y0ZjBiYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         },
         {
           "resource": "repo://wiki/software-engineering/infrastructure/service-mesh.md#L5-L19",
@@ -103,10 +103,64 @@
           "version": "repo-lines-v1:sha256:ce551253ebed3e8e55732cb5bb9a4f92a61c1870ab676386ffc41d3ebc709d80:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDk5ODMxYjQzYWRhYjg3ZmIxYTU3MzQxOTQ5OGRhODg5ZDNmN2VjYjA4OGRjYzFlZTFmZTVjYTc5YjZmZjZhYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTVjNDFlZWQwMzMzOTVjOTUzYWU2ZWYzYTc2NmZkZjE0ZjljMTkyOTRkYzY3ZDBjZGMwN2U0YWJlYThiYjE5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjNkMzY4MWI1N2UwYTI3MzQ2ZjkxMmViYTE5N2JmNTE1Y2M5MDQ4MjBhNTI5ZDQyNmE4ZTg3NDA5ZDFlOTIzNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
         }
       ]
+    },
+    {
+      "id": "claim_f80f47f733fc4b419ff3d70764dadd21",
+      "statement": "The quickstart separates AI-engineering navigation from general software-engineering navigation: AI routes through agent coordination, execution architecture, model selection, security and evaluation, and AI-native delivery, while software engineering routes through architecture and change practice, distributed-systems foundations, reliability and learning, and the frontend boundary.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/ai-engineering.md#L5-L34",
+          "version": "repo-lines-v1:sha256:290818fe89b8fbc5d2978c94e26ec08704f5751a788b38f5d46d40ba3d9bad65:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNDE1MDE3NWIzMzk4MTE0M2E4YTk1ZTJlZWYxYmUyYTRjMDczYzQ0YmVkOGVkYzhiMGNhYzIwOWI0ZDc4NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MTFjNDliNmYyZmM2NjlkMzE3ZDJiMmY0MDE4MDBiMDVkNzJmODZhNDBjMmZmMDU5NjUwMDg2ODkwNzhhNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmMjdjNGUzNjY2YmEwYmRiNzlkNWQyYTIwMjk4YzE0MTc4NGM2M2U1ZjJkMDU4MzJiMmJiMDA5NDM1ZmJkMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/development.md#L3-L33",
+          "version": "repo-lines-v1:sha256:4870c7982e116f540e7b6a567a5b3395b46d7c1803afb5679de43139b5ab3d51:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4OTJiMDU1NGVlMzhkYjJiODVlMmM1NDJkNjZkZDY1MzQxMmFlNDRhOTIwNjc3OGZlYzA0NjA0YTc2ZGFkYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MmEwMDgzMjg0NzgwNDdlODY3MzdjYjZmYjgxZTMyOTVhNTRmOGM3ZmUwZDY4ZjVhY2Y2YmJkN2Y2ZGJhYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU0NzQ2MTBmODAyYjAwMWUyMWE5OTFjOTRkYWRjNjJkZWUxZGUwZWU0NWM2YWZjMzdhNmJlMTc2OGQ1YTQwMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f8e8b7ed596d46b7bfe6fc0e51d29852",
+      "statement": "The cross-cutting route connects architecture and control flow, context and model concepts, AI-native workflow and reusable capabilities, provider and protocol integrations, distributed-systems boundaries, operations and risk, and provenance maintenance so a task can be followed across subject domains.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/ai-engineering.md#L5-L34",
+          "version": "repo-lines-v1:sha256:290818fe89b8fbc5d2978c94e26ec08704f5751a788b38f5d46d40ba3d9bad65:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjNDE1MDE3NWIzMzk4MTE0M2E4YTk1ZTJlZWYxYmUyYTRjMDczYzQ0YmVkOGVkYzhiMGNhYzIwOWI0ZDc4NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MTFjNDliNmYyZmM2NjlkMzE3ZDJiMmY0MDE4MDBiMDVkNzJmODZhNDBjMmZmMDU5NjUwMDg2ODkwNzhhNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmMjdjNGUzNjY2YmEwYmRiNzlkNWQyYTIwMjk4YzE0MTc4NGM2M2U1ZjJkMDU4MzJiMmJiMDA5NDM1ZmJkMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L7-L31",
+          "version": "repo-lines-v1:sha256:1d9577a3ed704433d7a9694f607732bceb5a5b62b92011aec2fe7d4f233c2390:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiZTlkOTQyYTNmYjE2MGI1MDFmM2JiMmYzNGM1NWU0MjMxODZjNzA1ZDA3Y2I3YWZlMDRiZGFmNGJhMTU0YzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1YzQxZWVkMDMzMzk1Yzk1M2FlNmVmM2E3NjZmZGYxNGY5YzE5Mjk0ZGM2N2QwY2RjMDdlNGFiZWE4YmIxOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliMDNjZTk5MzMyMjIxMWEyZjAxZjI2YWE1NmU2MmVjMmZiMDczYmU4M2RjZjdhMWM3ZTQ3NDMwYmU2ZGI3YTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L15-L35",
+          "version": "repo-lines-v1:sha256:de27830fd738377c5755718686dbae3d3e04d12d16b57ad072999c66f3981257:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmMjI2NWNlNGE2M2RmNDBiOGIxMDM0ZGQ4Yzc4MjE3MDMyZDliMDU0MTE0NjI5YTA5MGIxZTlkMTA3MTI0YzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNzUwNzc3NjhhNTBjYzE0MjVmNjA2OTk4OWI1NDA2Yzk0ZThmYzEwNTJkYjY0OWI4N2FlNDdiZDc2ZDU5NmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxY2VmNzFhMmQyNWZhNjZlODQ1YTUzM2ZiMzZjMjI3NWRmNDZkYmU2MGEyNjdmZjBkN2FjYWFmZGNlNjkzMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyOTYyM2FiNjUxZDNiOWRiMmE1MDYxODIxNTYxZTU4MzlhY2YxNTBkMzUyOGI1YmVmNDkzZjNiMjA3NjFjMWEifQ"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/development.md#L3-L33",
+          "version": "repo-lines-v1:sha256:4870c7982e116f540e7b6a567a5b3395b46d7c1803afb5679de43139b5ab3d51:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4OTJiMDU1NGVlMzhkYjJiODVlMmM1NDJkNjZkZDY1MzQxMmFlNDRhOTIwNjc3OGZlYzA0NjA0YTc2ZGFkYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MmEwMDgzMjg0NzgwNDdlODY3MzdjYjZmYjgxZTMyOTVhNTRmOGM3ZmUwZDY4ZjVhY2Y2YmJkN2Y2ZGJhYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU0NzQ2MTBmODAyYjAwMWUyMWE5OTFjOTRkYWRjNjJkZWUxZGUwZWU0NWM2YWZjMzdhNmJlMTc2OGQ1YTQwMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b9015394b9134ef8b0af2feee986dcbd",
+      "statement": "The quickstart directs readers to treat synthesized pages as navigational interpretations rather than implementations or independent verification, and to check source notes, current code, focused tests, Git history, and runtime evidence before making engineering or operational changes.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L28-L31",
+          "version": "repo-lines-v1:sha256:ce551253ebed3e8e55732cb5bb9a4f92a61c1870ab676386ffc41d3ebc709d80:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDk5ODMxYjQzYWRhYjg3ZmIxYTU3MzQxOTQ5OGRhODg5ZDNmN2VjYjA4OGRjYzFlZTFmZTVjYTc5YjZmZjZhYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTVjNDFlZWQwMzMzOTVjOTUzYWU2ZWYzYTc2NmZkZjE0ZjljMTkyOTRkYzY3ZDBjZGMwN2U0YWJlYThiYjE5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjNkMzY4MWI1N2UwYTI3MzQ2ZjkxMmViYTE5N2JmNTE1Y2M5MDQ4MjBhNTI5ZDQyNmE4ZTg3NDA5ZDFlOTIzNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/context/openwiki.md#L7-L18",
+          "version": "repo-lines-v1:sha256:53b19fe9648e4b0a8943b26dbe9e4174ae7b2e262dd6520033572d919da26353:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiZTlkOTQyYTNmYjE2MGI1MDFmM2JiMmYzNGM1NWU0MjMxODZjNzA1ZDA3Y2I3YWZlMDRiZGFmNGJhMTU0YzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2OWU5Njc4YzMyZDEwODEwMjkwOGQ0ZmMyYmQ1OWE5OWVmZjExZWY4MzhmMDg0ZGIzY2ExZDQ1NzlkOTg4MTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliMDNjZTk5MzMyMjIxMWEyZjAxZjI2YWE1NmU2MmVjMmZiMDczYmU4M2RjZjdhMWM3ZTQ3NDMwYmU2ZGI3YTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzNjgzYTIzNGZlMzQ2MzY0YzYzMDk4OWNhYjMzYTk3NjRkY2Q0YTE5NmRmN2FlNDg2NzY1NzI5Y2ZlMjRkM2MifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L15-L35",
+          "version": "repo-lines-v1:sha256:de27830fd738377c5755718686dbae3d3e04d12d16b57ad072999c66f3981257:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmMjI2NWNlNGE2M2RmNDBiOGIxMDM0ZGQ4Yzc4MjE3MDMyZDliMDU0MTE0NjI5YTA5MGIxZTlkMTA3MTI0YzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNzUwNzc3NjhhNTBjYzE0MjVmNjA2OTk4OWI1NDA2Yzk0ZThmYzEwNTJkYjY0OWI4N2FlNDdiZDc2ZDU5NmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxY2VmNzFhMmQyNWZhNjZlODQ1YTUzM2ZiMzZjMjI3NWRmNDZkYmU2MGEyNjdmZjBkN2FjYWFmZGNlNjkzMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyOTYyM2FiNjUxZDNiOWRiMmE1MDYxODIxNTYxZTU4MzlhY2YxNTBkMzUyOGI1YmVmNDkzZjNiMjA3NjFjMWEifQ"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-10-03T18:46:29.040Z"
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-11T10:13:45.493Z"
   }
 }

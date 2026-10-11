@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:5180790e23eeee5703895d4f915c5d638f562350e06936e92cc4deca0cda6e55",
+  "pageVersion": "sha256:6c363b4616ad6c4b717a65dffddc4a80c988b03729cc9f229495182a71d6d121",
   "claims": [
     {
       "id": "claim_9f5931820a594ffb915edf0e586c5e1a",
@@ -159,10 +159,64 @@
           "version": "repo-lines-v1:sha256:837bc91bf39ab9a91a7e73ee007bf3d7875673d13f36affa76b2777ab635916a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiMGRkY2RhMGIyNGE2OGJkNWQwYTY5ZmRjNjhkMWQwZTBkYWU0NDFiMDRiMDVlNmRhZmY5YThjYmZjZGEzZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkYmYxMGNlZWM5ZTlhZmNjOTk5MmI4YzFlMGRkMTg5YzE1ZTNlM2VlMDRkOGQ4Mzc2ZDU4NTFhNmEyODIyZGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiYzMzNGNlY2E2NmUwYzE2MWM4ZWQ0N2E3YjY5NjJhNTM4MWY4MGMzMGM0MjhmZWE0MDZhZTQ4MzVhYzM5NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_d0a57c14eb59439db236c29e90d24d57",
+      "statement": "The SRE source note treats reliability as a target rather than an absolute maximum: teams measure user experience with an SLI, set an SLO, and use the allowed shortfall as an error budget that permits change while available and shifts emphasis toward stability when spent; the target and consequences must be explicit for the service.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/reliability/sre.md#L13-L21",
+          "version": "repo-lines-v1:sha256:21934fba4a26fbd3189e4002928eb6b1e62eb8cdede386845829f6735da1d69a:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTYyMjBjOTI0ZWJiN2FmYjMzNDA1ODE4YzUzMDZkNTczYjY3NTg3ZThjZGNhYzcyMzAxNTcyZDdkYjllNDU1OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTM0YmYzOWZhYTJkMDk4MGQyMDJiZjRiOTk0Yjg3Mzg2M2ZlY2IxODE1NDMxZDRmMWY5YjI1YWZhMWFiN2VmZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjZiZTA5MDRjMjhjN2VmNzhkZjk3OGM5ZDg3NTg5YjViMmQ5ZTAwZDFlYTRhYjdjZjQwOTRkOWY5MjAyY2Q3MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTIyNzk5YTNhZmE2ZmYxMGE3ZWJkMjNkZmMyYjJiOWY1NmMyMjZhNGE0ODdhYzI1NDE4OWQwY2RlNTMxY2UxZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_642785cca1d444169d572b771d30bb51",
+      "statement": "The SRE source note recommends monitoring user-visible latency, traffic, errors, and saturation, paging only on actionable problems, and using small reproducible gradual releases plus blameless postmortems to make failures attributable and improve systems and processes.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/reliability/sre.md#L27-L35",
+          "version": "repo-lines-v1:sha256:c8fe9fe754fec99b8f4452246ea6bb227a1621cfc94adb26664e62cc3e0e3dfe:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTYwYmQ0NTczYjU5YmQwYzIyOThmOGUzZWZjMTdjNjg0Y2E1YWYzZDg4NDUyM2UyZWZmOTMyMDFiMjNlY2RiYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGRlNzQxYmVhZjk1YmVmNzg1ZTdmNmRmMzVjYTQyZmI0NGU5ZTM0ZTA2OTQ4MDhhNTQ3ODUyZTE1MGIxZjA0NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGMwNzQ1ZDUzYjMxZDBmN2Y1Y2UyOTdhMGNkZTM0OTk4ZDhjNWYyZThiNWJmMjZjYTAzYTRjNjU4MTRmYTk2YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzg1MjZjNjlkODAyNTM1ZjRkOTliZmU2M2YxZTAzZTMxZTczMDBmY2QxZTA5ZDI0MDAyNjEwNmIxYTRiZmU1YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_73a767d2408a4450ac4d78f6a631635f",
+      "statement": "Toil is operational work that is manual, repetitive, automatable or removable through better design, tactical and interrupt-driven, lacking enduring value, and approximately O(n) with service size, traffic, or users; overhead and one-off grungy work that leaves lasting value are distinct categories.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/reliability/toil.md#L13-L29",
+          "version": "repo-lines-v1:sha256:1f7c5fc8617f5ad4c620c6353d982e80feefe8340cacd6ea0cbef36991881296:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3ZjFhMWQ4ZDZlNjZjYmU4MzM5YWE4MWM3ZjYyOTk4YzU5ODhkNTUyNGM0YWNjMDExM2UzZWQ2OTliMWJmMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5NTQzZTkyMDc0Yzc3NTFlMGY1MTUyMTQwNTI1MjZkZDg5OGU1YzFiZGE5MzZmMmQyNzc0MDM5MTM5ODk4MmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyYjVkODVkZjE2MmRjOWZjZGI3YWY5OGU2ZTdlNzNkZTA1NTBmYzMwYTk4OTY4NWU2NjE4OWI0YWY2NWJlNzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjNGViMzliMDU5YzEwOWNjZTFhNTlhNTRlODI1ODAyNTdkOTQ1MjBiNzIxMDFhNzhmZTQzN2NlNmUyMDM1MGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ea62d964331147a181fd71209ba746a0",
+      "statement": "Google's SRE guidance caps toil below about 50% of each engineer's time averaged over quarters, reserving the remainder for engineering that reduces future toil or adds features; averages can hide individuals carrying much higher loads, and manually triggering a script remains toil.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/reliability/toil.md#L31-L54",
+          "version": "repo-lines-v1:sha256:c449457e3c525a5546ab87bf292645b3210613cee388ee4013799ccab78eda33:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlZTVhNDA3NzY2YzZlZjEzZGFjMTJlNTVhZDc0YzE5NjU3OTk3M2Q3MzRhYzJmNDZmZThiZDBlMzkyOGNiMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzNzdjZmVkYWIxNmFmZjkxZTk4MjUxYTM5N2ViMjg1YmM2ZGQ2MjkzZDZhZTVjOGMwNjI3MDI3YTgzMTQxYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwYWVmNzRkY2FiNDBkNmMzYWY0YWM4YmFjZDE5ODdhZGNmMWQ1MDQyODk5ZjRiYThhMzQ3NjhjNGZiM2M4YWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkNWI0NmM2MTFhYjExMDc0NWE0MGMxMjlmNDY3NTI3NWU2YTI3MmJiZDg1ZDk3Zjk1MDU2MzI5OTliNmVlYjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_36094b032ae94f80ac56649325a9698f",
+      "statement": "Toil automation should detect and cluster recurring production failures, correlate them with source and deploys, act through a human review gate, use quality evaluations alongside error signals for AI-backed services, and track recurrence so failures become regression examples; noisy or speculative output can recreate toil as review work.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/reliability/toil.md#L105-L114",
+          "version": "repo-lines-v1:sha256:67a1994c0dcee3dee15bbcbec9392a38cdf6fcc1e98dd3a5b1ea33b2f801544a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0YTI3NWU5ZjhmNDA5MGMzNTEzMjYzOWY0OTYxNTUxZGY2N2NhZTU0NzUwMzk5MjY0YjMzMTk1OGUxNTE3NWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyMmY5NjU1OWViNDU1YzYwYWI5ZTE5OTJlNjVmMzkyZWVmMWQ3YWZjNGNjYjk1NTdiYmE3MTM2YmE1MmZhOTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5MTM0NjNmNzZlMTI1NjczYWM0NmIxZWYzMzlhMGM0MmU4MGJhNjY0NGYxZjg3Yzk1NmJkM2JkYTQxNjExY2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/reliability/toil.md#L67-L83",
+          "version": "repo-lines-v1:sha256:9234f8b443cb87cc3de2daba4080beed7b93d3c525e089b8bf8f4bd84cc69654:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0YWFiMjJmYzllNzIyMWY1Yzc2NzJmOGFlMjc0MzNlOGI5ZGJhOTg3OGVhOTVlYTNlNjkwZjYzNDU4Y2FmMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljMjMxYTU4OGY0M2EzYmQzZGI0NzZhMWY5NmVmNTNlOWQ5N2Q5NjJlMTJjZTg0YWM5YjM3YzcwZjNlYTRiMDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwODk4YzVkN2MyOWE1MDE3M2E4MDYzZDAyZTY3Mzk3MDkxNWQwZGVmOTgxZTFlZDkzYjg0ZTM5NzllNjUxYzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhYjBmOGFhMDRjMjdiN2I3ZTVlNmQxOTdiNGY5NzFiYmJhMTBmNTU1YWEwZTcyMjRkMDIwMGEzMGE1YmE5YWYifQ"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-10-03T16:27:35.648Z"
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-11T10:13:45.493Z"
   }
 }

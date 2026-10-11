@@ -1,6 +1,13 @@
 {
   "schemaVersion": 1,
   "pages": {
+    "/openwiki/architecture/agent-ecosystem.md": {
+      "gitHead": "bcea4a8a9f1f08103cc7e3ba0d94e54605911d6b",
+      "sourceFingerprint": "sha256:41937a7372283efae6a64af9615db091ee5720ae798daebc422afd4f52d851d8",
+      "pageVersion": "sha256:d9bc0808928099a66ecc0bc7b672df95e89009bd5e4a6cc38f0e45d4ce9ebac4",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "42b17207-162d-4f36-b0d3-64800295fb8f"
+    },
     "/openwiki/architecture/agent-systems.md": {
       "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
       "sourceFingerprint": "sha256:5de3a205057dbdb0f9585f0e8edbd25ab9a39eec1a68441b6e7e390739b3adb4",
@@ -21,6 +28,13 @@
       "pageVersion": "sha256:52f6962340198906a144b68a0319cc9b706630a41e9b4f6ec23f2b32dcc6cccd",
       "completedBy": "openwiki/0.7.0",
       "completedRunId": "6407606e-306d-44ea-a739-14d1adae0e99"
+    },
+    "/openwiki/concepts/model-landscape.md": {
+      "gitHead": "bcea4a8a9f1f08103cc7e3ba0d94e54605911d6b",
+      "sourceFingerprint": "sha256:41937a7372283efae6a64af9615db091ee5720ae798daebc422afd4f52d851d8",
+      "pageVersion": "sha256:b8ad2b86c3d66c84be191a9adcb3e221a104e70789e0b7ff247b7c6ee14e5ac1",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "42b17207-162d-4f36-b0d3-64800295fb8f"
     },
     "/openwiki/concepts/skills-and-tooling.md": {
       "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
@@ -44,18 +58,25 @@
       "completedRunId": "bbf90ab0-92d9-4a7a-9c91-7d72af0ac415"
     },
     "/openwiki/operations/security-and-observability.md": {
-      "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
-      "sourceFingerprint": "sha256:5de3a205057dbdb0f9585f0e8edbd25ab9a39eec1a68441b6e7e390739b3adb4",
-      "pageVersion": "sha256:f85c6ef74b0f1a9fc356a5cf27478273be405ae80ce79624fce3e329f4a78378",
-      "completedBy": "openwiki/0.7.0",
-      "completedRunId": "bbf90ab0-92d9-4a7a-9c91-7d72af0ac415"
+      "gitHead": "bcea4a8a9f1f08103cc7e3ba0d94e54605911d6b",
+      "sourceFingerprint": "sha256:41937a7372283efae6a64af9615db091ee5720ae798daebc422afd4f52d851d8",
+      "pageVersion": "sha256:8f7a2ebdf1480d0e4cffe6f6d513b0230c69fea303ce45084ff9d8244e78f642",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "42b17207-162d-4f36-b0d3-64800295fb8f"
     },
     "/openwiki/quickstart.md": {
-      "pageVersion": "sha256:4dbd27a462bb93b747f3a25e29e6655fb4655d75f14f32df4ae895271d1b79f7",
-      "completedBy": "openwiki/0.7.0",
-      "completedRunId": "b97a37b1-9f33-4ea0-9457-a02f509aa4ed",
-      "gitHead": "a9845166438033eb9d28a9f9c1e17a8ebb7748e3",
-      "sourceFingerprint": "sha256:23865968645bab7a7d1ae34ca6f527cb88d33e2e0621358c0494238d9c26f208"
+      "gitHead": "bcea4a8a9f1f08103cc7e3ba0d94e54605911d6b",
+      "sourceFingerprint": "sha256:41937a7372283efae6a64af9615db091ee5720ae798daebc422afd4f52d851d8",
+      "pageVersion": "sha256:a4c2f809d46d4e5058e0ad1291f74b12508c3b02d08b64b59959930bff101834",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "42b17207-162d-4f36-b0d3-64800295fb8f"
+    },
+    "/openwiki/software-engineering/architecture-and-development.md": {
+      "gitHead": "bcea4a8a9f1f08103cc7e3ba0d94e54605911d6b",
+      "sourceFingerprint": "sha256:41937a7372283efae6a64af9615db091ee5720ae798daebc422afd4f52d851d8",
+      "pageVersion": "sha256:e7414b909a8245214b9fd66552929e47e9d97ac65000a2f621dd169a100ad883",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "42b17207-162d-4f36-b0d3-64800295fb8f"
     },
     "/openwiki/software-engineering/distributed-systems.md": {
       "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
@@ -64,12 +85,33 @@
       "completedBy": "openwiki/0.7.0",
       "completedRunId": "bbf90ab0-92d9-4a7a-9c91-7d72af0ac415"
     },
+    "/openwiki/software-engineering/distributed-systems/foundations.md": {
+      "gitHead": "bcea4a8a9f1f08103cc7e3ba0d94e54605911d6b",
+      "sourceFingerprint": "sha256:41937a7372283efae6a64af9615db091ee5720ae798daebc422afd4f52d851d8",
+      "pageVersion": "sha256:81904fce193ca280221d66a25fbb7c69a11b5d4cfa0863f693524f3b4805e162",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "42b17207-162d-4f36-b0d3-64800295fb8f"
+    },
+    "/openwiki/software-engineering/frontend/htmx.md": {
+      "gitHead": "bcea4a8a9f1f08103cc7e3ba0d94e54605911d6b",
+      "sourceFingerprint": "sha256:41937a7372283efae6a64af9615db091ee5720ae798daebc422afd4f52d851d8",
+      "pageVersion": "sha256:36ea8b22db33aac70c841f7084e79e819c5a843c2d134db503c335aa59b095bf",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "42b17207-162d-4f36-b0d3-64800295fb8f"
+    },
     "/openwiki/software-engineering/reliability-and-learning.md": {
-      "gitHead": "f6d45ebb51b19b864ca05a6dbff981096326316f",
-      "sourceFingerprint": "sha256:5de3a205057dbdb0f9585f0e8edbd25ab9a39eec1a68441b6e7e390739b3adb4",
-      "pageVersion": "sha256:5180790e23eeee5703895d4f915c5d638f562350e06936e92cc4deca0cda6e55",
-      "completedBy": "openwiki/0.7.0",
-      "completedRunId": "bbf90ab0-92d9-4a7a-9c91-7d72af0ac415"
+      "gitHead": "bcea4a8a9f1f08103cc7e3ba0d94e54605911d6b",
+      "sourceFingerprint": "sha256:41937a7372283efae6a64af9615db091ee5720ae798daebc422afd4f52d851d8",
+      "pageVersion": "sha256:6c363b4616ad6c4b717a65dffddc4a80c988b03729cc9f229495182a71d6d121",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "42b17207-162d-4f36-b0d3-64800295fb8f"
+    },
+    "/openwiki/workflows/ai-native-development.md": {
+      "gitHead": "bcea4a8a9f1f08103cc7e3ba0d94e54605911d6b",
+      "sourceFingerprint": "sha256:41937a7372283efae6a64af9615db091ee5720ae798daebc422afd4f52d851d8",
+      "pageVersion": "sha256:e729a1b249d8cda29d55e4f3a44f038466d345fa07aad65195fa243227f24aec",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "42b17207-162d-4f36-b0d3-64800295fb8f"
     }
   }
 }

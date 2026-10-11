@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:36ea8b22db33aac70c841f7084e79e819c5a843c2d134db503c335aa59b095bf",
+  "claims": [
+    {
+      "id": "claim_12feb1f17f4047d3b656b71efe274d3d",
+      "statement": "htmx lets arbitrary HTML elements declare an HTTP method and endpoint, trigger event, target selector, and swap strategy through hx-get or related attributes, hx-trigger, hx-target, and hx-swap.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/frontend/htmx.md#L11-L21",
+          "version": "repo-lines-v1:sha256:2147b7d720e9a63891e254282e4705bb431255131a33282e9f7fc288e442eeff:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MTIyZWZiNmMzNmYwNjNjMjU4NTQyMDY4NzZhOGEwMTk5MzE4NGRjMWIxNDlhZmMyOTEyOTlmMzdiYTg1YTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjNWVkOWYxZjIyODllODQ4ZmQzYjdiYTljNDkzOTk0ZWEzOGZhZTEyZGMwYjMxNmY4YTQ1YTgxOGQ5ZmJiMjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhYjBhZjE1YjcwNDM5MDIxMTRjYjcwOTgxZTcyYmU1YmE1NmY5MjNlNTJjMzhmMWE1YjMyNDE2OTIzYTQwYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViOTFmZjFjN2ZkOTc4ODU0MTE5NWUzMzdhMGU0MzVkY2U2NGEwMDkxMDE1MTNmY2U4MDAzNTQ0NzMyZmMzMGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_842933867aca473887152328c67e5e44",
+      "statement": "An htmx interaction is a browser event followed by an HTTP request whose server response is rendered HTML, commonly a fragment such as list items, which htmx inserts into the selected target according to the swap mode rather than treating the response as JSON.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/frontend/htmx.md#L23-L31",
+          "version": "repo-lines-v1:sha256:f363e634477b18f5d1aa3a321d2b96bc590628cfbdc27307d135ee23145b4049:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzU0Yjk4YWMwNGFjN2U0NDY2MDMzY2I0Y2JjZmU5NzE5ZGM5NWI0NWNlMzMwODk5Nzk5NTJlZDRlMmE3Njc5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGZjMDZjNmY4ZWE0OTNjOTFiN2ZiNTE1ZmJkODBiOTU3YzIyOTlhNmFlNWUwMTQxMzQ3ZWU1YWNmZWJlM2ZhMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWFiZTNiYWM0OTMxN2E4MjgwZjBiNWE2NjQ4OTdjYjAxMDQ5MjIzZDg2NzUwNTJmYThkNGQ1MzkyMmM4ZWYyMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmU3ZWIwOGNmYWI1NDY3ODJmNmNlMzA4NzJkNDQyNzk3NmMxMjE5M2RiMTJjNGJkM2M5ODgxZWY3ZGU5ZTg3ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e4900ddc8afa4845a05b624d9d6f49d4",
+      "statement": "The htmx hypermedia model keeps state and HTML rendering on the server and does not require a client-side model, JSON API, or build step; template-rendering backends such as FastAPI or Django with Jinja can serve it.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/frontend/htmx.md#L33-L40",
+          "version": "repo-lines-v1:sha256:da31bc3a1fd98ca268dc6c19a04ec6169734279b35079411931a29c156c3001f:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmRmN2I1NjAxZjE0NjQ5ZTQ3NTU5OGMwZDk4ZDEwMjNlZjY2ZDk4YjQ2YmU0NDE4NGY5NTM5MWZiNjFjNWFkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Q4MGIwM2NkYWY4MDMxMmJiODJhOTY0YjkzN2IwYjhmZWMzZmZmZGRhYjY1Mjg5MzM0MTU5ZWM1YTYwNWNjZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWNkOTc5YzZiZjZiYjdkZGFmMmVmM2U0Nzk4MmU1ZmFkMjQwMmEzZDU3ZmEyMDgwYmM2YWIxYTUxYTE2MTU2NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjM2ODNhMjM0ZmUzNDYzNjRjNjMwOTg5Y2FiMzNhOTc2NGRjZDRhMTk2ZGY3YWU0ODY3NjU3MjljZmUyNGQzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7453f11ffb494ddda149ce405f2c7c67",
+      "statement": "Because htmx endpoints return fragments coupled to page structure, the response template and consuming target form an HTML UI contract, and changing that structure can require coordinated endpoint and page changes.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/frontend/htmx.md#L31-L38",
+          "version": "repo-lines-v1:sha256:12338bcad5b3b1ca87059f11931e44d1baa6ded367bc107c3eb59050bb761bf0:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGZjMDZjNmY4ZWE0OTNjOTFiN2ZiNTE1ZmJkODBiOTU3YzIyOTlhNmFlNWUwMTQxMzQ3ZWU1YWNmZWJlM2ZhMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTBjYjVhOGI0NGFjMjliNjg2ZDlmY2NiNTU3YTY1MTQ0ZmMwZDNlOGZjYjY0YzBjMjIxZDc4NzJkNWQwMTNhNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzE3ZjE2NDExZTY2OWY0MzU2NmQ5NmMyNWJjNGY5ZTQ3ZThjNDNhYjcwODBiNDZjZTdlNjYxNDY5OTA0OGIxNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTdmZDZmOTlkYTFjNzM2N2Y5MzM0MWJmYzM2MjU3NDg1OTNhYzJmNDNjMWFjYmFjZjM1ZWI3MjkzYmE0MGQwZSJ9"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/frontend/htmx.md#L50-L53",
+          "version": "repo-lines-v1:sha256:28a541aab103ba8d1c9a29b8531fe714009546a6e314f76a2d9a66e090a83d2b:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdmOGYyZTM5ODk5ZTVhYjY5MDgyODNjMjQxZDM3NDYyYzkwYjg3NDNkYzU1MzgzN2Y4YzM4NDhhMmI1ODY0MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDcwMjkxZTgzM2IwZjQ2MmNkODljNTA5ZDcyM2IwNGUwYTlkZjljOGY4NGNiNWM0NGZkNjI3ODIxZTc3MzUyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTAwZWEwMGUzZDk5MzQ1N2IyYTFjM2RiMWNkY2UyMjhjMDBmODBkZWM2OGY5YjNiMjdmMjY3MTQ4ZGRmOWM2YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e7901d0f1d1d412eb513b0aa6a2db967",
+      "statement": "htmx is a good fit for mostly server-rendered CRUD apps, admin panels, internal tools, dashboards, forms, search-as-you-type, infinite scroll, and polling status pages where avoiding a second JavaScript application and build chain is valuable.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/frontend/htmx.md#L44-L46",
+          "version": "repo-lines-v1:sha256:a1d6ad48c21a2de1b49c049ba252064c376275d8d015c58355d9a56d3de0f786:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZiOTllOWU5Njc2MWEyN2NlY2Y4OWJjM2NkZGNmODJiNTgzMjdlN2JkZmYyY2ZjMWI1NzgxZTgyZGRjODNiOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTY3MGUwN2Q3ODc3MjgzOWRjZDZkZjljNDBhYzhkNDZjZTBmOTg4OWRkM2Y4MGNiOGIzNjEwMGUxMTc3NTRhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjM2ODNhMjM0ZmUzNDYzNjRjNjMwOTg5Y2FiMzNhOTc2NGRjZDRhMTk2ZGY3YWU0ODY3NjU3MjljZmUyNGQzYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTAwZWEwMGUzZDk5MzQ1N2IyYTFjM2RiMWNkY2UyMjhjMDBmODBkZWM2OGY5YjNiMjdmMjY3MTQ4ZGRmOWM2YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4669e6f1ab06452fb451a1e1a8b88396",
+      "statement": "htmx is a poor fit for rich client-side state or offline interfaces such as editors, canvases, and heavy drag-and-drop, and it is less attractive when a product already needs a JSON API for mobile or third-party clients because HTML endpoints become a second interface.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/frontend/htmx.md#L47-L49",
+          "version": "repo-lines-v1:sha256:100ea00e3d993457b2a1c3db1cdce228c00f80dec68f9b3b27f267148ddf9c6b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDQ1OTY2NmNkZjI3OTkzNDBlNzRiNjRjZjk5MWYwNjEzYjY1M2I3ZGJkMjI0YjgwOTdhMjgwZmI0Yjc0Y2MyOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWYzN2VjOWNlNTI4YWIyY2MyMjdkNWI2ZjIzMTIzYmM0YjIyMDFmYmY3NGJlMTQ3ODhmYWY5YTk1NTRiMGIzMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTFkNmFkNDhjMjFhMmRlMWI0OWMwNDliYTI1MjA2NGMzNzYyNzVkOGQwMTVjNTgzNTVkOWE1NmQzZGUwZjc4NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzQ1ZjkwY2JjNDM2NzI0MGYzY2E2Mjg1YjNmNTI3ZTZlNDYwODcxMWUyNjI5NjE4NThiYzQ5MWY3ODBmNjY1NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d9c0eb019cc94afdac994ecc0314167b",
+      "statement": "Every htmx interaction normally incurs a server round trip, making latency a trade-off relative to an SPA; small client-side behavior can be paired with a lightweight script layer such as Alpine.js, while WebSockets, Server-Sent Events, and CSS transitions are also expressible through attributes.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/frontend/htmx.md#L35-L40",
+          "version": "repo-lines-v1:sha256:0704a7a2767e4b94c4eeb92390f2f746b3a48ad9a8e573cbcb04243caadd655c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWNkOWY3ZDE3YTgyOGQzODE5ZDE0NTI2OGVmNmE0NzBjMTdmMWU5MzIxNWQ0NTFkZDAwODU2Yjk4ODkxZWU1YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Q4MGIwM2NkYWY4MDMxMmJiODJhOTY0YjkzN2IwYjhmZWMzZmZmZGRhYjY1Mjg5MzM0MTU5ZWM1YTYwNWNjZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmU3ZWIwOGNmYWI1NDY3ODJmNmNlMzA4NzJkNDQyNzk3NmMxMjE5M2RiMTJjNGJkM2M5ODgxZWY3ZGU5ZTg3ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjM2ODNhMjM0ZmUzNDYzNjRjNjMwOTg5Y2FiMzNhOTc2NGRjZDRhMTk2ZGY3YWU0ODY3NjU3MjljZmUyNGQzYyJ9"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/frontend/htmx.md#L50-L53",
+          "version": "repo-lines-v1:sha256:28a541aab103ba8d1c9a29b8531fe714009546a6e314f76a2d9a66e090a83d2b:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdmOGYyZTM5ODk5ZTVhYjY5MDgyODNjMjQxZDM3NDYyYzkwYjg3NDNkYzU1MzgzN2Y4YzM4NDhhMmI1ODY0MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDcwMjkxZTgzM2IwZjQ2MmNkODljNTA5ZDcyM2IwNGUwYTlkZjljOGY4NGNiNWM0NGZkNjI3ODIxZTc3MzUyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTAwZWEwMGUzZDk5MzQ1N2IyYTFjM2RiMWNkY2UyMjhjMDBmODBkZWM2OGY5YjNiMjdmMjY3MTQ4ZGRmOWM2YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_fef11326b4e94a4ea308cc97f25e97c8",
+      "statement": "The source note recommends the htmx 2.0.x stable line, records that 2.x dropped IE support while 1.x remains for IE, and notes that htmx 4.0 is released but not yet marked latest on npm with a planned 2027 timeline.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/frontend/htmx.md#L7-L9",
+          "version": "repo-lines-v1:sha256:061fc59995a58e8831508aec96f04ed322a58e0ebe3dad3adb39d4265823d1e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWU2NmEzMjExMGUzZmRkMGNhZDQ1MDE5MzlkMjU1MjUwN2Q2ZjcxNjYzN2I2ZGVhNDg0ZjViMTUyYmE0M2FhYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTQxYmU3NDc4NjE0ZWMxMmQwNzhiYjE1NzI5YjgyMzM2MzQ2NTM5ZDQyY2RjMjNlMTRkNjMwYTRiMDZlYzliYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNhMjc3OTNhNWY5ZTllZTYwODRlMTQ0MGUzYTViOTY1NDVkOWI2Yjk1ZmViNjJhMGZjN2JkZDM0MTUxODRiMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTRjMDY1N2U1ODVlOGYxMmMyYjMxOGI1YzU1Yjg3YmIxZWQxZWRlNjE4ZGQ5YTZmMWI2ODM5YzE3ZGRkODdmMCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-11T10:13:45.493Z"
+  }
+}

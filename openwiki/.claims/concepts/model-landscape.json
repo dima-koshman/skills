@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:b8ad2b86c3d66c84be191a9adcb3e221a104e70789e0b7ff247b7c6ee14e5ac1",
+  "claims": [
+    {
+      "id": "claim_99eb5e127f8f42d89a5aac920cc7a9c0",
+      "statement": "Modern open-weight LLMs generally retain a decoder-only Transformer core, while model-family differences relevant to engineering are commonly efficiency and multimodality choices layered onto that core.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/models/llm-architecture.md#L12-L16",
+          "version": "repo-lines-v1:sha256:88315e899fef93467e27413551832ba86bdb3f036ac7a6cba08ef3ec35fc2157:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODQwYzM4NTZlMTEwOTk5NDJmNTJmYzIwZjY0NTYxZGU4ZDllNWQwOTVhNWQ2MmE4NTE3ZDA1ZDhmY2ZmZGJmYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODQ2YTQ4ZjMxMjlmZDUyMzQ1YmRlOWI3OWYwN2Q1MDk3NzVhODU5OWFmMzg2NDdjMDczM2VmYjAzYjY4YzAyMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjI4ZDlhNGI1ODg3OTc4ZDQyMWVmZjlhODVkNDI3MWU0NmEzYzdmNTRjZjk1YmIzM2RhYTg4ZjQ3ZmY5MjJhOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDZjNzdkZjZhZDMwZmE5YWFiNzczNzBkZmRmZDBmOTQzZDlkMDE5ZGQ5ZTU3NWVjYjhkNWY3NTBjYjc3ZDQ4OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_93950f65dc454f21b6c57e6d1414d17d",
+      "statement": "MoE models route each token to only some experts, so total parameters primarily indicate weight-memory and capacity scale while active parameters more directly indicate per-token compute and latency; headline parameter counts are therefore not directly comparable between MoE and dense models.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/models/llm-architecture.md#L18-L29",
+          "version": "repo-lines-v1:sha256:f29e40303ea4d0fa6f8616b9c064ccb8ed0c5ca70fd0920215b7d57f12e1f2a5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyMzgxNWVhNjQxZWMwYjZlNzlhMDQwNTY4ZWZkZDk5M2MyNTM2NmIxNzFlZTRkNGM1M2FhNzlkMDJhMzYxOWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YTZhM2YzOGJmNGJhYWRiNWVhZjQ3Mjc4NmVmZGRkN2E5YWM3NjI5MDFlNjlhY2I1YjU3OGU3YTk5ZDI0YmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlOTkzNTJjNGViZWU4ZGFkMTRmOGIzMzFmODFhNDJmY2JmNjc1MWM5M2NlNmRjNjU2OTk0YzMxZTRjNjAzNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzYzZlNDhmOTg3NGEwNmNmOTUwMGFkNDQ2Y2Y4ZWM0YzgxZGMyNjdlNzllYTA3YzE4YzVhYWYwY2I4Zjk5ZTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_38445630bab54a8eb600af0501f50cbb",
+      "statement": "Autoregressive KV caching avoids recomputing the prefix but consumes memory that grows with context length, layers, and attention heads; MHA, GQA, and MLA reduce or reshape this cache in different ways, and serving stacks may additionally reuse shared prefixes.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/models/llm-architecture.md#L39-L66",
+          "version": "repo-lines-v1:sha256:fc97eff092e09769ccf4b763318f3e62c709042fe1005dd45e71d163cd531c9f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2OTllZDNlOWMxNWZhNWY1ZTU3OGNmYmViZmRmNGJjNjhjZGMzZGUxN2UxOGRhZjRjNGY4ODAxNzdlMDI3YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiOGYyZjc1ZDY0NWQ0Y2Q2YjU0NzM5ZTFiMjc1NmMyMDZkMWUxNGFlMzY4YjZjYWQxOTY2NjQyYTc2NjJkMmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkMGM0MjlmYzAyNjA1YWI3MTc3ZTdhY2IzMjMxODdjZTdlMjU2ZTFhNmQ4NzcyMmRmNjU1ZTBlOGRmYzA1YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4ZWM1YmJmMGM3NWFmNDhjZTZjYjEzMTdkNDk0ZWE3NDdjYTM0MzBkMjAwYTM3ZTIyNzkyNDU3ZjZlMzIxYjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e74fb9e957e4435e9c20edaa542029af",
+      "statement": "Sliding-window and linear or hybrid attention reduce cache and compute but require sufficient global-attention access for reliable long-range behavior, so a long context limit alone does not establish long-context quality.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/models/llm-architecture.md#L68-L83",
+          "version": "repo-lines-v1:sha256:5a702b0b3d8b958d0a0c9f0dd14a128fecbf18826b2f469b1b9fc532e8f63a07:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiZDVjMzRhMzM0ZjcwN2IzZGFkMmRjZTNhNTRiN2YwZGY5OGQ4NGEzNmVlOWY0NGE1ZWZkMTc1ZjUzMTM1YjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzMDMxOTBhZTA2N2ViYTUzYzZiYWZiZGQyODY0ZjU4ZGVlZTE2Y2MwN2JmNThjZDM3ZjdlNWM3MmUwNTFkZDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExNjhmODQyZDY3ZmRkNTlkOWEyMWM3NDg1M2FhOTNjZmYyNjU1MGU5ZGM0ZTI4YTI4NmQwZTI4YTE5ZTUxY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0OGFjNzE4NDYxYzJlN2VlZjUzM2I0ODA3OWI1ZGQzZWVlMzJjMTEzY2JhY2JlMjVhNDEwODNkMGIwZmNmYjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fb38536d64144d0a8819dec35859d28b",
+      "statement": "Unified embedding-decoder multimodality projects modality representations into the text embedding stream, whereas cross-modality attention keeps text in the decoder stream and reads encoder outputs through cross-attention; the approaches trade tooling simplicity and image-token context use against cross-modal complexity and text-only preservation.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/models/llm-architecture.md#L111-L133",
+          "version": "repo-lines-v1:sha256:f37471844b3074624fe2048e11c51f7f07777aef90851c70fa03f5938979c493:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4NmJmOTQ2NzdlNTExYjZlNTAwMzIyYzQ3MjBjZTZhNWEyOTg1OGU5N2YxZTU5Yzg0ZDNkYTJiYTNhNDUzNGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzM2YwM2ZhMjIyMTEwMjk3MjdlMWQ5OGIxMzczMjMxZjExNWFhMzNjOWY0ZjE1MGZlMTkyYTEzMTQxOGNjMmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVmZmRlODFjZTY3NWUzNDMzNTNkZDdjOTA2NzRhOWM3YjIwY2U2MjVjYmI4ZGJjYTYzZGUyMzAxYTU0ZDFhNTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2Y2M2NjllYTZlOGZkMjFlNmYwZjI4OWFlY2RhYzU3Y2EyMTM3YTgyZWYwZmMzYzRjNGFlYmQyNDlkYzZmN2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3ae59586adb44541b589372c217996ed",
+      "statement": "Jev is documented as a typed System One decision primitive with Choice, Score, and Noul results; questions are evaluated independently against the same state, and typed output does not itself establish correctness or calibration.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/models/jev.md#L9-L35",
+          "version": "repo-lines-v1:sha256:d5ec30e5b39eec5c800bacf871a3175840321f842eb06088e6829b4d4477c6e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjYzgzY2E4NWRkY2Q3MzQwZGI2NjA2MzQ2ZTQ4MjNjMzQzNjkwOGI5ZWI1NGE1YjY5YTdiZTRlOWI2YmE5ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0YjliMzEyOGI4NGRlMTJiZDU1Mzg1N2E1NmU0ODdiZTBlOWU5ZmMwNTkzZjA0MTViODY2MTRjZTc3ZmRjNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiYzMzNGNlY2E2NmUwYzE2MWM4ZWQ0N2E3YjY5NjJhNTM4MWY4MGMzMGM0MjhmZWE0MDZhZTQ4MzVhYzM5NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljNDgzZjJmZDgxZWU2MmIwNTQ2ZmVkNTNmMTgzNmExMzA2ZTcyOTg3NWVhNWRjN2VhZjFmNWVhNzBjMTgyOTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef0c6c246f014b5ba0f50265a305432d",
+      "statement": "CLM is a separately trained open-source decision-model alternative that scores supplied candidates using separately computed state and action representations rather than generating an arbitrary new action; its documented CLM-v0.1-8B serving path uses a frozen Qwen3-8B backbone and has a default 2,048-token encoder context.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/models/clm.md#L17-L23",
+          "version": "repo-lines-v1:sha256:252289719ba47e2229e6db3961efc9a8e22466f207e890d2f3272aa729677d42:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjU2YjNiMTA5MzY4MWU5YWU0Mjg0YWVjNzkzNjE4ZGRkMDFiNTkwM2I0YzQ0MjIyN2E1MWEyOGU5NjBiNzIxMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTEyYmNmM2IzMmIzMTVkYWU2ZDQyNDc4MTdjZGFkNDQ3N2VlMmYwODI5OGY5ZjcxODlmNzFlYjk0ODdiNjg2NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWIwMjhiMWFjNTg5MTkzMzM5MWRiYmY0MDIyYjM3OWI5ZTY0NzExMjcwMWYwMDYyNjc0Y2VkNjM5YWYzNWM2ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODNlNGFiMGMyOTc0Mzk5NjUzNWQ5ZThjMTIzZjEzZjg2YjZjNzFiYjRkZjVlNmUxOWQ4NDE0MTNjZmE1ODRjMCJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/models/clm.md#L25-L34",
+          "version": "repo-lines-v1:sha256:7b78d6734f03da1c0d9dd1bb603d366d7f6c63e62a2d33bc08cad501bbb5f4a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiOWRkYjgwMjIwZTgwODllY2U0YTUyNjVlMmYwN2YxYzE2NTQ4ZmE3MGM2MzYwNDgwOTNlM2FjZTIxY2I5MzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyNWUxMzMxZTFmZWUxMTExMTAyODcwZmRlN2M1Y2MwNjAwZTBlYTgxMGZiNDg4OTRjODQ2OTc3Mzg2OTI0MjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxZmRkOWVkYWNkZTJkMWFkNGZiOWE0ZTI3OGJlMjAwNmUyZDZjNGJjY2NkNjQyOTMxNDI3MjMxZWZkODlhODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwYTIyOWEwMTg3ZjhjOTkyMDEwODZkNjJlZWFhMTBiY2IxMDM2YjJlZTVjMDc1MWNjYTM3ZThkMTQ5N2I3MzIifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/models/clm.md#L9-L13",
+          "version": "repo-lines-v1:sha256:5ec098900e8e92710f2d8c1291957b7e88c92ae35b2a631da251cc23203059b1:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMThhODY0OGVhZWIzMGQwZGQ2YzNmNDcyNjAxYmRhNDZmOWNlNWNlMWU4ZWNjMjVlMDIyNjQzNjU1MDkyOTU4MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDcwY2RjYzA0MGJiZGE3YjE0MjkzOTJkYjY4ZGY3YjM3MjQwOWFhZDRkZWE5MjJlNDJlNWNhNWQ5MWNjYzE0ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJjMzM0Y2VjYTY2ZTBjMTYxYzhlZDQ3YTdiNjk2MmE1MzgxZjgwYzMwYzQyOGZlYTQwNmFlNDgzNWFjMzk1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWIwMjhiMWFjNTg5MTkzMzM5MWRiYmY0MDIyYjM3OWI5ZTY0NzExMjcwMWYwMDYyNjc0Y2VkNjM5YWYzNWM2ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_abc1995764e94f60b1f1ee7bcb9d6d79",
+      "statement": "Provider prompt or context caching differs materially across the dated notes: Claude documents prefix caching with 5-minute default and optional 1-hour TTLs, Gemini documents opportunistic implicit caching plus named explicit caches, and GPT documents implicit or explicit breakpoints with at-least-30-minute cache eligibility.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/providers/claude.md#L33-L44",
+          "version": "repo-lines-v1:sha256:4c05fd1cd0e5d8d60e9709fbbae321391af0ed9b92dffa830ece745deeb8ed86:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiOTlhNmM5NGQwYTViOThkNzQzOWI1NWVjYzk2ODhlZGFiNjA5YzY3MjIxOTRkZWVmN2M2NjE3NWRlZTQwNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmN2M0YWJjY2JhMjgwMjZlODAyYWQzMGUwNzBiOTM0YzRiOWZiMjIwZDQ3MWJkOTY0OTQ5M2MzOTMzYTlmZWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU5YjE3MTZjOGE4OTNkYjE3YjgzNGE5MjMwYTc3YWQ3MWUyMTM4YzUwOTc0MGVkMWU5ZjEyMDg5MjhjZmY3ZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjYTBkMjM5NDc3ZmRkNDM1NjlkMWMyMzNiNjZhYzkzMDY3MGU2NDU0ZDA2NmZhODM5MGYwZDYxZmRmY2UxM2UifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/providers/gemini.md#L43-L64",
+          "version": "repo-lines-v1:sha256:d9dce1e35dbca9744e3937f46d0143feea4fbac07e84dd0fdd847ccf267aadef:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3MjVkNWE1OTMxZWUxMzYxODhhOTM0YmZmMzlmYTI1ODRlMjJiYWZjYjlkNDBjODdkNzRmYmRkMmRmOWViYWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0OGM3Zjc0YmFjY2Y3OWM3MjVmNjcyMmQwYmIzZDc1YzdjZmJjZDc5ODE1MGRkMDAzZjUzNWFlYTY0MTBlMTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkNmQ2YzVhODgwNzA2ZTI5YjFkZDk5NTg5MzRlNTVjNzMyZTdhNGU3ZTgzMzQzY2JmZTBiMmZiNTZhZTc4ZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlMDQzZDExNWI3ODg0NDczNWM4MzJlZWFmMzQ3ZDRlZTFiMzIyZWJiZTExOWM2MGY3YmNiZWQzYTI0ZTMxOTAifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/providers/gpt.md#L59-L67",
+          "version": "repo-lines-v1:sha256:a3588563457eb7dd3bab47ff770e1f5e4ae3ee3031e0c4f512cc9a11d62d0d17:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMyMTU2MGQxYWU2YjUyNWYzYWQ2NGY3N2NmNWVmNjA2NjA3M2I1NDgwYmJiYTBkNmZiZjVkZGE4OWFiYTAxZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFjNDM3NThhM2UzYzZhZmU2MjUxNDEzZTdiODJlN2MwNWY5NTkwNDk5YmZkNDU2ZWFkNDI0MjkxZDVkZDAxYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWM4YjM2ZGUxMTg2MDc2OGQ0OTYyNTJlZWJjMzBjYjlhMDgxY2FkMTA5NDllN2MzOTRmNTM0N2NlNjlmODVlZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzM0M2Q1NDJlMTdmYTliNDEwMzFhNzUzMDdlY2JmYzBkMzc2YWJhMzZlYzhhZDU4ZTY4MDE0ODBlYTVkYjkyZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6a1186f421d34e63b7b0aba5d80b0393",
+      "statement": "The cited provider notes describe different long-context pricing thresholds and scopes: Claude's cited 1M-context models use listed rates throughout, Gemini's cited Pro preview has full-request tiers up to and over 200K input tokens, and the cited GPT model applies long-context rates to the entire request above 272,000 input tokens.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/providers/claude.md#L46-L50",
+          "version": "repo-lines-v1:sha256:7a407ec45584cdbcc498e364463bbb4e575d38d842638a09e296927af624a792:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTQyZmU2MDAwZDcwMGFmM2FlYjU2Y2U1ZTQzY2M5YjU3MDRjNzg4YzUwOWVjMDA5MGZlMjJlOGUwMDhiMzhkNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2M0M2JiN2QwOTRjZjMyZWIwZjNkYjM3MDQ1NWE3NWE1YjViOTdjY2YyODJmODJmMTZmMzIyNGRlNjA1NWJhNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODEyODQyYjcwYmY1ZDNiZDVhZGQwZWY2YzE3Y2E3Nzk5ZGYzZDdlYWZhNzA3ZmI1YWQ4NTY4NmQ1Yzk5NzUyYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTc1ODQyNjMzNWY3NzM0ZGU4MDExMmFhZjA4MmVlMzFiZTExYzZlMDYzNTRmYzc5YzQ2MjBmMmU0N2EwYWUyYSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/providers/gemini.md#L32-L41",
+          "version": "repo-lines-v1:sha256:df925230b968f7bdb8074d85028f0df901f867cf4db1c257d69324559c0f4698:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkNDBmOGJjMzQ1ODA3NTA0ZWI2MDYxNzIwM2RhYjY5NjlkZGRlOWQ0YzdhMTU3ZGU4YWM1ZDdmODRkMTFlZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkMjJlN2ZmNzg1MGJhODhhNTE0ZmZmMDY1YmYwMTI3ZThiOTYxZWFjMzRiMjc2YTZlOTY4ZGVlZmIwNGRmNWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImExYTkxOGZkMzY0OTE1N2ViY2RmMmZhZTlhMWM2ZDYzMWYzNWEyMmRjZjQ3OTRmMTE3YTFiMWJlYzkzOGM4M2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxNTU1MDViNWUzNmFjMjkwZWRhZDZmYWU3OTAyYTY5Mzg3MDA1M2RjMzAwYWVmOWFlNWExYjQyYjg5OWI5NzMifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/providers/gpt.md#L44-L57",
+          "version": "repo-lines-v1:sha256:7fff7e3778880014e7dabb5262daa4ad37d537f9151e5a081a3fe5cd3678466d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0NjMyNGI4MDk0MDZjMWFlNzg2YTc0YzBlMGI5ODE5YTkwOGRhZTMzYjNjNmNiNGI5NmNjOWU1Y2ViMzEzZTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkYTBkNTQyMGYwYzE4ZDU2MTJhZDg1MDYxYTAwOWU2NzRmZGEyNDlmOGY4YTU5YWQ5NDA2NDQ3NmM3MDM1M2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4NGFkZWQyYmQwMmIzYmZlYTJjNzViZTBmYTRiYmQxMmI5YmE2ZTljNWQ0OGJmYWI5NGNmNzJkYzA5NDhkMmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmOTIwOGEwZGRiY2IwNDhhNDc1YzY0YWMzYWQ4ODVjY2IzNzU4NDY2MzJkZmY3NmNmYjlkZWZmMmYzNGU2OWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd4a51e7a63c401e85a9994e64226fcb",
+      "statement": "No single public LLM leaderboard in the dated leaderboard note is simultaneously comprehensive, current, independent, methodologically consistent, and broad across practical capabilities; the recommended approach is broad-source discovery followed by benchmark-owner and task-specific verification.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/providers/leaderboards.md#L17-L25",
+          "version": "repo-lines-v1:sha256:1ed27c8dc5903a8657e4c0bf9fc2f29aec28fb6192374b7c9066c3d0bc752229:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjNjNGVkMmJlNmJhNDg4ODNmNzMxZGVhOTIyNTkyMzU0ZmE4NDg3ZWZmMjg3NTA5YzhlOTMyYmI4MDIyY2QzYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWQ0YmY2MzQ5ODg0NGRjZDI1OWVjZmVmZDlkMzU1ZTlkZGYwZjNlY2Y3NWJmZmE5YmJjOWJjYzgwNTIxYTkxYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmUwNzRhNWJhZGE1OWE0MTkxZDA1MTFlODM1NTU1MmI3OGI1MDJiYjFhNjE1YTg3NjMyOWRlODE1NjA1Yjc0YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTMxOTllZjIyMzIyMjU2NWU3ODYxNzg4ODdhN2FjYjM0ZmU5MWNiOTI1ZjI0ZGMxODcyZTM4ZTE1NGZjZDNmNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d10b24c9ca1e40158355ad86da3fbad1",
+      "statement": "Benchmark choice should follow capability: the dated map pairs repository software engineering with SWE-Bench Pro, function calling with BFCL, multi-step tools with τ²-bench, long-context work with AA Long Context Reasoning, conversational quality with Arena, and cost efficiency with cost per successful task.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/providers/leaderboards.md#L49-L62",
+          "version": "repo-lines-v1:sha256:37bb63973c5173147d4e94571e5e42b8fa5dd6b1c48e256650f38228883b9c41:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhYjY1MjI1MDZiYjFjYzJjODgyYjYzODY3NTM5NWVkOTY4YzI3ZThkZmU1ZDA4NDY5ODVhMDc5OWI2NTVjYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0NjUwZDJkNzIwNGNmZGFiYjZhMzhhYTQ0M2M0ZTI0MDA5MDk2Zjg2YmM0MTJmMTBlYzIxZWFmNjg3ZTAwMjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI0YWUzN2JhZWVjODNjMGYzMTdkYjdkZGQxNDlkZmQ4Mzc4N2VjZTdiYmE3NzA1MTY4ZGEyN2I3OWRhNGFlOTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2c8b3418eb1d4743bf68b94e9128d9a6",
+      "statement": "Model selection must be distinguished from harness and gateway policy: decision models can handle frequent bounded choices while generative models propose candidates or perform extended reasoning, and workflow evaluation must account for prompts, tools, context packing, routing, costs, and fallback behavior rather than relying only on model or leaderboard scores.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/models/jev.md#L23-L35",
+          "version": "repo-lines-v1:sha256:f1f793cbbeb9893f8966b5af124b227261e46466e5227765ebf0a45b4f2bb36f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlNGMzZTlkZGI2N2M5NTgyNmY2NzkwYzEwNjA0YmVlZWI0MDZiNjZkZTA5YjcyNzU0ZGJjMmQ5MDRlNDhlZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0YjliMzEyOGI4NGRlMTJiZDU1Mzg1N2E1NmU0ODdiZTBlOWU5ZmMwNTkzZjA0MTViODY2MTRjZTc3ZmRjNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUzMWI5MDQzYTIwNTJlNGJmYzM3MTRkM2U0ZDQ3M2UwYjZlMDkxOWE4NGU4OTY2NDUzMmMwZmIzOWI0M2Q2OTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljNDgzZjJmZDgxZWU2MmIwNTQ2ZmVkNTNmMTgzNmExMzA2ZTcyOTg3NWVhNWRjN2VhZjFmNWVhNzBjMTgyOTIifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/models/llm-architecture.md#L135-L145",
+          "version": "repo-lines-v1:sha256:0d38590be9f00dd1d8f3e1d83336be5934fce42d4d3b1465bbf6b7daac8eb01e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0OTY1NmU4ZjQ5OGI4MGI5YWRjYjQwMDljZGQyNTNmMzFmYjMzMjI4Y2FlYmUyOWRhZmQ0ZTM3MDZjNmE5ZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhNmI1NjBhMTc3OGU5ZWVlNjNjODViZTczM2NmMmQwN2MxZDQxNWI4YzczZTk1ZmU3ODMzNDIwMzA3OWE2MTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyYTlhNjBlZDkxZGU3ZWIxYTQ3MTJkNjgzNGUwYjBkNjMwZWNkNDFmZmQxNzY3N2NkOWRkZmIyMjY2NTE4MjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/providers/leaderboards.md#L9-L15",
+          "version": "repo-lines-v1:sha256:0442d2f7142123b34a9076bf04744dd52fdb0144fd189e11bd14bd97483815d9:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjA2ZmQwMDRkMjRlNTdhMWUyMDAyMmJhMDM4ZjA5ZjkwZWExYzM3MDAzYmIxNDVjZGE2NTg0YTAxMGU4NGJjOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTFjODIxYWVmMDE2ZmZlOWM4ODYxOWI5NGMwOGU3NWEwMmRlMjYzYjBjNmYzZWQ3ZDZkMDNiOGM0Yjc5NTlmOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzA5ZTFmNTk0MDM5ZjAwZjU3MGZjOWI5M2VjMTYyZWJhODY1ZTNiNGU3MjRmMjdiZDc0NzE4ZjVhYWY0YWE4ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzZjMzRlYjdkZjk1NjZjMjIwYmYwMzQ2ZGI3MjQzNWI0YjkwYTBkODJjOGMwMDRjNGE1YmRiMDQ0Y2I3OGJhNyJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-11T10:13:45.493Z"
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:81904fce193ca280221d66a25fbb7c69a11b5d4cfa0863f693524f3b4805e162",
+  "claims": [
+    {
+      "id": "claim_8f80b7f2c8804b0da48966618477b60b",
+      "statement": "Distributed-systems design places responsibility for metadata, ordering, retries, and repair across control and data paths; GFS separates master metadata from direct client-to-chunkserver transfer, Bigtable uses GFS and Chubby as substrate and coordinator, and MapReduce owns scheduling and worker recovery.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/bigtable.md#L10-L15",
+          "version": "repo-lines-v1:sha256:9696a5807ef9c36f8ba5a9ce6071d9efbc7d9107c1fb1d21e4776f10ef372221:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTg0OTMzMjg5YTU1ZjM5ODQwZjMxNGE4NDM2MGM4MTM3NGI3YTRiMTA4MmMzNmE3ZjNhMDFkODNjYjYzNmUyOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjg2NTg2YzczM2IxOWZhMDYyMmQ4M2YxYTI5ZWEyY2E4ZGU3NGYxNjA4N2VmMTg2OWUzZDM4YzZhNGFlMGRiNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjg2NjVlYWExMDg4MzI0OWExZmVlZDlkYTNhYTkxMDkwNjRhYjU2YjM2ZjQ0OGRiNDY2ZTFiMjFkN2ZjMTYzOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSJ9"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/google_file_system.md#L8-L15",
+          "version": "repo-lines-v1:sha256:08980f51915dc093cd7026243588f65358dcca6df38caa7d8239393273ec913b:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGEyMmQ4YjhiNjExNDY0NDAxMjg0NzhhYWMzOTI5ZmYzNWYyMmFhMTJhMTgzMmJkZjEyNTk1Y2JmOGU2ZjM3NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjE2YWM1OTFkMDJjOTYzOWUwZDUxN2I5NGZkMzdmY2U3M2M5M2JmNGQ5YjBiY2Q5Y2E3ODRjNDJiOTJkZWU5MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGEwYWIzNmZkOTQxOTFhNWYwNzQ0YzY5ZmQ0MTM3MWY0NThkYjY5N2MzMTJkZmRhY2ZlMzk4NzJkNjJmZDM5MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSJ9"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/map_reduce.md#L10-L15",
+          "version": "repo-lines-v1:sha256:bee5f0ff70cd0162e6349ee4de5d476c6763fe09e78d37ef58ebb948b311915d:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTU0NmFjOWZiMzMyMjUzZmMyNGViNmU2Zjc1NDRlNzE0ZTBjODM1OTA3ODllNDQ5OWY5Y2NkM2Y5ODM3ZWM4MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRiMzYyMjdkOGIzNDIwNDRjNTlmYTNhZGNmMmZmNjU5ODEyNGRlN2U0M2QyODVkY2M0Y2E2NjlhYWNiMmM2ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjg2NjVlYWExMDg4MzI0OWExZmVlZDlkYTNhYTkxMDkwNjRhYjU2YjM2ZjQ0OGRiNDY2ZTFiMjFkN2ZjMTYzOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e1316080536c413da2c6221260b3c88c",
+      "statement": "The inspected Designing Data-Intensive Applications source is a sixth early release from 2016, and its relevant coverage spans storage and encoding, replication and partitioning, transactions, partial failure and clocks, consistency and consensus, and batch and stream processing.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/designing_data_intensive_applications.md#L19-L33",
+          "version": "repo-lines-v1:sha256:c7870e41cab5d86c23bfbf7279ae0a4d990172587a5f6b0460b3916a5c376a3a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzYjU5OWFmZGE4YTE4MWVjMTBjZTVlN2ViMWJmYmU1YWYyYzE1Y2Q5OTBhZGQ1YjU4OWVmNDgxNTIwOThjNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmMTYzOGY2OGNlZGZkZjJmNjJhYjJmMGNlNGZiMDE0ZTcxN2ZjNTM4ZmE1Y2MyYzIyZjVkMmYwZjFiYjA2MTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1YWQ2OWE5ODZkZDQ0YzcyYTE4MDcxZmM3MmE1Yjg3MTE3YzgzMGZlYjE1NDRhN2RkN2FhNTJiYjBmMTZmMjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiOTcyMTA4MDRjNzViOTBjZjFhMmU0ZDNhOGNiNzBkOWJmMTdlNzI5NGZlNWVkNWU4ZTA4MzIyNjY4OTM0YjYifQ"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/designing_data_intensive_applications.md#L5-L8",
+          "version": "repo-lines-v1:sha256:475b7372b05231b87fc4bfb21e317f1e6c558fd0b55851f2cec76a6791c4c2dc:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDczYWRkMTMzNDAyMWNkMWFiZGFiNjEyMDJkODhkNmU4OWViZjM2ZTE0YjNjNGRlNGQwNWFjMGFlMTliM2I0OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Q2ZjA0MGY1MjViMjA2ZDY1NWUzMGQ4NWRmYzU2ZWQ4NTUxZTNkNWM4NGVmYjc4NzM1NzVlZjMwOGJhM2U3NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmRhMDY1Yjc0OTA3Y2RjNWM3NjVhYzQ0Yzc0NjYxMDViNGZmMjM3ODUwZjJiYTJmZjgyOTJjODdlY2U5MDc1NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmI1NTJmZDBhNmQ0OGFkZTY5ZmIwYTE1YWM1YzA2MDI0ODliMzFjOTAzYTY5YTAyNjM0ZWQzM2FmNDhlY2QyOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c2193a3ddef441c4a9d39bb44de9f92b",
+      "statement": "GFS uses a master for metadata and chunkservers for replicated chunks; clients obtain locations from the master and transfer data directly to chunkservers, while large chunks and append-heavy workloads shape its assumptions.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/google_file_system.md#L8-L15",
+          "version": "repo-lines-v1:sha256:08980f51915dc093cd7026243588f65358dcca6df38caa7d8239393273ec913b:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGEyMmQ4YjhiNjExNDY0NDAxMjg0NzhhYWMzOTI5ZmYzNWYyMmFhMTJhMTgzMmJkZjEyNTk1Y2JmOGU2ZjM3NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjE2YWM1OTFkMDJjOTYzOWUwZDUxN2I5NGZkMzdmY2U3M2M5M2JmNGQ5YjBiY2Q5Y2E3ODRjNDJiOTJkZWU5MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGEwYWIzNmZkOTQxOTFhNWYwNzQ0YzY5ZmQ0MTM3MWY0NThkYjY5N2MzMTJkZmRhY2ZlMzk4NzJkNjJmZDM5MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7c6a069165024d89a2378e7eedc060ea",
+      "statement": "GFS leases coordinate mutation order, but record append can produce duplicates, leaving applications responsible for handling them rather than receiving general-purpose POSIX-style consistency in every case.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/google_file_system.md#L10-L15",
+          "version": "repo-lines-v1:sha256:64c7da999789797d9cce793777db4632a9e681be004fec760ba9089f8050b7c7:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzNhZTAxOGJhYjU1ODA3YjEwZTYyMTA0OTVmYmFhMWU2ZmE4MzdhNTRkZjAzYmY1NzllYjIzOTk3ZjVjZWNlNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjE2YWM1OTFkMDJjOTYzOWUwZDUxN2I5NGZkMzdmY2U3M2M5M2JmNGQ5YjBiY2Q5Y2E3ODRjNDJiOTJkZWU5MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjg2NjVlYWExMDg4MzI0OWExZmVlZDlkYTNhYTkxMDkwNjRhYjU2YjM2ZjQ0OGRiNDY2ZTFiMjFkN2ZjMTYzOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6edcde997faa42b18b43807d72c82ca8",
+      "statement": "Bigtable is a sparse sorted map indexed by row, column, and timestamp; tablets partition row ranges, row operations are atomic, and row-key choices determine locality and range-scan behavior.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/bigtable.md#L8-L15",
+          "version": "repo-lines-v1:sha256:da84a19b996fd9260e55dcd187ae66b249714193c21c13a3701e53d1a789f45b:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGEyMmQ4YjhiNjExNDY0NDAxMjg0NzhhYWMzOTI5ZmYzNWYyMmFhMTJhMTgzMmJkZjEyNTk1Y2JmOGU2ZjM3NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjg2NTg2YzczM2IxOWZhMDYyMmQ4M2YxYTI5ZWEyY2E4ZGU3NGYxNjA4N2VmMTg2OWUzZDM4YzZhNGFlMGRiNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWQ0NDQ5ZTBkN2Q0ZDQ0ZmRkZDAzZDdiYzg2NDljYjNhNGRjYmNmMjk4ODE4OTgwMWVmYTBkMmRhNjU4MjBiYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_998fb068ad7d400abd623a6910a05f60",
+      "statement": "Bigtable combines GFS for persistent storage and Chubby for coordination with memtables, SSTables, and compaction, making data layout and storage-engine behavior part of the design.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/bigtable.md#L10-L15",
+          "version": "repo-lines-v1:sha256:9696a5807ef9c36f8ba5a9ce6071d9efbc7d9107c1fb1d21e4776f10ef372221:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTg0OTMzMjg5YTU1ZjM5ODQwZjMxNGE4NDM2MGM4MTM3NGI3YTRiMTA4MmMzNmE3ZjNhMDFkODNjYjYzNmUyOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjg2NTg2YzczM2IxOWZhMDYyMmQ4M2YxYTI5ZWEyY2E4ZGU3NGYxNjA4N2VmMTg2OWUzZDM4YzZhNGFlMGRiNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjg2NjVlYWExMDg4MzI0OWExZmVlZDlkYTNhYTkxMDkwNjRhYjU2YjM2ZjQ0OGRiNDY2ZTFiMjFkN2ZjMTYzOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2f917b8507f04f61a267a19905ef4dbb",
+      "statement": "MapReduce's programming model emits intermediate key/value pairs from map, groups them by key during shuffle, and processes groups in reduce; the runtime owns partitioning, scheduling, communication, locality, and worker-failure recovery.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/map_reduce.md#L8-L15",
+          "version": "repo-lines-v1:sha256:e0c9c51ab918484348b35778ae9b57dba216af9704615f4e3aff6ed24c12b440:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGEyMmQ4YjhiNjExNDY0NDAxMjg0NzhhYWMzOTI5ZmYzNWYyMmFhMTJhMTgzMmJkZjEyNTk1Y2JmOGU2ZjM3NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRiMzYyMjdkOGIzNDIwNDRjNTlmYTNhZGNmMmZmNjU5ODEyNGRlN2U0M2QyODVkY2M0Y2E2NjlhYWNiMmM2ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODVjMzRiY2VmMmUwYTNjNDM5ZjQ3OTg3ZTYyMTkwYWNjM2I0MGE1Y2E3MzA0N2QxY2VmYTU4Y2ViYzRkMjg2OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_58c72a6199564b1c96131841b730b0b8",
+      "statement": "MapReduce backup tasks address slow workers, and task re-execution makes determinism and side-effect handling part of the processing contract.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/map_reduce.md#L12-L21",
+          "version": "repo-lines-v1:sha256:c956c52e6eebd3bd6f983d6babd429928222163b7deb17eac2f726704a963cfc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1MTkxZDRmMmRlNTEyODdlOTdiNzIzYzgwNTFkYThhYmVhYWU4YzYzODFhNDAzZjg0ZDIyZjg0ZmJiYmI2NDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlN2NjYTA5NDM2N2FhYzlhMmYzM2QzMTI2ZjVmZDA5MjVlYzg1MzcyYmZhMmM1OGI0NjE1ODk4NzM5NTY1YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5MmU4ZjgzZjI1NDFjOTAzZDBhZTdiNTk1ZjgyZDBhOGNmYjllNmRkMTU0MmFjOTFmMjVhYzZiZDE1MmI5MjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlZDE5OWYzNmYzNmM0NTdmMmE3ZjM4ZDJhMzcwZmY3MDgyY2QxZTQ5NjIwNGEyNjZhYzlkNzgyMWY1ZTAyNTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ccc48c42f22648a7ae9c3fcccf3d06d9",
+      "statement": "Dynamo uses consistent hashing for partitioning and replication, vector clocks for version tracking, and can expose concurrent versions for application-assisted reconciliation.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/dynamo.md#L8-L14",
+          "version": "repo-lines-v1:sha256:b04de403a54955a7cd7d4c8e9a64e3b41cf4155bc55eae7a9aaabd931f468632:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGEyMmQ4YjhiNjExNDY0NDAxMjg0NzhhYWMzOTI5ZmYzNWYyMmFhMTJhMTgzMmJkZjEyNTk1Y2JmOGU2ZjM3NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDZlYTU0MzQyMDg5YzFhMDQyZTM3ZTkxMWZmNjg5OWY2MjZmZTg2YTMzZGU3NTRlYTE1OGIyYjM1ZTczNTVhZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzgyYjQ5ZGY4NDQwMTg0YjBmMGVkOTA1ZTNkNjBhZmMxMjFmYzYwYTk4YWI5NzMwMWM5ZDBlOTVmMDk2ZDgzZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_43291aeaf25144d5b96121fcf64e41ba",
+      "statement": "Dynamo's sloppy quorums and hinted handoff favor availability during temporary failures, while Merkle trees support background replica repair; this design exposes conflict resolution obligations to applications.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/dynamo.md#L10-L14",
+          "version": "repo-lines-v1:sha256:fc04a78b49f247a639328c8cad0cb2f3c58eb044081fefd23304f6167b3c1483:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmI3ZTE0NjBlMGM0MmM5OGJjZTgxNGM0MmMzM2EwZjQxOWNhNDgxNDMxN2U2YWE5ZTI2YjIyOTg5NDU1ZmYyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDZlYTU0MzQyMDg5YzFhMDQyZTM3ZTkxMWZmNjg5OWY2MjZmZTg2YTMzZGU3NTRlYTE1OGIyYjM1ZTczNTVhZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjg2NjVlYWExMDg4MzI0OWExZmVlZDlkYTNhYTkxMDkwNjRhYjU2YjM2ZjQ0OGRiNDY2ZTFiMjFkN2ZjMTYzOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSJ9"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/dynamo.md#L18-L24",
+          "version": "repo-lines-v1:sha256:2d27a9721e305c2b0fbbae4a0ca4c9203cd65e82fdcc7949a39da832dc7da654:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDMwNWE4NTkwMTA0NmY5NDliYTkyMWMwYzhjYTM0YmU0YzE5MTE5NGIzZGU4YzFlMmMyZGNmM2U1YzRlODk2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQyOTkxZWI5MjMzNGI3ODdlODVmMGZmYjMxZTJjOWVjODMzMmZmMzc3MGY5Y2I2ZGY3YmM0N2YyMTQ2NzIzMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7e7e220dad2f467c903bc239be72ebae",
+      "statement": "Raft orders a replicated log through a leader, terms, voting rules, commitment, and election restrictions; a communicating majority is required for progress, so loss of that majority can stop progress while preserving safety.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/raft.md#L8-L15",
+          "version": "repo-lines-v1:sha256:3ff67273a1615aed091ddde62b4ee69b3ec4345dcb8d512a89ced679a754b505:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjc1MWQ0ZDI2MWQ3Y2IzNzAyODQyN2E1YWNhZTYxNGVlMjZlNGJmNzk4NjY2YzAwZGUzOTMzNjg4Y2Y2OWY3NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODAyNWMzZTlkMjI5MWJmNDFkMDllYTQwZmM3MzBmNTZiOWFhZjBjNDlhOTVmNWZjMjUwZTkxNWIzNThmYzRlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6bccd539aa424cf4bcb053a6d4ff1de9",
+      "statement": "Raft consensus over a log does not by itself remove duplicate client requests, so client interaction and deduplication remain relevant application concerns.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/raft.md#L17-L25",
+          "version": "repo-lines-v1:sha256:887b3c0e3ae03a2578f1572e99a2a45cf8f364ae37f6a6c7ce0307e5cd8645bc:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDQ0YjdmZDQxYmJmM2FiMzhiNWI3ZDNkZGYwNDE2NzEzODU5ZjQ2OTRkOGM3Zjg0Njc1M2UxYjMxNjZlMzc2MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmI2NGZiYzcwOTMxOWM1NTZkOTc5ZjY0NjgxNmRhYWQwYWE2OGRkYjYwZWE5YWY4NmU4MjMyZjY3MTcxMjA2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjQ3MWEwNWNhMmMyMWNiNmIwODUyZDhiNjU3ZjNhMmQ5NmEwNzhmN2E1N2Q0ZWJlY2IzNzA5Y2VmYWI5NGJlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a94421add092440e987d395ca8ea5b18",
+      "statement": "Spanner uses synchronous replication through Paxos groups and supports transactions spanning groups; TrueTime exposes bounded clock uncertainty and commit-wait uses it to support externally consistent ordering.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/spanner.md#L9-L15",
+          "version": "repo-lines-v1:sha256:38cf4e9f8ab57e97745519832f83d04086e470ee593cca9adecf6ed21b6f9e86:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGEyMmQ4YjhiNjExNDY0NDAxMjg0NzhhYWMzOTI5ZmYzNWYyMmFhMTJhMTgzMmJkZjEyNTk1Y2JmOGU2ZjM3NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWNjNzY5NzVkZDY5ZWQzYWU4OGIzZjExYTA3NmMwODUzM2E5MmRiNmQ5ZjFlZTk3NjNjNTMwYTkyOGE0NzUyZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjc1MmViNmZmZDhhMjNmMTgyNzExMzc4YjBkMTFkMDFhMTA5M2ZiOWU5MjBjMTVhMWI0ZGZkYzA0ZDUxYzVkMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7ba023838b2d45128c669cc71a679480",
+      "statement": "Spanner's snapshot reads and multiversion storage separate some read work from concurrent updates, and its guarantees depend on the stated system assumptions.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/spanner.md#L11-L15",
+          "version": "repo-lines-v1:sha256:913a2bb57a400887d3eac9a8b0e26ca4bd27cecfd80096b1e0f64fa0c53239b0:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzViNjAyYTEzOTBiZmRlN2IyM2JiZmIyYWNiMzhlZjg4YzRlZDhhYjBlYjk1YWEzM2M3OGVhOGM4YTc3YjhmNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWNjNzY5NzVkZDY5ZWQzYWU4OGIzZjExYTA3NmMwODUzM2E5MmRiNmQ5ZjFlZTk3NjNjNTMwYTkyOGE0NzUyZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjg2NjVlYWExMDg4MzI0OWExZmVlZDlkYTNhYTkxMDkwNjRhYjU2YjM2ZjQ0OGRiNDY2ZTFiMjFkN2ZjMTYzOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bc28730086534fdc8380d51259875e03",
+      "statement": "Dynamo, Raft, and Spanner address different problems: Dynamo emphasizes conflict-tolerant availability, Raft consensus for an ordered replicated log, and Spanner distributed transactions with external consistency; Spanner uses Paxos rather than Raft.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/dynamo.md#L18-L24",
+          "version": "repo-lines-v1:sha256:2d27a9721e305c2b0fbbae4a0ca4c9203cd65e82fdcc7949a39da832dc7da654:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDMwNWE4NTkwMTA0NmY5NDliYTkyMWMwYzhjYTM0YmU0YzE5MTE5NGIzZGU4YzFlMmMyZGNmM2U1YzRlODk2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQyOTkxZWI5MjMzNGI3ODdlODVmMGZmYjMxZTJjOWVjODMzMmZmMzc3MGY5Y2I2ZGY3YmM0N2YyMTQ2NzIzMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGFiMmQ5YzQ5OGYxZmFjYzk4YWVlNTgyMTYwZmViNTlmNWIwM2E1ZGMzNTllNzJlYWNjYTQyOTY2MDdlNTEzNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/raft.md#L22-L25",
+          "version": "repo-lines-v1:sha256:730e4ba990e5e56066829b80790918966da8cad7b0ac3de3a0b768c93f56b8e7:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmI2NGZiYzcwOTMxOWM1NTZkOTc5ZjY0NjgxNmRhYWQwYWE2OGRkYjYwZWE5YWY4NmU4MjMyZjY3MTcxMjA2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWRjODcxYmQ3ZGY1Yzk0ZjFkMGUwNTY2OWU2NDk1ZTQxZWUxYjE5YTU1NmIxNTZiYmNlMDJhODhmMDYwNTVlOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDgxZGM2NjAxYzdkNmZhNTM2MGEzNGMxOTY2NzBmNDU1ZDA0ZWNjODdhNmEwYmQwNTdmNTU3MWY0Mjc2ZDkwZSJ9"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/spanner.md#L9-L21",
+          "version": "repo-lines-v1:sha256:ef128ef6ba64077d2cf9c2a907b6447daaf4b1f897d06613439b2db25b2b49ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhMjJkOGI4YjYxMTQ2NDQwMTI4NDc4YWFjMzkyOWZmMzVmMjJhYTEyYTE4MzJiZGYxMjU5NWNiZjhlNmYzNzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiMTJkNDU5MTc4NTcxM2NmOWJkMTdkODYwNDhiYTQ0MjgzMTQ4Yzc1ZDE4ODE2YzUxMWE2MGEyNDlkOTI0NTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3NTJlYjZmZmQ4YTIzZjE4MjcxMTM3OGIwZDExZDAxYTEwOTNmYjllOTIwYzE1YTFiNGRmZGMwNGQ1MWM1ZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-11T10:13:45.493Z"
+  }
+}

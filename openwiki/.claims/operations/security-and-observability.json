@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:f85c6ef74b0f1a9fc356a5cf27478273be405ae80ce79624fce3e329f4a78378",
+  "pageVersion": "sha256:8f7a2ebdf1480d0e4cffe6f6d513b0230c69fea303ce45084ff9d8244e78f642",
   "claims": [
     {
       "id": "claim_81154ae772974cd2b6842ba85db82647",
@@ -273,10 +273,86 @@
           "version": "repo-lines-v1:sha256:5407683da597b1246c8d1abba839d6a31f575d6e947d993717ba166d3f638598:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTU5OWU1NzZhNmFjNWIwNmUzM2I0ZDYzYTBlMzU1MWJiOWVkZTQ3YThmYzg2NTVmNDA3ZTBjZjAwZjBlMzRjMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRkYThjZmJhOWJjNjdiNjhiZGUyODQ2M2YzYjI1ZGZiYjdkYjlkNTU4MDRmODM3MzM1Mjg3ZDk5YmNhMDg1MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGYxZWYzMTMxY2YyM2JkYzA3OWVkYThiZTdjYTBhNTM2ZmIxNjkzMjY4NTU5ZGQ4YTM3OTk5YzU1MGQxYzhhZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         }
       ]
+    },
+    {
+      "id": "claim_916a005c8a4e4c58b904fe04733480fe",
+      "statement": "The repository risk notes define agentic threats such as tool misuse, unexpected code execution, memory poisoning, identity abuse, inter-agent communication weaknesses, cascading failures, rogue agents, supply-chain compromise, and human trust exploitation, but they do not establish that a particular deployment already has the recommended gateways or controls; those controls must be implemented and verified operationally.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/security/mitigations/guardrails.md#L3-L12",
+          "version": "repo-lines-v1:sha256:af0204037dea59f1092d31dca20614797416ffd8fadaad6f495d1b6b6d6d648d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwMjdjYTMxNmVhYTgwYjU0YjM5ZjY0ZTEyOTVmYmY3NTdiNzk2YTQ0YTEzZWYyMWI3OTcwY2EwYjFhNTA4MTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlNmYxMGM1ZjczZDdkZjg0ZjVhYmQyNjM5MjNiMTU0OTAyZjkxMGVmZTg1NDUyNmUzNTRmY2YyMmY1NmRiNjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImExNjE3YmU1MDM4ZTcxOGU5ZTkxZjFiZGUxYzQzOTY5MzZiMDE2NmYwODQwNTY5MGI5MzI1YWE0OTNhZGNhY2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/mitigations/pii-masking.md#L3-L10",
+          "version": "repo-lines-v1:sha256:8bc1c5af7f41e72bb04786b225b2048144a9ec63f71b0fd0864dc92165f3ee06:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmIxZmI5YTY3ZmVhOTQ3YzQ2NjdhYmFjNmIxNjgxOTEwZmNiOWY1ZmE2ODM5ZWRmMGMyOGFmZDg3OTA3MDQ0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjZmNGM2MDQ4YTcwNzNiNjc2ZjFkODM2MzEyMDhlODY2MzQwNDg3YTRkMmIwNWNhMmE4NjYwZDhhMTlkZDhkNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjRmYzMwOTBkYTI2NDA0ZTVhNWI4NWEzMDZjYzJjZWE2ZWFmMThkYzdhMTY0MWEzMzVjZWYwZjhhZGM1NWY0YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/cascading-agent-failures.md#L1-L7",
+          "version": "repo-lines-v1:sha256:de4a26578a5006e7854e173c7034d8fc9e98c0437cbf1170a9de33b029b09d34:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTFhNzBiNGFiYWE1ZmRiZDQ0MzJmZWZjZTIxMDNkZmEyOWZmYjEwNjk5YjE5N2E5OTg5ZmIzZWZlMTUwZjk4NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWZlYjM2NzYxMzNiOTExNGVlNTE3YThiZjMzNWEyMGI0MWNhMzM3NmMyMjg3NzZiMjgwZmRmY2ExMjYzYzEwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/human-agent-trust-exploitation.md#L1-L7",
+          "version": "repo-lines-v1:sha256:bfc3f9a064f5e8b2fde4d5c14c6b6f63990a7aa1c0af5c78a34df5e39187f086:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzA4OWYzOWY5ZTk4ODYwZGMxM2IzNjgxMzViZWQyYjllNDhiODExNWQxMTAyNjU5NDhlNTIwYmZmNjJhY2ZkNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTc0YjY2YzllYzZjNzUyOGMxMWZiNTE0NWUxZTNlODE0NGQxNDFhZDcwOTEyNWJmMDBmMmU0YjkwZWQyYzZiYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/identity-privilege-abuse.md#L1-L7",
+          "version": "repo-lines-v1:sha256:1dcbe7616191c8067acc104acb436dd0eef4e342ba34b0fee203ede89ad4f1fe:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGIwY2ZjODM4OTRmMmQ2ZDNhNGRlMGM4NzBhZTg4ODMwMmI4ZmMyMTdiOGI0ZjUxOGUyYzZmOTczZmYxZmVmNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmU3MmVhZGNlOGJiMGRlMjUxMzRlOWNiNDZlNWRlOWU4MzNlY2U4YWE5YTBiNGM4ZGQ4MzZmNmU4MjY2Y2U0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/insecure-inter-agent-communication.md#L1-L7",
+          "version": "repo-lines-v1:sha256:732b8fd133ed63e5e166fd5ccd62918c16f74497294a2a5cff491295ba5cf1ef:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmVhNTk4NTJlZTVkM2UzNTQ0OTI4YjEwOTk2OTFlODI0MjE4YTYxMjJlYThlY2I5MmYyNTY1OWYxZDA4ZDJjYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRkYThjZmJhOWJjNjdiNjhiZGUyODQ2M2YzYjI1ZGZiYjdkYjlkNTU4MDRmODM3MzM1Mjg3ZDk5YmNhMDg1MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/memory-context-poisoning.md#L1-L7",
+          "version": "repo-lines-v1:sha256:51bd100f10f8c7dce8733bb15f68b953cb82a8ed1c4c579d6e3ad8dd6a2f564f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjZlN2QwMDgzZDNjODQ3MmZmZjc1ODRjNTEzY2JiYjk5ZjQyYTI1NzZjNWE4N2I5MjBkMjIxYzA2YTczNTA0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmE4YmFiOTcyYzRlMmYzN2M0NDEzNTc1M2M3OTU0ZDkwYmNkY2Y2ZWMyODk1ZmUyOGQ4ZDE5ZjVkMmFmYWQ4ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/rogue-agents.md#L1-L7",
+          "version": "repo-lines-v1:sha256:f39d029c5b9cbab63d3d2109ae93cd39262aac4eca8fb129e2312ca5d177c119:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmFlNDEwMTczODRlZDY0OGI1ZGJlMGJhMDA0MjI5Y2JmYTE4MjFiNTFhZjM1ZTBmMDE4ZGM1M2VhYjFmYzIzMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODNkNjIzYTNhNGQ1MmNlNTc3MzJhZmExYzJkMmNjZmYwNjdhYjVkMWUzMWM2YWY4OWNjYzNmNDQ0ZTkyNjViZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/supply-chain-compromise.md#L1-L7",
+          "version": "repo-lines-v1:sha256:f23ed388b91d7738aa302716dd35b156d5f14ee71316ffa841a175c8f342a364:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTEyMDZmZDE1NmIzMGRmYTJlYWFjOGU5MjlkMDgyNDc1Yjk1NmExNWNkMTFlZmMxN2FhMTE4ODg0Yjc4YzVmZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjkzYWUxYzA5Y2EzMDBhNjI3YWExYTBjODc2MTQ2NDNlYjg5Y2JiZmNlYTQwMzY1M2UxZWY2MjQ5MTU4OThlMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/tool-misuse.md#L1-L7",
+          "version": "repo-lines-v1:sha256:aa297d8128c376d578dce1f5a9e04cd3f5e1716c5935600081e9db3faad5ca88:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQzMTkzZjhhZmY2NjBmNmY1MWIxMjU5NjE0NjA1MDQyYjU2ZmViYjE5N2JkNmJhOGU4NDEzMzYzN2ZkNDdmZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzBlNzI5MTVkN2E1MTBiOTcxMWQ2OTU2NTIxYmYyZDA0YTU1ZGY1YWUzYmY5MjM5OTdmNWMwM2Y1NjNjZjc1OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/unexpected-code-execution.md#L1-L7",
+          "version": "repo-lines-v1:sha256:2cd9e09f385693f5bfbf460083b8846351663e9c11ce53df0964296ae985a52a:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmU0ZmIzZDk3NjQ0MzYxOTNhNmUzYjgxNjJmYWY2YWI4YzYwMWM2M2I3ZjM1ZDI5Mzg0MzkwNjYwYzA3YWZlNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDNkNDVkYzg2NGUxYjU5ZTIyMDBjNGFjNjdiNTEzY2ZkZWM2ZjI4MGExZGNmOGZkZGRmMDg5OGIxN2VjY2Y5NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2adcd130383f4fbfbea2cec002c8e5ce",
+      "statement": "A defensible agent operation separates trust and provenance classification, guardrail decisions, scoped authorization, tool and argument validation, attributable approval, constrained execution, privacy-preserving tracing, and evaluation; denied paths are audited and contained rather than executed.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/observability/langsmith-evals.md#L1-L7",
+          "version": "repo-lines-v1:sha256:89a8e252ea6cec1828e8b5c673bf0136cd636272be3e21c4e0632741be372935:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2IzZTkxMjBlYzVkYzI5MzQ3MzJhMjljNWM5NGY4OGNmNGE5ZTFhYjViY2Q3ZjgzNGZmYTM4YTQ1NzQ4YTkxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGQ5MGU1N2FiNjQxY2IyYTZjYmE5ZGQxNzU0OTAxZmFlODhmNzMzMmRiN2QzMjRiZTkwZDcyYjIzMWE4ODJiYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/mitigations/guardrails.md#L3-L12",
+          "version": "repo-lines-v1:sha256:af0204037dea59f1092d31dca20614797416ffd8fadaad6f495d1b6b6d6d648d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwMjdjYTMxNmVhYTgwYjU0YjM5ZjY0ZTEyOTVmYmY3NTdiNzk2YTQ0YTEzZWYyMWI3OTcwY2EwYjFhNTA4MTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlNmYxMGM1ZjczZDdkZjg0ZjVhYmQyNjM5MjNiMTU0OTAyZjkxMGVmZTg1NDUyNmUzNTRmY2YyMmY1NmRiNjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImExNjE3YmU1MDM4ZTcxOGU5ZTkxZjFiZGUxYzQzOTY5MzZiMDE2NmYwODQwNTY5MGI5MzI1YWE0OTNhZGNhY2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/mitigations/pii-masking.md#L3-L10",
+          "version": "repo-lines-v1:sha256:8bc1c5af7f41e72bb04786b225b2048144a9ec63f71b0fd0864dc92165f3ee06:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmIxZmI5YTY3ZmVhOTQ3YzQ2NjdhYmFjNmIxNjgxOTEwZmNiOWY1ZmE2ODM5ZWRmMGMyOGFmZDg3OTA3MDQ0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjZmNGM2MDQ4YTcwNzNiNjc2ZjFkODM2MzEyMDhlODY2MzQwNDg3YTRkMmIwNWNhMmE4NjYwZDhhMTlkZDhkNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjRmYzMwOTBkYTI2NDA0ZTVhNWI4NWEzMDZjYzJjZWE2ZWFmMThkYzdhMTY0MWEzMzVjZWYwZjhhZGM1NWY0YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/identity-privilege-abuse.md#L1-L7",
+          "version": "repo-lines-v1:sha256:1dcbe7616191c8067acc104acb436dd0eef4e342ba34b0fee203ede89ad4f1fe:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGIwY2ZjODM4OTRmMmQ2ZDNhNGRlMGM4NzBhZTg4ODMwMmI4ZmMyMTdiOGI0ZjUxOGUyYzZmOTczZmYxZmVmNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmU3MmVhZGNlOGJiMGRlMjUxMzRlOWNiNDZlNWRlOWU4MzNlY2U4YWE5YTBiNGM4ZGQ4MzZmNmU4MjY2Y2U0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/security/risks/tool-misuse.md#L1-L7",
+          "version": "repo-lines-v1:sha256:aa297d8128c376d578dce1f5a9e04cd3f5e1716c5935600081e9db3faad5ca88:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQzMTkzZjhhZmY2NjBmNmY1MWIxMjU5NjE0NjA1MDQyYjU2ZmViYjE5N2JkNmJhOGU4NDEzMzYzN2ZkNDdmZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzBlNzI5MTVkN2E1MTBiOTcxMWQ2OTU2NTIxYmYyZDA0YTU1ZGY1YWUzYmY5MjM5OTdmNWMwM2Y1NjNjZjc1OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-10-03T16:27:35.648Z"
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-11T10:13:45.493Z"
   }
 }

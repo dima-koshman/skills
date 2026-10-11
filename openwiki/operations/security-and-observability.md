@@ -3,9 +3,6 @@ type: operational security guide
 title: Agent Security, Observability, and Evaluation
 description: A threat-to-control and signal-to-action guide for operating agent systems. Connects gateways, least privilege, privacy boundaries, tracing, bounded investigation, evaluation, and evidence-driven change.
 tags: [agent security, observability, evaluations, guardrails, privacy, operations]
-verified:
-  - by: openwiki/0.7.0
-    at: 2026-10-03T16:27:35.648Z
 sources:
   - id: openwiki-source-14513c346c57990de07c91eb
     resource: repo://wiki/ai-engineering/development/observability-driven-development.md
@@ -27,15 +24,28 @@ sources:
     resource: repo://wiki/ai-engineering/security/risks/agent-goal-hijack.md
   - id: openwiki-source-e137f4136742dc5141eb4be5
     resource: repo://wiki/ai-engineering/security/risks/cascading-agent-failures.md
+  - id: openwiki-source-1cabe7654c60e806ecac3434
+    resource: repo://wiki/ai-engineering/security/risks/human-agent-trust-exploitation.md
+  - id: openwiki-source-f550c6adf66d1ee6046b5869
+    resource: repo://wiki/ai-engineering/security/risks/identity-privilege-abuse.md
   - id: openwiki-source-c44610870898c16b68f2a702
     resource: repo://wiki/ai-engineering/security/risks/insecure-inter-agent-communication.md
+  - id: openwiki-source-b1ced3092c14a578894c1b0d
+    resource: repo://wiki/ai-engineering/security/risks/memory-context-poisoning.md
   - id: openwiki-source-408dbe9dd12e675b213f1c24
     resource: repo://wiki/ai-engineering/security/risks/rogue-agents.md
   - id: openwiki-source-db02f92bac3e1799ce17bf4c
     resource: repo://wiki/ai-engineering/security/risks/supply-chain-compromise.md
+  - id: openwiki-source-b75ae925c430bb75868e0c05
+    resource: repo://wiki/ai-engineering/security/risks/tool-misuse.md
+  - id: openwiki-source-cda4e87eb2ab340a54237bd6
+    resource: repo://wiki/ai-engineering/security/risks/unexpected-code-execution.md
   - id: openwiki-source-fc57833b564cdfc86183de74
     resource: repo://wiki/ai-engineering/security/security.md
-generated: { by: "openwiki/0.7.0", at: "2026-10-03T16:27:35.648Z" }
+generated: { by: "openwiki/0.7.2", at: "2026-10-11T10:13:45.493Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-10-11T10:13:45.493Z
 ---
 
 # Agent Security, Observability, and Evaluation
@@ -74,7 +84,29 @@ Gateways concentrate policy but do not make the model trustworthy. Every consequ
 | **Human-agent trust exploitation**: people over-trust fluent but wrong output. | Show uncertainty and provenance, require review for high-impact actions, make approvals specific, and never present model output as verified fact. | Approval actor and reason, displayed sources, evaluator signals, override rate, and corrections. | Pause the workflow, notify reviewers, correct the record, and assess UI and approval policy. |
 | **PII and sensitive-data exposure** in prompts, outputs, traces, or third parties. | Mask, redact, pseudonymize, or tokenize at the data boundary; enforce the same privacy policy in telemetry and evaluation. | Masking decision and detector version, data class, destination, retention class, and access audit. | Stop propagation, restrict access, assess disclosure, rotate tokens if needed, and retain only necessary evidence. |
 
-Controls reduce risk; they do not prove that a run was safe. A trace is detection evidence, not prevention: recording an unsafe call after execution cannot undo it.
+The risk catalogue supplies concise definitions for these threats; it does not describe a deployed control plane. The gateway, masking, approval, and telemetry practices below are operational recommendations to implement and verify, not claims that every environment already has them.
+
+```mermaid
+flowchart TD
+    Input["Untrusted user retrieved or tool data"] --> Trust["Classify trust and provenance"]
+    Trust --> Guard["Input guardrail and context boundary"]
+    Guard -->|"Blocked"| Audit["Record decision and contain"]
+    Guard -->|"Allowed"| Plan["Constrained plan"]
+    Plan --> Auth["Authenticate principal and authorize scope"]
+    Auth -->|"Denied"| Audit
+    Auth -->|"Allowed"| Args["Validate tool and arguments"]
+    Args -->|"Approval required"| Human["Specific attributable approval"]
+    Human -->|"Approved"| Execute["Sandboxed or scoped execution"]
+    Args -->|"Safe"| Execute
+    Execute --> Trace["Mask and trace result"]
+    Trace --> Evaluate["Evaluate outcome and control signals"]
+    Evaluate --> Response["Return or escalate"]
+    Audit --> Evaluate
+```
+
+*The flow separates untrusted data, authorization, argument validation, execution, privacy-preserving telemetry, and evaluation; a trace is detection evidence, not prevention.*
+
+Controls reduce risk; they do not prove that a run was safe. Recording an unsafe call after execution cannot undo it.
 
 ## Telemetry and trace contract
 

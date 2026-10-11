@@ -4,7 +4,7 @@ okf_version: "0.2"
 
 # Files
 
-- [Quickstart](quickstart.md) - Routes readers through the AI-engineering and software-engineering maps, then to synthesized architecture, concepts, integrations, operations, and systems guidance. Use it to choose an investigation path and to find the primary evidence that must be checked before implementation or operational decisions.
+- [Quickstart](quickstart.md) - A compact task-routing map for the AI-agent ecosystem, model, development, security, and software-engineering foundations pages. Use it to choose a subject route, then follow the cross-cutting path and verify consequential conclusions against primary evidence.
 
 # Directories
 
@@ -13,3 +13,4 @@ okf_version: "0.2"
 - [integrations](integrations/)
 - [operations](operations/)
 - [software-engineering](software-engineering/)
+- [workflows](workflows/)

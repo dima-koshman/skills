@@ -16,10 +16,14 @@ sources:
     resource: repo://wiki/software-engineering/learning/linux-foundation.md
   - id: openwiki-source-44a3a287089221f50d654ce9
     resource: repo://wiki/software-engineering/reliability/simplicity.md
-generated: { by: "openwiki/0.7.0", at: "2026-10-03T16:27:35.648Z" }
+  - id: openwiki-source-b91c415d775448e02263569c
+    resource: repo://wiki/software-engineering/reliability/sre.md
+  - id: openwiki-source-b22325aabf42ef0009d53cc2
+    resource: repo://wiki/software-engineering/reliability/toil.md
+generated: { by: "openwiki/0.7.2", at: "2026-10-11T10:13:45.493Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-10-03T16:27:35.648Z
+  - by: openwiki/0.7.2
+    at: 2026-10-11T10:13:45.493Z
 ---
 
 # Software Reliability and Learning Practice
@@ -83,6 +87,49 @@ Shared infrastructure can standardize routing, security, and telemetry, but it d
 not replace application contracts, authorization semantics, or business-level retry
 safety. Those boundaries are the subject of [Distributed Communication and Service
 Infrastructure](distributed-systems.md).
+
+## SRE objectives and operational work
+
+The SRE source note frames reliability as a target rather than an absolute maximum:
+100% is generally the wrong objective because users cannot distinguish every extra
+nine while its cost reduces delivery velocity. Treat this as a qualified operating
+principle, not a universal threshold. Define a user-centered **service level
+indicator (SLI)**, choose a **service level objective (SLO)**, and use the SLO's
+allowed shortfall as an **error budget**. While the budget remains, change can
+proceed; when it is spent, slow releases and invest in stability. The target, window,
+and consequences must be explicit for the service rather than inferred from a
+single dashboard.
+
+SRE also recommends monitoring user-visible symptoms—latency, traffic, errors, and
+saturation—and paging only when the problem is actionable. Small, reproducible,
+gradual releases make regressions easier to attribute. Blameless postmortems turn
+incidents into changes to systems and processes rather than fault assignment. These
+are source-note practices from Google's SRE material, not guarantees that a service
+is reliable or that every team should copy one policy unchanged.
+
+**Toil** is a narrower category than all unpleasant operations. The source note
+identifies work as toil when it is manual (including manually running a script),
+repetitive, automatable or removable through better design, tactical and
+interrupt-driven, leaves no enduring value, and grows roughly O(n) with service
+size, traffic, or users. Meetings and other overhead are not toil; nor is every
+one-off piece of grungy work that leaves the service better. Use the traits as a
+classification test, not a requirement that every task satisfy every row.
+
+Google's SRE guidance caps toil below about 50% of each engineer's time, averaged
+over quarters; the remainder is engineering that reduces future toil or adds
+features. This is a team-health and engineering-capacity guardrail, not a universal
+measurement law. Inspect distribution as well as the mean: a rotation can produce a
+reasonable average while concentrating toil on one person. Running a script that
+still needs a human trigger remains toil, and claims that work needs expert judgment
+do not by themselves remove it.
+
+The reliability consequence is a control loop: measure the user outcome, set a
+qualified budget, spend operational effort where it reduces recurrence, and turn
+repeated manual response into automation or simpler design. Automation is only a
+win if its output is deduplicated, evidence-backed, and safe to review; otherwise
+it creates review toil. For AI-backed services, quality evaluations can supplement
+error-rate SLIs by detecting wrong answers, hallucinations, or policy drift, but
+scores remain signals that need validation and an explicit owner.
 
 ## Observability-driven development
 

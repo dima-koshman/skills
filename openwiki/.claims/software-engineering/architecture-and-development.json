@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e7414b909a8245214b9fd66552929e47e9d97ac65000a2f621dd169a100ad883",
+  "claims": [
+    {
+      "id": "claim_97b04c6aaa8b45cf81d0f6a939617a62",
+      "statement": "Architectural selection should begin by identifying cohesion, independent-change, runtime, consistency, contract, and failure-containment boundaries; a module boundary inside one process has different costs from a service boundary that adds network and deployment concerns.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/architecture/architectural-patterns.md#L19-L31",
+          "version": "repo-lines-v1:sha256:3fea233a8d927c5489cbb5ae002f661854ee13e6bf1d19107c563ec8812564e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkYjkwZDJlOTc1MGNlNGJiMDQyZTQxODZkOWQ4Y2VlMDJiNTc4NGY3ZDE0ZWVkYTFkNmI3NWNkYWI0OWU5ZTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkOGIxZGZlMzE4MDRiYmUxNzhhNzZjZTQ4NWQ2ZTc5M2I4ZTNkNGU3NjM2NmY5NDZmNzdmNDFiZDc1Yzc5NzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMwMzA1YzQwMmE3ZmI3NTljYjcwYThmMzZlYjVmOTg3ZTdmNjdkZjUyNWQ5YTdkNTIyMzFlYzZmYmMxZDI2NzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhNGY5NDBhYWM0NmFlYTU3ODc5YmRjNWVhYWI5YzdmZmVhN2Y5YjhkODBiNmJmZjJjNWIyODk1NjNjOWU5YmUifQ"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/architecture/architectural-patterns.md#L91-L95",
+          "version": "repo-lines-v1:sha256:2a03677f6ead886870af16f8973dad19a9130cca1225607224f94e141576b6a0:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTUzODk4YzA2ZTExZDZmNGZjMjJmOTc1NGQ4OGYyZTI2MzJkM2I3MDVlNjkxNWE1NzU0ODg5YjNhOTQzYzg3ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ5OTg4ZDQ3NzFlNTkwMmZiODFhOTUyOTVlMGQ3NzFjZTdhYWI1OGZmNjRjM2IzOGRiZTIwZWY5ZDgzNThiOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTgxNmVmOTU5N2U5ZjVkZmIyODc4ZTg1ZGVmZjVmNWY2OWU5NGVkMjg5OTUyY2UyZTA1NTNlMDk2NGFjYjQ0YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDViZTFkOWJiN2UzZGM2NzRiNzIzYmIwOWY5NmY4NWY1NzVhOTRhYTllNGRlYWEwNGI2MzRkZTAzYjk3NDRjNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0c174b174e594c948c1518304143634c",
+      "statement": "The pattern toolkit is situational rather than prescriptive: modular monoliths, layers, services, ports and adapters, pipelines, gateways, orchestrators, and plugins each solve different forces and introduce distinct contract, failure, ownership, or operational questions.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/architecture/architectural-patterns.md#L33-L46",
+          "version": "repo-lines-v1:sha256:e9b43fc49f08f071ec14e603581ed0ad909a6a89b74fc8576156ca88e2262b41:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0NWVjNDdiZjkzZTg3YTlhYWY2ZGM2ZTllMDBkZTNhODcxZTZhN2FhNDRiMGE2MWQxMDFkMzEyZDdhMzExYmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4YjBiYzllOTdjYWUwMGVkNWFmMzYzNTRkNDZhOGUyMTliZDMzZDJiZWQ4ZDNkYjhkY2NhMzE5NWIzMTAzZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjODY4ZTBhZTY2NmJkNWU0MDY0N2I2ZDFmOTVhNmZhZDQ0NjE5MDZiOGM3NmY1OGJiMDk0ZTY1MDIyZDlkYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlNzA2ZjRmZjAwZjllNDg3NTBhNGY0MTA4MmFiODY2Yzk0MDQ4NjRhMWQ2YTgyMjE4YzFhZDc5ODY1ZjRkMzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_eb9bbcb6fb834d5bb44efae43f1dd3b4",
+      "statement": "Orchestration, choreography, and shared-data integration place coupling in different locations: workflow ownership, event reactions, or shared schemas; these styles can coexist, but designs must make write ownership, atomicity, stale-read tolerance, and duplicate-side-effect handling explicit.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/architecture/architectural-patterns.md#L58-L75",
+          "version": "repo-lines-v1:sha256:c5fb8d10dcf2aac178692bf2d0024227324808022ae0e3ca6a4962a08a3668e3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmOTEwNjk1YWUxOTc0YTkzNGJjNjM3OWRlNzBiODNmM2Q0MDRlNzI4M2RkMTZlNWE0OTZlMjcxMTYxNDllOTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmN2FlM2NhYTk2ZDhhYzQ2ZDY0NzUzY2Y4NTJjYzZiMjgyMmUwYTRkZGE3ZDMxZTExZDRmNjc5MDMyMGRmNTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwNjBiNjVmYmJkYTM3NjBmNTI1NWM5ODk4YWNhMWQ3NTNmNDJiOTlkYmIzMDgwZGUwOGQ5MDVkNWI0YWU5NWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzYjkyMDBlOTIxODg1ZTk0ZDliZmNlNThmMTQ5ZjIxZTcwYmU0Zjg5ZDI3Y2NkNjNjMDBmMjFhY2ZkM2E1NTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8d9afcda55ac4ca1bef111c2455f169a",
+      "statement": "A service or other distributed boundary requires explicit handling of remote failure, data ownership, compatibility, consistency, latency, and operations rather than assuming that independent deployment is a free benefit.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/architecture/architectural-patterns.md#L19-L24",
+          "version": "repo-lines-v1:sha256:2b683580932ef15eea630c77fb0111a77b6779bd735cdf0cb652576b849a5e27:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRiOTBkMmU5NzUwY2U0YmIwNDJlNDE4NmQ5ZDhjZWUwMmI1Nzg0ZjdkMTRlZWRhMWQ2Yjc1Y2RhYjQ5ZTllNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTAwMGYzMDFjMThkODU5OGVlMDE1MWZhM2ZlYWQyNWNlNDgyNTE2NjM3NTVjYmJkMjhjMGZkODk3MGZlMjRkMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzAzMDVjNDAyYTdmYjc1OWNiNzBhOGYzNmViNWY5ODdlN2Y2N2RmNTI1ZDlhN2Q1MjIzMWVjNmZiYzFkMjY3MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDYyNmI4NTBjMzgxYjAyZjJiZmNhYzZlY2YzNTk2Nzg0MWNiZjg4NzQyMTBjNGU0NjhhNDdlYzRlYmY4MTcxMyJ9"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/architecture/architectural-patterns.md#L37-L46",
+          "version": "repo-lines-v1:sha256:c27f0aeec76c8c7da23411a9be25fd7e841bdd111337f21dc00217ec26942cc7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxYWY5ZmVlMmFkNWQ4OGU5ZWRmNjRjZjI1YzQ0YWM4ZWY1YTNiNWRjZjQxYzg4YmZhOTczODU5MjgyNjhkNzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4YjBiYzllOTdjYWUwMGVkNWFmMzYzNTRkNDZhOGUyMTliZDMzZDJiZWQ4ZDNkYjhkY2NhMzE5NWIzMTAzZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjZjVmMGM3NGIwMTk4OWQyZjZjMDQzYjRlY2RjZTExMzVlMmVjZGY1NTM2MTRmYzgyNDEwMzM3ZmQ3ZDUwYzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlNzA2ZjRmZjAwZjllNDg3NTBhNGY0MTA4MmFiODY2Yzk0MDQ4NjRhMWQ2YTgyMjE4YzFhZDc5ODY1ZjRkMzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a09efa033a854e16bef7babb782ecd6b",
+      "statement": "Protocol Buffers illustrates that schema evolution is part of a service contract: permanent field numbers enable old and new producers and consumers to interoperate, while non-self-describing payloads make schema distribution a required operational concern.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/communication/protobuf.md#L15-L30",
+          "version": "repo-lines-v1:sha256:3efa545c41e2f15d02bd04671e25224f19ab88a4c916572401f993ec0c1e215a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwYmE0Yjc5N2I4YzUxZTE3YjQ3OTEyOTg1N2Q4MmYzMTVjNWY2ZjE1MzA2N2U0ZjhkODcwNTI5YTFmYTQzYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0MTQwMmY2NjRjOTU0ZmI1ZDdlZmE4ZTJmMmM0NGFjZjQ3NDA0ZGU0Y2FkYTYzMTYyMTg3ZjRhNzlmZTgyYjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkZWJhZTAyZDg5ODIwYWExZjA1ZTE4N2NhMmVmOTc1ZDUyOTRmZWU3YzlkMWEzN2Q2M2Y0MmRkMjI4Yzc4NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkYTBjMmE5MGVhNmMyMzU4OWNiMzQzMDBlN2NjMjJkNmNjMjcxNjI5MDhiNjUwNTAzZDE3Y2ZlYjI4YTZjNWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_92df47084cd94c1c9323fb3cfe521487",
+      "statement": "Simplicity and small, understandable changes are reliability practices: purposeful APIs, clear responsibilities, compatible interfaces, and incremental releases reduce accidental complexity and narrow the causes of regressions.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/reliability/simplicity.md#L9-L31",
+          "version": "repo-lines-v1:sha256:837bc91bf39ab9a91a7e73ee007bf3d7875673d13f36affa76b2777ab635916a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiMGRkY2RhMGIyNGE2OGJkNWQwYTY5ZmRjNjhkMWQwZTBkYWU0NDFiMDRiMDVlNmRhZmY5YThjYmZjZGEzZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkYmYxMGNlZWM5ZTlhZmNjOTk5MmI4YzFlMGRkMTg5YzE1ZTNlM2VlMDRkOGQ4Mzc2ZDU4NTFhNmEyODIyZGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiYzMzNGNlY2E2NmUwYzE2MWM4ZWQ0N2E3YjY5NjJhNTM4MWY4MGMzMGM0MjhmZWE0MDZhZTQ4MzVhYzM5NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4MWRjNjYwMWM3ZDZmYTUzNjBhMzRjMTk2NjcwZjQ1NWQwNGVjYzg3YTZhMGJkMDU3ZjU1NzFmNDI3NmQ5MGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f55f372b33ba4d45961b4168dc0b5e31",
+      "statement": "Boundary-focused testing must cover more than component existence: domain invariants, adapter translation and failures, schema compatibility, workflow retries and duplicate delivery, ownership and migration behavior, and operational recovery should be tested according to the boundary's risk.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/architecture/architectural-patterns.md#L73-L75",
+          "version": "repo-lines-v1:sha256:c48a90e7395f845aadd424923a4f80b408cc5b65c98f09e7d963789120ee64aa:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZlY2E1YmVlYjBlZTMxM2ZkZjkzNTJhYWIzZjVjMDE4NTEyYjRlYWNmYjkxODFmZTgzYTNkMTVhZDVlMmRlMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWY3YWUzY2FhOTZkOGFjNDZkNjQ3NTNjZjg1MmNjNmIyODIyZTBhNGRkYTdkMzFlMTFkNGY2NzkwMzIwZGY1NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTk5MTAyNzZmOTZhNzIzMGVmODE1MzRkZDliYzc0OGI5OWQ4ZWRhYTE0YjE0MDc4ZWU0OGZlOWEwZTgyMDI2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjNiOTIwMGU5MjE4ODVlOTRkOWJmY2U1OGYxNDlmMjFlNzBiZTRmODlkMjdjY2Q2M2MwMGYyMWFjZmQzYTU1NCJ9"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/reliability/simplicity.md#L19-L26",
+          "version": "repo-lines-v1:sha256:15646fce829e55138862a848c572c8cc8b31c26216f2928045824dbd2c4fbda5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODNlMmU4NjYzNWM4MDI3YzM3ZmEyM2Y5NjE0YTEwZjhmOTQ1Zjk4MTBlNzJmZDI2NDAxMTc1NzY2ODQ2NjM3NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDUxNzYyYzBmZDVlNDljOWVkMzllYjVlYmRiZmQ5ODI5YTNhMDAxODAxMDI0NGY4ZThlMDUwNDBkOTBhZTBlYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTRlODI2ZDViNmRhYWNkYzFkNmRhZGViYmZkZjJjNDkzOWUxMDMwYWUyN2EzMzIwOWNmYTdiYjgwYzAzNzEyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDYzZDE2MjlkNWVhNTYyMGQ3ZTgwOGRmMmJlNjgyYzU2MDgxZTQ0NjMxY2M2MzM0OWIxMGZhNGU1ZDEyNTQwMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_72062972a515484d822e3dd73e4f1b3c",
+      "statement": "Architectural pattern taxonomies and historical distributed-system designs are models with assumptions, so performance and reliability conclusions must be validated against actual call paths, workloads, deployments, and measured operational behavior.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/software-engineering/architecture/architectural-patterns.md#L114-L117",
+          "version": "repo-lines-v1:sha256:d6b0c75bd2018f0e2186908c112c63a5c814f17bf2f3864dc0f0abb6c623e907:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjg0ZTdlYTI5ZWNjZGMyMTcwYzk0Y2RlNTE5ZDM2ZTE5MTM3NGM5YTI0MjQ2N2IwZjIzY2UwODlmM2NjYjJjMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTBiNDcxMTc3NWM2N2NlN2IxOGM3NmNkZjE4ZWE0YjJjODIxOTZhZGFmMzRmMGI1MGY1Mjk4ZTY4MGJhOWRkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTJiMTcwOWZlOTE4YTMwZDgxMDQxYjRiZjk1ODQ0YzhhYzdlNTlmYzliYzNmZmQ3YTNmYTVjMTY2ZTlmMTdlNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzZjNDc4MzY2Y2ZiZjNjMGNiYzBiZGU1MGRmMzVkN2M5M2M5MmYzMGFhY2Y4ZDNjYTY0MDU0N2QxNWQ2ODU4MiJ9"
+        },
+        {
+          "resource": "repo://wiki/software-engineering/distributed-systems/distributed-systems.md#L30-L32",
+          "version": "repo-lines-v1:sha256:5e541371b73d49b85afac38be4701901304f46b618a004dc818072177209a134:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjA4MTJkZjM2MWEyM2Q3Mjg4MWQ3ZjI2NjZiMGU2NTg4MDYwMzIzMmEwYzY2MTI5MzM0MGM1MjMwM2RlMDVjNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdiYWYxMmY0NGY3Y2YyYjBkOWExMjIxMTQwNzE1M2ZkN2Q5YTI4MTY1YmVkNjBkNjU5ZWFjODgyMGJkN2IyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTEzOWU0ZTY4ZjRjZTlhMDc2NGUwZmE5OWQwNmMwMTlmMzVhNmIxZWI2MDg4NmMwNDQ1MjIxYjAyZjFiYTc0NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTE2N2E2NTQ3NDViYTgwYWE0YTNjMWVlMGQ3NDUwNDI4NThkODBmZjMwYjA5MmZhNDE5OWVmYWIyZjZmNDM4ZSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-11T10:13:45.493Z"
+  }
+}

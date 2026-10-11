@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:d9bc0808928099a66ecc0bc7b672df95e89009bd5e4a6cc38f0e45d4ce9ebac4",
+  "claims": [
+    {
+      "id": "claim_8c393fdbfcaf4c0480e91666cf83cd17",
+      "statement": "The source notes define an agent as an LLM-driven loop that selects actions, uses tools, observes results, and repeats; planning, memory, and optional subagent delegation are recurring ingredients, while a harness drives the loop and a fixed workflow is preferable when control flow can be predetermined.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/agent.md#L7-L17",
+          "version": "repo-lines-v1:sha256:265dce9cc29a401e3c736da13d8d1cdf3fb76bc15b1653c7212b098cb69d0a8d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzZmQ4Njg3YTJmMjhiZDUwNjE4M2FiMjcyZmU2ODE1OTQzNDdkYzg4MDE5MjllYjFmNGU4YTRlYzZlYzIwNjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwMTlkMTBiYzI4ZjJlNDBjZDcyOTJkMTFiOWY1MDA4ZmJiYmU3NjZiM2E4ZDU5Yjg5MzI2YjVlMTI4M2JkYzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmMGRkZGJiYmNmYTBiZTZjZjhhODNkMDBlZTZhY2I3MWQ1YmE4MDA2OWEyNGIyMGE2ZmEwN2ZmOGYxZmIwNTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f56567a6a04e47adbcd8803aa959ebc9",
+      "statement": "A subagent is a task-scoped delegate whose parent assigns part of a goal and usually controls the task and the subagent lifecycle; peer and subagent implementations may share endpoint, tool, or asynchronous-job machinery without sharing the same authority model.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/peer-agents.md#L22-L28",
+          "version": "repo-lines-v1:sha256:1dd05dc1a3e01058a5b4dc89e0be36b60d10a52667c42a974018471ddf42a095:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGQ0N2NjZjRjYzc1NTE2NmNlYjY5NjYzMjJhMDVkYzFkMDMyMGMwMmIxMWVhYjU0MDJlODYzMjhhN2JhNGQ2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmE2MTgwYzYwYzNiYzI4NjdmNjY2OTliYzU3ZDU0MmQzNDJiNGNmYjhlNTU3ZDJiZDViMTFkMjRlOWJjMDAxMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTQ5ZjE5ZGZlMjFhODk0YTVmZDBhZDhiNGY2NzZkMGFlOGUxYjFlNmUyOTJjZDg1YzZlOGE3ZGY3NWExMmQ5OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzQzYTc0NzJmNGYwZGExMTA5MjI2ZmU1MTlkZTU0OWFjMDk1OTYzZWYzMTQ5MjFlMjc3ZDIzZjEyNmU0MDliZCJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/agents/peer-agents.md#L5-L20",
+          "version": "repo-lines-v1:sha256:2ef88cff49192ed282535780c6aa2b0750ca8d6b3aea2c72869a08985aacc7ec:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwMzU1MGNkNjkxYTExYWU0M2YyYjU5ZGQxODc2NDdjNzQzYjE2MWQwY2IwMjM5ZGY1N2IxYTYxYzAwYjIxNTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlODdhZDA1NjY4OGZmMTNkZTFmNjBiMDQ5NTE2YTI4ODUyOTRlMDBhMTc5Y2U2MzgyNjg4NTRjMmY5YTc5NTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3Zjk2MzgyNTJiZWM3NTg0NWQzOWM1YjNlODEyMDQxZDA4YTA2MzZkZDgxN2E1NTAwODEzNDI2MDNkYjJkNzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4ZTJlYjhhNzgzYjYyOTBmNjk5MDU0NjI0YTQ4MGY2MGYxOTA3OTRjYzU1ODBjNTg5ZjRkYzY2ZDI2MDY1ZWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_859e0968639d41aaa6876035530eba1d",
+      "statement": "Peerhood is defined by independent goal and authority ownership rather than transport: either peer may initiate collaboration, neither generally overrides or terminates the other, and a relationship can be task-scoped even when the agents remain system-level peers.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/peer-agents.md#L30-L33",
+          "version": "repo-lines-v1:sha256:5eeb9c5d640480171edae0313c5d42e347999464f0b52e18c306d934068b66fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmE2NTU0ZTJmNzNmMDQzNjUzNDVhNWE5ZDYwYzVhNTk0ZDIyZDEyMDJhMzIyNTc3MjZiMzYzZWEzOTA2NWVjYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzg0ODk5YTE0MjdjODdlZDMyZTljYWNlMGZiMjlmNDcyMzY1Mzc4NDQxYmRmOWRhMmI4M2U1Y2Y3N2Y3NmNmZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjhlNjdjYTM2ZDJlZDU1Nzg4ZGJhYzFlZDZlMTU4MWJkMWJjYWZiNmVlMjBmNjQ2MDdlZTViZGMxN2FkOGRiZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjk3MTAyNjZlYzE2YzQ5Mjk2NThlNmQwMDA3MGMyMTVjYTZkYTVlMTg1MjFjNzgwNjA4MmY2Y2EzYmRlZjVlZCJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/agents/peer-agents.md#L5-L20",
+          "version": "repo-lines-v1:sha256:2ef88cff49192ed282535780c6aa2b0750ca8d6b3aea2c72869a08985aacc7ec:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwMzU1MGNkNjkxYTExYWU0M2YyYjU5ZGQxODc2NDdjNzQzYjE2MWQwY2IwMjM5ZGY1N2IxYTYxYzAwYjIxNTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlODdhZDA1NjY4OGZmMTNkZTFmNjBiMDQ5NTE2YTI4ODUyOTRlMDBhMTc5Y2U2MzgyNjg4NTRjMmY5YTc5NTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3Zjk2MzgyNTJiZWM3NTg0NWQzOWM1YjNlODEyMDQxZDA4YTA2MzZkZDgxN2E1NTAwODEzNDI2MDNkYjJkNzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4ZTJlYjhhNzgzYjYyOTBmNjk5MDU0NjI0YTQ4MGY2MGYxOTA3OTRjYzU1ODBjNTg5ZjRkYzY2ZDI2MDY1ZWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d88336da9ad45e3817f9ec22df49447",
+      "statement": "Peer coordination can use direct callable endpoints or tools, synchronous or asynchronous results, or shared files, databases, repositories, queues, and blackboards; it requires authenticated identities, task and ancestry IDs, idempotency, concurrency control, distributed termination, and cycle detection, with inter-agent failures capable of cascading.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/peer-agents.md#L22-L28",
+          "version": "repo-lines-v1:sha256:1dd05dc1a3e01058a5b4dc89e0be36b60d10a52667c42a974018471ddf42a095:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGQ0N2NjZjRjYzc1NTE2NmNlYjY5NjYzMjJhMDVkYzFkMDMyMGMwMmIxMWVhYjU0MDJlODYzMjhhN2JhNGQ2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmE2MTgwYzYwYzNiYzI4NjdmNjY2OTliYzU3ZDU0MmQzNDJiNGNmYjhlNTU3ZDJiZDViMTFkMjRlOWJjMDAxMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTQ5ZjE5ZGZlMjFhODk0YTVmZDBhZDhiNGY2NzZkMGFlOGUxYjFlNmUyOTJjZDg1YzZlOGE3ZGY3NWExMmQ5OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzQzYTc0NzJmNGYwZGExMTA5MjI2ZmU1MTlkZTU0OWFjMDk1OTYzZWYzMTQ5MjFlMjc3ZDIzZjEyNmU0MDliZCJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/agents/peer-agents.md#L45-L52",
+          "version": "repo-lines-v1:sha256:01bb2f1e06e80dd69061ab80023f2c589194d84b4305af3af9228fa25bcc3b41:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWE0NDgzNzA4ODY2NDU3MDg5YTI2N2QzM2VkYzhjMDAxOTkyYzFkZTk4MzIwYmQ3MTA5YjEzYWQ1NmM2Y2Y3ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDQ1NjBhYWYyMjVkMjI2NGI3ODk0MDM2ZWZkMjkxZWYwZjBjMWI3ODg4NDM5MzA3YmRlYTkyZGI2OWMyYTJlNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzU4NjdmMDMyNDExMzAxODI1NWQ3NThkNmJmMGY1ZWMxYWQ0NWE0MjU0NDQ4MzM0YWNkYTJlMjk3NWE1OWU2YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_fe0900c50b714978b078dc8c01f09690",
+      "statement": "A2A is described as Google's protocol for communication and interoperability between opaque agentic applications, a REST API for agents that supports remote-agent discovery and exchanges involving messages, stateful tasks, status updates, and artifacts; the notes qualify its adoption as limited on the open internet and emerging mainly in enterprise platforms.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/A2A.md#L1-L11",
+          "version": "repo-lines-v1:sha256:e4038042648dfcd5e02a173475c08c1179105b07d1c51a3116dc55e239afc7e1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYTFhYWM2NTJkZjc2YWJmNzNhZmFlZjYxYTE5Y2I0MTY2MTAyMDMyNDM0MWZiNGMxZTgwYTIyMTNmZWJjOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2MWQzNTg1ODUwMDk2YTEyNDg2YzA0ZGNlNmRlZmRhMWE4OTBjMzZkYTAyZWFmNWI2YjI0ZmUzZDdlMTA3ODciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/agents/peer-agents.md#L30-L33",
+          "version": "repo-lines-v1:sha256:5eeb9c5d640480171edae0313c5d42e347999464f0b52e18c306d934068b66fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmE2NTU0ZTJmNzNmMDQzNjUzNDVhNWE5ZDYwYzVhNTk0ZDIyZDEyMDJhMzIyNTc3MjZiMzYzZWEzOTA2NWVjYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzg0ODk5YTE0MjdjODdlZDMyZTljYWNlMGZiMjlmNDcyMzY1Mzc4NDQxYmRmOWRhMmI4M2U1Y2Y3N2Y3NmNmZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjhlNjdjYTM2ZDJlZDU1Nzg4ZGJhYzFlZDZlMTU4MWJkMWJjYWZiNmVlMjBmNjQ2MDdlZTViZGMxN2FkOGRiZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjk3MTAyNjZlYzE2YzQ5Mjk2NThlNmQwMDA3MGMyMTVjYTZkYTVlMTg1MjFjNzgwNjA4MmY2Y2EzYmRlZjVlZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e627a6af742848fcac88037c8c43d0e7",
+      "statement": "ACP standardizes communication between code editors or IDEs and coding agents, and the source notes characterize it as useful specifically for IDEs rather than as a general peer-agent protocol.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/ACP.md#L1-L7",
+          "version": "repo-lines-v1:sha256:a6e13f2508c96a2cf61c5b572273a231ee005b2dda47eaafd14cf5de7913434d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWM4MDE0OTFiOWI5YTE1NzM0Mzc4ZDhiMTVhY2E3ZjBmYmQ4YTk1N2IyZmVlODc2MTUxZGY3ZGNiZjFlN2Y2MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWExYjhiMjRmZDg3ZjBlZWM3OWZlMTg0MzJlNjlkNjc5YWRmOTFmNmY4NmZlMDQ1MTJkZmU3NTQ4ZDk1NzE2MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1331a48a4a464d81b08a0246a97f1e14",
+      "statement": "The documented concrete agent products differ in operational surface: Antigravity shares one Gemini-based harness across IDE, desktop, and CLI with editor, terminal, and browser access; Claude Code is a terminal-native Claude harness with file, shell, and code tools; and Codex combines an open-source terminal CLI, cloud environments, and IDE integration, including parallel work across Git worktrees.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/antigravity.md#L1-L10",
+          "version": "repo-lines-v1:sha256:194d306cd2d3a3b1cc15cf73072b4462a0dddd828fa17019ea9004c4ef50ce1c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4ZGY2NWY3ZTE3MWI3YTg1OGEzNjNkYTQ1ZGJjYzk1MmUzMzQwYWEwZDg0ODAxYjA1ZTU0NjcwYjU2OTMzYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNDNmZjUyYzJmNjRkY2E0NDNlYzhiMTNhZTgwNzg2MzBjMWUwOTE1MmUxNzQ5MjZjMTY4OTRhMzdiMDNhMDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/agents/claude-code.md#L1-L10",
+          "version": "repo-lines-v1:sha256:3f39c770a75e9f2cdfde6f3ff7ff4b356678ac2fbd117a22db3d0091e0ecc1a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkYjlmZjVmNmJmMTdhYjU2NzE2MzcyMWY3MGRlOWZkYzVmNzZjOWUzY2I3NzQ5ODE3ZDIwZjQ1MTZmZWRlOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4NTkzNzQzOGM4YzI4YTVhM2U1OGUwMDQ1NWQ2ZTRmYzFjNGI3MzdlODM4OGNmYTRkMjBmMmZmNzY1YWI2NTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/agents/codex.md#L1-L10",
+          "version": "repo-lines-v1:sha256:b5e59ccbfc7bec0ae2d0e3a7f513b5c19425a0194bfc08519025c0b87a011a9c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkZGJlZWFhMDAwZWQxNDE2MDg0MTE1OTJkYmM0ZjJiYWZiNzhhMWI4MTFiZjQxNmQyZjU0NTFhNTJiZDBlNTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwZjcyNWRkMTA2MmM5OTllYjBjNDU4YTMyOWMwNjYyZmZiMjEzYzJmMDNmNzNiODM0ZTgxNjk2MjdlMTM1NGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_03c80013a0b849f6bdda66d0bee3a18b",
+      "statement": "Deep Agents is a LangChain package of production agent patterns—planning, subagents, durable memory, human-in-the-loop, and workflows—built on LangGraph as its harness, whereas Devin is a cloud-based autonomous coding agent that executes tasks asynchronously in an isolated sandbox.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/deep-agents.md#L1-L7",
+          "version": "repo-lines-v1:sha256:f1a3b11458ac25bf0328cb8b2e08527283bd53177251dc83347532a7c1ba672c:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGQ5OWMzZDRlMTQxYTIyNThjNTRmZjhmY2MzOTQ3MmVlOTFmZDRjNTI3OTRmY2FlNzRhMDY0ZWE4NTM4YjczZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTJmODNjNTljZTE4ZTFlMjE4NmVjZTJiNDM0OTJiZmZlYzhkZmE4Njc1ZmI4YzIxYzVlMDFiNGYxNTBhN2I5YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/agents/devin.md#L1-L10",
+          "version": "repo-lines-v1:sha256:89ac25133324e49fc5052849b488eeaa8ddec89f585cbd067c54e55ed0d8de0a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxMTJkYzNhNDM2MzcxMmYyMzhhMjI5YWJkZWRkZjU4ZGZjNjRlNDMwNTUyNWRkNmUyZmYzNmE4Y2YxMGE3YzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlYWEzZmZhMTNhMjA1NmMyYTk5NjdmMDdiZGJkN2QwNWJiZTU4ZDY4ZTBiODQyNmNlNDk5MzA3NGI5YzUzZjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7555af658a124c2690af056c54481ef1",
+      "statement": "OpenCode is described as an open-source, terminal-native, model-agnostic local coding agent from the SST team that stores sessions on disk and connects to many model providers; the notes distinguish it from Claude Code and state that it can use Codex or Antigravity subscriptions but not Claude.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/agents/opencode.md#L1-L12",
+          "version": "repo-lines-v1:sha256:bdd0c26a683e510253b01c149ddc43ed3ff890a3ae874202319a97b30ad953e9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiMTJjNjk1YjllNjdiMmEwNjU1MmMxYzc4YWEwZTJiNjg2YjE0N2E5NjU0NDhhNzBhMWQ1ZmZjYmJmNDFlYjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzYjJiODQ4NDhjMDQ1YTVhZWYxOTEyZWIwOTNjMjNmODZkNDU1YzVmY2JiMTI5NDZiMTJlODNjNjQ1M2VkOWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-11T10:13:45.493Z"
+  }
+}

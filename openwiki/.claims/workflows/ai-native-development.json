@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e729a1b249d8cda29d55e4f3a44f038466d345fa07aad65195fa243227f24aec",
+  "claims": [
+    {
+      "id": "claim_a3deef66b40547928b5c12f5448badf4",
+      "statement": "The AI-native software lifecycle is a loop of Plan, Design, Build, Test, Deploy, and Maintain stages in which committed artifacts trigger subsequent gates and provide an audit trail.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/ai-native-sdlc.md#L40-L56",
+          "version": "repo-lines-v1:sha256:06e83f7939be23880731cd9cb9e07622ad4c9f9b4fa6c0fd7921d15e4e7d4195:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3ODIwYTlkYjJjYzZkZjg2ODRmMTY5NjViNTM1YzNiMDJmZTFlODA5OWE3YTcxM2VhMDAzYmM0ODFkYjA2OTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlMGVjZDE1MzA0Mjg0NmI3M2I2MzBhZmM3OWIzOGY0Y2VkZmRkMmZmYjI5ZjRjYjVhYzAwYmQ3ZGNjODAyYTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkMDJkNTA0ZGIyNWYxY2QxZTNkODMxNzRmMTlkNjRjNjYyYTVlZjkxYzQxYjBiYjQwODIzOWEzMDk5ZTdlYTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3NGVmODRkOTMxMjIzZjgxZjUyOGRiOTY3YTk4ZDY4ZDBjMzNjYjM4NGUxM2U2MDZhZWIwZjcyODk1YmIxNGIifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/development/ai-native-sdlc.md#L5-L12",
+          "version": "repo-lines-v1:sha256:a515984a2f274ece307923adcbaf755b0d12fc1b5db00a10d87f6771de69a75e:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTAwOTFjZjRkMmE3YzQ4NzIyMmY3MWY5NDg2YmExZWRkNDZjY2NmNjUzMGRmNmM0ZjM3NjAzNmM5ZjgwNGE3MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWNkOWEzZmU3MDcxYWU3NGU0ZDkyZTJiNjlmZWNhMjhmYzJlZTI2NjE5MDlkYTMyODEwY2E2ODQ5OTlmMTE1MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTNjYmUxYzg4YThmMzZjYzY0MzI1ZDdhOTlmMzYyYTQxNzFjNDYwZmE4OTYwNjA2NTcwNzIzNTBiNTZlMjNkMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTQzZDE3M2E2NDMyMGQwZjhjNDFjN2Q2M2ViNmFhYTliOTg0OTUyZjNkNzY1OWY1ZTA3MDM2NTdhZmNjNWE2ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7004a6dbdc0a4a72970e1ffeac9b3380",
+      "statement": "AI-native development shifts human work toward intent, risk, review, and approval gates: agents may draft, implement, review, and diagnose, but people accept intent, approve specifications and plans, approve pull requests, and authorize releases.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/ai-native-sdlc.md#L139-L166",
+          "version": "repo-lines-v1:sha256:8c4c384adb57dcaedf2d2785b3cd40138b6c71dafcaa9984d22a22bcbd74ef62:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExZTg4ZGRhNjkyNzg0NDU3OWFiYTBhODJjMWFkNjEzYjZhYmU3ZTdmNjg1ZTZlNTNjYzA4ZWNjOTg4MGQ5ZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkYzg1NjhkOTFjMWU1Y2EyYjBiNzkzYTA1NTM4ZTA4NTVhOTE0M2U3YWJmM2FiZWFmMDY4ZmZmNmRmZjRjYzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI2OTY3NDVkOTk3ZjVmMjM3YmY0N2I2M2YzYmNlYjcwNzlkZDQ2OTk4OWY0MzQ4MjlmOGZiYjZmNjBmOWJhYzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiN2IwYzUyYWY5Nzk0NTBkMGJiN2ZhYWRiNzVhMjk4OGRhNjAzNzFhYmFhZmVlOTRmMWNjMDc5NjMyMTU0MmMifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/development/ai-native-sdlc.md#L198-L215",
+          "version": "repo-lines-v1:sha256:cbffec2f0913be725b69fa677de48f2e62852395c7f6edabb1eb13de41984e85:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkMGIyY2YzZTFjYWU4MWZhZjRjMDBlMTUzYjU0YWY3YjFhZjEzM2NhN2UxM2Y5MGQ4NDRmMzZiNTRjNTA2NTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyOTIyNzY3NWQ4NzVmOTE2ODE2YTU5MGYyZjdiY2I4NDM1ODU2YWUzMDI3NWY5MjFlMDE3OWVkYTc2NDBhOTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBiYTNjZDQ2NWI0YmIxOGI0NGRhOWY2NDU2ZDY2MTRmMGIwNGEwZDNmY2I2OGNmY2M4NzU2ODg0ZmNkNmFhYjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0M2M4NjllODQ1MzBmNTAyNTNjODAwZWMyNzBjMzFlYTA4NjkzOTk1ZDg1NzdjN2VlOWRjNTA2ODNlOTY3OTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a95644546c2a4dce9395181c81e00d4f",
+      "statement": "Implementation is safer when the agent plans before editing, records the plan, uses project instructions and advisory skills for institutional knowledge, and relies on deterministic hooks and CI for invariants that must always hold.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/ai-native-sdlc.md#L94-L119",
+          "version": "repo-lines-v1:sha256:008be5cdb8f7abd495e7317ce1fb54afd38b5425fe15ca39bbcdbe5b8f92f808:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4YTE5MjQ3MWIzMGZkYTUyNWQ5MTczMjAxZWZlYjQ4M2YxNGVlYTM3ZTljZWJmOGI0YTcxZWE2MjE2YzQwNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1ODBjZTNlMTI3ODcxNWJlODdmZDNmMTY3MWE1ZWNhOWQ1NWE4OTQ0ZTg0ZmI0NzY1OGI3Njk3OWZkM2M1YWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkNWQ4YWQ4ZjRkYzg2Y2FlYzE2MmM3ZjMwODVkNTM2ZWY4NjdjMDEzM2M0N2I3NDQzMjVkMDY1NTRlNDY4NzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkYTJiNmNlZmRhMjFjNWQzMjBmOWU2NjZkNzEzNmM1MmIyOTdkNzAwNzIyOWI5MjNmZDFkYzMyZmNlMDNiMmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5a200b25d6854e098f4954451f1c26e6",
+      "statement": "The development feedback loop should use single-command verification, regression tests that can be established before a fix, and continuous evaluations of model prompts, instructions, skills, hooks, and other agent configuration; production incidents should become evaluation cases.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/ai-native-sdlc.md#L121-L137",
+          "version": "repo-lines-v1:sha256:6c4905acb264c932d17b816225d1ca7f0fa4c3320baa47adba19407dd445aca8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5MzA1M2Y0YmMwZWNlYWU1ZGMzODk1NDY4YjEzNjE4NzE5ZTc2MDMwYjBmZTdjZjkwYWVjMzY4ZGZmMTIwZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZjYzODMyNzBhYTAwM2JlOGRjYmYyZmFmZWRkMTBiM2ZjMDAyZjkwMDYxNjE5MTUzYjkwMjllMjZlNzVjZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhZDljNTc2MTZhODY4ZWEwMTI3MGZkMjUwNjIyMDliZDQ2YTkxMzM3OTc5MTEyZGYzZjM1NmQxYmIwYmUzOTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyODlhNGFjYTU4NzY3ZWU3NzM0OGNiOTllMzcxODA0NmVhN2IyODMxYjcyNTM1ZTQ0MDRmOWNmYTFhZWEyODQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_da07b021af574d28a4d8941de2650a05",
+      "statement": "Review and deployment require separation of duties and explicit gates: agent findings do not approve pull requests, branch protection requires human ownership, and write-capable pipeline automation should produce reviewable changes while production credentials remain scoped and short-lived.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/ai-native-sdlc.md#L139-L163",
+          "version": "repo-lines-v1:sha256:6b625f0ced2d48768fccb0637c99a91e972e81232e017ae19880168807c6a5f7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExZTg4ZGRhNjkyNzg0NDU3OWFiYTBhODJjMWFkNjEzYjZhYmU3ZTdmNjg1ZTZlNTNjYzA4ZWNjOTg4MGQ5ZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlNmUyZTVmMjY2OTFiN2QzMjBmN2I2NmZhYWRlZTczMWVhMGFjN2QwODBjZTJjM2Q0Y2JhNzBlNmFiODE3MGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI2OTY3NDVkOTk3ZjVmMjM3YmY0N2I2M2YzYmNlYjcwNzlkZDQ2OTk4OWY0MzQ4MjlmOGZiYjZmNjBmOWJhYzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0YzhkZmViNzllYTg5MmMzZDFlODc3ZTU3NDExZWZlYTMyODMxYjljNzFkOTNkMGUwZjQ1NjBlZjg3NmFjMzIifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/development/ai-native-sdlc.md#L200-L211",
+          "version": "repo-lines-v1:sha256:7c97463bf36e5aa922217b6a97a0aef5f3d78a17b69fef029fdff76a3339cc28:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZTZlMzJiNWFmZjE0YzI1YjY2NmMyYTMzYjZlN2E2ODBjYjRlZWRjYzgxYWE4MDg3MDFiMjlhNTIzZGYwMDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZTJlOTM2M2I2ZWFmNzE0MjA0MWZiYWIyNGI0OTQ4OWZmZjdlMWQxOTAwMWRhMWUwNjZmZTI5YTkxMDIyZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxZjc2MDNlOWJkM2YwMmNjYmE0ZGY0ODk4MmM4MDllM2JkNTMzNmExYjVkYTRjZmIyMDEwMjRmMzUzZDdiYWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3ZTc4OTdlZTNiMjhmZmU2OWQ4NzU0NDljMDI3M2VlMTIyYjY0ODdjYzllMWI3YjAyNGFkYmVmNzY4MWFkZWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_93deb3bfee124827aab3cd286b8a4957",
+      "statement": "Observability-driven development connects runtime telemetry to bounded diagnosis and change: instrument behavior, retrieve bounded evidence, correlate it with code and deployments, make the smallest supported change, verify with tests and telemetry, and retain the resulting learning.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L5-L35",
+          "version": "repo-lines-v1:sha256:f86aaccf7deaf00729301ad6cbc583351bebdf199888a2de4b04ce9356af4c34:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YTdjYTIwMWZkNmY0M2VhMmNjMGE1OWQ1ZGYyZThjY2NiODY3ZjcwYzVmNDdmMDI1NTI0YTVjMjcyYTA0MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNzUwNzc3NjhhNTBjYzE0MjVmNjA2OTk4OWI1NDA2Yzk0ZThmYzEwNTJkYjY0OWI4N2FlNDdiZDc2ZDU5NmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExMGVhODM1YmM2MjJiYmNmMWUyYTFhMjczOWZhNzNlNjQyOTQ1Nzg4MjM4ZDdmODk5OTcyMmYzZjE3NGJiMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyOTYyM2FiNjUxZDNiOWRiMmE1MDYxODIxNTYxZTU4MzlhY2YxNTBkMzUyOGI1YmVmNDkzZjNiMjA3NjFjMWEifQ"
+        },
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L75-L89",
+          "version": "repo-lines-v1:sha256:df5981df4adafdcc868eecf24cbdb96d52b28a899035fa0f5b4fa0295777af58:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1ZWRhOTdmOGNhMGZhYzJlMWQwZjBhM2I4NWY1NTY2ZTdmOTY1OGMxNmI4NzhkOTUyNmVmMTVlOGYyZDlhYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyNmU2ZjkxNzcyYjA0MzZlMWNkMzJmZDNhNmMyOWM5ZDlmNDYxYjM4MTVhZTJlMDVjYjZmNzcwODVkMzZiYmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYwNjk3MzA3ZTU1MTBiMTFjNThmN2FhYzk2NTFhNzA0NDU3YjA3YTY1ZWI3ZTEwMjU5OGM0NjNlYzc3MDgyYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmY2YwNmI1ZTRiYTk3MTJhNTJiNWY1YzU2ZWY1MjdjYzJiOTdiM2JhYjhiYTQ3NGQ4M2E5NjVlNWU2ZjYxOTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_969a04fcaca64c00bc91127f90e74df3",
+      "statement": "AI-layer traces and application telemetry are complementary evidence sources, and correlation should prefer shared trace or request identifiers because timestamp- or text-based linkage without them is only probabilistic.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L51-L73",
+          "version": "repo-lines-v1:sha256:f3a49bca43aeb87e76715a6b3317653d58b7b6adfac6ba6839c89abc4e7994e9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkZmQ0NzZiMmMyNWZiNzIwYzBjOTJhZGI1OWI5YTI1NzZjMDY3MGJmZWM0NmU3OGZmZTFkZDFiYWU0NTA5MTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4ZTIyYmQyOGEyMWI1OGE5MDYyOTJjNmFlMGEyMTZkOTMxMDk0MmM5NjlhN2Y5MmRiNzI3OGQzNzg0OTM1ZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkYTQ4MDk2ODE3YmI3ZGE5ZDVkNzJkZDQwYzg0OTY3YjBjNGVmMzc0NjY0MzdkMGZkNTc2ZWUxN2VlZTU1NGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzMTgwNzZlNDk2NzVkNGQxMjMzMWY2NzdkNmNhNjE5OTZmNGExZmMyOWM2MDExY2ZiMTMxZDNlOWJjMmM4YzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_53b966b33c864540b710ccd42024b883",
+      "statement": "Telemetry and model output are incomplete or untrusted evidence: missing spans do not prove health, findings should be bounded and deduplicated, sensitive data should be minimized, and suggested actions require independent verification and separate production permissions.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/observability-driven-development.md#L91-L111",
+          "version": "repo-lines-v1:sha256:b6150a080b2850bd0f0fa4a807a0b8253eababd15ff5a259facf9c2a02a7d5ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyZTE1MGI4ODM0ZWYxZmQ5MGYyMGFiNmNlZWYwMDE2ZDM2MTQwMGJmZDQwMWJhYzA0YTQ0OTE0ZDg5M2U2ZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MWVkNjZjMGE3OTNhODcwNTllN2I4YzI3MzE1MDVhZjQ5MmNjZDk5ZTkyZGU5N2ExOGYyMjg3NDk2ZjNlZmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0ZmQzNmYwMjhhZTViYTY2MzIwMmM1YTA2N2Q1YWNkM2JkZjA1YTM4NmYyZTk2YTQ2ZjQxOGU5NTI1OTExYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiZjlkNTIwNDBkZDU2ZTg3YTkyNTU2NzkxYmI5OWY3OWQ0MzNhNTk3NDkyODQ0YzZjMWM0ZjhlYzRiMmMzMTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9dff2f6954db43e78f926059614185c8",
+      "statement": "Maintenance closes the lifecycle by converting control-band breaches, security findings, and incidents into triaged intent, reviewable fixes or runbooks, and permanent evaluations, with deterministic monitoring and independent confidence gates controlling escalation.",
+      "evidence": [
+        {
+          "resource": "repo://wiki/ai-engineering/development/ai-native-sdlc.md#L168-L196",
+          "version": "repo-lines-v1:sha256:c744591d0fb633f6bce70e053073068b0365ce950bdcd545187568d6c13b09b2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyMjk5MDAxMGI1OGZmOGI3OWI0MGYzZmFkMjA5NzJmNjBjNzZlMmU5ZmJiZDA1ZGM5MDk4NWRiYmViMGJhZTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNDU3OGYzY2FkZmY0NmNmMGYzYmMwMzZhODc1YzE3M2IyMTdjMmFmNGFhMmQ4MWQ4Mjk5YTBiNjM2YWEyMTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2ZjI5YzdmYTdiZTQzMDFmZjhiZTc2YWI3ZDExMWE2NWUxNGQ5ZTMyMWZlODMzZDJkYzlhMDRiMzJlMjlmMTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxZjc2MDNlOWJkM2YwMmNjYmE0ZGY0ODk4MmM4MDllM2JkNTMzNmExYjVkYTRjZmIyMDEwMjRmMzUzZDdiYWUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-11T10:13:45.493Z"
+  }
+}

@@ -13,10 +13,11 @@ repos:
   #     - id: codespell
   #       additional_dependencies: [tomli]
 
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.24.2
-    hooks:
-      - id: gitleaks
+# ssl error
+  # - repo: https://github.com/gitleaks/gitleaks
+  #   rev: v8.24.2
+  #   hooks:
+  #     - id: gitleaks
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.6

@@ -20,11 +20,15 @@ VAULT_ROLE_ID = os.getenv("VAULT_ROLE_ID", "")
 VAULT_SECRET_ID = os.getenv("VAULT_SECRET_ID", "")
 
 
+def is_debug_config(config_id: str) -> bool:
+    return config_id.lower() == "debug"
+
+
 def get_consul_host(config_id: str) -> str:
     return (
-        "cmap.kapitalbank.az"
-        if config_id.lower() == "prod"
-        else "cmap-pre.kapitalbank.az"
+        "cmap-pre.kapitalbank.az"
+        if is_debug_config(config_id)
+        else "cmap.kapitalbank.az"
     )
 
 
@@ -32,7 +36,7 @@ def get_consul_key(config_id: str) -> str:
     config_id = config_id.lower()
     return (
         f"config/prometheus-kafka-exporter/{CONSUL_CONFIG_LOADER_APP}_{config_id}.yaml"
-        if config_id == "debug"
+        if is_debug_config(config_id)
         else f"config/aiplatform/{CONSUL_CONFIG_LOADER_APP}/application-{config_id}.yaml"
     )
 
@@ -51,20 +55,20 @@ def save_config(
     Config: type[pydantic.BaseModel],
 ) -> None:
     config = Config(**config_dict)
-    if config_id.lower() == "debug":
+    if is_debug_config(config_id):
         _save_config_directly_to_consul(config=config_dict, config_id=config_id)
         return
 
     _ensure_no_non_empty_secret_values(config)
     rich.print(
-        f"[yellow]Cannot write prod config via API. Config saved to clipboard, create mr in {CONSUL_CONFIG_LOADER_URL}[/yellow]",
+        f"[yellow]Cannot write non-debug config via API. Config saved to clipboard, create mr in {CONSUL_CONFIG_LOADER_URL}[/yellow]",
         flush=True,
     )
     pyperclip.copy(yaml.safe_dump(config_dict))
     CONSUL_HOST = get_consul_host(config_id)
     CONSUL_KEY = get_consul_key(config_id)
     CONSUL_READ_TOKEN = get_consul_read_token(config_id)
-    prod_env_vars = f"""
+    deployment_env_vars = f"""
         CONSUL_HOST={CONSUL_HOST}
         CONSUL_KEY={CONSUL_KEY}
         CONSUL_TOKEN={CONSUL_READ_TOKEN}
@@ -73,7 +77,7 @@ def save_config(
         VAULT_ROLE_ID={VAULT_ROLE_ID}
         VAULT_SECRET_ID={VAULT_SECRET_ID}
     """
-    rich.print(inspect.cleandoc(prod_env_vars))
+    rich.print(inspect.cleandoc(deployment_env_vars))
 
     if input("Press 'y' to verify the config was saved to Consul...") == "y":
         fetched_config = load_config(
@@ -121,9 +125,7 @@ def _ensure_no_non_empty_secret_values(config: object) -> None:
         value = values.pop()
         if isinstance(value, pydantic.SecretStr):
             if value.get_secret_value():
-                raise ValueError(
-                    "Prod config cannot contain non-empty SecretStr values."
-                )
+                raise ValueError("Config cannot contain non-empty SecretStr values.")
             continue
 
         if isinstance(value, pydantic.BaseModel):

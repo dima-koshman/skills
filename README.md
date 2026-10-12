@@ -281,6 +281,7 @@ Aliases for common commands:
 alias ga='git add .'
 alias gs='git status'
 alias gp='git pull'
+alias gt='git checkout testing'
 alias gm='git checkout main'
 alias da='direnv allow'
 alias bu='brew update && brew upgrade --yes'

@@ -2,8 +2,16 @@
 
 Personal skill collection for AI coding agents. Each skill lives in `.agents/skills/<name>/SKILL.md`
 and is loaded on demand by any agent that supports the `SKILL.md` standard (Claude Code, Codex,
-opencode, …). This repo is the **single source of truth** — `npx skills add` copies skills into each
-agent's directory. Run `npx skills update` after editing a skill to propagate changes.
+opencode, …). This repo is the **single source of truth**. Two ways to publish the cross-project
+skills globally, using the same skill selection:
+
+- **Copy** — task **Skills: install local (all)** runs `npx skills add … --global`, copying each skill
+  into `~/.agents/skills/` (symlinked into `~/.claude/skills/`). Re-run it after editing a skill.
+- **Symlink** — task **Skills: link local (all)** runs `scripts/link_global_skills.sh`, linking the same
+  skills to this repo in the same layout, so edits apply everywhere with no re-run. It replaces an
+  existing npx copy of the same skill; run **Skills: unlink local (all)** before switching back to npx.
+  The script is on `PATH` after **Setup: link scripts and IDE to ~/.local/bin**, so other repos can
+  link their own skills with it (`link_global_skills.sh <skill-dir>...`).
 
 ## Engineering knowledge with OpenWiki
 
@@ -11,12 +19,29 @@ The Markdown notes in [`wiki/`](wiki/) are the maintained sources. OpenWiki read
 those notes and its own output, as configured by [`.openwikiignore`](.openwikiignore)
 and [`openwiki/INSTRUCTIONS.md`](openwiki/INSTRUCTIONS.md). Source notes can be
 plain Markdown without YAML frontmatter, generated indexes, or maintenance logs.
-OpenWiki generates its output separately under `openwiki/`. The old OKF skills,
-index generators, and HTML renderer are retired.
+OpenWiki generates its output separately under `openwiki/`.
 
-For a reversible return to manual curation, see the
-[manual OKF restoration guide](docs/manual-okf-restoration.md), including the last
-committed snapshot, generation commands, and visualization setup.
+## OKF tooling (restored 2026-10-13, OKF v0.2)
+
+The [`okf`](.agents/skills/okf/SKILL.md) skill is back, upgraded from the v0.1 snapshot to
+**OKF v0.2**: the vendored [spec](.agents/skills/okf/references/spec.md), the `index.md`
+generator `okf_index.py`, and the custom HTML visualizer `okf_site.py`. The visualizer now
+shows v0.2 provenance, trust tiers, lifecycle status and staleness, renders producer-defined
+frontmatter as a Properties table, and draws frontmatter concept paths (`owner:
+/people/ana.md`) as labeled graph edges. Tests: `tests/test_okf_scripts.py`.
+
+It is used for OKF bundles outside this repo — the `wiki/` notes here stay on OpenWiki. Run
+the scripts by path from any repository (only PyYAML is needed):
+
+```sh
+okf=~/Projects/dima/.agents/skills/okf/scripts
+uv run --no-project --with pyyaml python $okf/okf_index.py <bundle-dir>
+uv run --no-project --with pyyaml python $okf/okf_site.py <bundle-dir> -o <out.html>
+```
+
+The two former bundles (`okf-ai-engineering`, `okf-development`) and their GitHub Pages
+deployment are not restored; the [manual OKF restoration guide](docs/manual-okf-restoration.md)
+still covers them.
 
 Use the workspace's **OpenWiki: update CLI**, **OpenWiki: init**, **OpenWiki: update**,
 and **OpenWiki: visualize** tasks. Initialize once; a fresh `--init` replaces generated
@@ -32,7 +57,7 @@ files, pre-commit blocks the push; review and commit the output before retrying.
 Also check for newly generated untracked files with `git status` before pushing;
 pre-commit's modification check does not cover those. The hook never commits output.
 
-The legacy GitHub Pages deployment is retired with its renderer. Use
+The legacy GitHub Pages deployment of the old bundles stays retired. Use
 `openwiki visualize openwiki` locally after generating the wiki.
 
 ### Decisions and operating boundaries (2026-10-03)

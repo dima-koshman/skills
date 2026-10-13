@@ -1,5 +1,11 @@
 # Restoring the manual OKF knowledge base
 
+> **Update 2026-10-13:** the `okf` skill itself — spec, `okf_index.py` and the custom
+> `okf_site.py` visualizer — has been restored to `.agents/skills/okf/` and upgraded to
+> OKF v0.2 (see the README's "OKF tooling" section). Skip its extraction below; this guide
+> remains for restoring the two former bundles (`okf-ai-engineering`, `okf-development`),
+> their routing skills, and the Pages deployment.
+
 Recorded on 2026-10-03. This is a recovery plan; OpenWiki remains the active
 workflow. Keep the maintained [source notes](../wiki/) even if generated tooling
 changes.

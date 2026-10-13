@@ -53,13 +53,20 @@
             "command": "npx --yes skills add ./.agents/skills/cli-subagents --agent claude-code --agent opencode --agent codex --global --yes"
         },
         {
+            "label": "Skills: install local (okf)",
+            "detail": "Publish this repo's okf skill globally (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/). Cross-project by nature: lets any agent delegate to the claude, opencode and agy CLIs headlessly, to reach another model family or subscription.",
+            "hide": true,
+            "command": "npx --yes skills add ./.agents/skills/okf --agent claude-code --agent opencode --agent codex --global --yes"
+        },
+        {
             "label": "Skills: install local (all)",
             "detail": "Publish every locally-authored skill worth having in all projects (runs each install task in sequence). Always --global by design: these skills already live in .agents/skills/, so a project-scope install would copy them onto themselves and the duplicate would silently drift. Keep this list minimal — OpenCode reads ~/.agents/skills/ directly, so every skill here costs context in every session of every project.",
             "dependsOrder": "sequence",
             "dependsOn": [
                 "Skills: install local (development-best-practices)",
                 "Skills: install local (python-styleguide)",
-                "Skills: install local (cli-subagents)"
+                "Skills: install local (cli-subagents)",
+                "Skills: install local (okf)"
             ]
         },
         {

@@ -48,7 +48,11 @@ PyYAML. From any repository, run them by absolute path, e.g.
 ## Authoring or updating a concept
 
 - **One concept per file.** The file's path within the bundle *is* its identity,
-  so choose a stable location; prefer moving concepts rarely.
+  so choose a stable location; prefer moving concepts rarely. Readable directory
+  names with spaces are supported. When a directory has an overview concept,
+  matching its directory name, overview filename and `title` keeps the catalog,
+  navigation tree and graph labels consistent. Individual concept filenames can
+  remain stable slugs.
 - **Frontmatter** — `type` is the only required field. Add `title`, `description`
   (a single sentence — it is reused in `index.md`), `resource` (canonical URI, if
   the concept describes a real asset) and `tags` when they apply. Any extra
@@ -72,7 +76,9 @@ PyYAML. From any repository, run them by absolute path, e.g.
 - **Body** — standard markdown; favor structure (headings, tables, fenced code)
   over prose. Conventional headings: `# Schema`, `# Examples`, `# Computation`.
 - **Links** — prefer the bundle-relative form (`[customers](/tables/customers.md)`).
-  Convey the *kind* of relationship in the surrounding prose (or as a frontmatter key).
+  Percent-encode spaces and parentheses in Markdown link URLs; keep frontmatter
+  concept paths readable. Convey the *kind* of relationship in the surrounding prose
+  (or as a frontmatter key).
 - **Markdown linting** — OKF's convention of several top-level `#` sections
   alongside a frontmatter `title` intentionally trips markdownlint's MD025 (single
   H1) and MD041 (first-line heading). Ship a `.markdownlint.json` disabling `MD025`

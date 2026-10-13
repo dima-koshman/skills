@@ -31,6 +31,7 @@ import argparse
 import dataclasses
 import pathlib
 import sys
+import urllib.parse
 
 import yaml
 
@@ -301,7 +302,7 @@ def _render_concept_line(concept: Concept, link: str) -> str:
         tag += f" _({concept.status})_"
     suffix = f" - {concept.description}" if concept.description else ""
 
-    return f"* [{concept.title}]({link}){tag}{suffix}"
+    return f"* [{concept.title}]({urllib.parse.quote(link, safe='/')}){tag}{suffix}"
 
 
 def _render_subdirectory_links(directory, directories_with_concepts) -> str:
@@ -311,7 +312,10 @@ def _render_subdirectory_links(directory, directories_with_concepts) -> str:
         for child in directories_with_concepts
         if child.parent == directory and child != directory
     )
-    lines = [f"* [{child.name}/]({child.name}/)" for child in children]
+    lines = [
+        f"* [{child.name}/]({urllib.parse.quote(child.name, safe='')}/)"
+        for child in children
+    ]
 
     return "\n".join(lines)
 

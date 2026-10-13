@@ -42,6 +42,7 @@ import pathlib
 import posixpath
 import re
 import sys
+import urllib.parse
 
 import yaml
 
@@ -318,7 +319,7 @@ def _sources(value: object, source_dir: str, known_ids: set[str]) -> list[dict]:
         resource = normalized["resource"]
         concept = _resolve_link(resource, source_dir)
         if concept in known_ids:
-            normalized["href"] = f"#node:{concept}"
+            normalized["href"] = f"#node:{urllib.parse.quote(concept, safe='/')}"
         elif "://" in resource:
             normalized["href"] = resource
         else:
@@ -349,7 +350,7 @@ def _properties_and_links(
         if target in known_ids:
             if target != concept_id:
                 links.append({"source": concept_id, "target": target, "label": key})
-            return f"[{titles[target]}](#node:{target})"
+            return f"[{titles[target]}](#node:{urllib.parse.quote(target, safe='/')})"
         return text
 
     for key, value in frontmatter.items():
@@ -419,6 +420,7 @@ def _build_edges(concepts: list[Concept]) -> list[dict]:
 
     for concept in concepts:
         for target in re.findall(r"#node:([^)\s\"']+)", concept.body):
+            target = urllib.parse.unquote(target)
             key = (concept.id, target, "")
             pair = (concept.id, target)
             if (
@@ -470,7 +472,9 @@ def _rewrite_internal_links(body: str, source_id: str, known_ids: set[str]) -> s
         target = match.group(1).strip()
         resolved = _resolve_link(target, source_dir)
         if resolved in known_ids:
-            return match.group(0).replace(f"({target})", f"(#node:{resolved})")
+            return match.group(0).replace(
+                f"({target})", f"(#node:{urllib.parse.quote(resolved, safe='/')})"
+            )
 
         return match.group(0)
 
@@ -479,7 +483,7 @@ def _rewrite_internal_links(body: str, source_id: str, known_ids: set[str]) -> s
 
 def _resolve_link(target: str, source_dir: str) -> str | None:
     """Resolve a markdown link target to a bundle-relative concept id, or None."""
-    link = target.split("#", 1)[0].split("?", 1)[0]
+    link = urllib.parse.unquote(target.strip("<>").split("#", 1)[0].split("?", 1)[0])
     if not link.endswith(".md") or "://" in link:
         return None
 
@@ -583,7 +587,7 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   aside { flex:0 0 264px; display:flex; flex-direction:column; border-right:1px solid var(--line); background:var(--sidebar); min-height:0; }
   #nav { flex:1 1 auto; overflow-y:auto; padding:10px 8px; }
   #nav ul { list-style:none; margin:0; padding:0; }
-  #nav .dir > .label { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); padding:6px 8px 4px; cursor:pointer; user-select:none; border-radius:6px; }
+  #nav .dir > .label { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; letter-spacing:.04em; color:var(--muted); padding:6px 8px 4px; cursor:pointer; user-select:none; border-radius:6px; }
   #nav .dir > .label:hover { background:var(--hover); color:var(--ink); }
   #nav .dir > .label.active { background:var(--active); color:var(--ink); }
   #nav .dir > .label .caret { display:inline-block; width:10px; transition:transform .15s; }
@@ -769,8 +773,7 @@ function representative(conceptId) {
   return conceptId;
 }
 function dirLabel(path) {
-  const name = dirs[path].name;
-  return (name.startsWith('_') ? name : name.replace(/[-_]/g, ' ')) + ' (' + dirs[path].concepts.length + ')';
+  return dirs[path].name;
 }
 
 /* ---------- graph ---------- */
@@ -1247,8 +1250,10 @@ function openEdgeLink(edge) {
   if (isDirId(source)) { openDir(dirOf(source)); return; }
   openConcept(source);
   const targets = (edge.data('links') || []).map(l => l.target);
-  const link = [...doc.querySelectorAll('a[href^="#node:"]')].find(a => targets.includes(a.getAttribute('href').slice(6)))
-    || doc.querySelector(`a[href="#node:${target}"]`);
+  const link = [...doc.querySelectorAll('a[href^="#node:"]')].find(a => {
+    const id = decodeURIComponent(a.getAttribute('href').slice(6));
+    return targets.includes(id) || id === target;
+  });
   if (link) {
     link.scrollIntoView({ behavior: 'smooth', block: 'center' });
     link.classList.add('flash');
@@ -1314,7 +1319,7 @@ function renderTree(tree, prefix = '') {
     const label = document.createElement('div');
     label.className = 'label';
     label.title = 'Click to expand or collapse (also in the graph)';
-    label.innerHTML = `<span class="caret">▸</span><span>${escapeHtml(name.startsWith('_') ? name : name.replace(/[-_]/g, ' '))}</span>` +
+    label.innerHTML = `<span class="caret">▸</span><span>${escapeHtml(dirLabel(path))}</span>` +
       `<span class="count">${dirs[path].concepts.length}</span>`;
     label.addEventListener('click', () => {
       if (expanded.has(path)) collapseDir(path, () => openDir(path)); else expandDir(path, () => openDir(path));

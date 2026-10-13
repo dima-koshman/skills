@@ -182,6 +182,124 @@ def test_stable_reader_has_no_empty_lifecycle_row(bundle: pathlib.Path) -> None:
     assert 'class="lifecycle"' not in rendered
 
 
+def test_index_encodes_spaces_and_parentheses_in_concept_links(
+    bundle: pathlib.Path,
+) -> None:
+    _write(
+        bundle / "Platform Services/AI Gateway (LiteLLM)/repo.md",
+        {"type": "Repository", "title": "Repo"},
+        "Image.",
+    )
+
+    _ = _run("okf_index.py", str(bundle))
+
+    index = (bundle / "index.md").read_text()
+    assert "## AI Gateway (LiteLLM)" in index
+    assert "[Repo](/Platform%20Services/AI%20Gateway%20%28LiteLLM%29/repo.md)" in index
+
+
+def test_site_resolves_encoded_links_to_title_named_directories(
+    bundle: pathlib.Path,
+) -> None:
+    _write(
+        bundle / "Platform People/AI Platform Team.md",
+        {"type": "Team", "title": "AI Platform Team"},
+        "Team.",
+    )
+    _write(
+        bundle / "Platform Services/AI Gateway (LiteLLM)/repo.md",
+        {
+            "type": "Repository",
+            "title": "Repo",
+            "owner": "/Platform People/AI Platform Team.md",
+            "sources": [
+                {"id": "team", "resource": "/Platform People/AI Platform Team.md"}
+            ],
+        },
+        "Owned by [the team](/Platform%20People/AI%20Platform%20Team.md).",
+    )
+
+    nodes = _nodes(bundle)
+    repo = nodes["Platform Services/AI Gateway (LiteLLM)/repo.md"]
+    assert (
+        repo["body"]
+        == "Owned by [the team](#node:Platform%20People/AI%20Platform%20Team.md)."
+    )
+    assert repo["properties"] == [
+        ["owner", "[AI Platform Team](#node:Platform%20People/AI%20Platform%20Team.md)"]
+    ]
+    sources = cast(list[dict[str, object]], repo["sources"])
+    assert sources[0]["href"] == "#node:Platform%20People/AI%20Platform%20Team.md"
+    edges = cast(list[dict[str, object]], _data(bundle)["edges"])
+    assert any(
+        edge["target"] == "Platform People/AI Platform Team.md" for edge in edges
+    )
+
+
+def test_site_directory_labels_preserve_the_exact_directory_name(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "labels.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definition = html.match(/function dirLabel\(path\) \{.*?\n}/s)[0];
+const context = { dirs: { 'Platform People/AI Platform Team': { name: 'AI Platform Team', concepts: ['one', 'two'] } } };
+process.stdout.write(vm.runInNewContext(definition + '\ndirLabel("Platform People/AI Platform Team")', context));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert result.stdout == "AI Platform Team"
+    nav_style = next(
+        line
+        for line in output.read_text().splitlines()
+        if "#nav .dir > .label {" in line
+    )
+    assert "text-transform:uppercase" not in nav_style
+
+
+def test_site_edge_click_finds_encoded_concept_link(bundle: pathlib.Path) -> None:
+    output = bundle.parent / "edge.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definition = html.match(/function openEdgeLink\(edge\) \{.*?\n\}/s)[0];
+let opened = '', scrolled = false;
+const anchor = {
+  getAttribute: () => '#node:Platform%20People/AI%20Platform%20Team.md',
+  scrollIntoView: () => { scrolled = true; },
+  classList: { add: () => {}, remove: () => {} },
+};
+const context = {
+  edge: { data: key => ({ source: 'source.md', target: 'Platform People/AI Platform Team.md',
+    links: [{ target: 'Platform People/AI Platform Team.md' }] })[key] },
+  isDirId: () => false,
+  openConcept: id => { opened = id; },
+  doc: { querySelectorAll: () => [anchor], querySelector: () => null },
+  setTimeout: () => {},
+};
+vm.runInNewContext(definition + '\nopenEdgeLink(edge)', context);
+process.stdout.write(JSON.stringify({ opened, scrolled }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {"opened": "source.md", "scrolled": True}
+
+
 def _write(path: pathlib.Path, frontmatter: dict[str, object], body: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     header = yaml.safe_dump(frontmatter, sort_keys=False)

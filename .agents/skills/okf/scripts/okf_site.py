@@ -819,7 +819,8 @@ function graphLayout(incremental) {
 // reshuffle the whole graph.
 function runLayout(incremental, done) {
   const layout = cy.layout(graphLayout(incremental));
-  layout.one('layoutstop', () => requestAnimationFrame(() => { separateOverlaps(); if (done) done(); }));
+  // Only the first, full layout fits the viewport; expand/collapse keeps the user's zoom.
+  layout.one('layoutstop', () => requestAnimationFrame(() => { separateOverlaps(!incremental); if (done) done(); }));
   layout.run();
 }
 
@@ -904,32 +905,41 @@ function expandDir(path, done) { setExpanded([...ancestorsOf(path + '/x'), path]
 function collapseDir(path, done) { setExpanded([path], false, done); }
 function revealConcept(id, done) { setExpanded(ancestorsOf(id), true, done); }
 
-function separateOverlaps(iterations = 80, pad = 10) {
+function separateOverlaps(fitAll, iterations = 80, pad = 10) {
+  // Box sizes don't change while nodes move, so measure each label-inclusive box once and
+  // run the pairwise push on plain arrays (querying Cytoscape per pair was ~1.3 s at 100 nodes).
   const nodes = cy.nodes();
+  const n = nodes.length;
+  const x = new Float64Array(n), y = new Float64Array(n);
+  const hw = new Float64Array(n), hh = new Float64Array(n), ox = new Float64Array(n), oy = new Float64Array(n);
+  nodes.forEach((node, i) => {
+    const p = node.position(), bb = node.boundingBox({ includeLabels: true });
+    x[i] = p.x; y[i] = p.y;
+    hw[i] = (bb.x2 - bb.x1) / 2; hh[i] = (bb.y2 - bb.y1) / 2;
+    ox[i] = (bb.x1 + bb.x2) / 2 - p.x; oy[i] = (bb.y1 + bb.y2) / 2 - p.y;   // label sits below the node
+  });
   for (let it = 0; it < iterations; it++) {
     let moved = false;
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const a = nodes[i], b = nodes[j];
-        const ba = a.boundingBox({ includeLabels: true });
-        const bb = b.boundingBox({ includeLabels: true });
-        const overlapX = Math.min(ba.x2, bb.x2) - Math.max(ba.x1, bb.x1) + pad;
-        const overlapY = Math.min(ba.y2, bb.y2) - Math.max(ba.y1, bb.y1) + pad;
+    for (let i = 0; i < n; i++) {
+      for (let j = i + 1; j < n; j++) {
+        let dx = (x[i] + ox[i]) - (x[j] + ox[j]);
+        let dy = (y[i] + oy[i]) - (y[j] + oy[j]);
+        const overlapX = hw[i] + hw[j] + pad - Math.abs(dx);
+        const overlapY = hh[i] + hh[j] + pad - Math.abs(dy);
         if (overlapX > 0 && overlapY > 0) {
-          let dx = (ba.x1 + ba.x2) / 2 - (bb.x1 + bb.x2) / 2;
-          let dy = (ba.y1 + ba.y2) / 2 - (bb.y1 + bb.y2) / 2;
           const dist = Math.hypot(dx, dy) || 0.01;
           const push = Math.min(overlapX, overlapY) / 2;
           dx /= dist; dy /= dist;
-          a.position({ x: a.position('x') + dx * push, y: a.position('y') + dy * push });
-          b.position({ x: b.position('x') - dx * push, y: b.position('y') - dy * push });
+          x[i] += dx * push; y[i] += dy * push;
+          x[j] -= dx * push; y[j] -= dy * push;
           moved = true;
         }
       }
     }
     if (!moved) break;
   }
-  cy.fit(undefined, 30);
+  cy.batch(() => nodes.forEach((node, i) => node.position({ x: x[i], y: y[i] })));
+  if (fitAll) cy.fit(undefined, 30);
 }
 
 cy.on('tap', 'node', ev => {
@@ -942,10 +952,12 @@ cy.on('tap', 'node', ev => {
 cy.on('tap', 'edge', ev => openEdgeLink(ev.target));           // open the source doc at the link that made this edge
 cy.on('tap', ev => { if (ev.target === cy) clearHighlight(); });    // click empty space = deselect node, keep the doc open
 // Double-click: a directory node expands; a concept node collapses its directory;
-// empty space resets the zoom to fit everything.
+// empty space or an edge resets the zoom to fit everything.
 cy.on('dbltap', ev => {
-  if (ev.target === cy) { cy.animate({ fit: { eles: cy.elements(), padding: 30 } }, { duration: 300 }); return; }
-  if (!ev.target.isNode()) return;
+  if (ev.target === cy || !ev.target.isNode()) {
+    cy.animate({ fit: { eles: cy.elements(), padding: 30 } }, { duration: 300 });
+    return;
+  }
   const id = ev.target.id();
   if (isDirId(id)) {
     const path = dirOf(id);
@@ -1159,7 +1171,14 @@ function openDir(path) {
   setActiveNav(DIR_PREFIX + path);
   history.replaceState(null, '', '#' + encodeURIComponent(DIR_PREFIX + path));
   const node = cy.getElementById(DIR_PREFIX + path);
-  if (node.nonempty()) { highlight(node.id()); focusOn(node.id()); } else { clearHighlight(); relayout(); }
+  if (node.nonempty()) { highlight(node.id()); focusOn(node.id()); return; }
+  // Expanded: frame what the directory now shows (its concepts and collapsed subdirectories).
+  clearHighlight();
+  const inside = cy.nodes().filter(x => (isDirId(x.id()) ? dirOf(x.id()) : x.id()).startsWith(path + '/'));
+  requestAnimationFrame(() => {
+    cy.resize();
+    if (inside.nonempty()) cy.animate({ fit: { eles: inside, padding: 50 } }, { duration: 300 });
+  });
 }
 
 function openEdgeLink(edge) {

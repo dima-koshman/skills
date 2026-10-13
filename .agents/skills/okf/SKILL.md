@@ -116,7 +116,11 @@ lifecycle status, trust tier, staleness, `generated`/`verified` provenance, a
 Properties table of producer-defined keys (concept paths become links), the body,
 and its `sources` with footnotes linked to them. Frontmatter concept paths also
 become **labeled edges** named after their key; deprecated concepts are dimmed and
-dashed, drafts dashed. The output is a build artifact — regenerate it, don't
+dashed, drafts dashed. Every directory starts **collapsed**: the sidebar tree and the graph share one
+expanded/collapsed state, a collapsed directory is one node (grey rounded square, sized by its concept count) with
+links to its concepts merged onto it, clicking a tree section or double-clicking a directory node expands it,
+double-clicking a concept node collapses its directory, and opening a concept (link, search, URL hash) expands its
+ancestors. The output is a build artifact — regenerate it, don't
 hand-edit, and consider git-ignoring it.
 
 ## 2. Update log.md (via git + reasoning)

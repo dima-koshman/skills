@@ -581,7 +581,13 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   aside { flex:0 0 264px; display:flex; flex-direction:column; border-right:1px solid var(--line); background:var(--sidebar); min-height:0; }
   #nav { flex:1 1 auto; overflow-y:auto; padding:10px 8px; }
   #nav ul { list-style:none; margin:0; padding:0; }
-  #nav .dir > .label { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); padding:8px 8px 3px; }
+  #nav .dir > .label { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); padding:6px 8px 4px; cursor:pointer; user-select:none; border-radius:6px; }
+  #nav .dir > .label:hover { background:var(--hover); color:var(--ink); }
+  #nav .dir > .label.active { background:var(--active); color:var(--ink); }
+  #nav .dir > .label .caret { display:inline-block; width:10px; transition:transform .15s; }
+  #nav .dir:not(.collapsed) > .label .caret { transform:rotate(90deg); }
+  #nav .dir > .label .count { font-weight:400; color:var(--muted); text-transform:none; letter-spacing:0; }
+  #nav .dir.collapsed > ul { display:none; }
   #nav .dir ul { margin-left:12px; border-left:1px solid var(--line); }
   #nav a { display:flex; align-items:center; gap:8px; padding:5px 8px; border-radius:6px; color:var(--ink); text-decoration:none; font-size:13px; line-height:1.3; }
   #nav a:hover { background:var(--hover); }
@@ -644,6 +650,9 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #doc table.props th { white-space:nowrap; font-weight:600; width:1%; }
   #doc .sources h1 { font-size:17px; font-weight:600; margin:1.6em 0 .4em; padding-bottom:5px; border-bottom:1px solid var(--line); }
   #doc .sources li { margin:3px 0; }
+  #doc ul.dirlist { list-style:none; padding-left:0; }
+  #doc ul.dirlist li { margin:4px 0; }
+  #doc ul.dirlist .dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
   #doc .sources li:target, #doc .sources li.flash { background:#fff3bf; }
   #doc sup.fn a { text-decoration:none; font-size:10px; padding:0 2px; }
   #nav a.deprecated span:last-child { text-decoration:line-through; color:var(--muted); }
@@ -729,14 +738,46 @@ graphToggle.addEventListener('click', () => {
   if (willOpen) relayout();
 });
 
+/* ---------- directory state (shared by the sidebar tree and the graph) ---------- */
+// Every directory starts collapsed. A collapsed directory is drawn as one "directory node"
+// standing in for everything below it; edges to its concepts are rerouted to it. The same
+// `expanded` set drives the sidebar tree, so the two views are always in sync.
+const DIR_PREFIX = 'dir:';
+const expanded = new Set();
+const dirs = {};   // path -> { path, name, parent, concepts: [all ids below], types: Set }
+DATA.nodes.forEach(n => {
+  const parts = n.id.split('/');
+  for (let i = 1; i < parts.length; i++) {
+    const path = parts.slice(0, i).join('/');
+    const d = dirs[path] || (dirs[path] = { path, name: parts[i - 1], parent: parts.slice(0, i - 1).join('/') || null,
+                                            concepts: [], types: new Set() });
+    d.concepts.push(n.id);
+    d.types.add(n.type);
+  }
+});
+const isDirId = id => id.startsWith(DIR_PREFIX);
+const dirOf = id => isDirId(id) ? id.slice(DIR_PREFIX.length) : id;
+function ancestorsOf(path) {          // ['a', 'a/b'] for a concept 'a/b/c.md' or a directory 'a/b/c'
+  const parts = path.split('/');
+  const out = [];
+  for (let i = 1; i < parts.length; i++) out.push(parts.slice(0, i).join('/'));
+  return out;
+}
+function parentDirOf(conceptId) { const a = ancestorsOf(conceptId); return a.length ? a[a.length - 1] : null; }
+// The graph node currently standing for a concept: itself, or its topmost collapsed ancestor.
+function representative(conceptId) {
+  for (const d of ancestorsOf(conceptId)) if (!expanded.has(d)) return DIR_PREFIX + d;
+  return conceptId;
+}
+function dirLabel(path) {
+  const name = dirs[path].name;
+  return (name.startsWith('_') ? name : name.replace(/[-_]/g, ' ')) + ' (' + dirs[path].concepts.length + ')';
+}
+
 /* ---------- graph ---------- */
 const cy = cytoscape({
   container: document.getElementById('graph'),
-  elements: [
-    ...DATA.nodes.map(n => ({ data: { id: n.id, label: n.title, color: n.color }, classes: 'status-' + n.status })),
-    ...DATA.edges.map((e, i) => ({ data: { id: 'e' + i, source: e.source, target: e.target, label: e.label || '' },
-                                   classes: e.label ? 'typed' : '' })),
-  ],
+  elements: [],
   style: [
     { selector: 'node', style: {
         'background-color': 'data(color)', 'label': 'data(label)', 'color': '#1f2328',
@@ -752,7 +793,12 @@ const cy = cytoscape({
         'text-background-color': '#ffffff', 'text-background-opacity': 1, 'text-background-padding': '1px' } },
     { selector: 'node.status-deprecated', style: { 'opacity': .45, 'border-style': 'dashed', 'border-color': '#82071e' } },
     { selector: 'node.status-draft', style: { 'border-style': 'dashed', 'border-color': '#9a6700' } },
+    { selector: 'node.dir', style: {
+        'shape': 'round-rectangle', 'background-color': '#eaeef2', 'border-color': '#57606a', 'border-width': 2,
+        'width': 'data(size)', 'height': 'data(size)', 'font-size': '10px', 'font-weight': 'bold', 'color': '#24292f' } },
+    { selector: 'edge.agg', style: { 'width': 'data(weight)' } },
     { selector: 'node.sel', style: { 'border-color': '#0969da', 'border-width': 3, 'font-size': '10px', 'font-weight': 'bold', 'width': 20, 'height': 20 } },
+    { selector: 'node.dir.sel', style: { 'width': 'data(size)', 'height': 'data(size)' } },
     { selector: '.faded', style: { 'opacity': .12 } },
     { selector: 'node.hidden', style: { 'display': 'none' } },
   ],
@@ -760,20 +806,103 @@ const cy = cytoscape({
   maxZoom: 2.5,   // small bundles would otherwise zoom a single node to fill the pane
 });
 
-function graphLayout() {
-  return { name: 'cose', animate: false, nodeDimensionsIncludeLabels: true,
+function graphLayout(incremental) {
+  return { name: 'cose', animate: false, nodeDimensionsIncludeLabels: true, randomize: !incremental,
            idealEdgeLength: 150, nodeRepulsion: 22000, nodeOverlap: 60,
-           gravity: 0.2, componentSpacing: 160, numIter: 1500, padding: 40 };
+           gravity: 0.2, componentSpacing: 160, numIter: incremental ? 600 : 1500, padding: 40 };
 }
 
 // Run the force layout, then a deterministic pass that pushes any still-
 // overlapping nodes apart using their label-inclusive bounding boxes, so labels
 // never sit on top of each other regardless of the force layout's result.
-function runLayout() {
-  const layout = cy.layout(graphLayout());
-  layout.one('layoutstop', () => requestAnimationFrame(() => separateOverlaps()));
+// Incremental runs start from current positions so expanding a directory doesn't
+// reshuffle the whole graph.
+function runLayout(incremental, done) {
+  const layout = cy.layout(graphLayout(incremental));
+  layout.one('layoutstop', () => requestAnimationFrame(() => { separateOverlaps(); if (done) done(); }));
   layout.run();
 }
+
+// Rebuild the visible graph from `expanded`: concept nodes for expanded directories,
+// one directory node per topmost collapsed directory, and edges rerouted to whatever
+// node currently represents each endpoint (parallel edges merged, with a count).
+function syncGraph(done) {
+  const old = {};
+  cy.nodes().forEach(n => { old[n.id()] = { ...n.position() }; });
+  const wanted = new Map();
+  DATA.nodes.forEach(n => {
+    const r = representative(n.id);
+    if (wanted.has(r)) return;
+    if (isDirId(r)) {
+      const path = dirOf(r);
+      wanted.set(r, { data: { id: r, label: dirLabel(path), isDir: true, color: '#57606a',
+                              size: Math.round(24 + 6 * Math.sqrt(dirs[path].concepts.length)) }, classes: 'dir' });
+    } else {
+      wanted.set(r, { data: { id: n.id, label: n.title, color: n.color }, classes: 'status-' + n.status });
+    }
+  });
+  const agg = new Map();
+  DATA.edges.forEach(e => {
+    const s = representative(e.source), t = representative(e.target);
+    if (s === t) return;
+    const key = s + '->' + t;
+    const a = agg.get(key) || { s, t, edges: [], labels: new Set() };
+    a.edges.push(e);
+    if (e.label) a.labels.add(e.label);
+    agg.set(key, a);
+  });
+
+  cy.batch(() => {
+    cy.edges().remove();
+    cy.nodes().filter(n => !wanted.has(n.id())).remove();
+    const fresh = [];
+    wanted.forEach((el, id) => {
+      if (cy.getElementById(id).nonempty()) return;
+      const near = newNodePosition(id, old);
+      fresh.push(near ? { ...el, position: near } : el);
+    });
+    cy.add(fresh);
+    cy.add([...agg.values()].map(a => ({
+      data: { id: 'e:' + a.s + '->' + a.t, source: a.s, target: a.t,
+              label: [...a.labels].join(', ') + (a.edges.length > 1 ? ' ×' + a.edges.length : ''),
+              weight: Math.min(1 + Math.log2(a.edges.length), 5), links: a.edges },
+      classes: [a.labels.size ? 'typed' : '', a.edges.length > 1 ? 'agg' : ''].join(' '),
+    })));
+  });
+  paintTreeState();
+  const incremental = Object.keys(old).length > 0;
+  runLayout(incremental, () => { if (done) done(); else clearHighlight(); });
+}
+
+// Where a newly shown node should start: at the directory node it was folded into
+// (when expanding), or at the centroid of the nodes it now replaces (when collapsing).
+function newNodePosition(id, old) {
+  if (isDirId(id)) {
+    const path = dirOf(id);
+    const pts = Object.keys(old).filter(o => (isDirId(o) ? dirOf(o) : o).startsWith(path + '/')).map(o => old[o]);
+    if (!pts.length) return null;
+    return { x: pts.reduce((a, p) => a + p.x, 0) / pts.length, y: pts.reduce((a, p) => a + p.y, 0) / pts.length };
+  }
+  for (const d of ancestorsOf(id).reverse()) {
+    const p = old[DIR_PREFIX + d];
+    if (p) return { x: p.x + (Math.random() - .5) * 80, y: p.y + (Math.random() - .5) * 80 };
+  }
+  return null;
+}
+
+// Change the expanded state, then bring the tree and the graph back in sync.
+function setExpanded(paths, open, done) {
+  let changed = false;
+  paths.forEach(p => {
+    if (!dirs[p]) return;
+    if (open && !expanded.has(p)) { expanded.add(p); changed = true; }
+    if (!open && expanded.has(p)) { expanded.delete(p); changed = true; }
+  });
+  if (changed) syncGraph(done); else if (done) done();
+}
+function expandDir(path, done) { setExpanded([...ancestorsOf(path + '/x'), path], true, done); }
+function collapseDir(path, done) { setExpanded([path], false, done); }
+function revealConcept(id, done) { setExpanded(ancestorsOf(id), true, done); }
 
 function separateOverlaps(iterations = 80, pad = 10) {
   const nodes = cy.nodes();
@@ -805,12 +934,26 @@ function separateOverlaps(iterations = 80, pad = 10) {
 
 cy.on('tap', 'node', ev => {
   // Clicking the already-selected node toggles the selection off.
-  if (ev.target.hasClass('sel')) clearHighlight(); else openConcept(ev.target.id());
+  const id = ev.target.id();
+  if (ev.target.hasClass('sel')) clearHighlight();
+  else if (isDirId(id)) openDir(dirOf(id));
+  else openConcept(id);
 });
 cy.on('tap', 'edge', ev => openEdgeLink(ev.target));           // open the source doc at the link that made this edge
 cy.on('tap', ev => { if (ev.target === cy) clearHighlight(); });    // click empty space = deselect node, keep the doc open
-document.getElementById('graph').addEventListener('dblclick', () => {  // double-click anywhere = reset zoom to fit all
-  cy.animate({ fit: { eles: cy.elements(), padding: 30 } }, { duration: 300 });
+// Double-click: a directory node expands; a concept node collapses its directory;
+// empty space resets the zoom to fit everything.
+cy.on('dbltap', ev => {
+  if (ev.target === cy) { cy.animate({ fit: { eles: cy.elements(), padding: 30 } }, { duration: 300 }); return; }
+  if (!ev.target.isNode()) return;
+  const id = ev.target.id();
+  if (isDirId(id)) {
+    const path = dirOf(id);
+    expandDir(path, () => { openDir(path); });
+  } else {
+    const parent = parentDirOf(id);
+    if (parent) collapseDir(parent, () => openDir(parent));
+  }
 });
 
 let activeType = null;
@@ -842,7 +985,7 @@ function highlightType(type) {
   activeType = type;
   cy.nodes().removeClass('sel');
   cy.elements().addClass('faded');
-  const matching = cy.nodes().filter(n => byId[n.id()].type === type);
+  const matching = cy.nodes().filter(n => isDirId(n.id()) ? dirs[dirOf(n.id())].types.has(type) : byId[n.id()].type === type);
   matching.removeClass('faded');
   paintTypeState();
   caption.textContent = type + ' — ' + matching.length + ' concepts';
@@ -854,7 +997,9 @@ function clearHighlight() {
   cy.elements().removeClass('faded');
   cy.nodes().removeClass('sel');
   paintTypeState();
-  caption.textContent = cy.nodes().length + ' concepts · ' + cy.edges().length + ' links';
+  const dirNodes = cy.nodes('.dir').length;
+  caption.textContent = (cy.nodes().length - dirNodes) + ' concepts · ' + dirNodes + ' collapsed directories · ' +
+    cy.edges().length + ' links  (double-click: expand / collapse)';
 }
 
 function relayout() {
@@ -942,6 +1087,7 @@ function renderDoc(markdown) {
 function openConcept(id) {
   const n = byId[id];
   if (!n) return;
+  if (representative(id) !== id) { revealConcept(id, () => openConcept(id)); return; }
   closeMobilePanels();
   main.classList.remove('graph-only');
   const resourceHtml = n.resource
@@ -987,12 +1133,45 @@ function openIndex() {
   relayout();
 }
 
+function openDir(path) {
+  // Reader view for a directory: its concepts and subdirectories; the graph keeps its state.
+  const d = dirs[path];
+  if (!d) return;
+  closeMobilePanels();
+  main.classList.remove('graph-only');
+  const direct = d.concepts.filter(id => parentDirOf(id) === path).map(id => byId[id])
+    .sort((a, b) => a.title.localeCompare(b.title));
+  const subdirs = Object.values(dirs).filter(x => x.parent === path).sort((a, b) => a.path.localeCompare(b.path));
+  const state = expanded.has(path) ? 'expanded — double-click a concept node to collapse' : 'collapsed — double-click its node to expand';
+  doc.innerHTML = `<h1>${escapeHtml(dirLabel(path))}</h1><p class="summary">Directory <code>${escapeHtml(path)}/</code> · ${state}</p>` +
+    (subdirs.length ? '<h2>Directories</h2><ul class="dirlist">' + subdirs.map(x =>
+      `<li><a href="#" data-dir="${escapeAttr(x.path)}">📁 ${escapeHtml(dirLabel(x.path))}</a></li>`).join('') + '</ul>' : '') +
+    (direct.length ? '<h2>Concepts</h2><ul class="dirlist">' + direct.map(n =>
+      `<li><span class="dot" style="background:${n.color}"></span><a href="#node:${escapeAttr(n.id)}">${escapeHtml(n.title)}</a>` +
+      (n.description ? ` — <span style="color:var(--muted)">${escapeHtml(n.description)}</span>` : '') + '</li>').join('') + '</ul>' : '');
+  wireDocLinks(doc);
+  doc.querySelectorAll('a[data-dir]').forEach(a => a.addEventListener('click', ev => {
+    ev.preventDefault();
+    const sub = a.dataset.dir;
+    expandDir(path, () => openDir(sub));
+  }));
+  doc.scrollTop = 0;
+  setActiveNav(DIR_PREFIX + path);
+  history.replaceState(null, '', '#' + encodeURIComponent(DIR_PREFIX + path));
+  const node = cy.getElementById(DIR_PREFIX + path);
+  if (node.nonempty()) { highlight(node.id()); focusOn(node.id()); } else { clearHighlight(); relayout(); }
+}
+
 function openEdgeLink(edge) {
   // Open the edge's source concept and scroll to / flash the link that produced
   // this edge (a body link, or the Properties row for a typed frontmatter edge).
+  // Merged edges touching a directory node open that directory's overview instead.
   const source = edge.data('source'), target = edge.data('target');
+  if (isDirId(source)) { openDir(dirOf(source)); return; }
   openConcept(source);
-  const link = doc.querySelector(`a[href="#node:${target}"]`);
+  const targets = (edge.data('links') || []).map(l => l.target);
+  const link = [...doc.querySelectorAll('a[href^="#node:"]')].find(a => targets.includes(a.getAttribute('href').slice(6)))
+    || doc.querySelector(`a[href="#node:${target}"]`);
   if (link) {
     link.scrollIntoView({ behavior: 'smooth', block: 'center' });
     link.classList.add('flash');
@@ -1034,7 +1213,7 @@ function buildTree(nodes) {
   return root;
 }
 
-function renderTree(tree) {
+function renderTree(tree, prefix = '') {
   const ul = document.createElement('ul');
   // Concept pages first, then subdirectories (so a directory's own overview sits
   // above its children).
@@ -1051,20 +1230,37 @@ function renderTree(tree) {
   });
   // Underscore-prefixed directories (e.g. _types) hold meta concepts: list them last.
   Object.keys(tree.dirs).sort((a, b) => (a[0] === '_') - (b[0] === '_') || a.localeCompare(b)).forEach(name => {
+    const path = prefix ? prefix + '/' + name : name;
     const li = document.createElement('li');
-    li.className = 'dir';
+    li.className = 'dir collapsed';
+    li.dataset.dir = path;
     const label = document.createElement('div');
     label.className = 'label';
-    label.textContent = name.startsWith('_') ? name : name.replace(/[-_]/g, ' ');
+    label.title = 'Click to expand or collapse (also in the graph)';
+    label.innerHTML = `<span class="caret">▸</span><span>${escapeHtml(name.startsWith('_') ? name : name.replace(/[-_]/g, ' '))}</span>` +
+      `<span class="count">${dirs[path].concepts.length}</span>`;
+    label.addEventListener('click', () => {
+      if (expanded.has(path)) collapseDir(path, () => openDir(path)); else expandDir(path, () => openDir(path));
+    });
     li.appendChild(label);
-    li.appendChild(renderTree(tree.dirs[name]));
+    li.appendChild(renderTree(tree.dirs[name], path));
     ul.appendChild(li);
   });
   return ul;
 }
 
+// Reflect `expanded` onto the sidebar tree.
+function paintTreeState() {
+  document.querySelectorAll('#nav li.dir').forEach(li => li.classList.toggle('collapsed', !expanded.has(li.dataset.dir)));
+}
+
 function setActiveNav(id) {
-  document.querySelectorAll('#nav a, #loglink a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('#nav a, #loglink a, #nav .dir > .label').forEach(a => a.classList.remove('active'));
+  if (id && isDirId(id)) {
+    const li = document.querySelector(`#nav li.dir[data-dir="${cssEscape(dirOf(id))}"]`);
+    li && li.firstElementChild.classList.add('active');
+    return;
+  }
   if (id === 'log') { const l = document.querySelector('#loglink a'); l && l.classList.add('active'); return; }
   if (id === 'index') { const h = document.querySelector('#nav a.homelink'); h && h.classList.add('active'); return; }
   if (!id) return;
@@ -1098,15 +1294,27 @@ document.getElementById('search').addEventListener('input', ev => {
     navToggle.setAttribute('aria-expanded', 'true');
   }
   const q = ev.target.value.trim().toLowerCase();
+  const hits = [];
   DATA.nodes.forEach(n => {
     const props = (n.properties || []).map(p => p.join(' ')).join(' ');
     const hay = (n.title + ' ' + n.description + ' ' + n.type + ' ' + n.tags.join(' ') + ' ' + n.status + ' ' + props).toLowerCase();
     const hit = !q || hay.includes(q);
+    if (q && hit) hits.push(n.id);
     const navA = document.querySelector(`#nav a[data-id="${cssEscape(n.id)}"]`);
     navA && navA.classList.toggle('hidden', !hit);
-    if (main.classList.contains('graph-only')) cy.getElementById(n.id).toggleClass('faded', !!q && !hit);
   });
+  clearTimeout(searchTimer);
+  if (q.length < 2) return;
+  // Open the directories holding matches (tree and graph together), then fade the rest.
+  searchTimer = setTimeout(() => {
+    setExpanded([...new Set(hits.flatMap(id => ancestorsOf(id)))], true, () => {
+      cy.nodes().forEach(node => node.toggleClass('faded', !hits.includes(node.id())));
+      cy.edges().addClass('faded');
+      caption.textContent = hits.length + ' matches for “' + q + '”';
+    });
+  }, 300);
 });
+let searchTimer = null;
 
 /* ---------- legend ---------- */
 function buildLegend() {
@@ -1133,14 +1341,16 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
 function cssEscape(s) { return (window.CSS && CSS.escape) ? CSS.escape(s) : s.replace(/["\\]/g, '\\$&'); }
 
 /* ---------- initial state ---------- */
-runLayout();
 buildLegend();
-clearHighlight();
-const start = decodeURIComponent(location.hash.slice(1));
-if (start === 'log') openLog();
-else if (byId[start]) openConcept(start);
-else if (DATA.index) openIndex();
-else showGraphOnly();
+syncGraph(() => {
+  clearHighlight();
+  const start = decodeURIComponent(location.hash.slice(1));
+  if (start === 'log') openLog();
+  else if (byId[start]) openConcept(start);
+  else if (isDirId(start) && dirs[dirOf(start)]) expandDir(dirOf(start), () => openDir(dirOf(start)));
+  else if (DATA.index) openIndex();
+  else showGraphOnly();
+});
 </script>
 </body>
 </html>

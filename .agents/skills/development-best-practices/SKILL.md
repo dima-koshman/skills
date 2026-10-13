@@ -86,6 +86,64 @@ Rules that matter in practice:
 - **Lock the directory down**: `chmod 700 ~/.config/direnv/env`. It holds plaintext secrets.
 - It is not version-controlled by design — back it up with whatever holds your other host secrets.
 
+### Load several environments side by side with `dotenv_prefixed`
+
+Variant files often share variable names (`openwebui.env`, `openwebui-dev.env` and
+`openwebui-sandbox.env` all define `OPEN_WEBUI_BASE_URL` and `OPEN_WEBUI_API_KEY`), so
+stacking them keeps only the last. When a project needs several at once, for example a
+script that picks its target environment from an argument, load each under a prefix
+instead. direnv has no built-in prefix option; `dotenv_prefixed PREFIX FILE` provides one:
+
+```bash
+dotenv_prefixed PROD    ~/.config/direnv/env/openwebui.env          # PROD_OPEN_WEBUI_API_KEY, ...
+dotenv_prefixed DEV     ~/.config/direnv/env/openwebui-dev.env      # DEV_OPEN_WEBUI_API_KEY, ...
+dotenv_prefixed SANDBOX ~/.config/direnv/env/openwebui-sandbox.env
+```
+
+It parses the file with direnv's own dotenv parser, the same rules as `dotenv`. That
+includes `$VAR` expansion inside double-quoted values, so single-quote a literal `$`. It
+then re-exports each variable as `PREFIX_<NAME>`, re-quoted with `%q`. The parse runs in a
+subshell, so the unprefixed names are never exported. A missing file is skipped like
+`dotenv_if_exists`, and the file is registered with `watch_file`. The definition, shipped
+as `scripts/dotenv_prefixed.sh`:
+
+```bash
+dotenv_prefixed() {
+  local prefix=$1 file=$2
+  [[ -f "$file" ]] || return 0
+  watch_file "$file"
+  eval "$(
+    eval "$("${direnv:-direnv}" dotenv bash "$file")"
+    sed -n -E 's/^[[:space:]]*(export[[:space:]]+)?([A-Za-z_][A-Za-z0-9_]*)=.*/\2/p' "$file" |
+      while IFS= read -r name; do
+        printf 'export %s_%s=%q\n' "$prefix" "$name" "${!name}"
+      done
+  )"
+}
+```
+
+**It may already be available on the host.** direnv sources every
+`~/.config/direnv/lib/*.sh` before each `.envrc`, so a copy there makes the function
+available in every project with no definition in the `.envrc`. Check with
+`declare -F dotenv_prefixed` inside an `.envrc`. Install it by symlinking this skill's
+script, so the host copy follows the version-controlled one:
+
+```bash
+mkdir -p ~/.config/direnv/lib
+ln -sf "$HOME/Projects/dima/.agents/skills/development-best-practices/scripts/dotenv_prefixed.sh" \
+  ~/.config/direnv/lib/dotenv_prefixed.sh
+```
+
+**A committed `.envrc` template**, such as an `.envrc.example` for teammates, can't assume
+the host copy exists. Define the function only when it's missing, so the global copy wins
+where installed:
+
+```bash
+declare -F dotenv_prefixed >/dev/null || dotenv_prefixed() {
+  ...  # the definition above
+}
+```
+
 ## Update OpenCode plugins
 
 OpenCode has no bulk plugin-update command. From the project root, read every external plugin entry

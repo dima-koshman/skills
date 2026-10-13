@@ -559,6 +559,9 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>__TITLE__ — OKF knowledge graph</title>
 <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape-fcose@2.2.0/cytoscape-fcose.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
 <style>
   :root {
@@ -613,6 +616,8 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #legend .legend-item:hover { background:var(--hover); color:var(--ink); }
   #legend .legend-item.active { background:var(--active); color:var(--ink); font-weight:600; }
   #legend .sw { width:10px; height:10px; border-radius:3px; flex:0 0 auto; }
+  #legend .relayout { margin-left:auto; border:1px solid var(--line); background:var(--bg); color:var(--muted); font:inherit; font-size:11.5px; padding:2px 8px; border-radius:5px; cursor:pointer; }
+  #legend .relayout:hover { background:var(--hover); color:var(--ink); }
   #graph-container { flex:1 1 auto; position:relative; min-height:0; }
   #graph { position:absolute; inset:0; }
   #graph-caption { position:absolute; top:8px; left:12px; font-size:11px; color:var(--muted); pointer-events:none; }
@@ -806,22 +811,41 @@ const cy = cytoscape({
   maxZoom: 2.5,   // small bundles would otherwise zoom a single node to fill the pane
 });
 
-function graphLayout(incremental) {
-  return { name: 'cose', animate: false, nodeDimensionsIncludeLabels: true, randomize: !incremental,
-           idealEdgeLength: 150, nodeRepulsion: 22000, nodeOverlap: 60,
-           gravity: 0.2, componentSpacing: 160, numIter: incremental ? 600 : 1500, padding: 40 };
+// Full layouts use fcose (spectral start + few force iterations, much faster than cose on
+// hundreds of nodes); cose is the fallback when the fcose scripts did not load.
+const HAS_FCOSE = typeof cytoscapeFcose !== 'undefined';
+function graphLayout() {
+  return HAS_FCOSE
+    ? { name: 'fcose', quality: 'default', randomize: true, animate: false, nodeDimensionsIncludeLabels: true,
+        idealEdgeLength: 110, nodeRepulsion: 9000, nodeSeparation: 90, packComponents: true, padding: 40 }
+    : { name: 'cose', animate: false, nodeDimensionsIncludeLabels: true, randomize: true,
+        idealEdgeLength: 150, nodeRepulsion: 22000, nodeOverlap: 60,
+        gravity: 0.2, componentSpacing: 160, numIter: 1500, padding: 40 };
 }
 
-// Run the force layout, then a deterministic pass that pushes any still-
-// overlapping nodes apart using their label-inclusive bounding boxes, so labels
-// never sit on top of each other regardless of the force layout's result.
-// Incremental runs start from current positions so expanding a directory doesn't
-// reshuffle the whole graph.
-function runLayout(incremental, done) {
-  const layout = cy.layout(graphLayout(incremental));
-  // Only the first, full layout fits the viewport; expand/collapse keeps the user's zoom.
-  layout.one('layoutstop', () => requestAnimationFrame(() => { separateOverlaps(!incremental); if (done) done(); }));
+// Full re-layout of everything visible (initial view and the "Re-layout" button), then the
+// overlap pass so labels never sit on top of each other.
+function runLayout(done) {
+  const layout = cy.layout(graphLayout());
+  layout.one('layoutstop', () => requestAnimationFrame(() => { separateOverlaps(true); if (done) done(); }));
   layout.run();
+}
+
+// Expand/collapse never re-lays out the whole graph: only the newly shown nodes are placed,
+// in a disc around the directory node they came out of, laid out among themselves (fcose on
+// the small subset) and scaled to fit; then the overlap pass nudges neighbours apart. Existing
+// nodes keep their positions, so the cost depends on what changed, not on the graph size.
+function placeNewNodes(groups) {
+  groups.forEach(({ anchor, nodes }) => {
+    if (nodes.length === 1) { nodes[0].position(anchor); return; }
+    const eles = nodes.union(nodes.edgesWith(nodes));
+    eles.layout({ ...graphLayout(), fit: false, packComponents: false, padding: 0 }).run();
+    const bb = nodes.boundingBox({ includeLabels: false });
+    const radius = 45 * Math.sqrt(nodes.length) + 30;
+    const scale = (2 * radius) / Math.max(bb.w, bb.h, 1);
+    const cx = (bb.x1 + bb.x2) / 2, cyy = (bb.y1 + bb.y2) / 2;
+    nodes.positions(n => ({ x: anchor.x + (n.position('x') - cx) * scale, y: anchor.y + (n.position('y') - cyy) * scale }));
+  });
 }
 
 // Rebuild the visible graph from `expanded`: concept nodes for expanded directories,
@@ -859,8 +883,8 @@ function syncGraph(done) {
     const fresh = [];
     wanted.forEach((el, id) => {
       if (cy.getElementById(id).nonempty()) return;
-      const near = newNodePosition(id, old);
-      fresh.push(near ? { ...el, position: near } : el);
+      const anchor = newNodeAnchor(id, old);
+      fresh.push(anchor ? { ...el, position: { ...anchor.pos }, data: { ...el.data, anchorKey: anchor.key } } : el);
     });
     cy.add(fresh);
     cy.add([...agg.values()].map(a => ({
@@ -871,22 +895,35 @@ function syncGraph(done) {
     })));
   });
   paintTreeState();
-  const incremental = Object.keys(old).length > 0;
-  runLayout(incremental, () => { if (done) done(); else clearHighlight(); });
+  const finish = () => { if (done) done(); else clearHighlight(); };
+  if (!Object.keys(old).length) { runLayout(finish); return; }
+  const groups = new Map();
+  cy.nodes().filter(n => n.data('anchorKey')).forEach(n => {
+    const key = n.data('anchorKey');
+    const g = groups.get(key) || { anchor: { ...n.position() }, nodes: cy.collection() };
+    g.nodes = g.nodes.union(n);
+    groups.set(key, g);
+    n.removeData('anchorKey');
+  });
+  placeNewNodes([...groups.values()]);
+  separateOverlaps(false);
+  finish();
 }
 
-// Where a newly shown node should start: at the directory node it was folded into
-// (when expanding), or at the centroid of the nodes it now replaces (when collapsing).
-function newNodePosition(id, old) {
+// Where a newly shown node belongs: around the directory node it was folded into (when
+// expanding), or at the centroid of the nodes it now replaces (when collapsing). Nodes with
+// the same anchor key are laid out together.
+function newNodeAnchor(id, old) {
   if (isDirId(id)) {
     const path = dirOf(id);
     const pts = Object.keys(old).filter(o => (isDirId(o) ? dirOf(o) : o).startsWith(path + '/')).map(o => old[o]);
     if (!pts.length) return null;
-    return { x: pts.reduce((a, p) => a + p.x, 0) / pts.length, y: pts.reduce((a, p) => a + p.y, 0) / pts.length };
+    return { key: 'collapse:' + path,
+             pos: { x: pts.reduce((a, p) => a + p.x, 0) / pts.length, y: pts.reduce((a, p) => a + p.y, 0) / pts.length } };
   }
   for (const d of ancestorsOf(id).reverse()) {
     const p = old[DIR_PREFIX + d];
-    if (p) return { x: p.x + (Math.random() - .5) * 80, y: p.y + (Math.random() - .5) * 80 };
+    if (p) return { key: 'expand:' + d, pos: p };
   }
   return null;
 }
@@ -905,34 +942,53 @@ function expandDir(path, done) { setExpanded([...ancestorsOf(path + '/x'), path]
 function collapseDir(path, done) { setExpanded([path], false, done); }
 function revealConcept(id, done) { setExpanded(ancestorsOf(id), true, done); }
 
-function separateOverlaps(fitAll, iterations = 80, pad = 10) {
-  // Box sizes don't change while nodes move, so measure each label-inclusive box once and
-  // run the pairwise push on plain arrays (querying Cytoscape per pair was ~1.3 s at 100 nodes).
+function separateOverlaps(fitAll, iterations = 60, pad = 10) {
+  // Measure each label-inclusive box once, then push overlapping pairs apart on plain arrays.
+  // Candidate pairs come from a uniform grid whose cell is at least the largest box, so two
+  // boxes can only overlap if they sit in the same or neighbouring cells: ~O(n) per round
+  // instead of comparing every pair.
   const nodes = cy.nodes();
   const n = nodes.length;
   const x = new Float64Array(n), y = new Float64Array(n);
   const hw = new Float64Array(n), hh = new Float64Array(n), ox = new Float64Array(n), oy = new Float64Array(n);
+  let cell = 1;
   nodes.forEach((node, i) => {
     const p = node.position(), bb = node.boundingBox({ includeLabels: true });
     x[i] = p.x; y[i] = p.y;
     hw[i] = (bb.x2 - bb.x1) / 2; hh[i] = (bb.y2 - bb.y1) / 2;
     ox[i] = (bb.x1 + bb.x2) / 2 - p.x; oy[i] = (bb.y1 + bb.y2) / 2 - p.y;   // label sits below the node
+    cell = Math.max(cell, 2 * hw[i] + pad, 2 * hh[i] + pad);
   });
   for (let it = 0; it < iterations; it++) {
+    const grid = new Map();
+    const gx = new Int32Array(n), gy = new Int32Array(n);
+    for (let i = 0; i < n; i++) {
+      gx[i] = Math.floor((x[i] + ox[i]) / cell); gy[i] = Math.floor((y[i] + oy[i]) / cell);
+      const key = gx[i] + ',' + gy[i];
+      const bucket = grid.get(key);
+      if (bucket) bucket.push(i); else grid.set(key, [i]);
+    }
     let moved = false;
     for (let i = 0; i < n; i++) {
-      for (let j = i + 1; j < n; j++) {
-        let dx = (x[i] + ox[i]) - (x[j] + ox[j]);
-        let dy = (y[i] + oy[i]) - (y[j] + oy[j]);
-        const overlapX = hw[i] + hw[j] + pad - Math.abs(dx);
-        const overlapY = hh[i] + hh[j] + pad - Math.abs(dy);
-        if (overlapX > 0 && overlapY > 0) {
-          const dist = Math.hypot(dx, dy) || 0.01;
-          const push = Math.min(overlapX, overlapY) / 2;
-          dx /= dist; dy /= dist;
-          x[i] += dx * push; y[i] += dy * push;
-          x[j] -= dx * push; y[j] -= dy * push;
-          moved = true;
+      for (let cx = gx[i] - 1; cx <= gx[i] + 1; cx++) {
+        for (let cyy = gy[i] - 1; cyy <= gy[i] + 1; cyy++) {
+          const bucket = grid.get(cx + ',' + cyy);
+          if (!bucket) continue;
+          for (const j of bucket) {
+            if (j <= i) continue;
+            let dx = (x[i] + ox[i]) - (x[j] + ox[j]);
+            let dy = (y[i] + oy[i]) - (y[j] + oy[j]);
+            const overlapX = hw[i] + hw[j] + pad - Math.abs(dx);
+            const overlapY = hh[i] + hh[j] + pad - Math.abs(dy);
+            if (overlapX > 0 && overlapY > 0) {
+              const dist = Math.hypot(dx, dy) || 0.01;
+              const push = Math.min(overlapX, overlapY) / 2;
+              dx /= dist; dy /= dist;
+              x[i] += dx * push; y[i] += dy * push;
+              x[j] -= dx * push; y[j] -= dy * push;
+              moved = true;
+            }
+          }
         }
       }
     }
@@ -942,31 +998,50 @@ function separateOverlaps(fitAll, iterations = 80, pad = 10) {
   if (fitAll) cy.fit(undefined, 30);
 }
 
-cy.on('tap', 'node', ev => {
-  // Clicking the already-selected node toggles the selection off.
-  const id = ev.target.id();
-  if (ev.target.hasClass('sel')) clearHighlight();
+// Clicks: the single-click action waits DOUBLE_CLICK_MS and is cancelled when a second click
+// on the same target arrives, so a double-click never first runs the single-click action
+// (e.g. zooming to the node). 250 ms covers typical double-click speeds; lower it for snappier
+// single clicks at the risk of reading slow double-clicks as two single clicks.
+const DOUBLE_CLICK_MS = 250;
+let pendingClick = null;
+cy.on('tap', ev => {
+  const target = ev.target;
+  if (pendingClick && pendingClick.target === target) {
+    clearTimeout(pendingClick.timer);
+    pendingClick = null;
+    onDoubleClick(target);
+    return;
+  }
+  if (pendingClick) { clearTimeout(pendingClick.timer); pendingClick.run(); }   // a click elsewhere settles the previous one
+  const run = () => onSingleClick(target);
+  pendingClick = { target, run, timer: setTimeout(() => { pendingClick = null; run(); }, DOUBLE_CLICK_MS) };
+});
+
+function onSingleClick(target) {
+  if (target === cy) { clearHighlight(); return; }                 // empty space: deselect, keep the doc open
+  if (target.isEdge()) { openEdgeLink(target); return; }           // open the source doc at the link behind the edge
+  const id = target.id();
+  if (target.hasClass('sel')) clearHighlight();                     // clicking the selected node deselects it
   else if (isDirId(id)) openDir(dirOf(id));
   else openConcept(id);
-});
-cy.on('tap', 'edge', ev => openEdgeLink(ev.target));           // open the source doc at the link that made this edge
-cy.on('tap', ev => { if (ev.target === cy) clearHighlight(); });    // click empty space = deselect node, keep the doc open
+}
+
 // Double-click: a directory node expands; a concept node collapses its directory;
 // empty space or an edge resets the zoom to fit everything.
-cy.on('dbltap', ev => {
-  if (ev.target === cy || !ev.target.isNode()) {
+function onDoubleClick(target) {
+  if (target === cy || target.isEdge()) {
     cy.animate({ fit: { eles: cy.elements(), padding: 30 } }, { duration: 300 });
     return;
   }
-  const id = ev.target.id();
+  const id = target.id();
   if (isDirId(id)) {
     const path = dirOf(id);
-    expandDir(path, () => { openDir(path); });
+    expandDir(path, () => openDir(path));
   } else {
     const parent = parentDirOf(id);
     if (parent) collapseDir(parent, () => openDir(parent));
   }
-});
+}
 
 let activeType = null;
 
@@ -1338,6 +1413,11 @@ let searchTimer = null;
 /* ---------- legend ---------- */
 function buildLegend() {
   const legend = document.getElementById('legend');
+  const relayoutButton = document.createElement('button');
+  relayoutButton.className = 'relayout';
+  relayoutButton.title = 'Lay out the whole visible graph again';
+  relayoutButton.textContent = '↻ Re-layout';
+  relayoutButton.addEventListener('click', () => runLayout(() => clearHighlight()));
   const title = document.createElement('span');
   title.className = 'legend-title';
   title.textContent = 'Types';
@@ -1352,6 +1432,7 @@ function buildLegend() {
     });
     legend.appendChild(item);
   });
+  legend.appendChild(relayoutButton);
 }
 
 /* ---------- helpers ---------- */

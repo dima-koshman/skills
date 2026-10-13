@@ -1049,12 +1049,13 @@ function renderTree(tree) {
     li.appendChild(a);
     ul.appendChild(li);
   });
-  Object.keys(tree.dirs).sort().forEach(name => {
+  // Underscore-prefixed directories (e.g. _types) hold meta concepts: list them last.
+  Object.keys(tree.dirs).sort((a, b) => (a[0] === '_') - (b[0] === '_') || a.localeCompare(b)).forEach(name => {
     const li = document.createElement('li');
     li.className = 'dir';
     const label = document.createElement('div');
     label.className = 'label';
-    label.textContent = name.replace(/[-_]/g, ' ');
+    label.textContent = name.startsWith('_') ? name : name.replace(/[-_]/g, ' ');
     li.appendChild(label);
     li.appendChild(renderTree(tree.dirs[name]));
     ul.appendChild(li);

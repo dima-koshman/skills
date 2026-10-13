@@ -265,7 +265,11 @@ def _render_hierarchy(bundle_root: pathlib.Path, concepts: list[Concept]) -> str
 
     subdirectories = sorted(
         (directory for directory in covered if directory != bundle_root),
-        key=lambda directory: directory.relative_to(bundle_root).parts,
+        # Underscore-prefixed directories (e.g. ``_types``) hold meta concepts; list them last.
+        key=lambda directory: tuple(
+            (part.startswith("_"), part)
+            for part in directory.relative_to(bundle_root).parts
+        ),
     )
     for directory in subdirectories:
         parts = directory.relative_to(bundle_root).parts

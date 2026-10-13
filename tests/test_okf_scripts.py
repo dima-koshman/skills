@@ -171,3 +171,20 @@ def _data(bundle: pathlib.Path) -> dict[str, object]:
 def _nodes(bundle: pathlib.Path) -> dict[str, dict[str, object]]:
     nodes = cast(list[dict[str, object]], _data(bundle)["nodes"])
     return {str(node["id"]): node for node in nodes}
+
+
+def test_index_lists_underscore_meta_directories_last(bundle: pathlib.Path) -> None:
+    _write(
+        bundle / "_types/service.md",
+        {"type": "Concept Type", "title": "Service"},
+        "Def.",
+    )
+
+    _ = _run("okf_index.py", str(bundle))
+
+    headings = [
+        line
+        for line in (bundle / "index.md").read_text().splitlines()
+        if line.startswith("# ")
+    ]
+    assert headings[-1] == "# _types"

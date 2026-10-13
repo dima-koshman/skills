@@ -15,11 +15,10 @@ self-contained ``okf-site.html`` with:
   fills the main area; selecting a concept highlights its node and immediate
   links while dimming the rest.
 
-OKF v0.2 metadata is surfaced in the reader: lifecycle ``status`` (draft and
-deprecated concepts are also styled in the graph and tree), the trust tier derived
-from ``verified`` (unverified / machine-confirmed / human-reviewed), staleness from
-``stale_after``, authorship from ``generated`` (falling back to a legacy
-``timestamp``), and ``sources`` with ``[^id]`` footnotes linked to them.
+The reader shows lifecycle ``status`` (draft and deprecated concepts are also
+styled in the graph and tree) and ``sources`` with ``[^id]`` footnotes linked to
+them. OKF v0.2 trust, freshness and authorship metadata is parsed and preserved
+in the embedded data, but omitted from the visible concept pages.
 
 Producer-defined frontmatter keys are shown as a Properties table. Any of their
 values that is a path to another concept in the bundle (``/people/ana.md``, or a
@@ -646,11 +645,6 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #doc .pill { display:inline-block; padding:1px 8px; border-radius:10px; font-size:11px; font-weight:600; border:1px solid var(--line); color:var(--muted); background:var(--bg); }
   #doc .pill.status-draft { color:#9a6700; border-color:#d4a72c; background:#fff8c5; }
   #doc .pill.status-deprecated { color:#82071e; border-color:#ff8182; background:#ffebe9; }
-  #doc .pill.trust-unverified { color:var(--muted); }
-  #doc .pill.trust-machine-confirmed { color:#0550ae; border-color:#80ccff; background:#ddf4ff; }
-  #doc .pill.trust-human-reviewed { color:#116329; border-color:#4ac26b; background:#dafbe1; }
-  #doc .pill.stale { color:#82071e; border-color:#ff8182; background:#ffebe9; }
-  #doc .provenance { color:var(--muted); font-size:12px; margin:0 0 14px; }
   #doc table.props { margin:4px 0 18px; }
   #doc table.props th { white-space:nowrap; font-weight:600; width:1%; }
   #doc .sources h1 { font-size:17px; font-weight:600; margin:1.6em 0 .4em; padding-bottom:5px; border-bottom:1px solid var(--line); }
@@ -1130,19 +1124,8 @@ function wireDocLinks(container) {
 
 /* ---------- OKF v0.2 metadata ---------- */
 function lifecycleHtml(n) {
-  const pills = [];
-  if (n.status && n.status !== 'stable') pills.push(`<span class="pill status-${escapeAttr(n.status)}">${escapeHtml(n.status)}</span>`);
-  pills.push(`<span class="pill trust-${escapeAttr(n.trust)}" title="Trust tier derived from 'verified'">${escapeHtml(n.trust)}</span>`);
-  if (n.stale) pills.push(`<span class="pill stale" title="stale_after has passed">stale since ${escapeHtml(n.stale_after)}</span>`);
-  else if (n.stale_after) pills.push(`<span class="pill" title="stale_after">fresh until ${escapeHtml(n.stale_after)}</span>`);
-  return `<div class="lifecycle">${pills.join('')}</div>`;
-}
-
-function provenanceHtml(n) {
-  const parts = [];
-  if (n.generated) parts.push('Generated' + (n.generated.by ? ' by ' + escapeHtml(n.generated.by) : '') + (n.generated.at ? ' at ' + escapeHtml(n.generated.at) : ''));
-  if (n.verified && n.verified.length) parts.push('Verified by ' + n.verified.map(v => escapeHtml(v.by) + (v.at ? ' (' + escapeHtml(v.at) + ')' : '')).join(', '));
-  return parts.length ? `<p class="provenance">${parts.join(' · ')}</p>` : '';
+  if (!n.status || n.status === 'stable') return '';
+  return `<div class="lifecycle"><span class="pill status-${escapeAttr(n.status)}">${escapeHtml(n.status)}</span></div>`;
 }
 
 function propertiesHtml(n) {
@@ -1189,7 +1172,7 @@ function openConcept(id) {
       `<span class="meta-right">${tagsHtml}` +
         `<span class="badge" style="background:${n.color}">${escapeHtml(n.type)}</span>` +
       `</span>` +
-    `</div>` + lifecycleHtml(n) + summaryHtml + provenanceHtml(n) + propertiesHtml(n);
+    `</div>` + lifecycleHtml(n) + summaryHtml + propertiesHtml(n);
   wireDocLinks(doc);
   const bodyHtml = document.createElement('div');
   bodyHtml.className = 'prose';

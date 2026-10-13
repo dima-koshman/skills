@@ -112,9 +112,10 @@ python scripts/okf_site.py <bundle-dir> -o /tmp/graph.html
 
 It renders an interactive knowledge graph (nodes = concepts colored by `type`,
 edges = cross-links) beside a reading panel. The reader shows each concept's
-lifecycle status, trust tier, staleness, `generated`/`verified` provenance, a
-Properties table of producer-defined keys (concept paths become links), the body,
-and its `sources` with footnotes linked to them. Frontmatter concept paths also
+lifecycle status, a Properties table of producer-defined keys (concept paths become
+links), the body, and its `sources` with footnotes linked to them. Trust/freshness
+pills and the generated/verified line are omitted from concept pages; the underlying
+v0.2 metadata remains in frontmatter and embedded data for agents and tooling. Frontmatter concept paths also
 become **labeled edges** named after their key; deprecated concepts are dimmed and
 dashed, drafts dashed. Every directory starts **collapsed**: the sidebar tree and the graph share one
 expanded/collapsed state, a collapsed directory is one node (grey rounded square, sized by its concept count) with

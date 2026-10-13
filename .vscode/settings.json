@@ -143,5 +143,7 @@
         "**/.gitea/workflows/*.yaml",
         "**/.forgejo/workflows/*.yml",
         "**/.forgejo/workflows/*.yaml"
-    ]
+    ],
+    "shfmt.executablePath": "/opt/homebrew/bin/shfmt",
+    "pixi-code.pixiExecutable": "/Users/koshmandmitry/.pixi/bin/pixi"
 }

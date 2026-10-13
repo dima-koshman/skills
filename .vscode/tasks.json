@@ -62,6 +62,16 @@
             ]
         },
         {
+            "label": "Skills: link local (all)",
+            "detail": "Symlink alternative to 'Skills: install local (all)' — same skill selection (keep the two lists in sync), same global layout (~/.agents/skills/<name> -> this repo, ~/.claude/skills/<name> -> ../../.agents/skills/<name>), but edits here apply everywhere with no re-run. Replaces an existing npx copy of the same skill; refuses anything else in the way. Use one mechanism or the other: before going back to npx, run 'Skills: unlink local (all)'.",
+            "command": "link_global_skills.sh \"${workspaceFolder}/.agents/skills/development-best-practices\" \"${workspaceFolder}/.agents/skills/python-styleguide\" \"${workspaceFolder}/.agents/skills/cli-subagents\""
+        },
+        {
+            "label": "Skills: unlink local (all)",
+            "detail": "Remove the global symlinks created by 'Skills: link local (all)' (only links pointing into this repo). Run before switching back to 'Skills: install local (all)'.",
+            "command": "link_global_skills.sh --unlink \"${workspaceFolder}/.agents/skills/development-best-practices\" \"${workspaceFolder}/.agents/skills/python-styleguide\" \"${workspaceFolder}/.agents/skills/cli-subagents\""
+        },
+        {
             "label": "Setup: link scripts and IDE to ~/.local/bin",
             "detail": "Bootstrap a fresh clone: symlink this repo's cross-project scripts, plus an `ide` editor launcher, into ~/.local/bin so every task that calls them by bare name resolves. Run this first on a new host — the other tasks assume it has run. Invoked by explicit path because it is what puts the bare names on PATH. Idempotent; refuses to overwrite anything that is not already a symlink. Warns instead of failing if no editor bundle is found.",
             "hide": true,

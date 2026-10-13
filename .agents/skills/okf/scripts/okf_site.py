@@ -624,6 +624,13 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #graph-container { flex:1 1 auto; position:relative; min-height:0; }
   #graph { position:absolute; inset:0; }
   #graph-caption { position:absolute; top:8px; left:12px; font-size:11px; color:var(--muted); pointer-events:none; }
+  #node-menu { position:absolute; z-index:5; min-width:220px; padding:4px; border:1px solid var(--line);
+    border-radius:8px; background:var(--bg); box-shadow:0 8px 24px #1f232833; }
+  #node-menu[hidden] { display:none; }
+  #node-menu button { display:block; width:100%; border:0; border-radius:5px; background:none; color:var(--ink);
+    font:inherit; font-size:12px; text-align:left; padding:8px 10px; cursor:pointer; }
+  #node-menu button:hover, #node-menu button:focus-visible { background:var(--hover); }
+  #node-menu button:disabled { color:var(--muted); cursor:default; }
 
   #doc h1 { font-size:24px; margin:0 0 2px; }
   #doc h2 { font-size:17px; margin:1.5em 0 .4em; padding-bottom:5px; border-bottom:1px solid var(--line); }
@@ -705,6 +712,10 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
         <div id="graph-container">
           <div id="graph"></div>
           <div id="graph-caption"></div>
+          <div id="node-menu" role="menu" aria-label="Node actions" hidden>
+            <button type="button" role="menuitem" data-action="focus">Center and show connections</button>
+            <button type="button" role="menuitem" data-action="toggle">Collapse into parent directory</button>
+          </div>
         </div>
       </div>
     </main>
@@ -716,6 +727,8 @@ const byId = Object.fromEntries(DATA.nodes.map(n => [n.id, n]));
 const main = document.getElementById('main');
 const doc = document.getElementById('doc');
 const caption = document.getElementById('graph-caption');
+const graphContainer = document.getElementById('graph-container');
+const nodeMenu = document.getElementById('node-menu');
 const navToggle = document.getElementById('nav-toggle');
 const graphToggle = document.getElementById('graph-toggle');
 
@@ -1002,6 +1015,7 @@ function separateOverlaps(fitAll, iterations = 60, pad = 10) {
 const DOUBLE_CLICK_MS = 250;
 let pendingClick = null;
 cy.on('tap', ev => {
+  hideNodeMenu();
   const target = ev.target;
   if (pendingClick && pendingClick.target === target) {
     clearTimeout(pendingClick.timer);
@@ -1017,10 +1031,7 @@ cy.on('tap', ev => {
 function onSingleClick(target) {
   if (target === cy) { clearHighlight(); return; }                 // empty space: deselect, keep the doc open
   if (target.isEdge()) { openEdgeLink(target); return; }           // open the source doc at the link behind the edge
-  const id = target.id();
-  if (target.hasClass('sel')) clearHighlight();                     // clicking the selected node deselects it
-  else if (isDirId(id)) openDir(dirOf(id));
-  else openConcept(id);
+  focusConnections(target.id());
 }
 
 // Double-click: a directory node expands; a concept node collapses its directory;
@@ -1039,6 +1050,74 @@ function onDoubleClick(target) {
     if (parent) collapseDir(parent, () => openDir(parent));
   }
 }
+
+// Reveal the actual concepts behind links to collapsed directory nodes. For a
+// selected directory, only links visible outside that directory are followed.
+function connectedDirectories(id) {
+  const paths = new Set();
+  DATA.edges.forEach(edge => {
+    const source = representative(edge.source), target = representative(edge.target);
+    if (source === target) return;
+    const other = source === id ? edge.target : target === id ? edge.source : null;
+    if (other) ancestorsOf(other).forEach(path => paths.add(path));
+  });
+  return [...paths];
+}
+
+function focusConnections(id) {
+  const keepMobileGraph = window.matchMedia('(max-width: 860px)').matches &&
+    (main.classList.contains('graph-only') || main.classList.contains('mobile-graph'));
+  setExpanded(connectedDirectories(id), true, () => {
+    if (isDirId(id)) openDir(dirOf(id));
+    else openConcept(id);
+    if (keepMobileGraph) {
+      main.classList.add('mobile-graph');
+      graphToggle.setAttribute('aria-expanded', 'true');
+    }
+  });
+}
+
+let menuNodeId = null;
+function hideNodeMenu() {
+  nodeMenu.hidden = true;
+  menuNodeId = null;
+}
+
+function showNodeMenu(id, position) {
+  menuNodeId = id;
+  const toggle = nodeMenu.querySelector('[data-action="toggle"]');
+  toggle.textContent = isDirId(id) ? 'Expand directory' : 'Collapse into parent directory';
+  toggle.disabled = !isDirId(id) && !parentDirOf(id);
+  nodeMenu.hidden = false;
+  nodeMenu.style.left = Math.max(0, Math.min(position.x, graphContainer.clientWidth - nodeMenu.offsetWidth - 4)) + 'px';
+  nodeMenu.style.top = Math.max(0, Math.min(position.y, graphContainer.clientHeight - nodeMenu.offsetHeight - 4)) + 'px';
+  nodeMenu.querySelector('[data-action="focus"]').focus();
+}
+
+function onNodeMenuAction(action, id) {
+  if (action === 'focus') focusConnections(id);
+  else if (action === 'toggle') {
+    const node = cy.getElementById(id);
+    if (node.nonempty()) onDoubleClick(node);
+  }
+}
+
+nodeMenu.addEventListener('click', ev => {
+  const button = ev.target.closest('button[data-action]');
+  if (!button || !menuNodeId) return;
+  const id = menuNodeId;
+  hideNodeMenu();
+  onNodeMenuAction(button.dataset.action, id);
+});
+cy.on('cxttap', 'node', ev => {
+  if (pendingClick) { clearTimeout(pendingClick.timer); pendingClick = null; }
+  if (ev.originalEvent) ev.originalEvent.preventDefault();
+  showNodeMenu(ev.target.id(), ev.renderedPosition);
+});
+cy.on('dragpan scrollzoom pinchzoom', hideNodeMenu);
+document.getElementById('graph').addEventListener('contextmenu', ev => ev.preventDefault());
+document.addEventListener('pointerdown', ev => { if (!nodeMenu.contains(ev.target)) hideNodeMenu(); });
+document.addEventListener('keydown', ev => { if (ev.key === 'Escape') hideNodeMenu(); });
 
 let activeType = null;
 

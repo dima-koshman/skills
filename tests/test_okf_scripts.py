@@ -300,6 +300,182 @@ process.stdout.write(JSON.stringify({ opened, scrolled }));
     assert json.loads(result.stdout) == {"opened": "source.md", "scrolled": True}
 
 
+def test_site_focus_reveals_connected_concepts_before_highlighting(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "focus.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const names = ['connectedDirectories', 'focusConnections'];
+const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
+const selected = 'People/AI Platform Team/ibrahim-aliyev.md';
+const edges = [
+  { source: selected, target: 'Services/AI Gateway (LiteLLM)/ai-gateway-general.md' },
+  { source: 'Systems/gitlab.md', target: selected },
+  { source: 'Processes/ci.md', target: 'Systems/consul.md' },
+];
+let opened = '', expandedAtOpen = [];
+const expanded = new Set(['People', 'People/AI Platform Team']);
+const context = {
+  DATA: { edges }, expanded,
+  window: { matchMedia: () => ({ matches: false }) },
+  representative: id => id === selected ? selected : 'dir:' + id.split('/')[0],
+  ancestorsOf: id => id.split('/').slice(0, -1).map((_, i) => id.split('/').slice(0, i + 1).join('/')),
+  isDirId: id => id.startsWith('dir:'), dirOf: id => id.slice(4),
+  setExpanded: (paths, open, done) => { for (const path of paths) expanded.add(path); done(); },
+  openConcept: id => { opened = id; expandedAtOpen = [...expanded].sort(); },
+  openDir: () => { throw Error('opened directory for a concept'); },
+};
+vm.runInNewContext(definitions + '\nfocusConnections(' + JSON.stringify(selected) + ')', context);
+process.stdout.write(JSON.stringify({ opened, expandedAtOpen }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "opened": "People/AI Platform Team/ibrahim-aliyev.md",
+        "expandedAtOpen": [
+            "People",
+            "People/AI Platform Team",
+            "Services",
+            "Services/AI Gateway (LiteLLM)",
+            "Systems",
+        ],
+    }
+
+
+def test_site_single_click_refocuses_an_already_selected_node(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "click.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definition = html.match(/function onSingleClick\(target\) \{.*?\n\}/s)[0];
+let focused = '', cleared = false;
+const target = { id: () => 'people/ana.md', isEdge: () => false, hasClass: () => true };
+const context = { target, cy: {}, isDirId: () => false,
+  focusConnections: id => { focused = id; },
+  clearHighlight: () => { cleared = true; },
+  openConcept: () => {}, openDir: () => {}, openEdgeLink: () => {} };
+vm.runInNewContext(definition + '\nonSingleClick(target)', context);
+process.stdout.write(JSON.stringify({ focused, cleared }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {"focused": "people/ana.md", "cleared": False}
+
+
+def test_site_node_menu_orders_focus_before_directory_action(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "menu.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    html = output.read_text()
+    menu = re.search(r'<div id="node-menu"[^>]*>(.*?)</div>', html, re.S)
+    assert menu is not None
+    assert re.findall(r'data-action="([^"]+)"', menu.group(1)) == ["focus", "toggle"]
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definition = html.match(/function onNodeMenuAction\(action, id\) \{.*?\n\}/s)[0];
+const actions = [];
+const context = {
+  focusConnections: id => actions.push(['focus', id]),
+  onDoubleClick: target => actions.push(['toggle', target.id()]),
+  cy: { getElementById: id => ({ id: () => id, nonempty: () => true }) },
+};
+vm.runInNewContext(definition + '\nonNodeMenuAction("focus", "people/ana.md"); onNodeMenuAction("toggle", "people/ana.md")', context);
+process.stdout.write(JSON.stringify(actions));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == [
+        ["focus", "people/ana.md"],
+        ["toggle", "people/ana.md"],
+    ]
+
+
+def test_site_focus_keeps_mobile_graph_visible(bundle: pathlib.Path) -> None:
+    output = bundle.parent / "mobile-focus.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definition = html.match(/function focusConnections\(id\) \{.*?\n\}/s)[0];
+const classes = new Set(['graph-only']);
+let aria = '';
+const context = {
+  connectedDirectories: () => [],
+  setExpanded: (paths, open, done) => done(),
+  isDirId: () => false,
+  openConcept: () => { classes.delete('graph-only'); classes.delete('mobile-graph'); },
+  main: { classList: { contains: name => classes.has(name), add: name => classes.add(name) } },
+  graphToggle: { setAttribute: (name, value) => { if (name === 'aria-expanded') aria = value; } },
+  window: { matchMedia: () => ({ matches: true }) },
+};
+vm.runInNewContext(definition + '\nfocusConnections("people/ana.md")', context);
+process.stdout.write(JSON.stringify({ visible: classes.has('mobile-graph'), aria }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {"visible": True, "aria": "true"}
+
+
+def test_site_node_menu_survives_programmatic_pan(bundle: pathlib.Path) -> None:
+    output = bundle.parent / "pan-menu.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const bindings = html.match(/^cy\.on\('[^']+', hideNodeMenu\);$/mg) || [];
+const handlers = {};
+let hidden = false;
+const context = {
+  cy: { on: (events, handler) => { for (const event of events.split(' ')) handlers[event] = handler; } },
+  hideNodeMenu: () => { hidden = true; },
+};
+vm.runInNewContext(bindings.join('\n'), context);
+if (handlers.pan) handlers.pan();
+process.stdout.write(JSON.stringify({ hidden }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {"hidden": False}
+
+
 def _write(path: pathlib.Path, frontmatter: dict[str, object], body: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     header = yaml.safe_dump(frontmatter, sort_keys=False)

@@ -127,8 +127,11 @@ dashed, drafts dashed. Every directory starts **collapsed**: the sidebar tree an
 expanded/collapsed state, a collapsed directory is one node (grey rounded square, sized by its concept count) with
 links to its concepts merged onto it, clicking a tree section or double-clicking a directory node expands it,
 double-clicking a concept node collapses its directory, and opening a concept (link, search, URL hash) expands its
-ancestors. Double-clicking empty space or an edge fits the whole graph; a single click waits ~250 ms so it never fires
-on the first half of a double-click. The full layout uses fcose (cose as fallback); expanding or collapsing places only
+ancestors. A single click centers a node, reveals the directories containing its linked concepts, and highlights
+only that node, its edges and its directly connected nodes. Right-clicking a node opens the same focus action first,
+then the double-click action (collapse a concept into its parent directory, or expand a directory node). Double-clicking
+empty space or an edge fits the whole graph; a single click waits ~250 ms so it never fires on the first half of a
+double-click. The full layout uses fcose (cose as fallback); expanding or collapsing places only
 the new nodes around their anchor, and "↻ Re-layout" redoes the full layout. The output is a build artifact — regenerate it, don't
 hand-edit, and consider git-ignoring it.
 

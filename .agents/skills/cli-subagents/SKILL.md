@@ -75,9 +75,10 @@ silently escalating permissions.
   `opencode run` has no directory flag of its own.
 - Check the subscription quota before a long delegation, without spending model calls:
   `claude -p "/usage"` (session and weekly %), `agy -p "/quota"` (tab-separated remaining % per model
-  group; `agy -p "/usage"` is not a command and goes to the model), and Codex's newest
-  `~/.codex/sessions/**/rollout-*.jsonl` `rate_limits` event (5-hour and weekly `used_percent`, as of
-  its last turn). `opencode stats` has local token totals only.
+  group; `agy -p "/usage"` is not a command and goes to the model), and for Codex the app-server's
+  `account/rateLimits/read` (JSON-RPC over stdio: `codex app-server`, send `initialize` with
+  `clientInfo`, then `initialized`, then the request; returns live 5-hour and weekly `usedPercent`).
+  `opencode stats` has local token totals only.
 
 ## Long tasks
 

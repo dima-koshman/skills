@@ -1,6 +1,6 @@
 ---
 name: development-best-practices
-description: Cross-project local development hygiene and preferences — the worktree-to-main workflow, git branch/worktree cleanup, VS Code task conventions, direnv/environment-variable layout, and other day-to-day dev workflow conventions. Use when starting feature work in a worktree, finishing a branch, merging to main, pushing to main, monitoring or fixing a GitHub Actions run after a push, cleaning up local git branches, pruning merged/deleted branches, tidying worktrees, creating or renaming VS Code tasks, writing or changing a project's `.envrc`, deciding where to keep environment variables or credentials for local development, updating OpenCode plugins, setting or changing a container's timezone in a Dockerfile or deployment, or setting up recurring local-dev maintenance.
+description: Cross-project local development hygiene and preferences — the worktree-to-main workflow, git branch/worktree cleanup, VS Code task conventions, direnv/environment-variable layout, and other day-to-day dev workflow conventions. Use when starting feature work in a worktree, finishing a branch, merging to main, pushing to main, monitoring or fixing a GitHub Actions run after a push, cleaning up local git branches, pruning merged/deleted branches, tidying worktrees, creating or renaming VS Code tasks, writing a local helper or dev script (prefer Python over shell), writing or changing a project's `.envrc`, deciding where to keep environment variables or credentials for local development, updating OpenCode plugins, setting or changing a container's timezone in a Dockerfile or deployment, or setting up recurring local-dev maintenance.
 ---
 
 # Development Best Practices
@@ -47,6 +47,26 @@ without changing the team's workflow.
 
 When renaming a task, update every `dependsOn` reference in the same edit; VS Code resolves
 dependencies by the literal label and does not report stale references until the task runs.
+
+## Write local and dev scripts in Python, not shell
+
+Write helper scripts (sync and setup tasks, config editors, inventories, anything a VS Code task
+runs) in Python. Use stdlib-only `python3` (3.11+ ships `tomllib`), or `uv run --no-project --with
+<pkg> python script.py` when a dependency is needed. Keep shell for one-line task commands and
+thin wrappers around a single tool.
+
+- Python has real parsers (`json`, `tomllib`, `argparse`) where shell needs `sed`/`awk`/`jq`
+  pipelines, and those pipelines break on quoting and on BSD-vs-GNU flag differences on macOS.
+- Write config files atomically: write a temp file in the same directory, then `os.replace`. Use
+  `Path.resolve()` first so a symlinked config stays a symlink.
+- Pass inputs as explicit arguments with visible defaults (`--env-file ~/.config/direnv/env/x.env`,
+  wired to a VS Code `inputs` entry). Don't read them silently from the ambient environment: the
+  task then shows where values come from, and a stale variable that direnv exported into the
+  shell can't leak in.
+- Test a script that resolves credentials under `env -i HOME=<fake home> PATH=$PATH`, with dummy
+  values, and never print what it generates unmasked.
+
+Existing shell scripts can stay; port one to Python when you next change it substantially.
 
 ## Store env var combinations in ~/.config/direnv/env/
 

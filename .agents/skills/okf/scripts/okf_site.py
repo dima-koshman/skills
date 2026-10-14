@@ -235,7 +235,9 @@ def _make_concept(
         id=concept_id,
         type=str(frontmatter["type"]).strip(),
         title=titles[concept_id],
-        description=str(frontmatter.get("description") or "").strip(),
+        description=_rewrite_internal_links(
+            str(frontmatter.get("description") or "").strip(), concept_id, known_ids
+        ),
         tags=[str(tag) for tag in tags] if isinstance(tags, list) else [],
         resource=str(frontmatter.get("resource") or "").strip(),
         body=_rewrite_internal_links(_link_footnotes(body), concept_id, known_ids),
@@ -351,7 +353,7 @@ def _properties_and_links(
             if target != concept_id:
                 links.append({"source": concept_id, "target": target, "label": key})
             return f"[{titles[target]}](#node:{urllib.parse.quote(target, safe='/')})"
-        return text
+        return _rewrite_internal_links(text, concept_id, known_ids)
 
     for key, value in frontmatter.items():
         if key in _SPEC_KEYS or value in (None, "", []):
@@ -1291,7 +1293,7 @@ function openConcept(id) {
     ? `<span class="resource">🔗 <a href="${escapeAttr(n.resource)}" title="${escapeAttr(n.resource)}" target="_blank" rel="noopener">${escapeHtml(n.resource)}</a></span>` : '';
   const tagsHtml = (n.tags && n.tags.length)
     ? `<span class="tags-inline">${n.tags.map(t => `<code>${escapeHtml(t)}</code>`).join('')}</span>` : '';
-  const summaryHtml = n.description ? `<p class="summary">${escapeHtml(n.description)}</p>` : '';
+  const summaryHtml = n.description ? `<p class="summary">${marked.parseInline(n.description)}</p>` : '';
   doc.innerHTML =
     `<h1>${escapeHtml(n.title)}</h1>` +
     `<div class="meta">` +
@@ -1346,7 +1348,7 @@ function openDir(path) {
       `<li><a href="#" data-dir="${escapeAttr(x.path)}">📁 ${escapeHtml(dirLabel(x.path))}</a></li>`).join('') + '</ul>' : '') +
     (direct.length ? '<h2>Concepts</h2><ul class="dirlist">' + direct.map(n =>
       `<li><span class="dot" style="background:${n.color}"></span><a href="#node:${escapeAttr(n.id)}">${escapeHtml(n.title)}</a>` +
-      (n.description ? ` — <span style="color:var(--muted)">${escapeHtml(n.description)}</span>` : '') + '</li>').join('') + '</ul>' : '');
+      (n.description ? ` — <span style="color:var(--muted)">${marked.parseInline(n.description)}</span>` : '') + '</li>').join('') + '</ul>' : '');
   wireDocLinks(doc);
   doc.querySelectorAll('a[data-dir]').forEach(a => a.addEventListener('click', ev => {
     ev.preventDefault();

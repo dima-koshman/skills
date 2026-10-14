@@ -159,6 +159,95 @@ def test_reader_omits_freshness_pills(bundle: pathlib.Path, stale: bool) -> None
     assert "2020-01-01T00:00:00Z" not in rendered
 
 
+def test_site_rewrites_frontmatter_markdown_links_to_concepts(
+    bundle: pathlib.Path,
+) -> None:
+    _write(
+        bundle / "services/prod.md",
+        {
+            "type": "Repository",
+            "title": "Prod",
+            "description": "Gateway for [DB](/services/db.md)",
+            "notes": "Uses [DB](/services/db.md)",
+        },
+        "Image details.",
+    )
+
+    node = _nodes(bundle)["services/prod.md"]
+    properties = dict(cast(list[list[str]], node["properties"]))
+
+    assert node["description"] == "Gateway for [DB](#node:services/db.md)"
+    assert properties["notes"] == "Uses [DB](#node:services/db.md)"
+
+
+def test_reader_renders_inline_markdown_in_description_and_properties(
+    bundle: pathlib.Path,
+) -> None:
+    _write(
+        bundle / "services/prod.md",
+        {
+            "type": "Repository",
+            "title": "Prod",
+            "description": "LiteLLM image for the **prod** gateway",
+            "notes": "A **production** image",
+        },
+        "Image details.",
+    )
+
+    rendered = _reader_html(bundle, "services/prod.md", {})
+
+    assert (
+        '<p class="summary">LiteLLM image for the <strong>prod</strong> gateway</p>'
+        in rendered
+    )
+    assert "<td>A <strong>production</strong> image</td>" in rendered
+    assert "**prod**" not in rendered
+
+
+def test_directory_listing_renders_description_markdown(bundle: pathlib.Path) -> None:
+    _write(
+        bundle / "services/prod.md",
+        {
+            "type": "Repository",
+            "title": "Prod",
+            "description": "LiteLLM image for the **prod** gateway",
+        },
+        "Image details.",
+    )
+    output = bundle.parent / "directory-description.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
+const openDir = html.match(/function openDir\(path\) \{.*?\n}/s)[0];
+const node = data.nodes.find(n => n.id === 'services/prod.md');
+const doc = { innerHTML: '', scrollTop: 0, querySelectorAll: () => [] };
+const noop = () => {};
+const context = {
+  byId: { [node.id]: node }, dirs: { services: { concepts: [node.id], parent: null, overviewId: null } },
+  expanded: new Set(['services']), doc, DIR_PREFIX: 'dir:',
+  closeMobilePanels: noop, wireDocLinks: noop, setActiveNav: noop, highlight: noop, focusOn: noop,
+  main: { classList: { remove: noop } }, history: { replaceState: noop },
+  parentDirOf: () => 'services', dirLabel: () => 'services', escapeHtml: value => value, escapeAttr: value => value,
+  marked: { parseInline: value => value.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>') },
+  cy: { getElementById: () => ({ nonempty: () => true, id: () => 'dir:services' }) },
+};
+vm.runInNewContext(openDir + '\nopenDir("services")', context);
+process.stdout.write(doc.innerHTML);
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert "LiteLLM image for the <strong>prod</strong> gateway" in result.stdout
+    assert "**prod**" not in result.stdout
+
+
 def test_reader_omits_authorship_and_verification_line(bundle: pathlib.Path) -> None:
     rendered = _reader_html(bundle, "services/api.md", {})
 
@@ -953,7 +1042,7 @@ const context = {
   highlight: noop, focusOn: noop,
   main: { classList: { remove: noop } },
   document: { createElement: () => ({ className: '', innerHTML: '' }) },
-  marked: { parse: value => value, parseInline: value => value },
+  marked: { parse: value => value, parseInline: value => value.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>') },
   history: { replaceState: noop },
 };
 vm.runInNewContext(definitions + '\nopenConcept(node.id);', context);

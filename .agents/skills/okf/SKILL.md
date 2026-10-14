@@ -119,7 +119,9 @@ python scripts/okf_site.py <bundle-dir> -o /tmp/graph.html
 It renders an interactive knowledge graph (nodes = concepts colored by `type`,
 edges = cross-links) beside a reading panel. The reader shows each concept's
 lifecycle status, a Properties table of producer-defined keys (concept paths become
-links), the body, and its `sources` with footnotes linked to them. Trust/freshness
+links), the body, and its `sources` with footnotes linked to them. Descriptions and
+free-form property values render inline Markdown, with in-bundle links opening their concepts;
+titles, types, tags, and URLs remain plain labels or links. Trust/freshness
 pills and the generated/verified line are omitted from concept pages; the underlying
 v0.2 metadata remains in frontmatter and embedded data for agents and tooling. Frontmatter concept paths also
 become **labeled edges** named after their key; deprecated concepts are dimmed and

@@ -764,6 +764,17 @@ process.stdout.write(JSON.stringify(vm.runInNewContext(definition + '\ngraphCoun
     assert json.loads(result.stdout) == {"concepts": 2, "directories": 2}
 
 
+def test_site_graph_and_sidebar_clicks_share_150_ms_window(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "shared-click-window.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    html = output.read_text()
+
+    assert "const DOUBLE_CLICK_MS = 150;" in html
+    assert "NAV_DOUBLE_CLICK_MS" not in html
+
+
 def test_site_sidebar_double_click_toggles_overview_and_collapses_concept_parent(
     bundle: pathlib.Path,
 ) -> None:
@@ -787,8 +798,9 @@ const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
 const names = ['directoryForNode', 'onNodeDoubleClick', 'onNavConceptClick', 'onNavConceptDoubleClick', 'buildTree', 'renderTree'];
 const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
 function element(tag) {
+  const classes = new Set();
   return { tag, children: [], dataset: {}, listeners: {}, className: '', innerHTML: '',
-    classList: { add() {} }, setAttribute() {},
+    classList: { add: name => classes.add(name), contains: name => classes.has(name) }, setAttribute() {},
     addEventListener(name, callback) { this.listeners[name] = callback; },
     appendChild(child) { this.children.push(child); } };
 }
@@ -809,8 +821,8 @@ const navDelays = [];
 let nextTimer = 0;
 const context = {
   DATA: data, dirs, expanded, document: { createElement: element },
-  DOUBLE_CLICK_MS: 250, NAV_DOUBLE_CLICK_MS: 150, pendingNavClick: null,
-  setTimeout: (callback, delay) => { navDelays.push(delay); const id = ++nextTimer; timers.set(id, callback); return id; },
+  DOUBLE_CLICK_MS: 150, pendingNavClick: null,
+  setTimeout: (callback, delay) => { navDelays.push(delay); const id = ++nextTimer; timers.set(id, () => { timers.delete(id); callback(); }); return id; },
   clearTimeout: id => timers.delete(id),
   escapeHtml: value => value, escapeAttr: value => value,
   dirLabel: value => dirs[value].name,
@@ -828,22 +840,27 @@ const label = merged.children[0];
 const overview = label.children.find(el => el.dataset.id === path + '.md');
 const child = merged.children[1].children.find(li => li.children[0].dataset.id === path + '/repo.md').children[0];
 const event = { preventDefault() {}, stopPropagation() {} };
+const click = target => target.listeners.click({ ...event, currentTarget: target });
 label.listeners.dblclick(event);
 label.listeners.dblclick(event);
-child.listeners.click(event);
-child.listeners.click(event);
+click(child);
+click(child);
 child.listeners.dblclick(event);
-overview.listeners.click(event);
-overview.listeners.click(event);
+click(overview);
+click(overview);
 label.listeners.dblclick(event);
 for (const callback of timers.values()) callback();
 const prematureConcepts = actions.filter(action => action[0] === 'concept').length;
-overview.listeners.click(event);
+click(overview);
 for (const callback of timers.values()) callback();
 const caret = label.children[0];
 caret.listeners.click({ stopPropagation() {}, detail: 1 });
 caret.listeners.click({ stopPropagation() {}, detail: 2 });
 caret.listeners.dblclick(event);
+label.listeners.dblclick(event);
+overview.classList.add('active');
+click(overview);
+for (const callback of timers.values()) callback();
 process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path), prematureConcepts, navDelays }));
 """
     result = subprocess.run(
@@ -866,10 +883,14 @@ process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path), pre
             ["concept", "Platform Services/AI Gateway.md"],
             ["collapse", "Platform Services/AI Gateway"],
             ["open", "Platform Services/AI Gateway"],
+            ["expand", "Platform Services/AI Gateway"],
+            ["open", "Platform Services/AI Gateway"],
+            ["collapse", "Platform Services/AI Gateway"],
+            ["open", "Platform Services/AI Gateway"],
         ],
         "expanded": False,
         "prematureConcepts": 0,
-        "navDelays": [150, 150, 150, 150, 150],
+        "navDelays": [150, 150, 150, 150, 150, 150],
     }
 
 

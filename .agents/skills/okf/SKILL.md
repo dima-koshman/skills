@@ -126,15 +126,16 @@ become **labeled edges** named after their key; deprecated concepts are dimmed a
 dashed, drafts dashed. Every directory starts **collapsed**: the sidebar tree and the graph share one
 expanded/collapsed state. A directory without an overview is one grey rounded node, sized by its concept count; when
 `<directory>.md` exists beside it, that concept and directory share one colored graph node and one sidebar section.
-The sidebar title carries the concept type's colored dot and opens the overview content. Its caret or a
-double-click on the merged sidebar row toggles the children; double-clicking the merged graph node does the same.
+The sidebar title carries the concept type's colored dot and opens the overview content. Clicking that title
+again while its overview is selected collapses its children. Its caret or a double-click on the merged sidebar row
+toggles the children; double-clicking the merged graph node does the same.
 Concept links keep the overview file's original path. Double-clicking an ordinary concept link in the sidebar or a
 concept node in the graph collapses its parent directory. Opening a concept (link, search, URL hash) expands its
 ancestors. A single click centers a node, reveals the directories containing its linked concepts, and highlights
 only that node, its edges and its directly connected nodes. Right-clicking a node opens the same focus action first,
 then the double-click action for that node. Double-clicking
-empty space or an edge fits the whole graph. Graph single clicks wait ~250 ms; sidebar concept links wait ~150 ms
-so a double-click can take precedence without making ordinary navigation feel slow. The full layout uses fcose (cose as fallback); expanding or collapsing places only
+empty space or an edge fits the whole graph. Graph and sidebar concept clicks share a ~150 ms window so a
+double-click can take precedence without making ordinary navigation feel slow. The full layout uses fcose (cose as fallback); expanding or collapsing places only
 the new nodes around their anchor, and "↻ Re-layout" redoes the full layout. The output is a build artifact — regenerate it, don't
 hand-edit, and consider git-ignoring it.
 

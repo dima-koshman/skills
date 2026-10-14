@@ -1031,9 +1031,9 @@ function separateOverlaps(fitAll, iterations = 60, pad = 10) {
 
 // Clicks: the single-click action waits DOUBLE_CLICK_MS and is cancelled when a second click
 // on the same target arrives, so a double-click never first runs the single-click action
-// (e.g. zooming to the node). 250 ms covers typical double-click speeds; lower it for snappier
-// single clicks at the risk of reading slow double-clicks as two single clicks.
-const DOUBLE_CLICK_MS = 250;
+// (e.g. zooming to the node). 150 ms keeps clicks responsive; slower double-clicks may
+// register as two single clicks.
+const DOUBLE_CLICK_MS = 150;
 let pendingClick = null;
 cy.on('tap', ev => {
   hideNodeMenu();
@@ -1425,8 +1425,7 @@ function buildTree(nodes) {
   return root;
 }
 
-// Sidebar navigation uses a shorter double-click window than the graph so links feel responsive.
-const NAV_DOUBLE_CLICK_MS = 150;
+// Sidebar links use the graph's click window so a double-click can cancel navigation.
 let pendingNavClick = null;
 function onNavConceptClick(ev, id) {
   ev.preventDefault();
@@ -1434,8 +1433,13 @@ function onNavConceptClick(ev, id) {
     clearTimeout(pendingNavClick.timer);
     if (pendingNavClick.id !== id) pendingNavClick.run();
   }
-  const run = () => openConcept(id);
-  pendingNavClick = { id, run, timer: setTimeout(() => { pendingNavClick = null; run(); }, NAV_DOUBLE_CLICK_MS) };
+  const directory = directoryForNode(id);
+  const collapseSelected = !!directory && ev.currentTarget.classList.contains('active');
+  const run = () => {
+    if (collapseSelected && expanded.has(directory)) collapseDir(directory, () => openDir(directory));
+    else openConcept(id);
+  };
+  pendingNavClick = { id, run, timer: setTimeout(() => { pendingNavClick = null; run(); }, DOUBLE_CLICK_MS) };
 }
 
 function onNavConceptDoubleClick(ev, id) {

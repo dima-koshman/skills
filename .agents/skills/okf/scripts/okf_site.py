@@ -588,6 +588,14 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
 
   aside { flex:0 0 264px; display:flex; flex-direction:column; border-right:1px solid var(--line); background:var(--sidebar); min-height:0; }
   #nav { flex:1 1 auto; overflow-y:auto; padding:10px 8px; }
+  #nav .nav-attention { animation:nav-attention 1.1s ease-in-out; }
+  @keyframes nav-attention {
+    0%, 40%, 80%, 100% { box-shadow:inset 0 0 0 0 transparent; }
+    20%, 60% { background-color:#b6ddff; box-shadow:inset 0 0 0 2px var(--accent); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #nav .nav-attention { animation:none; outline:2px solid var(--accent); outline-offset:-2px; }
+  }
   #nav ul { list-style:none; margin:0; padding:0; }
   #nav .dir > .label { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; letter-spacing:.04em; color:var(--muted); padding:6px 8px 4px; cursor:pointer; user-select:none; border-radius:6px; }
   #nav .dir > .label:hover { background:var(--hover); color:var(--ink); }
@@ -1605,12 +1613,18 @@ function paintTreeState() {
 
 function setActiveNav(id) {
   document.querySelectorAll('#nav a, #loglink a, #nav .dir > .label').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('#nav .nav-attention').forEach(row => row.classList.remove('nav-attention'));
+  const reveal = row => {
+    row.scrollIntoView({block:'nearest'});
+    void row.offsetWidth; // restart the pulse when the same entry is selected again
+    row.classList.add('nav-attention');
+  };
   if (id && isDirId(id)) {
     const li = document.querySelector(`#nav li.dir[data-dir="${cssEscape(dirOf(id))}"]`);
     if (li) {
       const label = li.firstElementChild;
       label.classList.add('active');
-      label.scrollIntoView({block:'nearest'});
+      reveal(label);
     }
     return;
   }
@@ -1622,7 +1636,7 @@ function setActiveNav(id) {
     a.classList.add('active');
     const row = a.classList.contains('overview-link') ? a.parentElement : a;
     if (row !== a) row.classList.add('active');
-    row.scrollIntoView({block:'nearest'});
+    reveal(row);
   }
 }
 

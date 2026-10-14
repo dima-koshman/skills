@@ -139,7 +139,8 @@ its own-directory toggle (or parent collapse for a leaf), then a third "Collapse
 for nested directories, including directory overviews. Double-clicking empty space or an edge fits the whole graph.
 Right-clicking empty graph space offers "Collapse all"; opening the root Index page also collapses every directory.
 Both actions clear the same directory state used by the sidebar and graph. Opening a concept from the graph or a
-content link scrolls its selected sidebar entry into view; for a merged directory overview, the full row is revealed.
+content link scrolls its selected sidebar entry into view and briefly pulses it; for a merged directory overview,
+the full row is revealed and pulsed. Reduced-motion readers see a steady outline instead.
 Graph and sidebar concept clicks share a ~150 ms window so a double-click can take precedence without making ordinary
 navigation feel slow. The graph matches taps by node ID because Cytoscape can provide different target wrappers for
 the same node; Cytoscape's native double-tap event catches slower pairs without delaying single clicks or repeating

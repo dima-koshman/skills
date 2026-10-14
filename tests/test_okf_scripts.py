@@ -1198,9 +1198,10 @@ const vm = require('node:vm');
 const html = fs.readFileSync(process.argv[1], 'utf8');
 const definition = html.match(/function setActiveNav\([^]*?\n}/s)[0];
 const scrolled = [];
+const pulses = [];
 function entry(name) {
   const values = new Set();
-  return { classList: { add: value => values.add(value),
+  return { classList: { add: value => { values.add(value); if (value === 'nav-attention') pulses.push(name); },
     remove: value => values.delete(value), contains: value => values.has(value) },
     scrollIntoView: options => scrolled.push([name, options.block]) };
 }
@@ -1224,8 +1225,10 @@ const context = {
   dirOf: id => id.slice(4),
   cssEscape: value => value,
 };
-vm.runInNewContext(definition + '\nsetActiveNav("leaf.md"); setActiveNav("overview.md"); setActiveNav("dir:Other");', context);
-process.stdout.write(JSON.stringify(scrolled));
+vm.runInNewContext(definition + '\nsetActiveNav("leaf.md"); setActiveNav("overview.md"); setActiveNav("dir:Other"); setActiveNav("dir:Other");', context);
+process.stdout.write(JSON.stringify({scrolled, pulses, last: directoryRow.classList.contains('nav-attention'),
+  reducedMotion: html.includes('prefers-reduced-motion: reduce'),
+  keyframes: html.includes('@keyframes nav-attention')}));
 """
     result = subprocess.run(
         ["node", "-e", javascript, str(output)],
@@ -1234,11 +1237,18 @@ process.stdout.write(JSON.stringify(scrolled));
         check=False,
     )
     assert result.returncode == 0, result.stderr
-    assert json.loads(result.stdout) == [
-        ["leaf", "nearest"],
-        ["overview row", "nearest"],
-        ["directory row", "nearest"],
-    ]
+    assert json.loads(result.stdout) == {
+        "scrolled": [
+            ["leaf", "nearest"],
+            ["overview row", "nearest"],
+            ["directory row", "nearest"],
+            ["directory row", "nearest"],
+        ],
+        "pulses": ["leaf", "overview row", "directory row", "directory row"],
+        "last": True,
+        "reducedMotion": True,
+        "keyframes": True,
+    }
 
 
 def test_site_caption_counts_collapsed_merged_overviews_as_directories(

@@ -169,20 +169,19 @@ declare -F dotenv_prefixed >/dev/null || dotenv_prefixed() {
 
 ## Update OpenCode plugins
 
-OpenCode has no bulk plugin-update command. From the project root, read every external plugin entry
-from `.opencode/opencode.jsonc` and force-install each string spec individually. For a tuple entry,
-use its first element as the spec; preserve its options. Explicit version, tag, and commit pins do
-not move automatically, so change the configured pin first when an upgrade is intended.
+OpenCode v2 (`opencode --version` prints `opencode v2.x`; Homebrew formula `anomalyco/tap/opencode-v2`)
+updates package plugins itself:
 
 ```bash
-opencode plugin --force "<plugin-spec>"
+opencode plugin check            # which configured package plugins are outdated
+opencode plugin update           # update all outdated ones (or: opencode plugin update <target>)
+opencode plugin list             # installed plugins and their state
 ```
 
-Quit and restart OpenCode afterward because plugins are loaded at startup. For npm plugins, check
-the matching cached package's `package.json` against the registry version; for git-backed plugins,
-check the cache package lock's resolved commit against the configured ref. OpenCode can retain stale
-versions despite `--force`. If that happens, quit OpenCode, identify and remove only that plugin's
-exact directory under `~/.cache/opencode/packages/`, then restart OpenCode to reinstall it.
+Explicit version, tag, and commit pins in `.opencode/opencode.jsonc` don't move automatically; change
+the configured pin first when an upgrade is intended. Plugins load at startup, so restart OpenCode
+(and its background server: `opencode service restart`) afterward. Local plugins (files under
+`~/.config/opencode/plugins/` or `.opencode/plugins/`) update when the file changes.
 
 ## Finishing work in a worktree
 

@@ -137,7 +137,8 @@ expands its ancestors. A single click centers a node, reveals the directories co
 highlights only that node, its edges and its directly connected nodes. Right-clicking a node offers focus first, then
 its own-directory toggle (or parent collapse for a leaf), then a third "Collapse into parent directory" action only
 for nested directories, including directory overviews. Double-clicking empty space or an edge fits the whole graph.
-Graph and sidebar concept clicks share a ~150 ms window so a double-click can take precedence without making ordinary
+Opening a concept from the graph or a content link scrolls its selected sidebar entry into view; for a merged
+directory overview, the full row is revealed. Graph and sidebar concept clicks share a ~150 ms window so a double-click can take precedence without making ordinary
 navigation feel slow. The graph matches taps by node ID because Cytoscape can provide different target wrappers for
 the same node; Cytoscape's native double-tap event catches slower pairs without delaying single clicks or repeating
 the double-click action. Before a double-click collapse, the reader cancels a pending focus frame and stops running or

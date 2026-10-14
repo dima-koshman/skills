@@ -1044,7 +1044,7 @@ function classes() {
   return { add: value => values.add(value), remove: value => values.delete(value),
     contains: value => values.has(value) };
 }
-const label = { classList: classes() };
+const label = { classList: classes(), scrollIntoView: () => {} };
 const link = { classList: classes(), parentElement: label };
 link.classList.add('overview-link');
 const context = {
@@ -1064,6 +1064,60 @@ process.stdout.write(JSON.stringify({ link: link.classList.contains('active'),
     )
     assert result.returncode == 0, result.stderr
     assert json.loads(result.stdout) == {"link": True, "section": True}
+
+
+def test_site_selected_concept_scrolls_its_sidebar_entry_into_view(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "selected-scroll.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definition = html.match(/function setActiveNav\([^]*?\n}/s)[0];
+const scrolled = [];
+function entry(name) {
+  const values = new Set();
+  return { classList: { add: value => values.add(value),
+    remove: value => values.delete(value), contains: value => values.has(value) },
+    scrollIntoView: options => scrolled.push([name, options.block]) };
+}
+const leaf = entry('leaf');
+const overviewRow = entry('overview row');
+const overview = entry('overview link');
+overview.parentElement = overviewRow;
+overview.classList.add('overview-link');
+const directoryRow = entry('directory row');
+const context = {
+  document: {
+    querySelectorAll: () => [leaf, overview, overviewRow, directoryRow],
+    querySelector: selector => {
+      if (selector.includes('li.dir')) return {firstElementChild: directoryRow};
+      if (selector.includes('overview.md')) return overview;
+      if (selector.includes('leaf.md')) return leaf;
+      return null;
+    },
+  },
+  isDirId: id => id.startsWith('dir:'),
+  dirOf: id => id.slice(4),
+  cssEscape: value => value,
+};
+vm.runInNewContext(definition + '\nsetActiveNav("leaf.md"); setActiveNav("overview.md"); setActiveNav("dir:Other");', context);
+process.stdout.write(JSON.stringify(scrolled));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == [
+        ["leaf", "nearest"],
+        ["overview row", "nearest"],
+        ["directory row", "nearest"],
+    ]
 
 
 def test_site_caption_counts_collapsed_merged_overviews_as_directories(

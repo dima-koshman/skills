@@ -1585,7 +1585,11 @@ function setActiveNav(id) {
   document.querySelectorAll('#nav a, #loglink a, #nav .dir > .label').forEach(a => a.classList.remove('active'));
   if (id && isDirId(id)) {
     const li = document.querySelector(`#nav li.dir[data-dir="${cssEscape(dirOf(id))}"]`);
-    li && li.firstElementChild.classList.add('active');
+    if (li) {
+      const label = li.firstElementChild;
+      label.classList.add('active');
+      label.scrollIntoView({block:'nearest'});
+    }
     return;
   }
   if (id === 'log') { const l = document.querySelector('#loglink a'); l && l.classList.add('active'); return; }
@@ -1594,7 +1598,9 @@ function setActiveNav(id) {
   const a = document.querySelector(`#nav a[data-id="${cssEscape(id)}"]`);
   if (a) {
     a.classList.add('active');
-    if (a.classList.contains('overview-link')) a.parentElement.classList.add('active');
+    const row = a.classList.contains('overview-link') ? a.parentElement : a;
+    if (row !== a) row.classList.add('active');
+    row.scrollIntoView({block:'nearest'});
   }
 }
 

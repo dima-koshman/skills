@@ -65,6 +65,9 @@ thin wrappers around a single tool.
   shell can't leak in.
 - Test a script that resolves credentials under `env -i HOME=<fake home> PATH=$PATH`, with dummy
   values, and never print what it generates unmasked.
+- Write generated local output (rendered HTML sites, reports, caches) to a git-ignored `/dev/`
+  directory at the repo root, never next to the sources. A task that writes there runs
+  `mkdir -p dev` first, because the directory doesn't exist in a fresh clone.
 
 Existing shell scripts can stay; port one to Python when you next change it substantially.
 

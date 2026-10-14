@@ -1101,6 +1101,7 @@ function onNodeDoubleClick(id) {
 
 // Empty graph space or an edge resets the zoom to fit everything.
 function onDoubleClick(target) {
+  stopViewportMotion();
   if (target === cy || target.isEdge()) {
     cy.animate({ fit: { eles: cy.elements(), padding: 30 } }, { duration: 300 });
     return;
@@ -1253,11 +1254,22 @@ function relayout() {
   requestAnimationFrame(() => { cy.resize(); cy.fit(undefined, 30); });
 }
 
+let pendingFocusFrame = null;
+function stopViewportMotion() {
+  if (pendingFocusFrame !== null) {
+    cancelAnimationFrame(pendingFocusFrame);
+    pendingFocusFrame = null;
+  }
+  cy.stop(true);
+}
+
 function focusOn(id) {
   // Zoom and recenter to the selected node plus its immediate links, instead of
-  // refitting the entire graph.
+  // refitting the entire graph. Only the newest requested viewport move should run.
+  stopViewportMotion();
   const node = cy.getElementById(id);
-  requestAnimationFrame(() => {
+  pendingFocusFrame = requestAnimationFrame(() => {
+    pendingFocusFrame = null;
     cy.resize();
     if (node.nonempty()) cy.animate({ fit: { eles: node.closedNeighborhood(), padding: 60 } }, { duration: 300 });
     else cy.fit(undefined, 30);

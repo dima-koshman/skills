@@ -509,6 +509,71 @@ process.stdout.write(JSON.stringify({ actions, pendingTimers: timers.size, delay
     }
 
 
+def test_site_graph_double_click_interrupts_pending_and_running_focus_animation(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "double-click-animation.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const names = ['focusOn', 'onDoubleClick'];
+const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
+const stopMotion = html.match(/function stopViewportMotion\(\) \{[^]*?\n\}/s)?.[0] || '';
+function scenario(firstFrameRan) {
+  const frames = new Map(), animations = [], queued = [], collapses = [];
+  let nextFrame = 0, running = false, canceled = 0;
+  const cy = {
+    getElementById: id => ({ nonempty: () => true, closedNeighborhood: () => id }),
+    resize() {},
+    animate: options => {
+      if (running) queued.push(options.fit.eles);
+      else { running = true; animations.push(options.fit.eles); }
+    },
+    stop: clearQueue => { running = false; if (clearQueue) queued.length = 0; },
+  };
+  const flush = () => {
+    for (const [id, callback] of [...frames]) { frames.delete(id); callback(); }
+  };
+  const context = { cy, target: { id: () => 'leaf.md', isEdge: () => false },
+    requestAnimationFrame: callback => { const id = ++nextFrame; frames.set(id, callback); return id; },
+    cancelAnimationFrame: id => { if (frames.delete(id)) canceled++; },
+    onNodeDoubleClick: () => collapses.push({ running }),
+  };
+  vm.runInNewContext('let pendingFocusFrame = null;\n' + stopMotion + '\n' + definitions + `
+focusOn('leaf.md');
+if (firstFrameRan) flush();
+onDoubleClick(target);
+focusOn('parent.md');
+flush();`, { ...context, flush, firstFrameRan });
+  return { animations, queued, collapses, canceled };
+}
+process.stdout.write(JSON.stringify({ pending: scenario(false), running: scenario(true) }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "pending": {
+            "animations": ["parent.md"],
+            "queued": [],
+            "collapses": [{"running": False}],
+            "canceled": 1,
+        },
+        "running": {
+            "animations": ["leaf.md", "parent.md"],
+            "queued": [],
+            "collapses": [{"running": False}],
+            "canceled": 0,
+        },
+    }
+
+
 def test_site_graph_native_double_tap_is_a_fallback_without_duplicate_action(
     bundle: pathlib.Path,
 ) -> None:
@@ -800,7 +865,7 @@ const overview = path + '.md';
 const dirs = { 'Platform Services': { overviewId: null }, [path]: { overviewId: overview } };
 const expanded = new Set(['Platform Services', path]);
 const actions = [];
-const context = { dirs, expanded, cy: {}, DIR_PREFIX: 'dir:',
+const context = { dirs, expanded, cy: {}, DIR_PREFIX: 'dir:', stopViewportMotion() {},
   isDirId: id => id.startsWith('dir:'), dirOf: id => id.slice(4),
   parentDirOf: id => id.includes('/') ? id.slice(0, id.lastIndexOf('/')) : null,
   expandDir: (value, done) => { expanded.add(value); actions.push(['expand', value]); done(); },

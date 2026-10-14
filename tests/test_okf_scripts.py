@@ -476,6 +476,289 @@ process.stdout.write(JSON.stringify({ hidden }));
     assert json.loads(result.stdout) == {"hidden": False}
 
 
+def test_site_matching_overview_renders_one_collapsible_sidebar_entry(
+    bundle: pathlib.Path,
+) -> None:
+    _write(
+        bundle / "Platform Services/AI Gateway/AI Gateway child.md",
+        {"type": "Repository", "title": "Child"},
+        "Child repository.",
+    )
+    _write(
+        bundle / "Platform Services/AI Gateway.md",
+        {"type": "Service", "title": "AI Gateway"},
+        "Gateway overview.",
+    )
+    output = bundle.parent / "merged-tree.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
+const names = ['buildTree', 'renderTree'];
+const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
+function element(tag) {
+  return { tag, children: [], dataset: {}, className: '', innerHTML: '',
+    classList: { add() {} }, setAttribute() {}, addEventListener() {}, appendChild(child) { this.children.push(child); } };
+}
+const document = { createElement: element };
+const dirs = {};
+for (const n of data.nodes) {
+  const parts = n.id.split('/');
+  for (let i = 1; i < parts.length; i++) {
+    const path = parts.slice(0, i).join('/');
+    (dirs[path] ||= { name: parts[i - 1], concepts: [] }).concepts.push(n.id);
+  }
+}
+dirs['Platform Services/AI Gateway'].overviewId = 'Platform Services/AI Gateway.md';
+const context = { DATA: data, document, dirs, escapeHtml: s => s, escapeAttr: s => s,
+  dirLabel: path => dirs[path].name, expanded: new Set(), expandDir() {}, collapseDir() {},
+  openConcept() {}, openDir() {} };
+const tree = vm.runInNewContext(definitions + '\nrenderTree(buildTree(DATA.nodes))', context);
+const services = tree.children.find(li => li.dataset.dir === 'Platform Services');
+const siblings = services.children[1].children;
+const merged = siblings.filter(li => li.dataset.dir === 'Platform Services/AI Gateway');
+const overviewLinks = siblings.flatMap(li => li.children[0].children || [])
+  .filter(el => el.dataset.id === 'Platform Services/AI Gateway.md');
+process.stdout.write(JSON.stringify({ merged: merged.length, siblings: siblings.length,
+  overviewLinks: overviewLinks.length, children: merged[0].children[1].children.length }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "merged": 1,
+        "siblings": 1,
+        "overviewLinks": 1,
+        "children": 1,
+    }
+
+
+def test_site_matching_overview_replaces_synthetic_graph_directory(
+    bundle: pathlib.Path,
+) -> None:
+    _write(
+        bundle / "Platform Services/AI Gateway/repo.md",
+        {"type": "Repository", "title": "Repo"},
+        "Child repository.",
+    )
+    _write(
+        bundle / "Platform Services/AI Gateway.md",
+        {"type": "Service", "title": "AI Gateway"},
+        "Gateway overview.",
+    )
+    output = bundle.parent / "merged-graph.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
+const names = ['ancestorsOf', 'representative', 'directoryForNode', 'graphNodeForRepresentative'];
+const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
+const byId = Object.fromEntries(data.nodes.map(n => [n.id, n]));
+const dirs = {
+  'Platform Services': { name: 'Platform Services', concepts: ['Platform Services/AI Gateway/repo.md'] },
+  'Platform Services/AI Gateway': { name: 'AI Gateway', concepts: ['Platform Services/AI Gateway/repo.md'], overviewId: 'Platform Services/AI Gateway.md' },
+};
+const expanded = new Set(['Platform Services']);
+const context = { byId, dirs, expanded, DIR_PREFIX: 'dir:',
+  isDirId: id => id.startsWith('dir:'), dirOf: id => id.slice(4),
+  dirLabel: path => dirs[path].name };
+const collapsed = vm.runInNewContext(definitions + '\nrepresentative("Platform Services/AI Gateway/repo.md")', context);
+const node = vm.runInNewContext(definitions + '\ngraphNodeForRepresentative("Platform Services/AI Gateway.md")', context);
+expanded.add('Platform Services/AI Gateway');
+const expandedChild = vm.runInNewContext(definitions + '\nrepresentative("Platform Services/AI Gateway/repo.md")', context);
+process.stdout.write(JSON.stringify({ collapsed, expandedChild, id: node.data.id,
+  label: node.data.label, classes: node.classes }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "collapsed": "Platform Services/AI Gateway.md",
+        "expandedChild": "Platform Services/AI Gateway/repo.md",
+        "id": "Platform Services/AI Gateway.md",
+        "label": "AI Gateway",
+        "classes": "overview status-stable",
+    }
+
+
+def test_site_merged_node_toggles_own_directory_and_opens_its_page(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "merged-actions.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const names = ['directoryForNode', 'onDoubleClick', 'openDir'];
+const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
+const path = 'Platform Services/AI Gateway';
+const id = path + '.md';
+const expanded = new Set();
+const actions = [];
+const dirs = { [path]: { overviewId: id } };
+const target = { id: () => id, isEdge: () => false };
+const context = { dirs, expanded, target, cy: {}, DIR_PREFIX: 'dir:',
+  isDirId: id => id.startsWith('dir:'), dirOf: id => id.slice(4),
+  parentDirOf: () => 'Platform Services',
+  expandDir: (path, done) => { expanded.add(path); done(); },
+  collapseDir: (path, done) => { expanded.delete(path); done(); },
+  openConcept: id => actions.push(['open', id]),
+  doc: { innerHTML: '' },
+};
+vm.runInNewContext(definitions + '\nonDoubleClick(target); onDoubleClick(target); openDir(' + JSON.stringify(path) + ')', context);
+process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path) }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "actions": [["open", "Platform Services/AI Gateway.md"]] * 3,
+        "expanded": False,
+    }
+
+
+def test_site_search_keeps_merged_section_title_visible_for_child_match(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "merged-search.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definition = html.match(/function searchNavMatch\([^]*?\n}/s)[0];
+const overview = 'Platform Services/AI Gateway.md';
+const context = { directoryForNode: id => id === overview ? 'Platform Services/AI Gateway' : null };
+const result = vm.runInNewContext(definition + '\n[searchNavMatch(' + JSON.stringify(overview) +
+  ', ["Platform Services/AI Gateway/repo.md"]), searchNavMatch(' + JSON.stringify(overview) +
+  ', ["Platform Services/AI Gateway Extended/repo.md"])]', context);
+process.stdout.write(JSON.stringify(result));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == [True, False]
+
+
+def test_site_type_legend_matches_merged_overview_or_children(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "merged-type.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definition = html.match(/function nodeMatchesType\([^]*?\n}/s)[0];
+const overview = 'Platform Services/AI Gateway.md';
+const context = {
+  byId: { [overview]: { type: 'Service' } },
+  dirs: { 'Platform Services/AI Gateway': { types: new Set(['Repository']) } },
+  directoryForNode: id => id === overview ? 'Platform Services/AI Gateway' : null,
+  isDirId: () => false,
+};
+const result = vm.runInNewContext(definition + '\n["Service", "Repository", "Person"].map(type => nodeMatchesType(' +
+  JSON.stringify(overview) + ', type))', context);
+process.stdout.write(JSON.stringify(result));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == [True, True, False]
+
+
+def test_site_active_merged_overview_highlights_its_sidebar_section(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "merged-active.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definition = html.match(/function setActiveNav\([^]*?\n}/s)[0];
+function classes() {
+  const values = new Set();
+  return { add: value => values.add(value), remove: value => values.delete(value),
+    contains: value => values.has(value) };
+}
+const label = { classList: classes() };
+const link = { classList: classes(), parentElement: label };
+link.classList.add('overview-link');
+const context = {
+  document: { querySelectorAll: () => [link, label],
+    querySelector: selector => selector.includes('a[data-id=') ? link : null },
+  isDirId: () => false, cssEscape: value => value,
+};
+vm.runInNewContext(definition + '\nsetActiveNav("Platform Services/AI Gateway.md")', context);
+process.stdout.write(JSON.stringify({ link: link.classList.contains('active'),
+  section: label.classList.contains('active') }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {"link": True, "section": True}
+
+
+def test_site_caption_counts_collapsed_merged_overviews_as_directories(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "merged-caption.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definition = html.match(/function graphCounts\([^]*?\n}/s)[0];
+const ids = ['Platform Services/AI Gateway.md', 'people/ana.md', 'dir:systems'];
+const context = {
+  cy: { nodes: () => ids.map(id => ({ id: () => id })) },
+  expanded: new Set(),
+  isDirId: id => id.startsWith('dir:'),
+  directoryForNode: id => id.startsWith('dir:') ? id.slice(4) :
+    id === ids[0] ? 'Platform Services/AI Gateway' : null,
+};
+process.stdout.write(JSON.stringify(vm.runInNewContext(definition + '\ngraphCounts()', context)));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {"concepts": 2, "directories": 2}
+
+
 def _write(path: pathlib.Path, frontmatter: dict[str, object], body: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     header = yaml.safe_dump(frontmatter, sort_keys=False)

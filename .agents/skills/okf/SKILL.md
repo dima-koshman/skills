@@ -124,12 +124,14 @@ pills and the generated/verified line are omitted from concept pages; the underl
 v0.2 metadata remains in frontmatter and embedded data for agents and tooling. Frontmatter concept paths also
 become **labeled edges** named after their key; deprecated concepts are dimmed and
 dashed, drafts dashed. Every directory starts **collapsed**: the sidebar tree and the graph share one
-expanded/collapsed state, a collapsed directory is one node (grey rounded square, sized by its concept count) with
-links to its concepts merged onto it, clicking a tree section or double-clicking a directory node expands it,
-double-clicking a concept node collapses its directory, and opening a concept (link, search, URL hash) expands its
+expanded/collapsed state. A directory without an overview is one grey rounded node, sized by its concept count; when
+`<directory>.md` exists beside it, that concept and directory share one colored graph node and one sidebar section.
+The sidebar title opens the overview content, its caret toggles the children, and the merged graph node expands or
+collapses its own children on double-click. Concept links keep the overview file's original path. Other concept nodes
+collapse into their parent directory on double-click, and opening a concept (link, search, URL hash) expands its
 ancestors. A single click centers a node, reveals the directories containing its linked concepts, and highlights
 only that node, its edges and its directly connected nodes. Right-clicking a node opens the same focus action first,
-then the double-click action (collapse a concept into its parent directory, or expand a directory node). Double-clicking
+then the double-click action for that node. Double-clicking
 empty space or an edge fits the whole graph; a single click waits ~250 ms so it never fires on the first half of a
 double-click. The full layout uses fcose (cose as fallback); expanding or collapsing places only
 the new nodes around their anchor, and "↻ Re-layout" redoes the full layout. The output is a build artifact — regenerate it, don't

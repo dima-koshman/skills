@@ -590,8 +590,11 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #nav .dir > .label { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; letter-spacing:.04em; color:var(--muted); padding:6px 8px 4px; cursor:pointer; user-select:none; border-radius:6px; }
   #nav .dir > .label:hover { background:var(--hover); color:var(--ink); }
   #nav .dir > .label.active { background:var(--active); color:var(--ink); }
-  #nav .dir > .label .caret { display:inline-block; width:10px; transition:transform .15s; }
-  #nav .dir:not(.collapsed) > .label .caret { transform:rotate(90deg); }
+  #nav .dir > .label .caret, #nav .dir > .label .caret-toggle { display:inline-block; width:10px; transition:transform .15s; }
+  #nav .dir:not(.collapsed) > .label .caret, #nav .dir:not(.collapsed) > .label .caret-toggle { transform:rotate(90deg); }
+  #nav .dir > .label .caret-toggle { border:0; background:none; color:inherit; padding:0; cursor:pointer; font:inherit; }
+  #nav .dir > .label .overview-link { padding:0; color:inherit; font-size:inherit; font-weight:inherit; letter-spacing:inherit; }
+  #nav .dir > .label .overview-link.active { background:transparent; }
   #nav .dir > .label .count { font-weight:400; color:var(--muted); text-transform:none; letter-spacing:0; }
   #nav .dir.collapsed > ul { display:none; }
   #nav .dir ul { margin-left:12px; border-left:1px solid var(--line); }
@@ -771,8 +774,14 @@ DATA.nodes.forEach(n => {
     d.types.add(n.type);
   }
 });
+Object.values(dirs).forEach(d => { d.overviewId = byId[d.path + '.md'] ? d.path + '.md' : null; });
 const isDirId = id => id.startsWith(DIR_PREFIX);
 const dirOf = id => isDirId(id) ? id.slice(DIR_PREFIX.length) : id;
+function directoryForNode(id) {
+  if (isDirId(id)) return dirOf(id);
+  const path = id.endsWith('.md') ? id.slice(0, -3) : '';
+  return dirs[path] && dirs[path].overviewId === id ? path : null;
+}
 function ancestorsOf(path) {          // ['a', 'a/b'] for a concept 'a/b/c.md' or a directory 'a/b/c'
   const parts = path.split('/');
   const out = [];
@@ -782,7 +791,7 @@ function ancestorsOf(path) {          // ['a', 'a/b'] for a concept 'a/b/c.md' o
 function parentDirOf(conceptId) { const a = ancestorsOf(conceptId); return a.length ? a[a.length - 1] : null; }
 // The graph node currently standing for a concept: itself, or its topmost collapsed ancestor.
 function representative(conceptId) {
-  for (const d of ancestorsOf(conceptId)) if (!expanded.has(d)) return DIR_PREFIX + d;
+  for (const d of ancestorsOf(conceptId)) if (!expanded.has(d)) return dirs[d].overviewId || DIR_PREFIX + d;
   return conceptId;
 }
 function dirLabel(path) {
@@ -814,6 +823,9 @@ const cy = cytoscape({
     { selector: 'edge.agg', style: { 'width': 'data(weight)' } },
     { selector: 'node.sel', style: { 'border-color': '#0969da', 'border-width': 3, 'font-size': '10px', 'font-weight': 'bold', 'width': 20, 'height': 20 } },
     { selector: 'node.dir.sel', style: { 'width': 'data(size)', 'height': 'data(size)' } },
+    { selector: 'node.overview', style: { 'shape': 'round-rectangle', 'width': 'data(size)', 'height': 'data(size)',
+        'font-size': '10px', 'font-weight': 'bold' } },
+    { selector: 'node.overview.sel', style: { 'width': 'data(size)', 'height': 'data(size)' } },
     { selector: '.faded', style: { 'opacity': .12 } },
     { selector: 'node.hidden', style: { 'display': 'none' } },
   ],
@@ -858,8 +870,23 @@ function placeNewNodes(groups) {
   });
 }
 
+// A same-named overview serves as the directory node without losing its concept identity.
+function graphNodeForRepresentative(id) {
+  if (isDirId(id)) {
+    const path = dirOf(id);
+    return { data: { id, label: dirLabel(path), isDir: true, color: '#57606a',
+                     size: Math.round(24 + 6 * Math.sqrt(dirs[path].concepts.length)) }, classes: 'dir' };
+  }
+  const n = byId[id];
+  const path = directoryForNode(id);
+  if (path) return { data: { id, label: n.title, color: n.color,
+                            size: Math.round(24 + 6 * Math.sqrt(dirs[path].concepts.length)) },
+                     classes: 'overview status-' + n.status };
+  return { data: { id, label: n.title, color: n.color }, classes: 'status-' + n.status };
+}
+
 // Rebuild the visible graph from `expanded`: concept nodes for expanded directories,
-// one directory node per topmost collapsed directory, and edges rerouted to whatever
+// one node per topmost collapsed directory, and edges rerouted to whatever
 // node currently represents each endpoint (parallel edges merged, with a count).
 function syncGraph(done) {
   const old = {};
@@ -868,13 +895,7 @@ function syncGraph(done) {
   DATA.nodes.forEach(n => {
     const r = representative(n.id);
     if (wanted.has(r)) return;
-    if (isDirId(r)) {
-      const path = dirOf(r);
-      wanted.set(r, { data: { id: r, label: dirLabel(path), isDir: true, color: '#57606a',
-                              size: Math.round(24 + 6 * Math.sqrt(dirs[path].concepts.length)) }, classes: 'dir' });
-    } else {
-      wanted.set(r, { data: { id: n.id, label: n.title, color: n.color }, classes: 'status-' + n.status });
-    }
+    wanted.set(r, graphNodeForRepresentative(r));
   });
   const agg = new Map();
   DATA.edges.forEach(e => {
@@ -932,7 +953,7 @@ function newNodeAnchor(id, old) {
              pos: { x: pts.reduce((a, p) => a + p.x, 0) / pts.length, y: pts.reduce((a, p) => a + p.y, 0) / pts.length } };
   }
   for (const d of ancestorsOf(id).reverse()) {
-    const p = old[DIR_PREFIX + d];
+    const p = old[dirs[d].overviewId || DIR_PREFIX + d];
     if (p) return { key: 'expand:' + d, pos: p };
   }
   return null;
@@ -1042,9 +1063,10 @@ function onDoubleClick(target) {
     return;
   }
   const id = target.id();
-  if (isDirId(id)) {
-    const path = dirOf(id);
-    expandDir(path, () => openDir(path));
+  const directory = directoryForNode(id);
+  if (directory) {
+    if (expanded.has(directory)) collapseDir(directory, () => openDir(directory));
+    else expandDir(directory, () => openDir(directory));
   } else {
     const parent = parentDirOf(id);
     if (parent) collapseDir(parent, () => openDir(parent));
@@ -1086,8 +1108,9 @@ function hideNodeMenu() {
 function showNodeMenu(id, position) {
   menuNodeId = id;
   const toggle = nodeMenu.querySelector('[data-action="toggle"]');
-  toggle.textContent = isDirId(id) ? 'Expand directory' : 'Collapse into parent directory';
-  toggle.disabled = !isDirId(id) && !parentDirOf(id);
+  const directory = directoryForNode(id);
+  toggle.textContent = directory ? (expanded.has(directory) ? 'Collapse directory' : 'Expand directory') : 'Collapse into parent directory';
+  toggle.disabled = !directory && !parentDirOf(id);
   nodeMenu.hidden = false;
   nodeMenu.style.left = Math.max(0, Math.min(position.x, graphContainer.clientWidth - nodeMenu.offsetWidth - 4)) + 'px';
   nodeMenu.style.top = Math.max(0, Math.min(position.y, graphContainer.clientHeight - nodeMenu.offsetHeight - 4)) + 'px';
@@ -1143,15 +1166,33 @@ function highlight(id) {
   caption.textContent = node.data('label') + ' — ' + node.connectedEdges().length + ' links';
 }
 
+// A merged overview represents its own type and the types of its hidden children.
+function nodeMatchesType(id, type) {
+  if (isDirId(id)) return dirs[dirOf(id)].types.has(type);
+  const path = directoryForNode(id);
+  return byId[id].type === type || !!path && dirs[path].types.has(type);
+}
+
 // Highlight every concept of one type across the graph and the nav tree.
 function highlightType(type) {
   activeType = type;
   cy.nodes().removeClass('sel');
   cy.elements().addClass('faded');
-  const matching = cy.nodes().filter(n => isDirId(n.id()) ? dirs[dirOf(n.id())].types.has(type) : byId[n.id()].type === type);
+  const matching = cy.nodes().filter(n => nodeMatchesType(n.id(), type));
   matching.removeClass('faded');
   paintTypeState();
   caption.textContent = type + ' — ' + matching.length + ' concepts';
+}
+
+function graphCounts() {
+  let concepts = 0, directories = 0;
+  cy.nodes().forEach(node => {
+    const id = node.id();
+    if (!isDirId(id)) concepts++;
+    const path = directoryForNode(id);
+    if (path && (isDirId(id) || !expanded.has(path))) directories++;
+  });
+  return { concepts, directories };
 }
 
 function clearHighlight() {
@@ -1160,8 +1201,8 @@ function clearHighlight() {
   cy.elements().removeClass('faded');
   cy.nodes().removeClass('sel');
   paintTypeState();
-  const dirNodes = cy.nodes('.dir').length;
-  caption.textContent = (cy.nodes().length - dirNodes) + ' concepts · ' + dirNodes + ' collapsed directories · ' +
+  const counts = graphCounts();
+  caption.textContent = counts.concepts + ' concepts · ' + counts.directories + ' collapsed directories · ' +
     cy.edges().length + ' links  (double-click: expand / collapse)';
 }
 
@@ -1289,6 +1330,7 @@ function openDir(path) {
   // Reader view for a directory: its concepts and subdirectories; the graph keeps its state.
   const d = dirs[path];
   if (!d) return;
+  if (d.overviewId) { openConcept(d.overviewId); return; }
   closeMobilePanels();
   main.classList.remove('graph-only');
   const direct = d.concepts.filter(id => parentDirOf(id) === path).map(id => byId[id])
@@ -1369,15 +1411,19 @@ function buildTree(nodes) {
       cur.dirs[parts[i]] = cur.dirs[parts[i]] || { dirs: {}, files: [] };
       cur = cur.dirs[parts[i]];
     }
-    cur.files.push(n);
+    const path = n.id.slice(0, -3);
+    if (dirs[path]) {
+      const name = parts[parts.length - 1].slice(0, -3);
+      cur.dirs[name] = cur.dirs[name] || { dirs: {}, files: [] };
+      cur.dirs[name].overview = n;
+    } else cur.files.push(n);
   });
   return root;
 }
 
 function renderTree(tree, prefix = '') {
   const ul = document.createElement('ul');
-  // Concept pages first, then subdirectories (so a directory's own overview sits
-  // above its children).
+  // Standalone concepts first; same-named overviews live in their directory entry.
   tree.files.sort((a, b) => a.title.localeCompare(b.title)).forEach(n => {
     const li = document.createElement('li');
     const a = document.createElement('a');
@@ -1397,12 +1443,37 @@ function renderTree(tree, prefix = '') {
     li.dataset.dir = path;
     const label = document.createElement('div');
     label.className = 'label';
-    label.title = 'Click to expand or collapse (also in the graph)';
-    label.innerHTML = `<span class="caret">▸</span><span>${escapeHtml(dirLabel(path))}</span>` +
-      `<span class="count">${dirs[path].concepts.length}</span>`;
-    label.addEventListener('click', () => {
+    const toggle = () => {
       if (expanded.has(path)) collapseDir(path, () => openDir(path)); else expandDir(path, () => openDir(path));
-    });
+    };
+    if (tree.dirs[name].overview) {
+      const overview = tree.dirs[name].overview;
+      const caret = document.createElement('button');
+      caret.className = 'caret-toggle';
+      caret.type = 'button';
+      caret.setAttribute('aria-label', 'Expand or collapse ' + overview.title);
+      caret.setAttribute('aria-expanded', 'false');
+      caret.textContent = '▸';
+      caret.addEventListener('click', ev => { ev.stopPropagation(); toggle(); });
+      const link = document.createElement('a');
+      link.className = 'overview-link';
+      link.href = '#' + encodeURIComponent(overview.id);
+      link.dataset.id = overview.id;
+      if (overview.status && overview.status !== 'stable') link.classList.add(overview.status);
+      link.textContent = overview.title;
+      link.addEventListener('click', ev => { ev.preventDefault(); openConcept(overview.id); });
+      const count = document.createElement('span');
+      count.className = 'count';
+      count.textContent = dirs[path].concepts.length;
+      label.appendChild(caret);
+      label.appendChild(link);
+      label.appendChild(count);
+    } else {
+      label.title = 'Click to expand or collapse (also in the graph)';
+      label.innerHTML = `<span class="caret">▸</span><span>${escapeHtml(dirLabel(path))}</span>` +
+        `<span class="count">${dirs[path].concepts.length}</span>`;
+      label.addEventListener('click', toggle);
+    }
     li.appendChild(label);
     li.appendChild(renderTree(tree.dirs[name], path));
     ul.appendChild(li);
@@ -1412,7 +1483,12 @@ function renderTree(tree, prefix = '') {
 
 // Reflect `expanded` onto the sidebar tree.
 function paintTreeState() {
-  document.querySelectorAll('#nav li.dir').forEach(li => li.classList.toggle('collapsed', !expanded.has(li.dataset.dir)));
+  document.querySelectorAll('#nav li.dir').forEach(li => {
+    const open = expanded.has(li.dataset.dir);
+    li.classList.toggle('collapsed', !open);
+    const caret = li.firstElementChild.querySelector('.caret-toggle');
+    if (caret) caret.setAttribute('aria-expanded', String(open));
+  });
 }
 
 function setActiveNav(id) {
@@ -1426,7 +1502,10 @@ function setActiveNav(id) {
   if (id === 'index') { const h = document.querySelector('#nav a.homelink'); h && h.classList.add('active'); return; }
   if (!id) return;
   const a = document.querySelector(`#nav a[data-id="${cssEscape(id)}"]`);
-  a && a.classList.add('active');
+  if (a) {
+    a.classList.add('active');
+    if (a.classList.contains('overview-link')) a.parentElement.classList.add('active');
+  }
 }
 
 const nav = document.getElementById('nav');
@@ -1448,6 +1527,12 @@ if (DATA.log) {
 }
 
 /* ---------- search ---------- */
+function searchNavMatch(id, hits) {
+  if (hits.includes(id)) return true;
+  const path = directoryForNode(id);
+  return !!path && hits.some(hit => hit.startsWith(path + '/'));
+}
+
 document.getElementById('search').addEventListener('input', ev => {
   if (window.matchMedia('(max-width: 860px)').matches) {
     closeMobilePanels();
@@ -1461,8 +1546,10 @@ document.getElementById('search').addEventListener('input', ev => {
     const hay = (n.title + ' ' + n.description + ' ' + n.type + ' ' + n.tags.join(' ') + ' ' + n.status + ' ' + props).toLowerCase();
     const hit = !q || hay.includes(q);
     if (q && hit) hits.push(n.id);
+  });
+  DATA.nodes.forEach(n => {
     const navA = document.querySelector(`#nav a[data-id="${cssEscape(n.id)}"]`);
-    navA && navA.classList.toggle('hidden', !hit);
+    if (navA) navA.classList.toggle('hidden', !!q && !searchNavMatch(n.id, hits));
   });
   clearTimeout(searchTimer);
   if (q.length < 2) return;

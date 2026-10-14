@@ -997,7 +997,16 @@ click(overview);
 for (const callback of timers.values()) callback();
 click(overview);
 for (const callback of timers.values()) callback();
-process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path), prematureConcepts, navDelays }));
+// A click in the count/blank part of an unselected merged row opens its concept.
+label.listeners.click({ ...event, currentTarget: label, target: label.children[2] });
+for (const callback of timers.values()) callback();
+// Once selected, that same area toggles the directory.
+label.classList.add('active');
+label.listeners.click({ ...event, currentTarget: label, target: label.children[2] });
+for (const callback of timers.values()) callback();
+let titleClickStopped = false;
+overview.listeners.click({ ...event, currentTarget: overview, stopPropagation() { titleClickStopped = true; } });
+process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path), prematureConcepts, navDelays, titleClickStopped }));
 """
     result = subprocess.run(
         ["node", "-e", javascript, str(output)],
@@ -1025,10 +1034,14 @@ process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path), pre
             ["open", "Platform Services/AI Gateway"],
             ["expand", "Platform Services/AI Gateway"],
             ["open", "Platform Services/AI Gateway"],
+            ["concept", "Platform Services/AI Gateway.md"],
+            ["collapse", "Platform Services/AI Gateway"],
+            ["open", "Platform Services/AI Gateway"],
         ],
-        "expanded": True,
+        "expanded": False,
         "prematureConcepts": 0,
-        "navDelays": [150, 150, 150, 150, 150, 150, 150],
+        "navDelays": [150, 150, 150, 150, 150, 150, 150, 150, 150, 150],
+        "titleClickStopped": True,
     }
 
 

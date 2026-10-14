@@ -1500,13 +1500,14 @@ function renderTree(tree, prefix = '') {
       link.dataset.id = overview.id;
       if (overview.status && overview.status !== 'stable') link.classList.add(overview.status);
       link.innerHTML = `<span class="dot" style="background:${overview.color}"></span><span>${escapeHtml(overview.title)}</span>`;
-      link.addEventListener('click', ev => onNavConceptClick(ev, overview.id));
+      link.addEventListener('click', ev => { ev.stopPropagation(); onNavConceptClick(ev, overview.id); });
       const count = document.createElement('span');
       count.className = 'count';
       count.textContent = dirs[path].concepts.length;
       label.appendChild(caret);
       label.appendChild(link);
       label.appendChild(count);
+      label.addEventListener('click', ev => onNavConceptClick(ev, overview.id));
       label.addEventListener('dblclick', ev => onNavConceptDoubleClick(ev, overview.id));
     } else {
       label.title = 'Click to expand or collapse (also in the graph)';

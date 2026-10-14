@@ -1425,6 +1425,8 @@ function buildTree(nodes) {
   return root;
 }
 
+// Sidebar navigation uses a shorter double-click window than the graph so links feel responsive.
+const NAV_DOUBLE_CLICK_MS = 150;
 let pendingNavClick = null;
 function onNavConceptClick(ev, id) {
   ev.preventDefault();
@@ -1433,7 +1435,7 @@ function onNavConceptClick(ev, id) {
     if (pendingNavClick.id !== id) pendingNavClick.run();
   }
   const run = () => openConcept(id);
-  pendingNavClick = { id, run, timer: setTimeout(() => { pendingNavClick = null; run(); }, DOUBLE_CLICK_MS) };
+  pendingNavClick = { id, run, timer: setTimeout(() => { pendingNavClick = null; run(); }, NAV_DOUBLE_CLICK_MS) };
 }
 
 function onNavConceptDoubleClick(ev, id) {

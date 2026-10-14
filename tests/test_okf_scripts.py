@@ -805,11 +805,12 @@ dirs[path].overviewId = path + '.md';
 const expanded = new Set(['Platform Services', path]);
 const actions = [];
 const timers = new Map();
+const navDelays = [];
 let nextTimer = 0;
 const context = {
   DATA: data, dirs, expanded, document: { createElement: element },
-  DOUBLE_CLICK_MS: 250, pendingNavClick: null,
-  setTimeout: callback => { const id = ++nextTimer; timers.set(id, callback); return id; },
+  DOUBLE_CLICK_MS: 250, NAV_DOUBLE_CLICK_MS: 150, pendingNavClick: null,
+  setTimeout: (callback, delay) => { navDelays.push(delay); const id = ++nextTimer; timers.set(id, callback); return id; },
   clearTimeout: id => timers.delete(id),
   escapeHtml: value => value, escapeAttr: value => value,
   dirLabel: value => dirs[value].name,
@@ -843,7 +844,7 @@ const caret = label.children[0];
 caret.listeners.click({ stopPropagation() {}, detail: 1 });
 caret.listeners.click({ stopPropagation() {}, detail: 2 });
 caret.listeners.dblclick(event);
-process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path), prematureConcepts }));
+process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path), prematureConcepts, navDelays }));
 """
     result = subprocess.run(
         ["node", "-e", javascript, str(output)],
@@ -868,6 +869,7 @@ process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path), pre
         ],
         "expanded": False,
         "prematureConcepts": 0,
+        "navDelays": [150, 150, 150, 150, 150],
     }
 
 

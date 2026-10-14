@@ -133,8 +133,8 @@ concept node in the graph collapses its parent directory. Opening a concept (lin
 ancestors. A single click centers a node, reveals the directories containing its linked concepts, and highlights
 only that node, its edges and its directly connected nodes. Right-clicking a node opens the same focus action first,
 then the double-click action for that node. Double-clicking
-empty space or an edge fits the whole graph; graph and sidebar concept single clicks wait ~250 ms so they never fire on the first half of a
-double-click. The full layout uses fcose (cose as fallback); expanding or collapsing places only
+empty space or an edge fits the whole graph. Graph single clicks wait ~250 ms; sidebar concept links wait ~150 ms
+so a double-click can take precedence without making ordinary navigation feel slow. The full layout uses fcose (cose as fallback); expanding or collapsing places only
 the new nodes around their anchor, and "↻ Re-layout" redoes the full layout. The output is a build artifact — regenerate it, don't
 hand-edit, and consider git-ignoring it.
 

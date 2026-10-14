@@ -469,6 +469,45 @@ process.stdout.write(JSON.stringify({ focused, cleared }));
     assert json.loads(result.stdout) == {"focused": "people/ana.md", "cleared": False}
 
 
+def test_site_graph_double_tap_matches_stable_node_id(bundle: pathlib.Path) -> None:
+    output = bundle.parent / "double-tap.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const handler = html.match(/cy\.on\('tap', ev => \{[^]*?\n\}\);/s)[0];
+const handlers = {};
+const actions = [];
+const timers = new Map();
+let nextTimer = 0;
+const cy = { on: (event, callback) => { handlers[event] = callback; } };
+const context = { cy, DOUBLE_CLICK_MS: 150,
+  hideNodeMenu() {},
+  setTimeout: (callback, delay) => { const id = ++nextTimer; timers.set(id, { callback, delay }); return id; },
+  clearTimeout: id => timers.delete(id),
+  onSingleClick: target => actions.push(['single', target.id()]),
+  onDoubleClick: target => actions.push(['double', target.id()]),
+};
+vm.runInNewContext('let pendingClick = null;\n' + handler, context);
+handlers.tap({ target: { id: () => 'People/ana.md' } });
+handlers.tap({ target: { id: () => 'People/ana.md' } });
+process.stdout.write(JSON.stringify({ actions, pendingTimers: timers.size, delays: [...timers.values()].map(t => t.delay) }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "actions": [["double", "People/ana.md"]],
+        "pendingTimers": 0,
+        "delays": [],
+    }
+
+
 def test_site_node_menu_orders_focus_before_directory_action(
     bundle: pathlib.Path,
 ) -> None:
@@ -477,7 +516,11 @@ def test_site_node_menu_orders_focus_before_directory_action(
     html = output.read_text()
     menu = re.search(r'<div id="node-menu"[^>]*>(.*?)</div>', html, re.S)
     assert menu is not None
-    assert re.findall(r'data-action="([^"]+)"', menu.group(1)) == ["focus", "toggle"]
+    assert re.findall(r'data-action="([^"]+)"', menu.group(1)) == [
+        "focus",
+        "toggle",
+        "collapse-parent",
+    ]
     javascript = r"""
 const fs = require('node:fs');
 const vm = require('node:vm');
@@ -486,6 +529,7 @@ const definition = html.match(/function onNodeMenuAction\(action, id\) \{.*?\n\}
 const actions = [];
 const context = {
   focusConnections: id => actions.push(['focus', id]),
+  directoryForNode: () => null,
   onDoubleClick: target => actions.push(['toggle', target.id()]),
   cy: { getElementById: id => ({ id: () => id, nonempty: () => true }) },
 };
@@ -687,33 +731,102 @@ process.stdout.write(JSON.stringify({ collapsed, expandedChild, id: node.data.id
     }
 
 
-def test_site_merged_node_toggles_own_directory_and_opens_its_page(
+def test_site_graph_double_click_collapses_leaf_and_nested_directory_into_parent(
     bundle: pathlib.Path,
 ) -> None:
-    output = bundle.parent / "merged-actions.html"
+    output = bundle.parent / "graph-parent-collapse.html"
     _ = _run("okf_site.py", str(bundle), "-o", str(output))
     javascript = r"""
 const fs = require('node:fs');
 const vm = require('node:vm');
 const html = fs.readFileSync(process.argv[1], 'utf8');
-const names = ['directoryForNode', 'onNodeDoubleClick', 'onDoubleClick', 'openDir'];
+const names = ['directoryForNode', 'toggleDirectory', 'collapseNodeIntoParent', 'onNodeDoubleClick', 'onDoubleClick'];
 const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
 const path = 'Platform Services/AI Gateway';
-const id = path + '.md';
-const expanded = new Set();
+const overview = path + '.md';
+const dirs = { 'Platform Services': { overviewId: null }, [path]: { overviewId: overview } };
+const expanded = new Set(['Platform Services', path]);
 const actions = [];
-const dirs = { [path]: { overviewId: id } };
-const target = { id: () => id, isEdge: () => false };
-const context = { dirs, expanded, target, cy: {}, DIR_PREFIX: 'dir:',
+const context = { dirs, expanded, cy: {}, DIR_PREFIX: 'dir:',
   isDirId: id => id.startsWith('dir:'), dirOf: id => id.slice(4),
-  parentDirOf: () => 'Platform Services',
-  expandDir: (path, done) => { expanded.add(path); done(); },
-  collapseDir: (path, done) => { expanded.delete(path); done(); },
-  openConcept: id => actions.push(['open', id]),
-  doc: { innerHTML: '' },
+  parentDirOf: id => id.includes('/') ? id.slice(0, id.lastIndexOf('/')) : null,
+  expandDir: (value, done) => { expanded.add(value); actions.push(['expand', value]); done(); },
+  collapseDir: (value, done) => { expanded.delete(value); actions.push(['collapse', value]); done(); },
+  openDir: value => actions.push(['open', value]),
 };
-vm.runInNewContext(definitions + '\nonDoubleClick(target); onDoubleClick(target); openDir(' + JSON.stringify(path) + ')', context);
-process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path) }));
+const ids = [path + '/repo.md', 'dir:' + path, overview, 'dir:Platform Services'];
+vm.runInNewContext(definitions + '\nids.forEach(id => onDoubleClick({ id: () => id, isEdge: () => false }));',
+  { ...context, ids });
+process.stdout.write(JSON.stringify(actions));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == [
+        ["collapse", "Platform Services/AI Gateway"],
+        ["open", "Platform Services/AI Gateway"],
+        ["collapse", "Platform Services"],
+        ["open", "Platform Services"],
+        ["collapse", "Platform Services"],
+        ["open", "Platform Services"],
+        ["expand", "Platform Services"],
+        ["open", "Platform Services"],
+    ]
+
+
+def test_site_node_menu_offers_parent_collapse_only_for_nested_directories(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "nested-menu.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    html = output.read_text()
+    assert "#node-menu button[hidden]" in html
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const names = ['directoryForNode', 'toggleDirectory', 'collapseNodeIntoParent', 'showNodeMenu', 'onNodeMenuAction'];
+const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
+const path = 'Platform Services/AI Gateway';
+const controls = {
+  toggle: { textContent: '', disabled: false },
+  parent: { hidden: true },
+  focus: { focus() {} },
+};
+const nodeMenu = { hidden: true, style: {}, offsetWidth: 100, offsetHeight: 100,
+  querySelector: selector => selector.includes('collapse-parent') ? controls.parent :
+    selector.includes('toggle') ? controls.toggle : controls.focus };
+const expanded = new Set(['Platform Services', path]);
+const actions = [];
+const context = { nodeMenu, controls, actions, path, graphContainer: { clientWidth: 500, clientHeight: 500 },
+  dirs: { 'Platform Services': { overviewId: null }, [path]: { overviewId: path + '.md' } },
+  DIR_PREFIX: 'dir:', isDirId: id => id.startsWith('dir:'), dirOf: id => id.slice(4),
+  parentDirOf: id => id.includes('/') ? id.slice(0, id.lastIndexOf('/')) : null,
+  expanded,
+  collapseDir: (value, done) => { expanded.delete(value); actions.push(['collapse', value]); done(); },
+  expandDir: (value, done) => { expanded.add(value); actions.push(['expand', value]); done(); },
+  openDir: value => actions.push(['open', value]),
+  onDoubleClick: target => actions.push(['double', target.id()]),
+  cy: { getElementById: id => ({ id: () => id, nonempty: () => true }) },
+};
+const state = vm.runInNewContext(definitions + `
+showNodeMenu('dir:${path}', {x:10, y:10});
+const nested = { parentHidden: controls.parent.hidden, toggleText: controls.toggle.textContent };
+onNodeMenuAction('toggle', 'dir:' + path);
+onNodeMenuAction('collapse-parent', 'dir:' + path);
+showNodeMenu(path + '.md', {x:10, y:10});
+const overviewHidden = controls.parent.hidden;
+onNodeMenuAction('toggle', path + '.md');
+onNodeMenuAction('collapse-parent', path + '.md');
+showNodeMenu('dir:Platform Services', {x:10, y:10});
+const rootHidden = controls.parent.hidden;
+showNodeMenu(path + '/repo.md', {x:10, y:10});
+({ nested, overviewHidden, rootHidden, leafHidden: controls.parent.hidden, actions });`, context);
+process.stdout.write(JSON.stringify(state));
 """
     result = subprocess.run(
         ["node", "-e", javascript, str(output)],
@@ -723,8 +836,20 @@ process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path) }));
     )
     assert result.returncode == 0, result.stderr
     assert json.loads(result.stdout) == {
-        "actions": [["open", "Platform Services/AI Gateway.md"]] * 3,
-        "expanded": False,
+        "nested": {"parentHidden": False, "toggleText": "Collapse directory"},
+        "overviewHidden": False,
+        "rootHidden": True,
+        "leafHidden": True,
+        "actions": [
+            ["collapse", "Platform Services/AI Gateway"],
+            ["open", "Platform Services/AI Gateway"],
+            ["collapse", "Platform Services"],
+            ["open", "Platform Services"],
+            ["expand", "Platform Services/AI Gateway"],
+            ["open", "Platform Services/AI Gateway"],
+            ["collapse", "Platform Services"],
+            ["open", "Platform Services"],
+        ],
     }
 
 
@@ -929,7 +1054,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const html = fs.readFileSync(process.argv[1], 'utf8');
 const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
-const names = ['directoryForNode', 'onNodeDoubleClick', 'onNavConceptClick', 'onNavConceptDoubleClick', 'buildTree', 'renderTree'];
+const names = ['directoryForNode', 'toggleDirectory', 'collapseNodeIntoParent', 'onNodeDoubleClick', 'onNavConceptClick', 'onNavConceptDoubleClick', 'buildTree', 'renderTree'];
 const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
 function element(tag) {
   const classes = new Set();

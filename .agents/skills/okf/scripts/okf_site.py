@@ -636,6 +636,7 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
     font:inherit; font-size:12px; text-align:left; padding:8px 10px; cursor:pointer; }
   #node-menu button:hover, #node-menu button:focus-visible { background:var(--hover); }
   #node-menu button:disabled { color:var(--muted); cursor:default; }
+  #node-menu button[hidden] { display:none; }
 
   #doc h1 { font-size:24px; margin:0 0 2px; }
   #doc h2 { font-size:17px; margin:1.5em 0 .4em; padding-bottom:5px; border-bottom:1px solid var(--line); }
@@ -720,6 +721,7 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
           <div id="node-menu" role="menu" aria-label="Node actions" hidden>
             <button type="button" role="menuitem" data-action="focus">Center and show connections</button>
             <button type="button" role="menuitem" data-action="toggle">Collapse into parent directory</button>
+            <button type="button" role="menuitem" data-action="collapse-parent" hidden>Collapse into parent directory</button>
           </div>
         </div>
       </div>
@@ -1040,7 +1042,8 @@ let pendingClick = null;
 cy.on('tap', ev => {
   hideNodeMenu();
   const target = ev.target;
-  if (pendingClick && pendingClick.target === target) {
+  const targetId = target === cy ? null : target.id();
+  if (pendingClick && pendingClick.id === targetId) {
     clearTimeout(pendingClick.timer);
     pendingClick = null;
     onDoubleClick(target);
@@ -1048,7 +1051,7 @@ cy.on('tap', ev => {
   }
   if (pendingClick) { clearTimeout(pendingClick.timer); pendingClick.run(); }   // a click elsewhere settles the previous one
   const run = () => onSingleClick(target);
-  pendingClick = { target, run, timer: setTimeout(() => { pendingClick = null; run(); }, DOUBLE_CLICK_MS) };
+  pendingClick = { id: targetId, run, timer: setTimeout(() => { pendingClick = null; run(); }, DOUBLE_CLICK_MS) };
 });
 
 function onSingleClick(target) {
@@ -1057,17 +1060,23 @@ function onSingleClick(target) {
   focusConnections(target.id());
 }
 
-// Double-click a directory-overview to toggle its children, or a concept to
-// collapse its parent. The graph and sidebar share this path-based action.
+// A directory can toggle its own children or fold into its parent. Graph double-clicks
+// use the latter for nested directories; the sidebar and menu can still toggle children.
+function toggleDirectory(path) {
+  if (expanded.has(path)) collapseDir(path, () => openDir(path));
+  else expandDir(path, () => openDir(path));
+}
+
+function collapseNodeIntoParent(id) {
+  const directory = directoryForNode(id);
+  const parent = parentDirOf(directory || id);
+  if (parent) collapseDir(parent, () => openDir(parent));
+  return !!parent;
+}
+
 function onNodeDoubleClick(id) {
   const directory = directoryForNode(id);
-  if (directory) {
-    if (expanded.has(directory)) collapseDir(directory, () => openDir(directory));
-    else expandDir(directory, () => openDir(directory));
-  } else {
-    const parent = parentDirOf(id);
-    if (parent) collapseDir(parent, () => openDir(parent));
-  }
+  if (!collapseNodeIntoParent(id) && directory) toggleDirectory(directory);
 }
 
 // Empty graph space or an edge resets the zoom to fit everything.
@@ -1114,9 +1123,11 @@ function hideNodeMenu() {
 function showNodeMenu(id, position) {
   menuNodeId = id;
   const toggle = nodeMenu.querySelector('[data-action="toggle"]');
+  const collapseParent = nodeMenu.querySelector('[data-action="collapse-parent"]');
   const directory = directoryForNode(id);
   toggle.textContent = directory ? (expanded.has(directory) ? 'Collapse directory' : 'Expand directory') : 'Collapse into parent directory';
   toggle.disabled = !directory && !parentDirOf(id);
+  collapseParent.hidden = !directory || !parentDirOf(directory);
   nodeMenu.hidden = false;
   nodeMenu.style.left = Math.max(0, Math.min(position.x, graphContainer.clientWidth - nodeMenu.offsetWidth - 4)) + 'px';
   nodeMenu.style.top = Math.max(0, Math.min(position.y, graphContainer.clientHeight - nodeMenu.offsetHeight - 4)) + 'px';
@@ -1126,9 +1137,13 @@ function showNodeMenu(id, position) {
 function onNodeMenuAction(action, id) {
   if (action === 'focus') focusConnections(id);
   else if (action === 'toggle') {
-    const node = cy.getElementById(id);
-    if (node.nonempty()) onDoubleClick(node);
-  }
+    const directory = directoryForNode(id);
+    if (directory) toggleDirectory(directory);
+    else {
+      const node = cy.getElementById(id);
+      if (node.nonempty()) onDoubleClick(node);
+    }
+  } else if (action === 'collapse-parent' && directoryForNode(id)) collapseNodeIntoParent(id);
 }
 
 nodeMenu.addEventListener('click', ev => {
@@ -1455,7 +1470,9 @@ function onNavConceptDoubleClick(ev, id) {
     if (pendingNavClick.id !== id) pendingNavClick.run();
     pendingNavClick = null;
   }
-  onNodeDoubleClick(id);
+  const directory = directoryForNode(id);
+  if (directory) toggleDirectory(directory);
+  else onNodeDoubleClick(id);
 }
 
 function renderTree(tree, prefix = '') {

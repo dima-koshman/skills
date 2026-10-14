@@ -130,15 +130,16 @@ expanded/collapsed state. A directory without an overview is one grey rounded no
 `<directory>.md` exists beside it, that concept and directory share one colored graph node and one sidebar section.
 The merged sidebar row carries the concept type's colored dot; clicking anywhere in that row except its
 caret expands the directory and opens the overview content on first selection. Clicking the selected row again
-toggles its children. Its caret or a double-click on the merged sidebar row also toggles the children;
-double-clicking the merged graph node does the same.
-Concept links keep the overview file's original path. Double-clicking an ordinary concept link in the sidebar or a
-concept node in the graph collapses its parent directory. Opening a concept (link, search, URL hash) expands its
-ancestors. A single click centers a node, reveals the directories containing its linked concepts, and highlights
-only that node, its edges and its directly connected nodes. Right-clicking a node opens the same focus action first,
-then the double-click action for that node. Double-clicking
-empty space or an edge fits the whole graph. Graph and sidebar concept clicks share a ~150 ms window so a
-double-click can take precedence without making ordinary navigation feel slow. The full layout uses fcose (cose as fallback); expanding or collapsing places only
+toggles its children. Its caret or a double-click on the merged sidebar row also toggles the children.
+Concept links keep the overview file's original path. In the graph, double-clicking a leaf or nested directory node
+collapses it into its parent; a top-level directory toggles its own children. Opening a concept (link, search, URL hash)
+expands its ancestors. A single click centers a node, reveals the directories containing its linked concepts, and
+highlights only that node, its edges and its directly connected nodes. Right-clicking a node offers focus first, then
+its own-directory toggle (or parent collapse for a leaf), then a third "Collapse into parent directory" action only
+for nested directories, including directory overviews. Double-clicking empty space or an edge fits the whole graph.
+Graph and sidebar concept clicks share a ~150 ms window so a double-click can take precedence without making ordinary
+navigation feel slow. The graph matches taps by node ID because Cytoscape can provide different target wrappers for
+the same node. The full layout uses fcose (cose as fallback); expanding or collapsing places only
 the new nodes around their anchor, and "↻ Re-layout" redoes the full layout. The output is a build artifact — regenerate it, don't
 hand-edit, and consider git-ignoring it.
 

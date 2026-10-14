@@ -114,6 +114,60 @@ def test_site_turns_frontmatter_concept_paths_into_labeled_edges(
     assert all(edge["target"] != "services/missing.md" for edge in edges)
 
 
+def test_site_uses_hidden_local_type_concepts_for_field_tooltips(
+    bundle: pathlib.Path,
+) -> None:
+    _write(
+        bundle / "_types/service.md",
+        {
+            "type": "Concept Type",
+            "title": "Service",
+            "description": "A service we run.",
+            "primary_fields": ["owner"],
+        },
+        "\n".join(
+            [
+                "# Attributes",
+                "",
+                "| Attribute | Value | Meaning |",
+                "| --- | --- | --- |",
+                "| `owner` | Person | Accountable owner, if known. |",
+                "| `kind` | text | What kind of service it is. |",
+            ]
+        ),
+    )
+    _ = _run("okf_index.py", str(bundle))
+
+    data = _data(bundle)
+    nodes = cast(list[dict[str, object]], data["nodes"])
+    assert all(not str(node["id"]).startswith("_types/") for node in nodes)
+    assert cast(dict[str, object], data["typeSchemas"])["Service"] == {
+        "description": "A service we run.",
+        "fields": {
+            "owner": "Accountable owner, if known.",
+            "kind": "What kind of service it is.",
+        },
+        "primaryFields": ["owner"],
+    }
+    assert "# _types" not in str(data["index"])
+    assert "/_types/service.md" not in str(data["index"])
+
+    rendered = _reader_html(bundle, "services/api.md", {})
+    assert 'title="A service we run."' in rendered
+    assert 'title="Accountable owner, if known."' in rendered
+    assert 'title="What kind of service it is."' in rendered
+    assert (
+        '<details class="prop-details"><summary>Technical details (2)</summary>'
+        in rendered
+    )
+    assert rendered.index('title="Accountable owner, if known."') < rendered.index(
+        '<details class="prop-details">'
+    )
+    assert rendered.index('title="What kind of service it is."') > rendered.index(
+        '<details class="prop-details">'
+    )
+
+
 def test_site_lists_extra_frontmatter_as_linked_properties(
     bundle: pathlib.Path,
 ) -> None:
@@ -1522,7 +1576,7 @@ const doc = { innerHTML: '', scrollTop: 0,
   appendChild(child) { this.innerHTML += '<div class="' + child.className + '">' + child.innerHTML + '</div>'; } };
 const noop = () => {};
 const context = {
-  byId: { [node.id]: node }, node, doc,
+  byId: { [node.id]: node }, node, doc, DATA: data,
   representative: id => id,
   closeMobilePanels: noop, wireDocLinks: noop, setActiveNav: noop,
   highlight: noop, focusOn: noop,

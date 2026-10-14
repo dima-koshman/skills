@@ -20,8 +20,10 @@ styled in the graph and tree) and ``sources`` with ``[^id]`` footnotes linked to
 them. OKF v0.2 trust, freshness and authorship metadata is parsed and preserved
 in the embedded data, but omitted from the visible concept pages.
 
-Producer-defined frontmatter keys are shown as a Properties table. Any of their
-values that is a path to another concept in the bundle (``/people/ana.md``, or a
+Producer-defined frontmatter keys are shown as a Properties table, with optional
+local `_types/` descriptions as hover help and secondary fields in collapsed details.
+The `_types/` meta concepts themselves are omitted from the HTML reader. Any value
+that is a path to another concept in the bundle (``/people/ana.md``, or a
 list of such paths) becomes a link there and a *labeled* graph edge named after
 the key, so typed relationships declared in frontmatter (``owner``,
 ``depends_on``, ...) appear in the graph next to the untyped body links.
@@ -158,6 +160,7 @@ def render(
     """
     now = now or datetime.datetime.now(datetime.UTC)
     concepts, warnings = _collect_concepts(bundle_root, now)
+    type_schemas = _collect_type_schemas(bundle_root)
     for warning in warnings:
         print(f"warning: {warning}", file=sys.stderr)
 
@@ -173,7 +176,14 @@ def render(
     log_markdown = _read_log(bundle_root, known_ids)
     index_markdown = _read_index(bundle_root, known_ids)
     output_path.write_text(
-        _render_html(bundle_root.name, concepts, edges, log_markdown, index_markdown),
+        _render_html(
+            bundle_root.name,
+            concepts,
+            edges,
+            log_markdown,
+            index_markdown,
+            type_schemas,
+        ),
         encoding="utf-8",
     )
 
@@ -185,12 +195,15 @@ def render(
 def _collect_concepts(
     bundle_root: pathlib.Path, now: datetime.datetime
 ) -> tuple[list[Concept], list[str]]:
-    """Parse every non-reserved ``.md`` file into a Concept, collecting warnings."""
+    """Parse visible concept files, omitting `_types` meta documents."""
     warnings: list[str] = []
     parsed: list[tuple[str, dict, str]] = []
 
     for path in sorted(bundle_root.rglob("*.md")):
-        if path.name in _RESERVED_FILENAMES:
+        if (
+            path.name in _RESERVED_FILENAMES
+            or "_types" in path.relative_to(bundle_root).parts[:-1]
+        ):
             continue
 
         concept_id = path.relative_to(bundle_root).as_posix()
@@ -213,6 +226,34 @@ def _collect_concepts(
     known_ids = set(titles)
 
     return [_make_concept(item, titles, known_ids, now) for item in parsed], warnings
+
+
+def _collect_type_schemas(bundle_root: pathlib.Path) -> dict[str, dict]:
+    """Read local ``_types`` concepts as reader help, without making them graph nodes."""
+    schemas: dict[str, dict] = {}
+    for path in sorted(bundle_root.rglob("*.md")):
+        if "_types" not in path.relative_to(bundle_root).parts[:-1]:
+            continue
+        frontmatter, body, error = _split_document(path)
+        if error is not None or frontmatter.get("type") != "Concept Type":
+            continue
+        title = str(frontmatter.get("title") or "").strip()
+        if not title:
+            continue
+        fields: dict[str, str] = {}
+        for line in body.splitlines():
+            match = re.match(r"^\|\s*`([^`]+)`\s*\|\s*[^|]*\|\s*(.*?)\s*\|\s*$", line)
+            if match:
+                fields[match.group(1)] = match.group(2)
+        schema: dict[str, object] = {
+            "description": str(frontmatter.get("description") or "").strip(),
+            "fields": fields,
+        }
+        primary_fields = frontmatter.get("primary_fields")
+        if isinstance(primary_fields, list):
+            schema["primaryFields"] = [str(field) for field in primary_fields]
+        schemas[title] = schema
+    return schemas
 
 
 def _make_concept(
@@ -457,7 +498,21 @@ def _read_index(bundle_root: pathlib.Path, known_ids: set[str]) -> str | None:
     _, body, error = _split_document(index_path)
     markdown = index_path.read_text(encoding="utf-8") if error is not None else body
 
-    return _rewrite_internal_links(markdown, "index.md", known_ids)
+    visible_lines: list[str] = []
+    hidden_level: int | None = None
+    for line in markdown.splitlines():
+        heading = re.match(r"^(#{1,6})\s+", line)
+        if (
+            heading
+            and hidden_level is not None
+            and len(heading.group(1)) <= hidden_level
+        ):
+            hidden_level = None
+        if heading and line[len(heading.group(1)) :].strip() == "_types":
+            hidden_level = len(heading.group(1))
+        if hidden_level is None:
+            visible_lines.append(line)
+    return _rewrite_internal_links("\n".join(visible_lines), "index.md", known_ids)
 
 
 def _rewrite_internal_links(body: str, source_id: str, known_ids: set[str]) -> str:
@@ -503,6 +558,7 @@ def _render_html(
     edges: list[dict],
     log_markdown: str | None,
     index_markdown: str | None,
+    type_schemas: dict[str, dict],
 ) -> str:
     """Assemble the self-contained HTML document."""
     types = sorted({concept.type for concept in concepts})
@@ -539,6 +595,9 @@ def _render_html(
             {"name": concept_type, "color": type_colors[concept_type]}
             for concept_type in types
         ],
+        "typeSchemas": {
+            name: type_schemas[name] for name in types if name in type_schemas
+        },
         "log": log_markdown,
         "index": index_markdown,
     }
@@ -663,6 +722,9 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #doc table { border-collapse:collapse; font-size:13px; margin:12px 0; }
   #doc th, #doc td { border:1px solid var(--line); padding:6px 10px; text-align:left; }
   #doc th { background:var(--sidebar); }
+  #doc th[title] { text-decoration:underline dotted; text-underline-offset:3px; cursor:help; }
+  #doc .prop-details { margin:4px 0 16px; }
+  #doc .prop-details summary { color:var(--muted); cursor:pointer; font-size:12px; }
   #doc code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:85%; background:var(--code); padding:.15em .4em; border-radius:5px; }
   #doc pre { background:var(--code); padding:13px; border-radius:8px; overflow-x:auto; }
   #doc pre code { background:none; padding:0; }
@@ -1337,9 +1399,20 @@ function lifecycleHtml(n) {
 
 function propertiesHtml(n) {
   if (!n.properties || !n.properties.length) return '';
-  const rows = n.properties.map(([key, value]) =>
-    `<tr><th>${escapeHtml(key)}</th><td>${marked.parseInline(value)}</td></tr>`).join('');
-  return `<table class="props">${rows}</table>`;
+  const schema = DATA.typeSchemas[n.type] || {};
+  const fields = schema.fields || {};
+  const rowHtml = ([key, value]) => {
+    const help = fields[key] ? ` title="${escapeAttr(fields[key])}"` : '';
+    return `<tr><th${help}>${escapeHtml(key)}</th><td>${marked.parseInline(value)}</td></tr>`;
+  };
+  const table = rows => rows.length ? `<table class="props">${rows.map(rowHtml).join('')}</table>` : '';
+  if (!schema.primaryFields) return table(n.properties);
+  const primary = new Set(schema.primaryFields);
+  const prominent = n.properties.filter(([key]) => primary.has(key));
+  const technical = n.properties.filter(([key]) => !primary.has(key));
+  return table(prominent) + (technical.length
+    ? `<details class="prop-details"><summary>Technical details (${technical.length})</summary>${table(technical)}</details>`
+    : '');
 }
 
 function sourcesHtml(n) {
@@ -1372,12 +1445,14 @@ function openConcept(id) {
   const tagsHtml = (n.tags && n.tags.length)
     ? `<span class="tags-inline">${n.tags.map(t => `<code>${escapeHtml(t)}</code>`).join('')}</span>` : '';
   const summaryHtml = n.description ? `<p class="summary">${marked.parseInline(n.description)}</p>` : '';
+  const typeHelp = (DATA.typeSchemas[n.type] || {}).description;
+  const typeTitle = typeHelp ? ` title="${escapeAttr(typeHelp)}"` : '';
   doc.innerHTML =
     `<h1>${escapeHtml(n.title)}</h1>` +
     `<div class="meta">` +
       resourceHtml +
       `<span class="meta-right">${tagsHtml}` +
-        `<span class="badge" style="background:${n.color}">${escapeHtml(n.type)}</span>` +
+        `<span class="badge" style="background:${n.color}"${typeTitle}>${escapeHtml(n.type)}</span>` +
       `</span>` +
     `</div>` + lifecycleHtml(n) + summaryHtml + propertiesHtml(n);
   wireDocLinks(doc);

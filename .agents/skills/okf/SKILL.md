@@ -120,8 +120,12 @@ It renders an interactive knowledge graph (nodes = concepts colored by `type`,
 edges = cross-links) beside a reading panel. The reader shows each concept's
 lifecycle status, a Properties table of producer-defined keys (concept paths become
 links), the body, and its `sources` with footnotes linked to them. Descriptions and
-free-form property values render inline Markdown, with in-bundle links opening their concepts;
-titles, types, tags, and URLs remain plain labels or links. Trust/freshness
+free-form property values render inline Markdown, with in-bundle links opening their concepts.
+A local `_types/` directory can hold `Concept Type` documents: the HTML reader excludes those meta pages from
+its index and graph, uses their `# Attributes` meanings as hover help for property labels, and shows the type
+description on the type badge. A type's optional `primary_fields` list keeps those YAML fields visible while
+placing its other structured fields in collapsed Technical details. Bundles without local type documents retain
+the original property table. Titles, types, tags, and URLs remain plain labels or links. Trust/freshness
 pills and the generated/verified line are omitted from concept pages; the underlying
 v0.2 metadata remains in frontmatter and embedded data for agents and tooling. Frontmatter concept paths also
 become **labeled edges** named after their key; deprecated concepts are dimmed and

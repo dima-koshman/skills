@@ -1441,7 +1441,8 @@ function onNavConceptClick(ev, id) {
     if (toggleSelected) {
       if (expanded.has(directory)) collapseDir(directory, () => openDir(directory));
       else expandDir(directory, () => openDir(directory));
-    } else openConcept(id);
+    } else if (directory) expandDir(directory, () => openConcept(id));
+    else openConcept(id);
   };
   pendingNavClick = { id, run, timer: setTimeout(() => { pendingNavClick = null; run(); }, DOUBLE_CLICK_MS) };
 }

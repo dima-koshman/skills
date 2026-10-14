@@ -864,6 +864,51 @@ def test_site_graph_and_sidebar_clicks_share_150_ms_window(
     assert "NAV_DOUBLE_CLICK_MS" not in html
 
 
+def test_site_first_overview_click_expands_its_directory_and_opens_page(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "first-overview-click.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definition = html.match(/function onNavConceptClick\([^]*?\n}/s)[0];
+const path = 'Services/AI Gateway';
+const id = path + '.md';
+const expanded = new Set();
+const actions = [];
+let timer;
+const context = {
+  expanded, DOUBLE_CLICK_MS: 150, pendingNavClick: null,
+  directoryForNode: () => path,
+  clearTimeout() {}, setTimeout: callback => { timer = callback; return 1; },
+  expandDir: (value, done) => { expanded.add(value); actions.push(['expand', value]); done(); },
+  collapseDir: (value, done) => { expanded.delete(value); actions.push(['collapse', value]); done(); },
+  openConcept: value => actions.push(['concept', value]),
+  openDir: value => actions.push(['directory', value]),
+};
+const event = { preventDefault() {}, currentTarget: { classList: { contains: () => false } } };
+vm.runInNewContext(definition + '\nonNavConceptClick(event, id);', { ...context, event, id });
+timer();
+process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path) }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "actions": [
+            ["expand", "Services/AI Gateway"],
+            ["concept", "Services/AI Gateway.md"],
+        ],
+        "expanded": True,
+    }
+
+
 def test_site_sidebar_double_click_toggles_overview_and_collapses_concept_parent(
     bundle: pathlib.Path,
 ) -> None:
@@ -917,8 +962,8 @@ const context = {
   dirLabel: value => dirs[value].name,
   isDirId: id => id.startsWith('dir:'), dirOf: id => id.slice(4),
   parentDirOf: id => id.slice(0, id.lastIndexOf('/')),
-  expandDir: (value, done) => { actions.push(['expand', value]); expanded.add(value); done(); },
-  collapseDir: (value, done) => { actions.push(['collapse', value]); expanded.delete(value); done(); },
+  expandDir: (value, done) => { if (!expanded.has(value)) { actions.push(['expand', value]); expanded.add(value); } done(); },
+  collapseDir: (value, done) => { if (expanded.has(value)) { actions.push(['collapse', value]); expanded.delete(value); } done(); },
   openDir: value => actions.push(['open', value]),
   openConcept: value => actions.push(['concept', value]),
 };

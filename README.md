@@ -294,6 +294,12 @@ This is where our own skills live, alongside any third-party skills installed wi
 
 ## Personal preferences
 
+Turn on shell autocompletion:
+
+```sh
+autoload -Uz compinit && compinit
+```
+
 Hook for direnv:
 
 ```sh

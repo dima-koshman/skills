@@ -861,6 +861,8 @@ label.listeners.dblclick(event);
 overview.classList.add('active');
 click(overview);
 for (const callback of timers.values()) callback();
+click(overview);
+for (const callback of timers.values()) callback();
 process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path), prematureConcepts, navDelays }));
 """
     result = subprocess.run(
@@ -887,10 +889,12 @@ process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path), pre
             ["open", "Platform Services/AI Gateway"],
             ["collapse", "Platform Services/AI Gateway"],
             ["open", "Platform Services/AI Gateway"],
+            ["expand", "Platform Services/AI Gateway"],
+            ["open", "Platform Services/AI Gateway"],
         ],
-        "expanded": False,
+        "expanded": True,
         "prematureConcepts": 0,
-        "navDelays": [150, 150, 150, 150, 150, 150],
+        "navDelays": [150, 150, 150, 150, 150, 150, 150],
     }
 
 

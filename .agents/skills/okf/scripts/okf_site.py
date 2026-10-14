@@ -1434,10 +1434,12 @@ function onNavConceptClick(ev, id) {
     if (pendingNavClick.id !== id) pendingNavClick.run();
   }
   const directory = directoryForNode(id);
-  const collapseSelected = !!directory && ev.currentTarget.classList.contains('active');
+  const toggleSelected = !!directory && ev.currentTarget.classList.contains('active');
   const run = () => {
-    if (collapseSelected && expanded.has(directory)) collapseDir(directory, () => openDir(directory));
-    else openConcept(id);
+    if (toggleSelected) {
+      if (expanded.has(directory)) collapseDir(directory, () => openDir(directory));
+      else expandDir(directory, () => openDir(directory));
+    } else openConcept(id);
   };
   pendingNavClick = { id, run, timer: setTimeout(() => { pendingNavClick = null; run(); }, DOUBLE_CLICK_MS) };
 }

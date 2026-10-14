@@ -626,6 +626,126 @@ process.stdout.write(JSON.stringify({ fast: scenario(false), slow: scenario(true
     }
 
 
+def test_site_root_index_and_graph_menu_collapse_the_same_directory_state(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "collapse-all.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    html = output.read_text()
+    menu = re.search(r'<div id="node-menu"[^>]*>(.*?)</div>', html, re.S)
+    assert menu is not None
+    assert 'data-action="collapse-all"' in menu.group(1)
+    assert "cy.on('cxttap', ev => {" in html
+    assert "function collapseAllDirs(" in html
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const names = ['setExpanded', 'collapseAllDirs', 'openIndex', 'onNodeMenuAction'];
+const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
+const expanded = new Set(['Services', 'Services/API', 'People']);
+const snapshots = [];
+const events = [];
+const context = {
+  expanded,
+  dirs: {Services: {}, 'Services/API': {}, People: {}},
+  syncGraph: done => { snapshots.push([...expanded].sort()); if (done) done(); },
+  stopViewportMotion: () => events.push(['stop']),
+  closeMobilePanels: () => {},
+  main: {classList: {remove: () => {}}},
+  document: {createElement: () => ({className: '', innerHTML: ''})},
+  marked: {parse: value => value},
+  DATA: {index: '# Catalog'},
+  doc: {innerHTML: '', appendChild: () => {}, scrollTop: 3},
+  wireDocLinks: () => {},
+  setActiveNav: id => events.push(['active', id]),
+  clearHighlight: () => events.push(['highlight']),
+  history: {replaceState: (...args) => events.push(['hash', args[2]])},
+  relayout: () => events.push(['layout']),
+  directoryForNode: () => null,
+};
+vm.runInNewContext(definitions + '\nopenIndex(); expanded.add("Services"); expanded.add("People"); onNodeMenuAction("collapse-all", null);', context);
+process.stdout.write(JSON.stringify({expanded: [...expanded], snapshots, events}));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "expanded": [],
+        "snapshots": [[], []],
+        "events": [
+            ["active", "index"],
+            ["hash", "#index"],
+            ["stop"],
+            ["highlight"],
+            ["layout"],
+            ["stop"],
+            ["highlight"],
+            ["layout"],
+        ],
+    }
+
+
+def test_site_background_context_menu_dispatches_collapse_all(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "background-menu.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const show = html.match(/function showGraphMenu\([^]*?\n}/s)[0];
+const background = html.match(/cy\.on\('cxttap', ev => \{[^]*?\n\}\);/s)[0];
+const click = html.match(/nodeMenu\.addEventListener\('click', ev => \{[^]*?\n\}\);/s)[0];
+const buttons = ['focus', 'toggle', 'collapse-parent', 'collapse-all'].map(action => ({
+  dataset: {action}, hidden: action === 'collapse-all', focus() {},
+}));
+const byAction = Object.fromEntries(buttons.map(button => [button.dataset.action, button]));
+let clickHandler;
+let backgroundHandler;
+const actions = [];
+const menu = {hidden: true, style: {}, offsetWidth: 100, offsetHeight: 100,
+  querySelectorAll: () => buttons,
+  querySelector: selector => byAction[selector.match(/data-action="([^"]+)"/)[1]],
+  addEventListener: (name, handler) => {if (name === 'click') clickHandler = handler;},
+};
+const cy = {on: (name, handler) => {if (name === 'cxttap') backgroundHandler = handler;}};
+const context = {
+  cy, nodeMenu: menu, graphContainer: {clientWidth: 500, clientHeight: 500},
+  hideNodeMenu: () => {menu.hidden = true;},
+  onNodeMenuAction: (action, id) => actions.push([action, id]),
+  clearTimeout: () => {},
+};
+vm.runInNewContext('let menuNodeId = "old"; let pendingClick = null;\n' + show + '\n' + background + '\n' + click, context);
+backgroundHandler({target: {id: () => 'leaf'}, renderedPosition: {x: 20, y: 20}});
+const nodeIgnored = menu.hidden;
+backgroundHandler({target: cy, renderedPosition: {x: 20, y: 20}});
+const visible = !menu.hidden;
+const shown = buttons.filter(button => !button.hidden).map(button => button.dataset.action);
+clickHandler({target: {closest: () => byAction['collapse-all']}});
+process.stdout.write(JSON.stringify({nodeIgnored, visible, shown, hiddenAfterClick: menu.hidden, actions}));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "nodeIgnored": True,
+        "visible": True,
+        "shown": ["collapse-all"],
+        "hiddenAfterClick": True,
+        "actions": [["collapse-all", None]],
+    }
+
+
 def test_site_node_menu_orders_focus_before_directory_action(
     bundle: pathlib.Path,
 ) -> None:
@@ -638,6 +758,7 @@ def test_site_node_menu_orders_focus_before_directory_action(
         "focus",
         "toggle",
         "collapse-parent",
+        "collapse-all",
     ]
     javascript = r"""
 const fs = require('node:fs');

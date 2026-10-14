@@ -722,6 +722,7 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
             <button type="button" role="menuitem" data-action="focus">Center and show connections</button>
             <button type="button" role="menuitem" data-action="toggle">Collapse into parent directory</button>
             <button type="button" role="menuitem" data-action="collapse-parent" hidden>Collapse into parent directory</button>
+            <button type="button" role="menuitem" data-action="collapse-all" hidden>Collapse all</button>
           </div>
         </div>
       </div>
@@ -975,6 +976,7 @@ function setExpanded(paths, open, done) {
 }
 function expandDir(path, done) { setExpanded([...ancestorsOf(path + '/x'), path], true, done); }
 function collapseDir(path, done) { setExpanded([path], false, done); }
+function collapseAllDirs(done) { stopViewportMotion(); setExpanded([...expanded], false, done); }
 function revealConcept(id, done) { setExpanded(ancestorsOf(id), true, done); }
 
 function separateOverlaps(fitAll, iterations = 60, pad = 10) {
@@ -1143,7 +1145,10 @@ function hideNodeMenu() {
 
 function showNodeMenu(id, position) {
   menuNodeId = id;
+  nodeMenu.querySelector('[data-action="focus"]').hidden = false;
+  nodeMenu.querySelector('[data-action="collapse-all"]').hidden = true;
   const toggle = nodeMenu.querySelector('[data-action="toggle"]');
+  toggle.hidden = false;
   const collapseParent = nodeMenu.querySelector('[data-action="collapse-parent"]');
   const directory = directoryForNode(id);
   toggle.textContent = directory ? (expanded.has(directory) ? 'Collapse directory' : 'Expand directory') : 'Collapse into parent directory';
@@ -1155,8 +1160,20 @@ function showNodeMenu(id, position) {
   nodeMenu.querySelector('[data-action="focus"]').focus();
 }
 
+function showGraphMenu(position) {
+  menuNodeId = null;
+  nodeMenu.querySelectorAll('button[data-action]').forEach(button => {
+    button.hidden = button.dataset.action !== 'collapse-all';
+  });
+  nodeMenu.hidden = false;
+  nodeMenu.style.left = Math.max(0, Math.min(position.x, graphContainer.clientWidth - nodeMenu.offsetWidth - 4)) + 'px';
+  nodeMenu.style.top = Math.max(0, Math.min(position.y, graphContainer.clientHeight - nodeMenu.offsetHeight - 4)) + 'px';
+  nodeMenu.querySelector('[data-action="collapse-all"]').focus();
+}
+
 function onNodeMenuAction(action, id) {
-  if (action === 'focus') focusConnections(id);
+  if (action === 'collapse-all') collapseAllDirs(() => { clearHighlight(); relayout(); });
+  else if (action === 'focus') focusConnections(id);
   else if (action === 'toggle') {
     const directory = directoryForNode(id);
     if (directory) toggleDirectory(directory);
@@ -1169,7 +1186,7 @@ function onNodeMenuAction(action, id) {
 
 nodeMenu.addEventListener('click', ev => {
   const button = ev.target.closest('button[data-action]');
-  if (!button || !menuNodeId) return;
+  if (!button || (!menuNodeId && button.dataset.action !== 'collapse-all')) return;
   const id = menuNodeId;
   hideNodeMenu();
   onNodeMenuAction(button.dataset.action, id);
@@ -1178,6 +1195,12 @@ cy.on('cxttap', 'node', ev => {
   if (pendingClick) { clearTimeout(pendingClick.timer); pendingClick = null; }
   if (ev.originalEvent) ev.originalEvent.preventDefault();
   showNodeMenu(ev.target.id(), ev.renderedPosition);
+});
+cy.on('cxttap', ev => {
+  if (ev.target !== cy) return;
+  if (pendingClick) { clearTimeout(pendingClick.timer); pendingClick = null; }
+  if (ev.originalEvent) ev.originalEvent.preventDefault();
+  showGraphMenu(ev.renderedPosition);
 });
 cy.on('dragpan scrollzoom pinchzoom', hideNodeMenu);
 document.getElementById('graph').addEventListener('contextmenu', ev => ev.preventDefault());
@@ -1363,7 +1386,7 @@ function openConcept(id) {
 }
 
 function openIndex() {
-  // The bundle-root index.md is the landing page: catalog in the reader, whole graph.
+  // The bundle-root index.md is the landing page: catalog in the reader, every directory collapsed.
   closeMobilePanels();
   main.classList.remove('graph-only');
   const body = document.createElement('div');
@@ -1374,9 +1397,8 @@ function openIndex() {
   wireDocLinks(body);
   doc.scrollTop = 0;
   setActiveNav('index');
-  clearHighlight();
   history.replaceState(null, '', '#index');
-  relayout();
+  collapseAllDirs(() => { clearHighlight(); relayout(); });
 }
 
 function openDir(path) {

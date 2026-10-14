@@ -341,19 +341,21 @@ Alias for uv run python - mostly for coding agents.
 alias python='uv run python'
 ```
 
-Clear the macOS quarantine flag from the `claude` and `codex` Homebrew cask binaries after each
-`brew upgrade`. Without this, macOS blocks the new binary until it is allowed in System Settings →
+Clear the macOS quarantine flag from the `claude` and `codex` Homebrew cask binaries, and Codex's
+`codex-code-mode-host` helper next to `codex`, after each `brew upgrade`. Without this, macOS blocks the new binary until it is allowed in System Settings →
 Privacy & Security:
 
 ```sh
 unquarantine-claude-codex() {
- local bin file
- for bin in claude codex; do
-  file="$(readlink -f "$(command -v "$bin")")"
+ local codex file
+ codex="$(readlink -f "$(command -v codex)")"
+ # codex-code-mode-host ships next to codex and runs Code Mode scripts (Codex's shell commands, among others).
+ for file in "$(readlink -f "$(command -v claude)")" "$codex" "${codex:h}/codex-code-mode-host"; do
+  [[ -e "$file" ]] || { echo "missing ${file:t}"; continue; }
   if xattr -p com.apple.quarantine "$file" >/dev/null 2>&1; then
-   xattr -d com.apple.quarantine "$file" && echo "unquarantined $bin"
+   xattr -d com.apple.quarantine "$file" && echo "unquarantined ${file:t}"
   else
-   echo "$bin already clean"
+   echo "${file:t} already clean"
   fi
  done
 }

@@ -521,8 +521,12 @@ const siblings = services.children[1].children;
 const merged = siblings.filter(li => li.dataset.dir === 'Platform Services/AI Gateway');
 const overviewLinks = siblings.flatMap(li => li.children[0].children || [])
   .filter(el => el.dataset.id === 'Platform Services/AI Gateway.md');
+const overviewColor = data.nodes.find(n => n.id === 'Platform Services/AI Gateway.md').color;
+const linkMarkup = overviewLinks[0].innerHTML;
 process.stdout.write(JSON.stringify({ merged: merged.length, siblings: siblings.length,
-  overviewLinks: overviewLinks.length, children: merged[0].children[1].children.length }));
+  overviewLinks: overviewLinks.length, children: merged[0].children[1].children.length,
+  dotBeforeTitle: linkMarkup === '<span class="dot" style="background:' + overviewColor +
+    '"></span><span>AI Gateway</span>' }));
 """
     result = subprocess.run(
         ["node", "-e", javascript, str(output)],
@@ -536,6 +540,7 @@ process.stdout.write(JSON.stringify({ merged: merged.length, siblings: siblings.
         "siblings": 1,
         "overviewLinks": 1,
         "children": 1,
+        "dotBeforeTitle": True,
     }
 
 

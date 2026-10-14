@@ -1460,7 +1460,7 @@ function renderTree(tree, prefix = '') {
       link.href = '#' + encodeURIComponent(overview.id);
       link.dataset.id = overview.id;
       if (overview.status && overview.status !== 'stable') link.classList.add(overview.status);
-      link.textContent = overview.title;
+      link.innerHTML = `<span class="dot" style="background:${overview.color}"></span><span>${escapeHtml(overview.title)}</span>`;
       link.addEventListener('click', ev => { ev.preventDefault(); openConcept(overview.id); });
       const count = document.createElement('span');
       count.className = 'count';

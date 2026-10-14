@@ -126,8 +126,9 @@ become **labeled edges** named after their key; deprecated concepts are dimmed a
 dashed, drafts dashed. Every directory starts **collapsed**: the sidebar tree and the graph share one
 expanded/collapsed state. A directory without an overview is one grey rounded node, sized by its concept count; when
 `<directory>.md` exists beside it, that concept and directory share one colored graph node and one sidebar section.
-The sidebar title opens the overview content, its caret toggles the children, and the merged graph node expands or
-collapses its own children on double-click. Concept links keep the overview file's original path. Other concept nodes
+The sidebar title carries the concept type's colored dot and opens the overview content, its caret toggles the
+children, and the merged graph node expands or collapses its own children on double-click. Concept links keep the
+overview file's original path. Other concept nodes
 collapse into their parent directory on double-click, and opening a concept (link, search, URL hash) expands its
 ancestors. A single click centers a node, reveals the directories containing its linked concepts, and highlights
 only that node, its edges and its directly connected nodes. Right-clicking a node opens the same focus action first,

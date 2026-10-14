@@ -73,6 +73,11 @@ silently escalating permissions.
   `gemini-3.1-pro-high` or `claude-opus-5-5-high`. Without it, each CLI uses its configured default.
 - `--cd DIR` runs the subagent in another directory; the CLIs work in their current directory, and
   `opencode run` has no directory flag of its own.
+- Check the subscription quota before a long delegation, without spending model calls:
+  `claude -p "/usage"` (session and weekly %), `agy -p "/quota"` (tab-separated remaining % per model
+  group; `agy -p "/usage"` is not a command and goes to the model), and Codex's newest
+  `~/.codex/sessions/**/rollout-*.jsonl` `rate_limits` event (5-hour and weekly `used_percent`, as of
+  its last turn). `opencode stats` has local token totals only.
 
 ## Long tasks
 

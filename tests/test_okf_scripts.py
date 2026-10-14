@@ -477,6 +477,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const html = fs.readFileSync(process.argv[1], 'utf8');
 const handler = html.match(/cy\.on\('tap', ev => \{[^]*?\n\}\);/s)[0];
+const doubleClick = html.match(/function handleGraphDoubleClick\(target\) \{[^]*?\n\}/s)[0];
 const handlers = {};
 const actions = [];
 const timers = new Map();
@@ -489,7 +490,7 @@ const context = { cy, DOUBLE_CLICK_MS: 150,
   onSingleClick: target => actions.push(['single', target.id()]),
   onDoubleClick: target => actions.push(['double', target.id()]),
 };
-vm.runInNewContext('let pendingClick = null;\n' + handler, context);
+vm.runInNewContext('let pendingClick = null; let lastGraphDouble = null;\n' + doubleClick + '\n' + handler, context);
 handlers.tap({ target: { id: () => 'People/ana.md' } });
 handlers.tap({ target: { id: () => 'People/ana.md' } });
 process.stdout.write(JSON.stringify({ actions, pendingTimers: timers.size, delays: [...timers.values()].map(t => t.delay) }));
@@ -505,6 +506,58 @@ process.stdout.write(JSON.stringify({ actions, pendingTimers: timers.size, delay
         "actions": [["double", "People/ana.md"]],
         "pendingTimers": 0,
         "delays": [],
+    }
+
+
+def test_site_graph_native_double_tap_is_a_fallback_without_duplicate_action(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "native-double-tap.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    html = output.read_text()
+    assert "cy.on('dbltap', ev => {" in html
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const helper = html.match(/function handleGraphDoubleClick\(target\) \{[^]*?\n\}/s)[0];
+const tap = html.match(/cy\.on\('tap', ev => \{[^]*?\n\}\);/s)[0];
+const dbltap = html.match(/cy\.on\('dbltap', ev => \{[^]*?\n\}\);/s)[0];
+function scenario(slow) {
+  const handlers = {}, actions = [], timers = new Map();
+  let nextTimer = 0;
+  const cy = { on: (event, callback) => { handlers[event] = callback; } };
+  const context = { cy, DOUBLE_CLICK_MS: 150,
+    hideNodeMenu() {},
+    setTimeout: callback => { const id = ++nextTimer; timers.set(id, callback); return id; },
+    clearTimeout: id => timers.delete(id),
+    onSingleClick: target => actions.push(['single', target.id()]),
+    onDoubleClick: target => actions.push(['double', target.id()]),
+  };
+  vm.runInNewContext('let pendingClick = null; let lastGraphDouble = null;\n' + helper + '\n' + tap + '\n' + dbltap, context);
+  const first = { id: () => 'People/ana.md' };
+  const second = { id: () => 'People/ana.md' };
+  handlers.tap({ target: first });
+  if (slow) for (const [id, callback] of timers) { timers.delete(id); callback(); }
+  handlers.tap({ target: second });
+  handlers.dbltap({ target: second });
+  return { actions, pendingTimers: timers.size };
+}
+process.stdout.write(JSON.stringify({ fast: scenario(false), slow: scenario(true) }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "fast": {"actions": [["double", "People/ana.md"]], "pendingTimers": 0},
+        "slow": {
+            "actions": [["single", "People/ana.md"], ["double", "People/ana.md"]],
+            "pendingTimers": 0,
+        },
     }
 
 

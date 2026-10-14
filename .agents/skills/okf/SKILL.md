@@ -139,7 +139,8 @@ its own-directory toggle (or parent collapse for a leaf), then a third "Collapse
 for nested directories, including directory overviews. Double-clicking empty space or an edge fits the whole graph.
 Graph and sidebar concept clicks share a ~150 ms window so a double-click can take precedence without making ordinary
 navigation feel slow. The graph matches taps by node ID because Cytoscape can provide different target wrappers for
-the same node. The full layout uses fcose (cose as fallback); expanding or collapsing places only
+the same node; Cytoscape's native double-tap event catches slower pairs without delaying single clicks or repeating
+the double-click action. The full layout uses fcose (cose as fallback); expanding or collapsing places only
 the new nodes around their anchor, and "↻ Re-layout" redoes the full layout. The output is a build artifact — regenerate it, don't
 hand-edit, and consider git-ignoring it.
 

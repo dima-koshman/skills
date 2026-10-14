@@ -1039,6 +1039,14 @@ function separateOverlaps(fitAll, iterations = 60, pad = 10) {
 // register as two single clicks.
 const DOUBLE_CLICK_MS = 150;
 let pendingClick = null;
+let lastGraphDouble = null;
+function handleGraphDoubleClick(target) {
+  const id = target === cy ? null : target.id();
+  const now = Date.now();
+  if (lastGraphDouble && lastGraphDouble.id === id && now - lastGraphDouble.at < DOUBLE_CLICK_MS * 2) return;
+  lastGraphDouble = { id, at: now };
+  onDoubleClick(target);
+}
 cy.on('tap', ev => {
   hideNodeMenu();
   const target = ev.target;
@@ -1046,12 +1054,24 @@ cy.on('tap', ev => {
   if (pendingClick && pendingClick.id === targetId) {
     clearTimeout(pendingClick.timer);
     pendingClick = null;
-    onDoubleClick(target);
+    handleGraphDoubleClick(target);
     return;
   }
   if (pendingClick) { clearTimeout(pendingClick.timer); pendingClick.run(); }   // a click elsewhere settles the previous one
   const run = () => onSingleClick(target);
   pendingClick = { id: targetId, run, timer: setTimeout(() => { pendingClick = null; run(); }, DOUBLE_CLICK_MS) };
+});
+// Cytoscape also recognises slower double taps. Keep the 150 ms single-click delay,
+// but let its native event finish the double action when our tap window has elapsed.
+cy.on('dbltap', ev => {
+  const target = ev.target;
+  const targetId = target === cy ? null : target.id();
+  if (pendingClick) {
+    clearTimeout(pendingClick.timer);
+    if (pendingClick.id !== targetId) pendingClick.run();
+    pendingClick = null;
+  }
+  handleGraphDoubleClick(target);
 });
 
 function onSingleClick(target) {

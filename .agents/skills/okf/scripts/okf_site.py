@@ -1055,14 +1055,9 @@ function onSingleClick(target) {
   focusConnections(target.id());
 }
 
-// Double-click: a directory node expands; a concept node collapses its directory;
-// empty space or an edge resets the zoom to fit everything.
-function onDoubleClick(target) {
-  if (target === cy || target.isEdge()) {
-    cy.animate({ fit: { eles: cy.elements(), padding: 30 } }, { duration: 300 });
-    return;
-  }
-  const id = target.id();
+// Double-click a directory-overview to toggle its children, or a concept to
+// collapse its parent. The graph and sidebar share this path-based action.
+function onNodeDoubleClick(id) {
   const directory = directoryForNode(id);
   if (directory) {
     if (expanded.has(directory)) collapseDir(directory, () => openDir(directory));
@@ -1071,6 +1066,15 @@ function onDoubleClick(target) {
     const parent = parentDirOf(id);
     if (parent) collapseDir(parent, () => openDir(parent));
   }
+}
+
+// Empty graph space or an edge resets the zoom to fit everything.
+function onDoubleClick(target) {
+  if (target === cy || target.isEdge()) {
+    cy.animate({ fit: { eles: cy.elements(), padding: 30 } }, { duration: 300 });
+    return;
+  }
+  onNodeDoubleClick(target.id());
 }
 
 // Reveal the actual concepts behind links to collapsed directory nodes. For a
@@ -1421,6 +1425,28 @@ function buildTree(nodes) {
   return root;
 }
 
+let pendingNavClick = null;
+function onNavConceptClick(ev, id) {
+  ev.preventDefault();
+  if (pendingNavClick) {
+    clearTimeout(pendingNavClick.timer);
+    if (pendingNavClick.id !== id) pendingNavClick.run();
+  }
+  const run = () => openConcept(id);
+  pendingNavClick = { id, run, timer: setTimeout(() => { pendingNavClick = null; run(); }, DOUBLE_CLICK_MS) };
+}
+
+function onNavConceptDoubleClick(ev, id) {
+  ev.preventDefault();
+  ev.stopPropagation();
+  if (pendingNavClick) {
+    clearTimeout(pendingNavClick.timer);
+    if (pendingNavClick.id !== id) pendingNavClick.run();
+    pendingNavClick = null;
+  }
+  onNodeDoubleClick(id);
+}
+
 function renderTree(tree, prefix = '') {
   const ul = document.createElement('ul');
   // Standalone concepts first; same-named overviews live in their directory entry.
@@ -1431,7 +1457,8 @@ function renderTree(tree, prefix = '') {
     a.dataset.id = n.id;
     if (n.status && n.status !== 'stable') a.classList.add(n.status);
     a.innerHTML = `<span class="dot" style="background:${n.color}"></span><span>${escapeHtml(n.title)}</span>`;
-    a.addEventListener('click', ev => { ev.preventDefault(); openConcept(n.id); });
+    a.addEventListener('click', ev => onNavConceptClick(ev, n.id));
+    a.addEventListener('dblclick', ev => onNavConceptDoubleClick(ev, n.id));
     li.appendChild(a);
     ul.appendChild(li);
   });
@@ -1454,20 +1481,22 @@ function renderTree(tree, prefix = '') {
       caret.setAttribute('aria-label', 'Expand or collapse ' + overview.title);
       caret.setAttribute('aria-expanded', 'false');
       caret.textContent = '▸';
-      caret.addEventListener('click', ev => { ev.stopPropagation(); toggle(); });
+      caret.addEventListener('click', ev => { ev.stopPropagation(); if (ev.detail < 2) toggle(); });
+      caret.addEventListener('dblclick', ev => { ev.preventDefault(); ev.stopPropagation(); });
       const link = document.createElement('a');
       link.className = 'overview-link';
       link.href = '#' + encodeURIComponent(overview.id);
       link.dataset.id = overview.id;
       if (overview.status && overview.status !== 'stable') link.classList.add(overview.status);
       link.innerHTML = `<span class="dot" style="background:${overview.color}"></span><span>${escapeHtml(overview.title)}</span>`;
-      link.addEventListener('click', ev => { ev.preventDefault(); openConcept(overview.id); });
+      link.addEventListener('click', ev => onNavConceptClick(ev, overview.id));
       const count = document.createElement('span');
       count.className = 'count';
       count.textContent = dirs[path].concepts.length;
       label.appendChild(caret);
       label.appendChild(link);
       label.appendChild(count);
+      label.addEventListener('dblclick', ev => onNavConceptDoubleClick(ev, overview.id));
     } else {
       label.title = 'Click to expand or collapse (also in the graph)';
       label.innerHTML = `<span class="caret">▸</span><span>${escapeHtml(dirLabel(path))}</span>` +

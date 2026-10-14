@@ -607,7 +607,7 @@ def test_site_merged_node_toggles_own_directory_and_opens_its_page(
 const fs = require('node:fs');
 const vm = require('node:vm');
 const html = fs.readFileSync(process.argv[1], 'utf8');
-const names = ['directoryForNode', 'onDoubleClick', 'openDir'];
+const names = ['directoryForNode', 'onNodeDoubleClick', 'onDoubleClick', 'openDir'];
 const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
 const path = 'Platform Services/AI Gateway';
 const id = path + '.md';
@@ -762,6 +762,113 @@ process.stdout.write(JSON.stringify(vm.runInNewContext(definition + '\ngraphCoun
     )
     assert result.returncode == 0, result.stderr
     assert json.loads(result.stdout) == {"concepts": 2, "directories": 2}
+
+
+def test_site_sidebar_double_click_toggles_overview_and_collapses_concept_parent(
+    bundle: pathlib.Path,
+) -> None:
+    _write(
+        bundle / "Platform Services/AI Gateway/repo.md",
+        {"type": "Repository", "title": "Repo"},
+        "Child repository.",
+    )
+    _write(
+        bundle / "Platform Services/AI Gateway.md",
+        {"type": "Service", "title": "AI Gateway"},
+        "Gateway overview.",
+    )
+    output = bundle.parent / "sidebar-double-click.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
+const names = ['directoryForNode', 'onNodeDoubleClick', 'onNavConceptClick', 'onNavConceptDoubleClick', 'buildTree', 'renderTree'];
+const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
+function element(tag) {
+  return { tag, children: [], dataset: {}, listeners: {}, className: '', innerHTML: '',
+    classList: { add() {} }, setAttribute() {},
+    addEventListener(name, callback) { this.listeners[name] = callback; },
+    appendChild(child) { this.children.push(child); } };
+}
+const dirs = {};
+for (const n of data.nodes) {
+  const parts = n.id.split('/');
+  for (let i = 1; i < parts.length; i++) {
+    const path = parts.slice(0, i).join('/');
+    (dirs[path] ||= { name: parts[i - 1], concepts: [] }).concepts.push(n.id);
+  }
+}
+const path = 'Platform Services/AI Gateway';
+dirs[path].overviewId = path + '.md';
+const expanded = new Set(['Platform Services', path]);
+const actions = [];
+const timers = new Map();
+let nextTimer = 0;
+const context = {
+  DATA: data, dirs, expanded, document: { createElement: element },
+  DOUBLE_CLICK_MS: 250, pendingNavClick: null,
+  setTimeout: callback => { const id = ++nextTimer; timers.set(id, callback); return id; },
+  clearTimeout: id => timers.delete(id),
+  escapeHtml: value => value, escapeAttr: value => value,
+  dirLabel: value => dirs[value].name,
+  isDirId: id => id.startsWith('dir:'), dirOf: id => id.slice(4),
+  parentDirOf: id => id.slice(0, id.lastIndexOf('/')),
+  expandDir: (value, done) => { actions.push(['expand', value]); expanded.add(value); done(); },
+  collapseDir: (value, done) => { actions.push(['collapse', value]); expanded.delete(value); done(); },
+  openDir: value => actions.push(['open', value]),
+  openConcept: value => actions.push(['concept', value]),
+};
+const tree = vm.runInNewContext(definitions + '\nrenderTree(buildTree(DATA.nodes))', context);
+const services = tree.children.find(li => li.dataset.dir === 'Platform Services');
+const merged = services.children[1].children.find(li => li.dataset.dir === path);
+const label = merged.children[0];
+const overview = label.children.find(el => el.dataset.id === path + '.md');
+const child = merged.children[1].children.find(li => li.children[0].dataset.id === path + '/repo.md').children[0];
+const event = { preventDefault() {}, stopPropagation() {} };
+label.listeners.dblclick(event);
+label.listeners.dblclick(event);
+child.listeners.click(event);
+child.listeners.click(event);
+child.listeners.dblclick(event);
+overview.listeners.click(event);
+overview.listeners.click(event);
+label.listeners.dblclick(event);
+for (const callback of timers.values()) callback();
+const prematureConcepts = actions.filter(action => action[0] === 'concept').length;
+overview.listeners.click(event);
+for (const callback of timers.values()) callback();
+const caret = label.children[0];
+caret.listeners.click({ stopPropagation() {}, detail: 1 });
+caret.listeners.click({ stopPropagation() {}, detail: 2 });
+caret.listeners.dblclick(event);
+process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path), prematureConcepts }));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "actions": [
+            ["collapse", "Platform Services/AI Gateway"],
+            ["open", "Platform Services/AI Gateway"],
+            ["expand", "Platform Services/AI Gateway"],
+            ["open", "Platform Services/AI Gateway"],
+            ["collapse", "Platform Services/AI Gateway"],
+            ["open", "Platform Services/AI Gateway"],
+            ["expand", "Platform Services/AI Gateway"],
+            ["open", "Platform Services/AI Gateway"],
+            ["concept", "Platform Services/AI Gateway.md"],
+            ["collapse", "Platform Services/AI Gateway"],
+            ["open", "Platform Services/AI Gateway"],
+        ],
+        "expanded": False,
+        "prematureConcepts": 0,
+    }
 
 
 def _write(path: pathlib.Path, frontmatter: dict[str, object], body: str) -> None:

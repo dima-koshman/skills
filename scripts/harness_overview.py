@@ -91,6 +91,14 @@ SECTIONS = {
 
 SECRET_VALUES: list[str] = []
 CAPTURE = True  # --no-capture turns off the mock-API request captures
+# Each subscription's own usage page. None of the CLIs expose the OpenCode workspace id (only an API key is stored),
+# so its link defaults to the console root; pass --opencode-console (or OPENCODE_CONSOLE_URL) for the workspace page.
+USAGE_PAGES = {
+    "claude": "https://claude.ai/new#settings/usage",
+    "codex": "https://chatgpt.com/settings/usage?tab=overview",
+    "opencode": os.environ.get("OPENCODE_CONSOLE_URL") or "https://opencode.ai/console",
+    "agy": "https://gemini.google.com/usage",
+}
 
 try:
     import tiktoken
@@ -1318,11 +1326,27 @@ def codex(cwd: Path, project: Path | None, usage: bool) -> Harness:
                         "resets": local_time(w.get("resetsAt")),
                     }
                 )
+        credits = result.get("rateLimitResetCredits") or {}
+        resets = [
+            {
+                "title": c.get("title") or "reset",
+                "expires": local_time(c.get("expiresAt"))
+                if c.get("expiresAt")
+                else "never",
+            }
+            for c in sorted(
+                credits.get("credits") or [],
+                key=lambda c: c.get("expiresAt") or float("inf"),
+            )
+            if c.get("status") == "available"
+        ]
         h.usage = {
             "source": "codex app-server: account/rateLimits/read",
             "as_of": "now",
             "plan": limits.get("planType") or "",
             "rows": rows,
+            "resets_available": credits.get("availableCount"),
+            "resets": resets,
             "raw": mask(
                 json.dumps(
                     {k: v for k, v in result.items() if k != "accountId"}, indent=2
@@ -1845,11 +1869,18 @@ def main() -> None:
         help="skip capturing the model requests through a local mock API",
     )
     parser.add_argument(
+        "--opencode-console",
+        help="OpenCode console URL for the usage link, e.g. https://opencode.ai/console/<workspace>/go "
+        "(default: $OPENCODE_CONSOLE_URL or the console root)",
+    )
+    parser.add_argument(
         "--open", action="store_true", help="open index.html when done (macOS `open`)"
     )
     args = parser.parse_args()
 
     SECRET_VALUES.extend(known_secrets())
+    if args.opencode_console:
+        USAGE_PAGES["opencode"] = args.opencode_console
     global CAPTURE
     CAPTURE = not args.no_capture
     project = (
@@ -1884,6 +1915,7 @@ def main() -> None:
                 f"{len(h.prompts):>2} instruction parts"
                 + (f"  ({len(h.errors)} errors)" if h.errors else "")
             )
+            h.usage["page"] = USAGE_PAGES.get(h.key, "")
             harnesses.append(asdict(h))
     PROBE_POOL.shutdown(wait=False, cancel_futures=True)
 

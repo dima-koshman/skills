@@ -49,14 +49,17 @@ const mcpTokens = h => h.servers.filter(s => s.status === 'connected').reduce((a
 
 function usageBlock(h) {
   const u = h.usage || {};
-  if (!u.source) return '<dd class="muted">not collected</dd>';
+  const page = u.page ? ` · <a href="${esc(u.page)}" target="_blank" rel="noopener">usage page ↗</a>` : '';
+  if (!u.source) return `<dd class="muted">not collected${page}</dd>`;
+  const resets = u.resets_available != null ? `<div class="urow"><div class="ulabel"><span>Reset credits</span><b>${u.resets_available} available</b></div>
+    ${(u.resets || []).map(r => `<div class="kv">${esc(r.title)} · expires ${esc(r.expires)}</div>`).join('')}</div>` : '';
   const rows = (u.rows || []).map(r => {
     const level = r.used >= 90 ? 'bad' : r.used >= 70 ? 'warn' : 'ok';
     return `<div class="urow"><div class="ulabel"><span>${esc(r.label)}</span><b>${r.used}%</b></div>
       <div class="ubar"><i class="${level}" style="width:${Math.min(100, r.used)}%"></i></div>${r.resets ? `<div class="kv">resets ${esc(r.resets)}</div>` : ''}</div>`;
   }).join('');
-  return `<dd>${u.plan ? `<span class="chip">${esc(u.plan)} plan</span>` : ''}${rows || '<div class="muted">no limits exposed</div>'}
-    <div class="kv">${esc(u.source)}${u.as_of && u.as_of !== 'now' ? ` · as of ${esc(u.as_of)}` : ''}${u.raw ? ` · <a href="#" class="rawlink" data-k="${h.key}">raw output</a>` : ''}</div></dd>`;
+  return `<dd>${u.plan ? `<span class="chip">${esc(u.plan)} plan</span>` : ''}${rows || '<div class="muted">no limits exposed</div>'}${resets}
+    <div class="kv">${esc(u.source)}${u.as_of && u.as_of !== 'now' ? ` · as of ${esc(u.as_of)}` : ''}${u.raw ? ` · <a href="#" class="rawlink" data-k="${h.key}">raw output</a>` : ''}${page}</div></dd>`;
 }
 
 function hookList(h) {

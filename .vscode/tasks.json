@@ -10,6 +10,11 @@
     "problemMatcher": [],
     "tasks": [
         {
+            "label": "Harnesses: build overview and open",
+            "detail": "Build the generic Claude Code, Codex, OpenCode and Antigravity harness overview. Global scope shows host configuration; project scope inspects the active workspace. Output is written to this project's dev/harness-overview/ and opened in the browser. The collector may take about 25 seconds.",
+            "command": "uv run --no-project --with tiktoken python \"$HOME/Projects/dima/scripts/harness_overview.py\" --scope ${input:overviewScope} --project \"${workspaceFolder}\" --open"
+        },
+        {
             "label": "Setup: update and upgrade Homebrew, npm",
             "command": "brew update && brew upgrade --yes && npm update -g"
         },
@@ -340,6 +345,13 @@
         }
     ],
     "inputs": [
+        {
+            "id": "overviewScope",
+            "type": "pickString",
+            "description": "global: host harness configuration; project: include this workspace's configuration",
+            "options": ["global", "project"],
+            "default": "global"
+        },
         {
             "id": "worktreeBranch",
             "type": "promptString",

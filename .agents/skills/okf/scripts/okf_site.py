@@ -7,13 +7,14 @@ Walks an OKF bundle, parses each concept's frontmatter and body, and writes one
 self-contained ``okf-site.html`` with:
 
 * a left navigation sidebar mirroring the bundle's directory structure, with a
-  link to the bundle's ``log.md`` pinned at the bottom,
+  link to the bundle's ``log.md`` pinned at the bottom and non-Markdown assets
+  opening in new tabs,
 * a main reading area that renders the selected concept's markdown (via
-  marked.js) with its in-bundle cross-links wired to navigate the bundle, and
-* an interactive knowledge graph below the reader (nodes = concepts colored by
-  ``type``, edges = cross-links) built with Cytoscape.js. On first load the graph
-  fills the main area; selecting a concept highlights its node and immediate
-  links while dimming the rest.
+  marked.js) with its in-bundle cross-links wired to navigate the bundle,
+* a right pane showing unique inbound concept links by default, with a toggle
+  for the Cytoscape.js graph (nodes = concepts colored by ``type``; edges =
+  cross-links), and
+* Back and Forward controls following browser history through reader pages.
 
 The reader shows lifecycle ``status`` (draft and deprecated concepts are also
 styled in the graph and tree) and ``sources`` with ``[^id]`` footnotes linked to
@@ -40,6 +41,7 @@ import dataclasses
 import datetime
 import html
 import json
+import os
 import pathlib
 import posixpath
 import re
@@ -160,6 +162,24 @@ def render(
     """
     now = now or datetime.datetime.now(datetime.UTC)
     concepts, warnings = _collect_concepts(bundle_root, now)
+    assets = _collect_assets(bundle_root, output_path)
+    asset_hrefs = {asset["id"]: asset["href"] for asset in assets}
+    for concept in concepts:
+        concept.description = _rewrite_asset_links(
+            concept.description, concept.id, asset_hrefs
+        )
+        concept.body = _rewrite_asset_links(concept.body, concept.id, asset_hrefs)
+        concept.properties = [
+            [key, _rewrite_asset_links(value, concept.id, asset_hrefs)]
+            for key, value in concept.properties
+        ]
+        concept.resource = (
+            _asset_href(concept.resource, concept.id, asset_hrefs) or concept.resource
+        )
+        for source in concept.sources:
+            source["href"] = _asset_href(
+                source["resource"], concept.id, asset_hrefs
+            ) or source.get("href", "")
     type_schemas = _collect_type_schemas(bundle_root)
     for warning in warnings:
         print(f"warning: {warning}", file=sys.stderr)
@@ -175,6 +195,10 @@ def render(
     known_ids = {concept.id for concept in concepts}
     log_markdown = _read_log(bundle_root, known_ids)
     index_markdown = _read_index(bundle_root, known_ids)
+    if log_markdown is not None:
+        log_markdown = _rewrite_asset_links(log_markdown, "log.md", asset_hrefs)
+    if index_markdown is not None:
+        index_markdown = _rewrite_asset_links(index_markdown, "index.md", asset_hrefs)
     output_path.write_text(
         _render_html(
             bundle_root.name,
@@ -183,6 +207,7 @@ def render(
             log_markdown,
             index_markdown,
             type_schemas,
+            assets,
         ),
         encoding="utf-8",
     )
@@ -190,6 +215,68 @@ def render(
     print(f"wrote {output_path} ({len(concepts)} concepts, {len(edges)} links)")
 
     return len(concepts)
+
+
+def _collect_assets(
+    bundle_root: pathlib.Path, output_path: pathlib.Path
+) -> list[dict[str, str]]:
+    """List local supporting files without treating them as OKF concepts."""
+    assets: list[dict[str, str]] = []
+    output = output_path.resolve()
+    for path in sorted(bundle_root.rglob("*")):
+        if (
+            not path.is_file()
+            or path.is_symlink()
+            or path.suffix.lower() == ".md"
+            or path.resolve() == output
+        ):
+            continue
+        relative = path.relative_to(bundle_root)
+        if any(part.startswith(".") or part == "_types" for part in relative.parts):
+            continue
+        if relative.as_posix() == "okf-site.html":
+            continue  # a prior rendering of this bundle, not a source asset
+        href = os.path.relpath(path, output.parent).replace(os.sep, "/")
+        assets.append(
+            {
+                "id": relative.as_posix(),
+                "title": path.name,
+                "kind": path.suffix.lstrip(".").upper() or "FILE",
+                "href": urllib.parse.quote(href, safe="/"),
+            }
+        )
+    return assets
+
+
+def _asset_href(target: str, source_id: str, asset_hrefs: dict[str, str]) -> str | None:
+    """Resolve a local path against the source concept without escaping the bundle."""
+    if not target or "://" in target or target.startswith(("#", "mailto:")):
+        return None
+    raw_target = target.strip("<>")
+    parsed = urllib.parse.urlsplit(raw_target)
+    path = urllib.parse.unquote(parsed.path)
+    source_dir = posixpath.dirname(source_id)
+    resolved = posixpath.normpath(
+        path.lstrip("/") if path.startswith("/") else posixpath.join(source_dir, path)
+    )
+    href = asset_hrefs.get(resolved)
+    return href + raw_target[len(parsed.path) :] if href else None
+
+
+def _rewrite_asset_links(
+    markdown: str, source_id: str, asset_hrefs: dict[str, str]
+) -> str:
+    """Make bundle-local attachment links work when the site is rendered elsewhere."""
+
+    def replace(match: re.Match[str]) -> str:
+        href = _asset_href(match.group(1).strip(), source_id, asset_hrefs)
+        return (
+            match.group(0).replace(f"({match.group(1)})", f"({href})")
+            if href
+            else match.group(0)
+        )
+
+    return _LINK_PATTERN.sub(replace, markdown)
 
 
 def _collect_concepts(
@@ -462,7 +549,15 @@ def _build_edges(concepts: list[Concept]) -> list[dict]:
                 edges.append(dict(link))
 
     for concept in concepts:
-        for target in re.findall(r"#node:([^)\s\"']+)", concept.body):
+        source_links = "\n".join(
+            [
+                concept.body,
+                concept.description,
+                *(value for _, value in concept.properties),
+                *(source.get("href", "") for source in concept.sources),
+            ]
+        )
+        for target in re.findall(r"#node:([^)\s\"']+)", source_links):
             target = urllib.parse.unquote(target)
             key = (concept.id, target, "")
             pair = (concept.id, target)
@@ -559,6 +654,7 @@ def _render_html(
     log_markdown: str | None,
     index_markdown: str | None,
     type_schemas: dict[str, dict],
+    assets: list[dict[str, str]],
 ) -> str:
     """Assemble the self-contained HTML document."""
     types = sorted({concept.type for concept in concepts})
@@ -591,6 +687,7 @@ def _render_html(
             for concept in concepts
         ],
         "edges": edges,
+        "files": assets,
         "types": [
             {"name": concept_type, "color": type_colors[concept_type]}
             for concept_type in types
@@ -639,6 +736,9 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   header { display:flex; gap:14px; align-items:center; padding:9px 16px; border-bottom:1px solid var(--line); background:var(--sidebar); flex:0 0 auto; }
   header h1 { font-size:14px; margin:0; font-weight:600; white-space:nowrap; }
   header h1 span { color:var(--muted); font-weight:400; }
+  .history-controls { display:flex; gap:4px; }
+  .history-controls button { border:1px solid var(--line); border-radius:6px; background:var(--bg); color:var(--ink); cursor:pointer; padding:5px 9px; font:inherit; }
+  .history-controls button:disabled { color:var(--muted); cursor:default; opacity:.55; }
   #mobile-actions { display:none; }
   .mobile-toggle { border:1px solid var(--line); border-radius:6px; padding:6px 9px; background:var(--bg); color:var(--ink); font:inherit; font-size:12px; cursor:pointer; }
   .mobile-toggle[aria-expanded="true"] { background:var(--active); border-color:var(--accent); }
@@ -674,6 +774,8 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #nav a .dot { width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
   #nav a.hidden { display:none; }
   #nav a.homelink { font-weight:600; margin-bottom:6px; }
+  #nav a.asset-link { color:var(--muted); }
+  #nav a.asset-link .file-kind { font-size:10px; margin-left:auto; }
   #loglink { flex:0 0 auto; border-top:1px solid var(--line); padding:8px; }
   #loglink a { display:flex; align-items:center; gap:8px; padding:7px 10px; border-radius:6px; color:var(--muted); text-decoration:none; font-size:13px; }
   #loglink a:hover { background:var(--hover); color:var(--ink); }
@@ -683,8 +785,23 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #doc { flex:1 1 auto; overflow-y:auto; padding:26px 36px; min-width:0; }
   #doc > * { max-width:820px; }
   main.graph-only #doc { display:none; }
-  #graph-wrap { flex:0 0 42%; border-left:1px solid var(--line); display:flex; flex-direction:column; min-height:0; min-width:0; background:var(--bg); }
+  #graph-wrap { flex:0 0 42%; border-left:1px solid var(--line); display:flex; flex-direction:column; position:relative; min-height:0; min-width:0; background:var(--bg); }
   main.graph-only #graph-wrap { flex:1 1 auto; border-left:none; }
+  .pane-switch { flex:0 0 auto; display:flex; gap:4px; padding:8px 12px; border-bottom:1px solid var(--line); }
+  .pane-switch button { border:1px solid var(--line); border-radius:6px; background:var(--bg); color:var(--muted); padding:5px 10px; font:inherit; font-size:12px; cursor:pointer; }
+  .pane-switch button[aria-selected="true"] { background:var(--active); border-color:var(--accent); color:var(--ink); font-weight:600; }
+  #graph-area { flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
+  #graph-wrap[data-view="backlinks"] #graph-area { visibility:hidden; pointer-events:none; }
+  #backlinks { display:none; position:absolute; inset:48px 0 0; overflow-y:auto; padding:18px 16px; }
+  #graph-wrap[data-view="backlinks"] #backlinks { display:block; }
+  #backlinks h2 { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:0 0 12px; }
+  #backlinks p { color:var(--muted); font-size:13px; line-height:1.5; }
+  #backlinks ul { list-style:none; padding:0; margin:0; }
+  #backlinks li { margin:0 0 6px; }
+  #backlinks a { display:flex; align-items:center; gap:8px; padding:8px 10px; color:var(--ink); text-decoration:none; border-radius:6px; }
+  #backlinks a:hover, #backlinks a:focus-visible { background:var(--hover); }
+  #backlinks .dot { width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
+  #backlinks .type { margin-left:auto; color:var(--muted); font-size:11px; }
   #legend { flex:0 0 auto; display:flex; flex-wrap:wrap; align-items:center; gap:2px 6px; padding:8px 12px; border-bottom:1px solid var(--line); }
   #legend .legend-title { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-right:4px; }
   #legend .legend-item { display:inline-flex; align-items:center; gap:5px; cursor:pointer; border:0; background:none; font:inherit; font-size:11.5px; color:var(--muted); padding:2px 6px; border-radius:5px; }
@@ -770,9 +887,13 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
 <div class="layout">
   <header>
     <h1>__TITLE__ <span>· OKF</span></h1>
+    <div class="history-controls" aria-label="Navigation history">
+      <button id="nav-back" type="button" title="Back" aria-label="Back" disabled>←</button>
+      <button id="nav-forward" type="button" title="Forward" aria-label="Forward" disabled>→</button>
+    </div>
     <div id="mobile-actions">
       <button id="nav-toggle" class="mobile-toggle" type="button" aria-controls="nav" aria-expanded="false">Contents</button>
-      <button id="graph-toggle" class="mobile-toggle" type="button" aria-controls="graph-wrap" aria-expanded="false">Graph</button>
+      <button id="graph-toggle" class="mobile-toggle" type="button" aria-controls="graph-wrap" aria-expanded="false">Links</button>
     </div>
     <input id="search" type="search" placeholder="Search concepts…" autocomplete="off">
   </header>
@@ -783,16 +904,23 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
     </aside>
     <main id="main" class="graph-only">
       <div id="doc"></div>
-      <div id="graph-wrap">
-        <div id="legend"></div>
-        <div id="graph-container">
-          <div id="graph"></div>
-          <div id="graph-caption"></div>
-          <div id="node-menu" role="menu" aria-label="Node actions" hidden>
-            <button type="button" role="menuitem" data-action="focus">Center and show connections</button>
-            <button type="button" role="menuitem" data-action="toggle">Collapse into parent directory</button>
-            <button type="button" role="menuitem" data-action="collapse-parent" hidden>Collapse into parent directory</button>
-            <button type="button" role="menuitem" data-action="collapse-all" hidden>Collapse all</button>
+      <div id="graph-wrap" data-view="backlinks">
+        <div class="pane-switch" role="tablist" aria-label="Right pane">
+          <button type="button" role="tab" data-view="backlinks" aria-selected="true">Backlinks</button>
+          <button type="button" role="tab" data-view="graph" aria-selected="false">Graph</button>
+        </div>
+        <div id="backlinks" aria-live="polite"></div>
+        <div id="graph-area">
+          <div id="legend"></div>
+          <div id="graph-container">
+            <div id="graph"></div>
+            <div id="graph-caption"></div>
+            <div id="node-menu" role="menu" aria-label="Node actions" hidden>
+              <button type="button" role="menuitem" data-action="focus">Center and show connections</button>
+              <button type="button" role="menuitem" data-action="toggle">Collapse into parent directory</button>
+              <button type="button" role="menuitem" data-action="collapse-parent" hidden>Collapse into parent directory</button>
+              <button type="button" role="menuitem" data-action="collapse-all" hidden>Collapse all</button>
+            </div>
           </div>
         </div>
       </div>
@@ -809,6 +937,17 @@ const graphContainer = document.getElementById('graph-container');
 const nodeMenu = document.getElementById('node-menu');
 const navToggle = document.getElementById('nav-toggle');
 const graphToggle = document.getElementById('graph-toggle');
+const graphWrap = document.getElementById('graph-wrap');
+const backlinks = document.getElementById('backlinks');
+const backButton = document.getElementById('nav-back');
+const forwardButton = document.getElementById('nav-forward');
+
+document.querySelectorAll('.pane-switch button').forEach(button => button.addEventListener('click', () => {
+  graphWrap.dataset.view = button.dataset.view;
+  document.querySelectorAll('.pane-switch button').forEach(tab =>
+    tab.setAttribute('aria-selected', String(tab === button)));
+  if (button.dataset.view === 'graph') relayout();
+}));
 
 function closeMobilePanels() {
   document.body.classList.remove('nav-open');
@@ -844,9 +983,18 @@ DATA.nodes.forEach(n => {
   for (let i = 1; i < parts.length; i++) {
     const path = parts.slice(0, i).join('/');
     const d = dirs[path] || (dirs[path] = { path, name: parts[i - 1], parent: parts.slice(0, i - 1).join('/') || null,
-                                            concepts: [], types: new Set() });
+                                            concepts: [], types: new Set(), files: 0 });
     d.concepts.push(n.id);
     d.types.add(n.type);
+  }
+});
+DATA.files.forEach(file => {
+  const parts = file.id.split('/');
+  for (let i = 1; i < parts.length; i++) {
+    const path = parts.slice(0, i).join('/');
+    dirs[path] ||= { path, name: parts[i - 1], parent: parts.slice(0, i - 1).join('/') || null,
+                     concepts: [], types: new Set(), files: 0 };
+    dirs[path].files++;
   }
 });
 Object.values(dirs).forEach(d => { d.overviewId = byId[d.path + '.md'] ? d.path + '.md' : null; });
@@ -1379,6 +1527,10 @@ function wireDocLinks(container) {
     a.addEventListener('click', ev => { ev.preventDefault(); openConcept(target); });
   });
   container.querySelectorAll('a[href^="http"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
+  container.querySelectorAll('a[href]').forEach(a => {
+    const path = a.getAttribute('href').split(/[?#]/, 1)[0];
+    if (DATA.files.some(file => file.href === path)) { a.target = '_blank'; a.rel = 'noopener'; }
+  });
   container.querySelectorAll('a[href^="#src-"]').forEach(a => {
     a.addEventListener('click', ev => {
       ev.preventDefault();
@@ -1390,6 +1542,86 @@ function wireDocLinks(container) {
     });
   });
 }
+
+function inboundConcepts(id) {
+  const sources = new Set(DATA.edges.filter(edge => edge.target === id).map(edge => edge.source));
+  return [...sources].filter(source => source !== id && byId[source]).map(source => byId[source])
+    .sort((a, b) => a.title.localeCompare(b.title) || a.id.localeCompare(b.id));
+}
+
+function updateBacklinks(id) {
+  if (!id || !byId[id]) {
+    backlinks.innerHTML = '<h2>Backlinks</h2><p>Select a concept to see which other concepts reference it.</p>';
+    return;
+  }
+  const inbound = inboundConcepts(id);
+  backlinks.innerHTML = `<h2>Backlinks · ${inbound.length}</h2>` + (inbound.length
+    ? '<ul>' + inbound.map(n => `<li><a href="#${encodeURIComponent(n.id)}" data-backlink="${escapeAttr(n.id)}">` +
+        `<span class="dot" style="background:${n.color}"></span><span>${escapeHtml(n.title)}</span>` +
+        `<span class="type">${escapeHtml(n.type)}</span></a></li>`).join('') + '</ul>'
+    : '<p>No other concepts link to this one.</p>');
+  backlinks.querySelectorAll('a[data-backlink]').forEach(a => a.addEventListener('click', ev => {
+    ev.preventDefault();
+    openConcept(a.dataset.backlink);
+  }));
+}
+
+const navigationEntries = [];
+let navigationIndex = -1;
+const navigationStorageKey = 'okf-navigation:' + location.pathname;
+function persistNavigation() {
+  try { sessionStorage.setItem(navigationStorageKey, JSON.stringify(navigationEntries)); } catch (_) { /* file URL storage may be disabled */ }
+}
+try {
+  const saved = JSON.parse(sessionStorage.getItem(navigationStorageKey));
+  const state = history.state;
+  if (Array.isArray(saved) && Number.isInteger(state?.okfIndex) &&
+      saved[state.okfIndex] === state.okfId) {
+    navigationEntries.push(...saved);
+    navigationIndex = state.okfIndex;
+  }
+} catch (_) { /* history still works within this page load */ }
+function updateHistoryButtons() {
+  backButton.disabled = navigationIndex <= 0;
+  forwardButton.disabled = navigationIndex < 0 || navigationIndex >= navigationEntries.length - 1;
+}
+function recordNavigation(id) {
+  if (navigationIndex >= 0 && navigationEntries[navigationIndex] === id) {
+    updateHistoryButtons();
+    return;
+  }
+  const url = id ? '#' + encodeURIComponent(id) : location.pathname;
+  if (navigationIndex < 0) {
+    navigationEntries.push(id);
+    navigationIndex = 0;
+    history.replaceState({ okfIndex: 0, okfId: id }, '', url);
+  } else {
+    navigationEntries.splice(navigationIndex + 1);
+    navigationEntries.push(id);
+    navigationIndex++;
+    history.pushState({ okfIndex: navigationIndex, okfId: id }, '', url);
+  }
+  persistNavigation();
+  updateHistoryButtons();
+}
+backButton.addEventListener('click', () => history.back());
+forwardButton.addEventListener('click', () => history.forward());
+window.addEventListener('popstate', ev => {
+  const index = ev.state && ev.state.okfIndex;
+  if (!Number.isInteger(index) || index < 0) return;
+  const id = Object.prototype.hasOwnProperty.call(ev.state, 'okfId')
+    ? ev.state.okfId : navigationEntries[index];
+  if (id === undefined) return;
+  navigationEntries[index] = id;
+  navigationIndex = index;
+  persistNavigation();
+  updateHistoryButtons();
+  if (id === 'index') openIndex();
+  else if (id === 'log') openLog();
+  else if (byId[id]) openConcept(id);
+  else if (isDirId(id) && dirs[dirOf(id)]) openDir(dirOf(id));
+  else showGraphOnly();
+});
 
 /* ---------- OKF v0.2 metadata ---------- */
 function lifecycleHtml(n) {
@@ -1463,9 +1695,10 @@ function openConcept(id) {
   wireDocLinks(bodyHtml);
   doc.scrollTop = 0;
   setActiveNav(id);
-  history.replaceState(null, '', '#' + encodeURIComponent(id));
+  recordNavigation(id);
+  updateBacklinks(id);
   highlight(id);
-  focusOn(id);
+  if (graphWrap.dataset.view === 'graph') focusOn(id);
 }
 
 function openIndex() {
@@ -1480,7 +1713,8 @@ function openIndex() {
   wireDocLinks(body);
   doc.scrollTop = 0;
   setActiveNav('index');
-  history.replaceState(null, '', '#index');
+  recordNavigation('index');
+  updateBacklinks(null);
   collapseAllDirs(() => { clearHighlight(); relayout(); });
 }
 
@@ -1493,6 +1727,8 @@ function openDir(path) {
   main.classList.remove('graph-only');
   const direct = d.concepts.filter(id => parentDirOf(id) === path).map(id => byId[id])
     .sort((a, b) => a.title.localeCompare(b.title));
+  const files = DATA.files.filter(file => parentDirOf(file.id) === path)
+    .sort((a, b) => a.title.localeCompare(b.title));
   const subdirs = Object.values(dirs).filter(x => x.parent === path).sort((a, b) => a.path.localeCompare(b.path));
   const state = expanded.has(path) ? 'expanded — double-click a concept node to collapse' : 'collapsed — double-click its node to expand';
   doc.innerHTML = `<h1>${escapeHtml(dirLabel(path))}</h1><p class="summary">Directory <code>${escapeHtml(path)}/</code> · ${state}</p>` +
@@ -1500,7 +1736,9 @@ function openDir(path) {
       `<li><a href="#" data-dir="${escapeAttr(x.path)}">📁 ${escapeHtml(dirLabel(x.path))}</a></li>`).join('') + '</ul>' : '') +
     (direct.length ? '<h2>Concepts</h2><ul class="dirlist">' + direct.map(n =>
       `<li><span class="dot" style="background:${n.color}"></span><a href="#node:${escapeAttr(n.id)}">${escapeHtml(n.title)}</a>` +
-      (n.description ? ` — <span style="color:var(--muted)">${marked.parseInline(n.description)}</span>` : '') + '</li>').join('') + '</ul>' : '');
+      (n.description ? ` — <span style="color:var(--muted)">${marked.parseInline(n.description)}</span>` : '') + '</li>').join('') + '</ul>' : '') +
+    (files.length ? '<h2>Files</h2><ul class="dirlist">' + files.map(file =>
+      `<li><a href="${escapeAttr(file.href)}" target="_blank" rel="noopener">${escapeHtml(file.title)}</a> <small>${escapeHtml(file.kind)}</small></li>`).join('') + '</ul>' : '');
   wireDocLinks(doc);
   doc.querySelectorAll('a[data-dir]').forEach(a => a.addEventListener('click', ev => {
     ev.preventDefault();
@@ -1509,9 +1747,10 @@ function openDir(path) {
   }));
   doc.scrollTop = 0;
   setActiveNav(DIR_PREFIX + path);
-  history.replaceState(null, '', '#' + encodeURIComponent(DIR_PREFIX + path));
+  recordNavigation(DIR_PREFIX + path);
+  updateBacklinks(null);
   const node = cy.getElementById(DIR_PREFIX + path);
-  if (node.nonempty()) { highlight(node.id()); focusOn(node.id()); return; }
+  if (node.nonempty()) { highlight(node.id()); if (graphWrap.dataset.view === 'graph') focusOn(node.id()); return; }
   // Expanded: frame what the directory now shows (its concepts and collapsed subdirectories).
   clearHighlight();
   const inside = cy.nodes().filter(x => (isDirId(x.id()) ? dirOf(x.id()) : x.id()).startsWith(path + '/'));
@@ -1547,34 +1786,48 @@ function openLog() {
   renderDoc(DATA.log);
   setActiveNav('log');
   clearHighlight();
-  history.replaceState(null, '', '#log');
+  recordNavigation('log');
+  updateBacklinks(null);
   relayout();
 }
 
 function showGraphOnly() {
   main.classList.add('graph-only');
+  graphWrap.dataset.view = 'graph';
+  document.querySelectorAll('.pane-switch button').forEach(tab =>
+    tab.setAttribute('aria-selected', String(tab.dataset.view === 'graph')));
   setActiveNav(null);
   clearHighlight();
-  history.replaceState(null, '', location.pathname);
+  recordNavigation(null);
+  updateBacklinks(null);
   relayout();
 }
 
 /* ---------- sidebar tree ---------- */
-function buildTree(nodes) {
-  const root = { dirs: {}, files: [] };
+function buildTree(nodes, assets = DATA.files) {
+  const root = { dirs: {}, files: [], assets: [] };
   nodes.forEach(n => {
     const parts = n.id.split('/');
     let cur = root;
     for (let i = 0; i < parts.length - 1; i++) {
-      cur.dirs[parts[i]] = cur.dirs[parts[i]] || { dirs: {}, files: [] };
+      cur.dirs[parts[i]] = cur.dirs[parts[i]] || { dirs: {}, files: [], assets: [] };
       cur = cur.dirs[parts[i]];
     }
     const path = n.id.slice(0, -3);
     if (dirs[path]) {
       const name = parts[parts.length - 1].slice(0, -3);
-      cur.dirs[name] = cur.dirs[name] || { dirs: {}, files: [] };
+      cur.dirs[name] = cur.dirs[name] || { dirs: {}, files: [], assets: [] };
       cur.dirs[name].overview = n;
     } else cur.files.push(n);
+  });
+  assets.forEach(file => {
+    const parts = file.id.split('/');
+    let cur = root;
+    for (let i = 0; i < parts.length - 1; i++) {
+      cur.dirs[parts[i]] = cur.dirs[parts[i]] || { dirs: {}, files: [], assets: [] };
+      cur = cur.dirs[parts[i]];
+    }
+    cur.assets.push(file);
   });
   return root;
 }
@@ -1627,6 +1880,18 @@ function renderTree(tree, prefix = '') {
     li.appendChild(a);
     ul.appendChild(li);
   });
+  tree.assets.sort((a, b) => a.title.localeCompare(b.title)).forEach(file => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.className = 'asset-link';
+    a.dataset.fileId = file.id;
+    a.href = file.href;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.innerHTML = `<span>📄</span><span>${escapeHtml(file.title)}</span><span class="file-kind">${escapeHtml(file.kind)}</span>`;
+    li.appendChild(a);
+    ul.appendChild(li);
+  });
   // Underscore-prefixed directories (e.g. _types) hold meta concepts: list them last.
   Object.keys(tree.dirs).sort((a, b) => (a[0] === '_') - (b[0] === '_') || a.localeCompare(b)).forEach(name => {
     const path = prefix ? prefix + '/' + name : name;
@@ -1657,7 +1922,7 @@ function renderTree(tree, prefix = '') {
       link.addEventListener('click', ev => { ev.stopPropagation(); onNavConceptClick(ev, overview.id); });
       const count = document.createElement('span');
       count.className = 'count';
-      count.textContent = dirs[path].concepts.length;
+      count.textContent = dirs[path].concepts.length + dirs[path].files;
       label.appendChild(caret);
       label.appendChild(link);
       label.appendChild(count);
@@ -1666,7 +1931,7 @@ function renderTree(tree, prefix = '') {
     } else {
       label.title = 'Click to expand or collapse (also in the graph)';
       label.innerHTML = `<span class="caret">▸</span><span>${escapeHtml(dirLabel(path))}</span>` +
-        `<span class="count">${dirs[path].concepts.length}</span>`;
+        `<span class="count">${dirs[path].concepts.length + dirs[path].files}</span>`;
       label.addEventListener('click', toggle);
     }
     li.appendChild(label);
@@ -1724,7 +1989,7 @@ if (DATA.index) {
   home.addEventListener('click', ev => { ev.preventDefault(); openIndex(); });
   nav.appendChild(home);
 }
-nav.appendChild(renderTree(buildTree(DATA.nodes)));
+nav.appendChild(renderTree(buildTree(DATA.nodes, DATA.files)));
 if (DATA.log) {
   const link = document.createElement('a');
   link.href = '#log';
@@ -1758,14 +2023,19 @@ document.getElementById('search').addEventListener('input', ev => {
     const navA = document.querySelector(`#nav a[data-id="${cssEscape(n.id)}"]`);
     if (navA) navA.classList.toggle('hidden', !!q && !searchNavMatch(n.id, hits));
   });
+  const fileHits = DATA.files.filter(file => (file.title + ' ' + file.id + ' ' + file.kind).toLowerCase().includes(q));
+  DATA.files.forEach(file => {
+    const navA = document.querySelector(`#nav a[data-file-id="${cssEscape(file.id)}"]`);
+    if (navA) navA.classList.toggle('hidden', !!q && !fileHits.includes(file));
+  });
   clearTimeout(searchTimer);
   if (q.length < 2) return;
   // Open the directories holding matches (tree and graph together), then fade the rest.
   searchTimer = setTimeout(() => {
-    setExpanded([...new Set(hits.flatMap(id => ancestorsOf(id)))], true, () => {
+    setExpanded([...new Set([...hits, ...fileHits.map(file => file.id)].flatMap(id => ancestorsOf(id)))], true, () => {
       cy.nodes().forEach(node => node.toggleClass('faded', !hits.includes(node.id())));
       cy.edges().addClass('faded');
-      caption.textContent = hits.length + ' matches for “' + q + '”';
+      caption.textContent = (hits.length + fileHits.length) + ' matches for “' + q + '”';
     });
   }, 300);
 });

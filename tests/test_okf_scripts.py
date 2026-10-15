@@ -114,6 +114,255 @@ def test_site_turns_frontmatter_concept_paths_into_labeled_edges(
     assert all(edge["target"] != "services/missing.md" for edge in edges)
 
 
+def test_site_lists_local_non_markdown_files_and_rewrites_their_links(
+    bundle: pathlib.Path,
+) -> None:
+    asset = bundle / "services/custom view.html"
+    _ = asset.write_text("<!doctype html><title>Custom view</title>")
+    _write(
+        bundle / "services/view.md",
+        {"type": "Reference", "title": "View"},
+        "Open the [custom view](./custom%20view.html?theme=dark#details).",
+    )
+    output = bundle.parent / "dev" / "site.html"
+    output.parent.mkdir()
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    data = _site_data(output)
+
+    files = cast(list[dict[str, str]], data["files"])
+    assert files == [
+        {
+            "id": "services/custom view.html",
+            "title": "custom view.html",
+            "kind": "HTML",
+            "href": "../bundle/services/custom%20view.html",
+        }
+    ]
+    view = next(
+        node
+        for node in cast(list[dict[str, object]], data["nodes"])
+        if node["id"] == "services/view.md"
+    )
+    assert (
+        "[custom view](../bundle/services/custom%20view.html?theme=dark#details)"
+        in str(view["body"])
+    )
+
+
+def test_site_omits_its_own_output_from_asset_index(bundle: pathlib.Path) -> None:
+    output = bundle / "okf-site.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    assert cast(list[object], _site_data(output)["files"]) == []
+
+
+def test_site_sidebar_opens_an_asset_only_directory_file_in_new_tab(
+    bundle: pathlib.Path,
+) -> None:
+    asset = bundle / "examples/demo.html"
+    asset.parent.mkdir()
+    _ = asset.write_text("<!doctype html><title>Demo</title>")
+    output = bundle.parent / "site.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
+const definitions = ['buildTree', 'renderTree'].map(name =>
+  html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
+function element(tag) {
+  return {tag, children: [], dataset: {}, className: '', innerHTML: '', classList: {add() {}},
+    addEventListener() {}, setAttribute() {}, appendChild(child) {this.children.push(child);}};
+}
+const dirs = {};
+for (const node of data.nodes) {
+  const parts = node.id.split('/');
+  for (let i = 1; i < parts.length; i++) {
+    const path = parts.slice(0, i).join('/');
+    (dirs[path] ||= {name: parts[i - 1], concepts: [], files: 0}).concepts.push(node.id);
+  }
+}
+dirs.examples = {name: 'examples', concepts: [], files: 1};
+const context = {DATA: data, document: {createElement: element}, dirs,
+  escapeHtml: value => value, escapeAttr: value => value, dirLabel: () => 'examples',
+  expanded: new Set(), expandDir() {}, collapseDir() {}, openDir() {}};
+const tree = vm.runInNewContext(definitions + '\nrenderTree(buildTree(DATA.nodes, DATA.files))', context);
+const folder = tree.children.find(li => li.dataset.dir === 'examples');
+const link = folder.children[1].children[0].children[0];
+process.stdout.write(JSON.stringify({href: link.href, target: link.target, rel: link.rel,
+  id: link.dataset.fileId, markup: link.innerHTML}));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "href": "bundle/examples/demo.html",
+        "target": "_blank",
+        "rel": "noopener",
+        "id": "examples/demo.html",
+        "markup": '<span>📄</span><span>demo.html</span><span class="file-kind">HTML</span>',
+    }
+
+
+def test_site_exposes_unique_inbound_concepts_and_backlinks_default(
+    bundle: pathlib.Path,
+) -> None:
+    _write(
+        bundle / "services/follower.md",
+        {"type": "Service", "title": "Follower", "owner": "/people/ana.md"},
+        "See [Ana](/people/ana.md) twice: [Ana](/people/ana.md).",
+    )
+    output = bundle.parent / "site.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    html = output.read_text()
+    data = _site_data(output)
+    assert 'id="graph-wrap" data-view="backlinks"' in html
+    assert 'id="nav-back"' in html and 'id="nav-forward"' in html
+    assert 'data-view="graph"' in html
+    inbound = {
+        edge["source"]
+        for edge in cast(list[dict[str, str]], data["edges"])
+        if edge["target"] == "people/ana.md"
+    }
+    assert inbound == {"services/api.md", "services/follower.md"}
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
+const definition = html.match(/function inboundConcepts\(id\) \{.*?\n}/s)[0];
+const byId = Object.fromEntries(data.nodes.map(node => [node.id, node]));
+const result = vm.runInNewContext(definition + '\ninboundConcepts("people/ana.md")', {DATA: data, byId});
+process.stdout.write(JSON.stringify(result.map(node => [node.title, node.type])));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == [["API", "Service"], ["Follower", "Service"]]
+
+
+def test_site_navigation_history_supports_back_forward_and_branching(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "history.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const navigation = html.split('const navigationEntries = [];')[1].split('/* ---------- OKF v0.2 metadata ---------- */')[0];
+const pages = [];
+const records = [];
+let position = -1;
+let pop;
+function button() { return {disabled: true, addEventListener(_name, handler) { this.click = handler; }}; }
+const backButton = button(), forwardButton = button();
+const history = {
+  replaceState(state, _title, url) { records.splice(0, records.length, {state, url}); position = 0; },
+  pushState(state, _title, url) { records.splice(position + 1); records.push({state, url}); position++; },
+  back() { position--; pop({state: records[position].state}); },
+  forward() { position++; pop({state: records[position].state}); },
+};
+const context = {
+  backButton, forwardButton, history, location: {pathname: '/site.html'},
+  window: {addEventListener(_name, handler) { pop = handler; }},
+  byId: {'services/api.md': {}, 'people/ana.md': {}},
+  isDirId: () => false, openIndex: () => pages.push('index'),
+  openLog: () => pages.push('log'), openConcept: id => pages.push(id),
+};
+vm.runInNewContext('const navigationEntries = [];\n' + navigation + '\n' +
+  'recordNavigation("index"); recordNavigation("services/api.md"); recordNavigation("people/ana.md");', context);
+const afterOpen = [backButton.disabled, forwardButton.disabled];
+backButton.click(); backButton.click(); forwardButton.click();
+vm.runInNewContext('recordNavigation("log");', context);
+process.stdout.write(JSON.stringify({pages, urls: records.map(record => record.url), afterOpen,
+  buttons: [backButton.disabled, forwardButton.disabled]}));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "pages": ["services/api.md", "index", "services/api.md"],
+        "urls": ["#index", "#services%2Fapi.md", "#log"],
+        "afterOpen": [False, True],
+        "buttons": [False, True],
+    }
+
+
+def test_site_navigation_history_survives_reload(bundle: pathlib.Path) -> None:
+    output = bundle.parent / "history-reload.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const navigation = html.split('const navigationEntries = [];')[1].split('/* ---------- OKF v0.2 metadata ---------- */')[0];
+const entries = [], storage = new Map(), pages = [];
+let position = -1, pop;
+const history = {
+  get state() { return entries[position]?.state ?? null; },
+  replaceState(state, _title, url) { entries.splice(position, 1, {state, url}); position = 0; },
+  pushState(state, _title, url) { entries.splice(position + 1); entries.push({state, url}); position++; },
+  back() { position--; pop({state: this.state}); },
+  forward() { position++; pop({state: this.state}); },
+};
+const sessionStorage = {
+  getItem(key) { return storage.get(key) ?? null; },
+  setItem(key, value) { storage.set(key, value); },
+};
+function boot(current) {
+  const backButton = {addEventListener(_event, handler) { this.click = handler; }};
+  const forwardButton = {addEventListener(_event, handler) { this.click = handler; }};
+  const context = {history, sessionStorage, backButton, forwardButton,
+    location: {pathname: '/site.html'}, window: {addEventListener(_event, handler) { pop = handler; }},
+    byId: {'services/api.md': {}, 'people/ana.md': {}}, isDirId: () => false,
+    openIndex: () => pages.push('index'), openLog: () => pages.push('log'),
+    openConcept: id => pages.push(id)};
+  vm.createContext(context);
+  vm.runInContext('const navigationEntries = [];\n' + navigation + '\nrecordNavigation(' + JSON.stringify(current) + ');', context);
+  return context;
+}
+const first = boot('index');
+vm.runInContext('recordNavigation("services/api.md"); recordNavigation("people/ana.md");', first);
+const buttons = boot('people/ana.md');
+buttons.backButton.click();
+buttons.forwardButton.click();
+process.stdout.write(JSON.stringify({pages, position, backDisabled: buttons.backButton.disabled,
+  forwardDisabled: buttons.forwardButton.disabled}));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "pages": ["services/api.md", "people/ana.md"],
+        "position": 2,
+        "backDisabled": False,
+        "forwardDisabled": True,
+    }
+
+
+def _site_data(path: pathlib.Path) -> dict[str, object]:
+    match = re.search(r"const DATA = (\{.*?\});\n", path.read_text(), re.S)
+    assert match is not None
+    return cast(dict[str, object], json.loads(match.group(1).replace("<\\/", "</")))
+
+
 def test_site_uses_hidden_local_type_concepts_for_field_tooltips(
     bundle: pathlib.Path,
 ) -> None:
@@ -125,7 +374,7 @@ def test_site_uses_hidden_local_type_concepts_for_field_tooltips(
             "description": "A service we run.",
             "primary_fields": ["owner"],
         },
-        "\n".join(
+        "\n".join(  # noqa: FLY002  # explicit lines avoid implicit string concatenation warning
             [
                 "# Attributes",
                 "",
@@ -280,9 +529,10 @@ const node = data.nodes.find(n => n.id === 'services/prod.md');
 const doc = { innerHTML: '', scrollTop: 0, querySelectorAll: () => [] };
 const noop = () => {};
 const context = {
-  byId: { [node.id]: node }, dirs: { services: { concepts: [node.id], parent: null, overviewId: null } },
+  byId: { [node.id]: node }, DATA: data, dirs: { services: { concepts: [node.id], parent: null, overviewId: null } },
   expanded: new Set(['services']), doc, DIR_PREFIX: 'dir:',
   closeMobilePanels: noop, wireDocLinks: noop, setActiveNav: noop, highlight: noop, focusOn: noop,
+  recordNavigation: noop, updateBacklinks: noop, graphWrap: { dataset: { view: 'backlinks' } },
   main: { classList: { remove: noop } }, history: { replaceState: noop },
   parentDirOf: () => 'services', dirLabel: () => 'services', escapeHtml: value => value, escapeAttr: value => value,
   marked: { parseInline: value => value.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>') },
@@ -713,6 +963,8 @@ const context = {
   doc: {innerHTML: '', appendChild: () => {}, scrollTop: 3},
   wireDocLinks: () => {},
   setActiveNav: id => events.push(['active', id]),
+  recordNavigation: id => events.push(['hash', '#' + id]),
+  updateBacklinks: () => {},
   clearHighlight: () => events.push(['highlight']),
   history: {replaceState: (...args) => events.push(['hash', args[2]])},
   relayout: () => events.push(['layout']),
@@ -1579,7 +1831,8 @@ const context = {
   byId: { [node.id]: node }, node, doc, DATA: data,
   representative: id => id,
   closeMobilePanels: noop, wireDocLinks: noop, setActiveNav: noop,
-  highlight: noop, focusOn: noop,
+  highlight: noop, focusOn: noop, recordNavigation: noop, updateBacklinks: noop,
+  graphWrap: { dataset: { view: 'backlinks' } },
   main: { classList: { remove: noop } },
   document: { createElement: () => ({ className: '', innerHTML: '' }) },
   marked: { parse: value => value, parseInline: value => value.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>') },

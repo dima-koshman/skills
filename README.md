@@ -25,10 +25,16 @@ OpenWiki generates its output separately under `openwiki/`.
 
 The [`okf`](.agents/skills/okf/SKILL.md) skill is back, upgraded from the v0.1 snapshot to
 **OKF v0.2**: the vendored [spec](.agents/skills/okf/references/spec.md), the `index.md`
-generator `okf_index.py`, and the custom HTML visualizer `okf_site.py`. The visualizer now
-shows v0.2 provenance, trust tiers, lifecycle status and staleness, renders producer-defined
-frontmatter as a Properties table, and draws frontmatter concept paths (`owner:
-/people/ana.md`) as labeled graph edges. Tests: `tests/test_okf_scripts.py`.
+generator `okf_index.py`, and the custom HTML reader `okf_site.py`. The reader defaults
+to a backlinks list, offers the graph on demand, and has Back/Forward navigation.
+Non-Markdown files are listed as supporting assets and open in new tabs; they remain
+outside OKF's Markdown concept format. Type definitions can explain frontmatter fields
+on hover and keep secondary properties collapsed. Tests: `tests/test_okf_scripts.py`.
+
+The generic agent-harness overview lives in `scripts/harness_overview.py` with
+`scripts/llm_capture.py` and `scripts/harness_overview_assets/`. Use the VS Code task
+**Harnesses: build overview and open** from any workspace. The task runs this project's
+script and can inspect either global harness settings or the active workspace.
 
 It is used for OKF bundles outside this repo — the `wiki/` notes here stay on OpenWiki. Run
 the scripts by path from any repository (only PyYAML is needed):

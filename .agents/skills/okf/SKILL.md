@@ -116,8 +116,10 @@ python scripts/okf_site.py <bundle-dir>          # writes <bundle>/okf-site.html
 python scripts/okf_site.py <bundle-dir> -o /tmp/graph.html
 ```
 
-It renders an interactive knowledge graph (nodes = concepts colored by `type`,
-edges = cross-links) beside a reading panel. The reader shows each concept's
+The reader opens with a right-hand backlinks list: unique concepts that link to the current concept, with clickable
+titles and types. A switch at the top of that pane reveals the interactive graph (nodes = concepts colored by `type`,
+edges = cross-links). Back and Forward buttons use browser history across concept, directory, Index, and log pages.
+The reader shows each concept's
 lifecycle status, a Properties table of producer-defined keys (concept paths become
 links), the body, and its `sources` with footnotes linked to them. Descriptions and
 free-form property values render inline Markdown, with in-bundle links opening their concepts.
@@ -145,6 +147,9 @@ Right-clicking empty graph space offers "Collapse all"; opening the root Index p
 Both actions clear the same directory state used by the sidebar and graph. Opening a concept from the graph or a
 content link scrolls its selected sidebar entry into view and briefly pulses it; for a merged directory overview,
 the full row is revealed and pulsed. Reduced-motion readers see a steady outline instead.
+Non-Markdown files remain supporting assets rather than OKF concepts. The HTML reader lists them in the sidebar,
+including asset-only directories, and opens them in a new tab; links to local assets are rewritten relative to the
+generated HTML file, so custom HTML pages work when the renderer writes into a sibling `dev/` directory.
 Graph and sidebar concept clicks share a ~150 ms window so a double-click can take precedence without making ordinary
 navigation feel slow. The graph matches taps by node ID because Cytoscape can provide different target wrappers for
 the same node; Cytoscape's native double-tap event catches slower pairs without delaying single clicks or repeating

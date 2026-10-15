@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harness overview</title>
+<link rel="stylesheet" href="style.css">
+<script src="data/overview.js"></script>
+</head>
+<body>
+<header class="top">
+  <h1>Harness overview</h1>
+  <span class="scope" id="scope"></span>
+  <span class="meta" id="meta"></span>
+  <nav><a href="#summary">Summary</a><a href="#mcp">MCP</a><a href="#skills">Skills</a><a href="#plugins">Plugins</a><a href="#prompts">Prompts</a><a href="explorer.html#/" target="_blank">Explorer ↗</a></nav>
+  <input type="search" id="q" placeholder="Filter servers, skills, plugins…">
+</header>
+<main>
+  <section id="summary"><div class="cards" id="cards"></div></section>
+  <section id="mcp"><h2>MCP servers <small id="mcpnote"></small>
+    <label class="toggle"><input type="checkbox" id="mcpdiff"> only differences</label></h2><div class="tablewrap"><table id="mcptable"></table></div></section>
+  <section id="skills"><h2>Skills <small id="skillcount"></small>
+    <label class="toggle"><input type="checkbox" id="skilldiff"> only differences</label></h2><div class="tablewrap"><table id="skilltable"></table></div></section>
+  <section id="plugins"><h2>Plugins <small>click for the plugin's files; docs ↗ for its homepage</small></h2><div class="plugins" id="plugingrid"></div></section>
+  <section id="prompts"><h2>Prompts <small id="promptnote"></small></h2>
+    <div class="tabs" id="prompttabs"></div><div id="promptlist"></div></section>
+</main>
+<dialog id="popup"><div class="pop"><div class="pophead"><h3 id="poptitle"></h3><button id="popclose" aria-label="Close">×</button></div><pre id="popbody"></pre></div></dialog>
+<script>
+const D = window.OVERVIEW;
+const H = D.harnesses;
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+const el = id => document.getElementById(id);
+const fmt = n => n == null ? '' : n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n);
+const ex = (ref, file) => `explorer.html#/${ref}${file ? '/' + file.split('/').map(encodeURIComponent).join('/') : ''}`;
+const link = (ref, html, cls = '', title = '') => ref
+  ? `<a class="${cls}" href="${ex(ref)}" target="_blank" title="${esc(title)}">${html}</a>`
+  : `<span class="${cls}" title="${esc(title)}">${html}</span>`;
+const TS = {on: 'ok', off: 'bad', unsupported: 'bad', 'per model': 'warn'};
+
+el('scope').textContent = D.scope === 'project' ? 'project scope' : 'global scope';
+el('meta').textContent = `${D.project || 'no project: global config only'} · ${D.generated}`;
+el('promptnote').textContent = `what one model call carries (built-in system prompt, tool definitions, injected context), then the ` +
+  `${D.scope === 'project' ? 'global and project' : 'global'} instruction files it is built from · tokens ≈ ${D.tokenizer}`;
+const reqTokens = h => (h.request && h.request.parts || []).reduce((a, p) => a + p.tokens, 0);
+el('mcpnote').textContent = `status as each harness sees it · tokens ≈ ${D.tokenizer} for the tool definitions · click a server or badge for its tools`;
+
+const mcpTokens = h => h.servers.filter(s => s.status === 'connected').reduce((a, s) => a + (s.tokens || 0), 0);
+
+function usageBlock(h) {
+  const u = h.usage || {};
+  if (!u.source) return '<dd class="muted">not collected</dd>';
+  const rows = (u.rows || []).map(r => {
+    const level = r.used >= 90 ? 'bad' : r.used >= 70 ? 'warn' : 'ok';
+    return `<div class="urow"><div class="ulabel"><span>${esc(r.label)}</span><b>${r.used}%</b></div>
+      <div class="ubar"><i class="${level}" style="width:${Math.min(100, r.used)}%"></i></div>${r.resets ? `<div class="kv">resets ${esc(r.resets)}</div>` : ''}</div>`;
+  }).join('');
+  return `<dd>${u.plan ? `<span class="chip">${esc(u.plan)} plan</span>` : ''}${rows || '<div class="muted">no limits exposed</div>'}
+    <div class="kv">${esc(u.source)}${u.as_of && u.as_of !== 'now' ? ` · as of ${esc(u.as_of)}` : ''}${u.raw ? ` · <a href="#" class="rawlink" data-k="${h.key}">raw output</a>` : ''}</div></dd>`;
+}
+
+function hookList(h) {
+  if (!(h.hooks || []).length) return '<span class="muted">none</span>';
+  const groups = new Map();
+  h.hooks.forEach((k, i) => (groups.get(k.source) || groups.set(k.source, []).get(k.source)).push([k, i]));
+  return [...groups].map(([source, items]) => `<div class="kv hooksrc">${esc(source)}</div><ul class="hooks">${items.map(([k, i]) =>
+    `<li><a href="#" class="hooklink" data-k="${h.key}" data-i="${i}"><span class="chip">${esc(k.event)}</span> <code title="${esc(k.label)}">${esc(k.label.length > 34 ? k.label.slice(0, 33) + '…' : k.label)}</code></a></li>`).join('')}</ul>`).join('');
+}
+
+el('cards').innerHTML = H.map(h => {
+  const ok = h.servers.filter(s => s.status === 'connected').length;
+  const instr = reqTokens(h) || h.prompts.reduce((a, p) => a + p.tokens, 0);
+  const ts = h.tool_search || {};
+  const loaded = ts.upfront || '';
+  const files = h.config_files.map(f => `<li>${h.config_ref ? `<a href="${ex(h.config_ref, f)}" target="_blank"><code>${esc(f)}</code></a>` : `<code>${esc(f)}</code>`}</li>`).join('');
+  return `<div class="card"><h3>${esc(h.name)}</h3><div class="ver">${esc(h.version || 'not installed?')}</div>
+    <div class="stats">
+      <div class="stat"><b>${ok}/${h.servers.length}</b><span>MCP connected</span></div>
+      <div class="stat"><b>${h.skills.length}</b><span>skills</span></div>
+      <div class="stat"><b>${h.plugins.length}</b><span>plugins</span></div>
+      <div class="stat"><b>${fmt(instr)}</b><span>${reqTokens(h) ? 'request tokens' : 'instr. tokens'}</span></div>
+    </div>
+    <table class="attrs">
+      <tr><th>Models</th><td><div class="kv">default</div><code>${esc(h.model || '?')}</code>${(h.models || []).length ? `
+        <div class="kv">${h.models.length} available</div><ul class="models scroll">${h.models.map(m =>
+          `<li class="${m === h.model || h.model.endsWith('/' + m) || h.model.startsWith(m + '#') ? 'on' : ''}">${esc(m)}</li>`).join('')}</ul>` : ''}</td></tr>
+      <tr><th>Tool search</th><td><span class="chip ${TS[ts.state] || ''}">${esc(ts.state || '?')}</span><div class="kv">${esc(ts.detail || '')}</div></td></tr>
+      <tr><th>MCP tool definitions</th><td><b>≈ ${fmt(mcpTokens(h))}</b> tokens<div class="kv">${esc(loaded)}</div></td></tr>
+      <tr><th>Config files</th><td><ul class="files">${files || '<li class="muted">none</li>'}</ul></td></tr>
+      <tr><th>Hooks</th><td><div class="scroll">${hookList(h)}</div></td></tr>
+    </table>
+    <dl class="attrs"><dt>Usage limits</dt>${usageBlock(h)}</dl>
+    ${h.errors.map(e => `<div class="err">⚠ ${esc(e)}</div>`).join('')}</div>`;
+}).join('');
+
+const popup = el('popup');
+function openPopup(title, text) {
+  el('poptitle').textContent = title;
+  el('popbody').textContent = text;
+  popup.showModal();
+}
+el('popclose').onclick = () => popup.close();
+popup.addEventListener('click', e => { if (e.target === popup) popup.close(); });   // a click on the backdrop lands on the <dialog> itself
+document.querySelectorAll('.hooklink').forEach(a => a.onclick = e => {
+  e.preventDefault();
+  const h = H.find(x => x.key === a.dataset.k), k = h.hooks[+a.dataset.i];
+  openPopup(`${h.name} — ${k.event} hook`, `source: ${k.source}\n\n${k.detail}`);
+});
+document.querySelectorAll('.rawlink').forEach(a => a.onclick = e => {
+  e.preventDefault();
+  const h = H.find(x => x.key === a.dataset.k);
+  openPopup(`${h.name} — ${h.usage.source}`, h.usage.raw);
+});
+
+const head = first => `<tr>${first.map(c => `<th>${c}</th>`).join('')}${H.map(h => `<th>${esc(h.name)}</th>`).join('')}</tr>`;
+const union = key => [...new Set(H.flatMap(h => h[key].map(x => x.name)))];
+
+function mcpTable() {
+  const rows = union('servers').sort().map(n => {
+    const found = H.map(h => h.servers.find(x => x.name === n));
+    const any = found.find(Boolean);
+    const probed = found.find(s => s && s.tools_ref);
+    const cells = found.map(s => {
+      if (!s) return `<td><span class="none">—</span></td>`;
+      const sub = s.status !== 'connected' ? s.detail : '';
+      return `<td>${link(s.tools_ref, esc(s.status), 'badge ' + s.status.replace(' ', '-'), s.target + (s.detail ? '\n' + s.detail : ''))}${sub ? `<span class="sub" title="${esc(sub)}">${esc(sub)}</span>` : ''}</td>`;
+    });
+    const cost = probed ? `${probed.tools} tools<span class="sub">≈ ${fmt(probed.tokens)} tokens</span>` : '<span class="none">—</span>';
+    return {text: (n + ' ' + any.target).toLowerCase(), diff: new Set(found.map(s => s ? s.status : 'none')).size > 1,
+      html: `<tr><td class="name">${link(probed && probed.tools_ref, esc(n))}</td><td class="target">${esc(any.target)}</td><td class="num">${cost}</td>${cells.join('')}</tr>`};
+  });
+  return {head: head(['Server', 'Target', 'Tools']), rows};
+}
+
+function skillTable() {
+  const names = union('skills');
+  const has = n => H.map(h => h.skills.find(s => s.name === n));
+  names.sort((a, b) => has(b).filter(Boolean).length - has(a).filter(Boolean).length || a.localeCompare(b));
+  el('skillcount').textContent = `${names.length} distinct · tokens = name + description, what sits in context until the skill is loaded · click a skill or ✓ for its files`;
+  const rows = names.map(n => {
+    const found = has(n);
+    const first = found.find(Boolean);
+    return {text: (n + ' ' + first.description).toLowerCase(), diff: found.some(f => !f),
+      html: `<tr><td class="name">${link(first.ref, esc(n))}</td><td class="desc"><div title="${esc(first.description)}">${esc(first.description)}</div></td>
+        <td class="num">${fmt(first.tokens)}</td>${found.map(f =>
+        f ? `<td>${link(f.ref, '✓', 'yes', f.source)}</td>` : `<td><span class="none">—</span></td>`).join('')}</tr>`};
+  });
+  return {head: head(['Skill', 'Description', 'Tokens']), rows};
+}
+
+function plugins() {
+  el('plugingrid').innerHTML = H.map(h => `<div class="card"><h3>${esc(h.name)}</h3>${h.plugins.length ? `<ul>${h.plugins.map(p =>
+    `<li data-text="${esc((p.name + ' ' + p.detail).toLowerCase())}">${link(p.ref, `<code class="${p.enabled === false ? 'off' : ''}">${esc(p.name)}</code>`)}${
+      p.url ? `<a class="ext" href="${esc(p.url)}" target="_blank" rel="noopener" title="${esc(p.url)}">docs ↗</a>` : ''}
+     <div class="kv">${esc([p.version, p.detail, p.enabled === false ? 'disabled' : ''].filter(Boolean).join(' · '))}</div></li>`).join('')}</ul>`
+    : '<div class="empty">none</div>'}</div>`).join('');
+}
+
+let promptTab = H[0].key;
+const KINDS = {system: 'system prompt', tools: 'tool definitions', context: 'injected context'};
+function requestBlock(h) {
+  const r = h.request || {}, parts = r.parts || [];
+  if (!parts.length) return `<div class="empty">Model request: ${esc(r.note || r.source || 'not collected')}</div>`;
+  const total = reqTokens(h);
+  const byKind = Object.keys(KINDS).map(k => [k, parts.filter(p => p.kind === k).reduce((a, p) => a + p.tokens, 0)]).filter(([, n]) => n);
+  return `<h3 class="sub3">Model request ≈ ${fmt(total)} tokens</h3>
+    <div class="reqbar">${byKind.map(([k, n]) => `<i class="k-${k}" style="flex:${n}" title="${KINDS[k]}: ${fmt(n)} tokens"></i>`).join('')}</div>
+    <div class="reqlegend">${byKind.map(([k, n]) => `<span><i class="k-${k}"></i>${KINDS[k]} ${fmt(n)} (${Math.round(100 * n / total)}%)</span>`).join('')}</div>
+    <div class="kv">${esc(r.source)}${r.note ? ' · ' + esc(r.note) : ''}</div>
+    ${parts.map(p => `<details class="prompt"><summary><span class="chip k-${p.kind}">${esc(KINDS[p.kind] || p.kind)}</span><b>${esc(p.title)}</b>
+      <span class="size">${fmt(p.text.length)} chars · ≈ ${fmt(p.tokens)} tokens</span></summary><pre>${esc(p.text)}</pre></details>`).join('')}`;
+}
+
+function prompts() {
+  el('prompttabs').innerHTML = H.map(h => `<button class="${h.key === promptTab ? 'on' : ''}" data-k="${h.key}">${esc(h.name)}</button>`).join('');
+  const h = H.find(x => x.key === promptTab);
+  el('promptlist').innerHTML = requestBlock(h) + `<h3 class="sub3">Instruction files (${h.prompts.length})</h3>` +
+    (h.prompts.length ? h.prompts.map(p => `<details class="prompt"><summary><b>${esc(p.title)}</b>
+    <span class="path">${esc(p.path)}</span><span class="size">${fmt(p.text.length)} chars · ≈ ${fmt(p.tokens)} tokens</span></summary>
+    <pre>${esc(p.text)}</pre></details>`).join('') : '<div class="empty">no instruction files found</div>');
+  el('prompttabs').querySelectorAll('button').forEach(b => b.onclick = () => { promptTab = b.dataset.k; prompts(); });
+}
+
+const tables = {mcptable: [mcpTable(), 'mcpdiff'], skilltable: [skillTable(), 'skilldiff']};
+function render() {
+  const q = el('q').value.trim().toLowerCase();
+  for (const [id, [t, diffId]] of Object.entries(tables)) {
+    const only = el(diffId).checked;
+    const rows = t.rows.filter(r => (!q || r.text.includes(q)) && (!only || r.diff));
+    el(id).innerHTML = t.head + (rows.map(r => r.html).join('') || `<tr><td class="empty" colspan="${H.length + 3}">nothing matches</td></tr>`);
+  }
+  document.querySelectorAll('.plugins li').forEach(li => li.style.display = !q || li.dataset.text.includes(q) ? '' : 'none');
+}
+['q', 'mcpdiff', 'skilldiff'].forEach(id => el(id).addEventListener('input', render));
+plugins(); prompts(); render();
+</script>
+</body>
+</html>

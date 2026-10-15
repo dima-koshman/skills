@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harness explorer</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<script src="data/explorer-index.js"></script>
+</head>
+<body class="explorer">
+<header class="bar">
+  <span class="kind" id="crumbs"></span>
+  <a class="back" href="index.html">← Harness overview</a>
+</header>
+<div class="ex">
+  <aside><input type="search" id="q" placeholder="Filter servers, tools, skills, files…"><nav id="tree"></nav></aside>
+  <article id="view"></article>
+</div>
+<script>
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+const el = id => document.getElementById(id);
+const fmt = n => n == null ? '' : n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n);
+const md = text => {
+  if (!window.marked) return `<pre class="src">${esc(text)}</pre>`;
+  const html = marked.parse(text || '');
+  return window.DOMPurify ? DOMPurify.sanitize(html) : html;
+};
+const mdInline = text => {
+  if (!window.marked) return esc(text);
+  const html = marked.parseInline(text || '');
+  return window.DOMPurify ? DOMPurify.sanitize(html) : html;
+};
+
+const IDX = window.EXPLORER_INDEX;
+const PAGES = window.EXPLORER_PAGES = window.EXPLORER_PAGES || {};
+const byName = {};          // "<section>\0<page>" -> page summary
+for (const s of IDX.sections) for (const p of s.pages) {
+  p.section = s;
+  byName[s.name + '\0' + p.name] = p;
+}
+const href = (...segs) => '#/' + segs.filter(x => x != null && x !== '').flatMap((x, i) => i < 2 ? [x] : x.split('/')).map(encodeURIComponent).join('/');
+const TOK = `≈ tokens (${IDX.tokenizer})`;
+
+let showSource = false, filter = '', route = {};
+const openPages = new Set(), closedSections = new Set();
+
+function parse() {
+  const segs = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
+  const section = IDX.sections.find(s => s.name === segs[0]);
+  const page = section && segs[1] != null ? byName[section.name + '\0' + segs[1]] : null;
+  return {section, page, item: segs.slice(2).join('/')};
+}
+
+function load(page) {
+  return new Promise((resolve, reject) => {
+    if (PAGES[page.ref]) return resolve(PAGES[page.ref]);
+    const s = document.createElement('script');
+    s.src = 'data/' + page.id + '.js';
+    s.onload = () => PAGES[page.ref] ? resolve(PAGES[page.ref]) : reject(new Error('empty data file'));
+    s.onerror = () => reject(new Error('missing data/' + page.id + '.js — rebuild the overview'));
+    document.head.append(s);
+  });
+}
+
+// ---------------------------------------------------------------- tree
+
+function itemTree(page, items) {
+  if (page.section.kind === 'mcp') return items.map(i => leaf(page, i.path, i.path, i.tokens)).join('');
+  const root = {files: [], dirs: {}};
+  for (const i of items) {
+    const parts = i.path.split('/');
+    let node = root;
+    for (const part of parts.slice(0, -1)) node = node.dirs[part] ??= {files: [], dirs: {}};
+    node.files.push(i);
+  }
+  const render = node => node.files.map(i => leaf(page, i.path, i.path.split('/').pop(), i.tokens)).join('') +
+    Object.keys(node.dirs).sort().map(d => `<div class="dir"><span>${esc(d)}/</span><div>${render(node.dirs[d])}</div></div>`).join('');
+  return render(root);
+}
+
+function leaf(page, path, label, tokens) {
+  const on = route.page === page && route.item === path;
+  return `<a class="leaf${on ? ' on' : ''}" href="${href(page.section.name, page.name, path)}" title="${esc(path)}"><span>${esc(label)}</span>${tokens != null ? `<small>${fmt(tokens)}</small>` : ''}</a>`;
+}
+
+function tree() {
+  const q = filter;
+  const html = IDX.sections.map(s => {
+    const pages = closedSections.has(s.name) && !q ? '' : s.pages.map(p => {
+      const items = q ? p.items.filter(i => i.path.toLowerCase().includes(q)) : p.items;
+      const hit = !q || p.name.toLowerCase().includes(q) || items.length;
+      if (!hit) return '';
+      const open = openPages.has(p.ref) || (q && items.length && !p.name.toLowerCase().includes(q));
+      const meta = s.kind === 'mcp' ? `${p.meta.tools} · ${fmt(p.meta.tokens)}` : p.items.length > 1 ? p.items.length : '';
+      return `<div class="pg${open ? '' : ' closed'}" data-ref="${esc(p.ref)}"><span class="caret"></span><a class="node${route.page === p && !route.item ? ' on' : ''}"
+        href="${href(s.name, p.name)}" title="${esc(p.subtitle)}"><span>${esc(p.name)}</span><small>${esc(meta)}</small></a><div>${itemTree(p, q && items.length ? items : p.items)}</div></div>`;
+    }).join('');
+    if (q && !pages) return '';
+    const closed = closedSections.has(s.name) && !q;
+    return `<div class="sec${closed ? ' closed' : ''}" data-sec="${esc(s.name)}"><a class="node sec-name${route.section === s && !route.page ? ' on' : ''}" href="${href(s.name)}">${esc(s.name)}<small>${s.pages.length}</small></a>${pages}</div>`;
+  }).join('');
+  const scroll = el('tree').scrollTop;
+  el('tree').innerHTML = html || '<p class="note">nothing matches</p>';
+  el('tree').scrollTop = scroll;
+  // An expanded section or page collapses when clicked; a collapsed one expands and opens its view.
+  el('tree').querySelectorAll('.caret').forEach(c => c.onclick = () => {
+    const ref = c.parentElement.dataset.ref;
+    openPages.has(ref) ? openPages.delete(ref) : openPages.add(ref);
+    tree();
+  });
+  el('tree').querySelectorAll('.pg > a.node').forEach(a => a.onclick = e => {
+    const ref = a.parentElement.dataset.ref;
+    if (filter) return;
+    if (!openPages.has(ref)) { openPages.add(ref); setTimeout(tree); return; }   // same hash fires no hashchange
+    e.preventDefault();
+    openPages.delete(ref);
+    tree();
+  });
+  el('tree').querySelectorAll('.sec > a.sec-name').forEach(a => a.onclick = e => {
+    const name = a.parentElement.dataset.sec;
+    if (filter) return;
+    if (closedSections.has(name)) { closedSections.delete(name); setTimeout(tree); return; }
+    e.preventDefault();
+    closedSections.add(name);
+    tree();
+  });
+  el('tree').querySelectorAll('.dir > span').forEach(s => s.onclick = () => s.parentElement.classList.toggle('closed'));
+  const on = el('tree').querySelector('.on');
+  if (on) {
+    const r = on.getBoundingClientRect(), t = el('tree').getBoundingClientRect();
+    if (r.top < t.top || r.bottom > t.bottom) on.scrollIntoView({block: 'center'});
+  }
+}
+
+// ---------------------------------------------------------------- views
+
+function crumbs() {
+  const parts = [`<a href="#/">Explorer</a>`];
+  if (route.section) parts.push(`<a href="${href(route.section.name)}">${esc(route.section.name)}</a>`);
+  if (route.page) parts.push(`<a href="${href(route.section.name, route.page.name)}">${esc(route.page.name)}</a>`);
+  if (route.item) parts.push(`<span>${esc(route.item)}</span>`);
+  el('crumbs').innerHTML = parts.join(' / ');
+  document.title = route.item || (route.page && route.page.name) || (route.section && route.section.name) || 'Harness explorer';
+}
+
+function sortable(table) {
+  table.querySelectorAll('th').forEach((th, col) => th.onclick = () => {
+    const body = table.tBodies[0], rows = [...body.rows];
+    const dir = th.dataset.dir === 'asc' ? 'desc' : 'asc';
+    table.querySelectorAll('th').forEach(x => delete x.dataset.dir);
+    th.dataset.dir = dir;
+    const val = r => r.cells[col].dataset.v ?? r.cells[col].textContent.trim().toLowerCase();
+    rows.sort((a, b) => {
+      const x = val(a), y = val(b), nx = parseFloat(x), ny = parseFloat(y);
+      const c = !isNaN(nx) && !isNaN(ny) ? nx - ny : String(x).localeCompare(String(y));
+      return dir === 'asc' ? c : -c;
+    });
+    rows.forEach(r => body.append(r));
+  });
+}
+
+function table(head, rows) {
+  return `<div class="tablewrap"><table class="sortable"><thead><tr>${head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
+}
+
+const harnessList = p => esc(p.harnesses.join(', '));
+
+function rootView() {
+  return `<h1 class="title">Harness explorer</h1><p class="note">Everything the harnesses on this machine can load: MCP servers and their tools, skills, plugins and config files. Token counts are estimates (${esc(IDX.tokenizer)}).</p>` +
+    table(['Section', 'Entries'], IDX.sections.map(s => `<tr><td><a href="${href(s.name)}">${esc(s.name)}</a></td><td data-v="${s.pages.length}">${s.pages.length}</td></tr>`));
+}
+
+function sectionView(s) {
+  const head = {
+    mcp: ['Server', 'Target', 'Harnesses', 'Tools', TOK],
+    skill: ['Skill', 'Description', 'Harnesses', 'Files', '≈ tokens in context'],
+    plugin: ['Plugin', 'Location', 'Harnesses', 'Files'],
+    config: ['Harness', 'Files'],
+  }[s.kind];
+  const rows = s.pages.map(p => {
+    const name = `<td class="name"><a href="${href(s.name, p.name)}">${esc(p.name)}</a></td>`;
+    if (s.kind === 'mcp') return `<tr>${name}<td class="target">${esc(p.meta.target)}</td><td>${harnessList(p)}</td><td data-v="${p.meta.tools}">${p.meta.tools}</td><td data-v="${p.meta.tokens}">${fmt(p.meta.tokens)}</td></tr>`;
+    if (s.kind === 'skill') return `<tr>${name}<td class="desc"><div>${esc(p.meta.description)}</div></td><td>${harnessList(p)}</td><td data-v="${p.items.length}">${p.items.length}</td><td data-v="${p.meta.tokens}">${fmt(p.meta.tokens)}</td></tr>`;
+    if (s.kind === 'plugin') return `<tr>${name}<td class="target">${esc(p.subtitle)}</td><td>${harnessList(p)}</td><td data-v="${p.items.length}">${p.items.length}</td></tr>`;
+    return `<tr>${name}<td class="target">${p.items.map(i => `<a href="${href(s.name, p.name, i.path)}">${esc(i.path)}</a>`).join('<br>')}</td></tr>`;
+  });
+  const total = s.kind === 'mcp' ? ` · ${fmt(s.pages.reduce((a, p) => a + (p.meta.tokens || 0), 0))} tokens of tool definitions in total` : '';
+  return `<h1 class="title">${esc(s.name)}</h1><p class="note">${s.pages.length} entries${total} · click a column to sort</p>` + table(head, rows);
+}
+
+function serverView(page, data) {
+  const rows = data.items.map(i => {
+    const t = i.tool, props = Object.keys((t.inputSchema || {}).properties || {}).length;
+    const first = (t.description || '').split('\n').find(l => l.trim()) || '';
+    return `<tr><td class="name"><a href="${href(page.section.name, page.name, i.path)}">${esc(i.path)}</a></td><td class="desc"><div>${esc(first)}</div></td>
+      <td data-v="${props}">${props}</td><td data-v="${i.tokens}">${fmt(i.tokens)}</td></tr>`;
+  });
+  return `<h1 class="title">${esc(page.name)}</h1>
+    <p class="note"><code>${esc(page.meta.target)}</code> · used by ${harnessList(page) || '—'} · ${page.meta.tools} tools · ${fmt(page.meta.tokens)} tokens of tool definitions</p>` +
+    table(['Tool', 'Description', 'Params', TOK], rows);
+}
+
+// ---- tool rendering: Python-style signature + parameter tables
+
+const pyLit = v => v === null ? 'None' : v === true ? 'True' : v === false ? 'False' : JSON.stringify(v);
+function short(s, n = 48) { return s.length > n ? s.slice(0, n - 1) + '…' : s; }
+
+function resolver(root) {
+  return s => {
+    if (s && s.$ref) {
+      const name = s.$ref.split('/').pop();
+      return (root.$defs || root.definitions || {})[name] || s;
+    }
+    return s;
+  };
+}
+
+function pyType(s, depth = 0) {
+  if (!s || typeof s !== 'object') return 'Any';
+  if (s.$ref) return s.$ref.split('/').pop();
+  if (s.enum) return `Literal[${s.enum.map(pyLit).join(', ')}]`;
+  if (s.const !== undefined) return `Literal[${pyLit(s.const)}]`;
+  const alts = s.anyOf || s.oneOf;
+  if (alts) return [...new Set(alts.map(a => pyType(a, depth)))].join(' | ');
+  if (Array.isArray(s.type)) return s.type.map(t => pyType({...s, type: t}, depth)).join(' | ');
+  switch (s.type) {
+    case 'string': return 'str';
+    case 'integer': return 'int';
+    case 'number': return 'float';
+    case 'boolean': return 'bool';
+    case 'null': return 'None';
+    case 'array': return `list[${pyType(s.items, depth + 1)}]`;
+    case 'object':
+      if (s.properties) return s.title || 'dict';
+      if (s.additionalProperties && typeof s.additionalProperties === 'object') return `dict[str, ${pyType(s.additionalProperties, depth + 1)}]`;
+      return 'dict';
+  }
+  return s.properties ? 'dict' : 'Any';
+}
+
+function paramRows(schema, resolve, prefix = '', depth = 0) {
+  const rows = [];
+  const props = (schema && schema.properties) || {};
+  const required = new Set((schema && schema.required) || []);
+  for (const [name, raw] of Object.entries(props)) {
+    const s = resolve(raw) || {};
+    const full = prefix + name;
+    rows.push({name: full, type: pyType(raw), required: required.has(name), default: 'default' in s ? s.default : raw.default,
+      hasDefault: 'default' in s || 'default' in (raw || {}), desc: s.description || raw.description || s.title || '',
+      extra: [s.format && `format: ${s.format}`, s.minimum != null && `≥ ${s.minimum}`, s.maximum != null && `≤ ${s.maximum}`,
+              s.pattern && `pattern: ${s.pattern}`].filter(Boolean)});
+    if (depth < 3) {
+      if (s.type === 'object' && s.properties) rows.push(...paramRows(s, resolve, full + '.', depth + 1));
+      const items = resolve(s.items);
+      if (s.type === 'array' && items && items.properties) rows.push(...paramRows(items, resolve, full + '[].', depth + 1));
+    }
+  }
+  return rows;
+}
+
+function paramTable(rows) {
+  if (!rows.length) return '<p class="note">No parameters.</p>';
+  return `<div class="tablewrap"><table class="params"><thead><tr><th>Name</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody>${rows.map(r => `<tr>
+    <td class="name">${esc(r.name)}${r.required ? ' <span class="chip req">required</span>' : ''}</td>
+    <td><code>${esc(r.type)}</code></td>
+    <td>${r.hasDefault ? `<code>${esc(short(pyLit(r.default)))}</code>` : ''}</td>
+    <td class="pdesc">${mdInline(r.desc)}${r.extra.length ? `<div class="kv">${esc(r.extra.join(' · '))}</div>` : ''}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+function signature(t) {
+  const schema = t.inputSchema || {};
+  const required = new Set(schema.required || []);
+  const entries = Object.entries(schema.properties || {});
+  entries.sort(([a], [b]) => required.has(b) - required.has(a));
+  const resolve = resolver(schema);
+  const args = entries.map(([name, raw]) => {
+    const s = resolve(raw) || {};
+    let arg = `${name}: ${pyType(raw)}`;
+    if (!required.has(name)) arg += ' = ' + short('default' in s ? pyLit(s.default) : 'None', 40);
+    return arg;
+  });
+  const ret = t.outputSchema ? ` -> ${pyType(t.outputSchema)}` : '';
+  const one = `def ${t.name}(${args.join(', ')})${ret}`;
+  return one.length <= 90 ? one : `def ${t.name}(\n${args.map(a => '    ' + a + ',').join('\n')}\n)${ret}`;
+}
+
+function toolView(page, item) {
+  const t = item.tool, a = t.annotations || {};
+  const chips = [`<span class="chip">≈ ${fmt(item.tokens)} tokens</span>`,
+    a.readOnlyHint && '<span class="chip ok">read-only</span>', a.destructiveHint && '<span class="chip bad">destructive</span>',
+    a.idempotentHint && '<span class="chip">idempotent</span>', a.openWorldHint && '<span class="chip">open world</span>'].filter(Boolean).join(' ');
+  const bar = `<div class="filebar"><h2>${esc(t.name)}</h2>${chips}<div class="actions"><button id="tg">${showSource ? 'show formatted' : 'show source'}</button></div></div>`;
+  if (showSource) return bar + `<pre class="src">${esc(item.text)}</pre>`;
+  const schema = t.inputSchema || {}, resolve = resolver(schema);
+  const defs = Object.entries(schema.$defs || schema.definitions || {});
+  let html = bar + (a.title ? `<p class="note">${esc(a.title)}</p>` : '') + `<pre class="sig">${esc(signature(t))}</pre>` +
+    `<div class="md">${md(t.description || '_No description._')}</div><h3>Parameters</h3>` + paramTable(paramRows(schema, resolve));
+  for (const [name, def] of defs) html += `<h3>Type <code>${esc(name)}</code></h3>` + paramTable(paramRows(def, resolve));
+  if (t.outputSchema && t.outputSchema.properties) html += `<h3>Returns <code>${esc(pyType(t.outputSchema))}</code></h3>` + paramTable(paramRows(t.outputSchema, resolver(t.outputSchema)));
+  return html;
+}
+
+function fileView(item) {
+  const actions = [];
+  if (item.kind === 'md') actions.push(`<button id="tg">${showSource ? 'show rendered' : 'show source'}</button>`);
+  if (item.href) actions.push(`<a href="${esc(item.href)}" target="_blank">open file ↗</a>`);
+  const tokens = item.tokens != null ? `<span class="chip">≈ ${fmt(item.tokens)} tokens</span>` : '';
+  const bar = `<div class="filebar"><h2>${esc(item.path)}</h2>${tokens}<div class="actions">${actions.join('')}</div></div>`;
+  if (item.note) return bar + `<p class="note">${esc(item.note)}${item.href ? ` — <a href="${esc(item.href)}" target="_blank">open it</a>` : ''}</p>`;
+  if (item.kind === 'image') return bar + `<img class="preview" src="${esc(item.href)}" alt="${esc(item.path)}">`;
+  if (item.kind !== 'md' || showSource || !window.marked) return bar + `<pre class="src">${esc(item.text)}</pre>`;
+  let text = item.text, fm = '';
+  const m = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+  if (m) {
+    text = text.slice(m[0].length);
+    const rows = [];
+    for (const line of m[1].split('\n')) {
+      const kv = line.match(/^([\w-]+):\s*(.*)$/);
+      if (kv) rows.push([kv[1], kv[2]]);
+      else if (rows.length) rows[rows.length - 1][1] += ' ' + line.trim();
+    }
+    fm = `<table class="fm">${rows.map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v.replace(/^[>|]-?\s*/, ''))}</td></tr>`).join('')}</table>`;
+  }
+  return bar + fm + `<div class="md">${md(text)}</div>`;
+}
+
+function resolvePath(base, rel) {
+  const parts = base.split('/').slice(0, -1);
+  for (const seg of rel.split('/')) {
+    if (seg === '..') parts.pop(); else if (seg && seg !== '.') parts.push(seg);
+  }
+  return parts.join('/');
+}
+
+function wire(page, item) {
+  const tg = el('tg');
+  if (tg) tg.onclick = () => { showSource = !showSource; render(); };
+  el('view').querySelectorAll('table.sortable').forEach(sortable);
+  el('view').querySelectorAll('.md a[href], .pdesc a[href]').forEach(a => {
+    const h = a.getAttribute('href');
+    if (/^[a-z][\w+.-]*:/i.test(h)) { a.target = '_blank'; a.rel = 'noopener'; return; }
+    if (!item || h.startsWith('#')) return;
+    const target = resolvePath(item.path, decodeURIComponent(h.split('#')[0]));
+    const data = PAGES[page.ref];
+    if (data && data.items.some(i => i.path === target)) a.setAttribute('href', href(page.section.name, page.name, target));
+  });
+}
+
+async function render() {
+  route = parse();
+  if (route.page) openPages.add(route.page.ref);
+  crumbs();
+  tree();
+  const view = el('view');
+  try {
+    if (!route.section) view.innerHTML = rootView();
+    else if (!route.page) view.innerHTML = sectionView(route.section);
+    else {
+      const data = await load(route.page);
+      if (!route.item) {
+        if (route.page.section.kind === 'mcp') view.innerHTML = serverView(route.page, data);
+        else if (data.items.length) return location.replace(href(route.page.section.name, route.page.name, data.items[0].path));
+        else view.innerHTML = '<p class="note">No files.</p>';
+      } else {
+        const item = data.items.find(i => i.path === route.item);
+        view.innerHTML = !item ? `<p class="note">Not found: <code>${esc(route.item)}</code></p>` : item.kind === 'tool' ? toolView(route.page, item) : fileView(item);
+        wire(route.page, item);
+        view.scrollTop = 0;
+        return;
+      }
+    }
+    wire(route.page, null);
+    view.scrollTop = 0;
+  } catch (e) {
+    view.innerHTML = `<p class="note">${esc(e.message)}</p>`;
+  }
+}
+
+el('q').addEventListener('input', () => { filter = el('q').value.trim().toLowerCase(); tree(); });
+window.addEventListener('hashchange', render);
+render();
+</script>
+</body>
+</html>

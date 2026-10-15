@@ -12,18 +12,17 @@
   <h1>Harness overview</h1>
   <span class="scope" id="scope"></span>
   <span class="meta" id="meta"></span>
-  <nav><a href="#summary">Summary</a><a href="#mcp">MCP</a><a href="#skills">Skills</a><a href="#plugins">Plugins</a><a href="#prompts">Prompts</a><a href="explorer.html#/" target="_blank">Explorer ↗</a></nav>
+  <nav><a href="#summary">Summary</a><a href="#prompts">Prompts</a><a href="#mcp">MCP</a><a href="#skills">Skills</a><a href="#plugins">Plugins</a><a href="explorer.html#/" target="_blank">Explorer ↗</a></nav>
   <input type="search" id="q" placeholder="Filter servers, skills, plugins…">
 </header>
 <main>
   <section id="summary"><div class="cards" id="cards"></div></section>
+  <section id="prompts"><h2>Prompts <small id="promptnote"></small></h2><div class="cards" id="promptgrid"></div></section>
   <section id="mcp"><h2>MCP servers <small id="mcpnote"></small>
     <label class="toggle"><input type="checkbox" id="mcpdiff"> only differences</label></h2><div class="tablewrap"><table id="mcptable"></table></div></section>
   <section id="skills"><h2>Skills <small id="skillcount"></small>
     <label class="toggle"><input type="checkbox" id="skilldiff"> only differences</label></h2><div class="tablewrap"><table id="skilltable"></table></div></section>
   <section id="plugins"><h2>Plugins <small>click for the plugin's files; docs ↗ for its homepage</small></h2><div class="plugins" id="plugingrid"></div></section>
-  <section id="prompts"><h2>Prompts <small id="promptnote"></small></h2>
-    <div class="tabs" id="prompttabs"></div><div id="promptlist"></div></section>
 </main>
 <dialog id="popup"><div class="pop"><div class="pophead"><h3 id="poptitle"></h3><button id="popclose" aria-label="Close">×</button></div><pre id="popbody"></pre></div></dialog>
 <script>
@@ -74,7 +73,6 @@ el('cards').innerHTML = H.map(h => {
   const ok = h.servers.filter(s => s.status === 'connected').length;
   const instr = reqTokens(h) || h.prompts.reduce((a, p) => a + p.tokens, 0);
   const ts = h.tool_search || {};
-  const loaded = ts.upfront || '';
   const files = h.config_files.map(f => `<li>${h.config_ref ? `<a href="${ex(h.config_ref, f)}" target="_blank"><code>${esc(f)}</code></a>` : `<code>${esc(f)}</code>`}</li>`).join('');
   return `<div class="card"><h3>${esc(h.name)}</h3><div class="ver">${esc(h.version || 'not installed?')}</div>
     <div class="stats">
@@ -88,7 +86,6 @@ el('cards').innerHTML = H.map(h => {
         <div class="kv">${h.models.length} available</div><ul class="models scroll">${h.models.map(m =>
           `<li class="${m === h.model || h.model.endsWith('/' + m) || h.model.startsWith(m + '#') ? 'on' : ''}">${esc(m)}</li>`).join('')}</ul>` : ''}</td></tr>
       <tr><th>Tool search</th><td><span class="chip ${TS[ts.state] || ''}">${esc(ts.state || '?')}</span><div class="kv">${esc(ts.detail || '')}</div></td></tr>
-      <tr><th>MCP tool definitions</th><td><b>≈ ${fmt(mcpTokens(h))}</b> tokens<div class="kv">${esc(loaded)}</div></td></tr>
       <tr><th>Config files</th><td><ul class="files">${files || '<li class="muted">none</li>'}</ul></td></tr>
       <tr><th>Hooks</th><td><div class="scroll">${hookList(h)}</div></td></tr>
     </table>
@@ -159,29 +156,40 @@ function plugins() {
     : '<div class="empty">none</div>'}</div>`).join('');
 }
 
-let promptTab = H[0].key;
 const KINDS = {system: 'system prompt', tools: 'tool definitions', context: 'injected context'};
-function requestBlock(h) {
-  const r = h.request || {}, parts = r.parts || [];
-  if (!parts.length) return `<div class="empty">Model request: ${esc(r.note || r.source || 'not collected')}</div>`;
-  const total = reqTokens(h);
+const pRow = (h, type, i, chip, title, sub, tokens) => `<li><a href="#" class="plink" data-k="${h.key}" data-t="${type}" data-i="${i}" title="${esc(sub || title)}">
+  ${chip}<span class="ptitle">${esc(title)}</span><span class="ptok">${fmt(tokens)}</span></a></li>`;
+
+function promptColumn(h) {
+  const r = h.request || {}, parts = r.parts || [], total = reqTokens(h);
   const byKind = Object.keys(KINDS).map(k => [k, parts.filter(p => p.kind === k).reduce((a, p) => a + p.tokens, 0)]).filter(([, n]) => n);
-  return `<h3 class="sub3">Model request ≈ ${fmt(total)} tokens</h3>
+  const request = parts.length ? `<div class="ptotal">Model request <b>≈ ${fmt(total)}</b> tokens</div>
     <div class="reqbar">${byKind.map(([k, n]) => `<i class="k-${k}" style="flex:${n}" title="${KINDS[k]}: ${fmt(n)} tokens"></i>`).join('')}</div>
     <div class="reqlegend">${byKind.map(([k, n]) => `<span><i class="k-${k}"></i>${KINDS[k]} ${fmt(n)} (${Math.round(100 * n / total)}%)</span>`).join('')}</div>
-    <div class="kv">${esc(r.source)}${r.note ? ' · ' + esc(r.note) : ''}</div>
-    ${parts.map(p => `<details class="prompt"><summary><span class="chip k-${p.kind}">${esc(KINDS[p.kind] || p.kind)}</span><b>${esc(p.title)}</b>
-      <span class="size">${fmt(p.text.length)} chars · ≈ ${fmt(p.tokens)} tokens</span></summary><pre>${esc(p.text)}</pre></details>`).join('')}`;
+    <ul class="plist">${parts.map((p, i) => pRow(h, 'part', i, `<span class="chip k-${p.kind}">${esc((KINDS[p.kind] || p.kind).split(' ')[0])}</span>`, p.title, '', p.tokens)).join('')}</ul>
+    <div class="kv">${esc(r.source)}${r.note ? ' · ' + esc(r.note) : ''}</div>`
+    : `<div class="empty">Model request: ${esc(r.note || r.source || 'not collected')}</div>`;
+  const ts = h.tool_search || {};
+  const mcp = `<h4 class="psub">MCP tool definitions</h4><div><b>≈ ${fmt(mcpTokens(h))}</b> tokens <span class="kv">· ${esc(ts.upfront || '')}</span></div>`;
+  const files = `<h4 class="psub">Instruction files (${h.prompts.length})</h4>` + (h.prompts.length
+    ? `<ul class="plist">${h.prompts.map((p, i) => pRow(h, 'file', i, '', p.title, p.path, p.tokens)).join('')}</ul>`
+    : '<div class="empty">none found</div>');
+  return `<div class="card"><h3>${esc(h.name)}</h3>${request}${mcp}${files}</div>`;
 }
 
 function prompts() {
-  el('prompttabs').innerHTML = H.map(h => `<button class="${h.key === promptTab ? 'on' : ''}" data-k="${h.key}">${esc(h.name)}</button>`).join('');
-  const h = H.find(x => x.key === promptTab);
-  el('promptlist').innerHTML = requestBlock(h) + `<h3 class="sub3">Instruction files (${h.prompts.length})</h3>` +
-    (h.prompts.length ? h.prompts.map(p => `<details class="prompt"><summary><b>${esc(p.title)}</b>
-    <span class="path">${esc(p.path)}</span><span class="size">${fmt(p.text.length)} chars · ≈ ${fmt(p.tokens)} tokens</span></summary>
-    <pre>${esc(p.text)}</pre></details>`).join('') : '<div class="empty">no instruction files found</div>');
-  el('prompttabs').querySelectorAll('button').forEach(b => b.onclick = () => { promptTab = b.dataset.k; prompts(); });
+  el('promptgrid').innerHTML = H.map(promptColumn).join('');
+  el('promptgrid').querySelectorAll('.plink').forEach(a => a.onclick = e => {
+    e.preventDefault();
+    const h = H.find(x => x.key === a.dataset.k), i = +a.dataset.i;
+    if (a.dataset.t === 'part') {
+      const p = h.request.parts[i];
+      openPopup(`${h.name} — ${KINDS[p.kind] || p.kind}: ${p.title} (≈ ${fmt(p.tokens)} tokens)`, p.text);
+    } else {
+      const p = h.prompts[i];
+      openPopup(`${h.name} — ${p.title} (≈ ${fmt(p.tokens)} tokens)`, `${p.path}\n\n${p.text}`);
+    }
+  });
 }
 
 const tables = {mcptable: [mcpTable(), 'mcpdiff'], skilltable: [skillTable(), 'skilldiff']};

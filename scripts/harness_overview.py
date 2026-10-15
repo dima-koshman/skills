@@ -1409,14 +1409,6 @@ def codex(cwd: Path, project: Path | None, usage: bool) -> Harness:
                     if tag
                     else text.strip().splitlines()[0][:80].lstrip("# ")
                 )
-                h.prompts.append(
-                    Prompt(
-                        f"{msg.get('role', '')}: {title}",
-                        "codex debug prompt-input",
-                        mask(text),
-                        count_tokens(text),
-                    )
-                )
                 if h.request is not None and "parts" in h.request:
                     kind = "system" if msg.get("role") == "developer" else "context"
                     h.request["parts"].append(
@@ -1505,6 +1497,18 @@ def codex(cwd: Path, project: Path | None, usage: bool) -> Harness:
     attempt(h, "codex features list", tool_search)
     attempt(h, "codex mcp list", servers)
     attempt(h, "codex debug prompt-input", prompt_input)
+
+    def prompts():
+        """The instruction files the prompt-input parts above are built from."""
+        add_prompt(h, "global ~/.codex/AGENTS.md", HOME / ".codex/AGENTS.md")
+        if project:
+            for d in dirs_up(project):
+                for path in existing(d / "AGENTS.override.md") or existing(
+                    d / "AGENTS.md"
+                ):
+                    add_prompt(h, f"project {tilde(path)}", path)
+
+    attempt(h, "instruction files", prompts)
     attempt(h, "codex plugin list", plugins)
     if usage:
         attempt(h, "codex app-server rateLimits", read_usage)

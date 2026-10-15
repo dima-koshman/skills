@@ -39,6 +39,7 @@ okf_version: "0.2"
 * [OKF Visualizers](/ai-engineering/context/okf-visualizers.md) `[Concept]` - Comparison of the upstream static HTML viewer with our custom graph-and-reader renderer, including adoption instructions and compatibility limits.
 * [Open Knowledge Format (OKF)](/ai-engineering/context/okf.md) `[Knowledge Format]` - Google's vendor-neutral markdown-plus-frontmatter standard for agent-readable knowledge.
 * [OpenWiki](/ai-engineering/context/openwiki.md) `[Tool]` - LangChain's early-stage CLI for generating and maintaining agent-facing Markdown wikis from local knowledge sources.
+* [Prompt Caching](/ai-engineering/context/prompt-caching.md) `[Concept]` - Reusing cached prefix tokens across LLM requests to minimize latency and token costs, and how to design agent harnesses around cache preservation.
 * [RAG](/ai-engineering/context/rag.md) `[Concept]` - Retrieval-augmented generation — fetching relevant documents at query time and adding them to the model's context.
 
 ## development

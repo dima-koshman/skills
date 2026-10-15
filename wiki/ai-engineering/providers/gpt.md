@@ -1,16 +1,44 @@
-# GPT
-
-OpenAI GPT API token pricing and prompt caching — the 272K long-context cliff, cache-write fees, and keep-alive economics.
+---
+type: Model Provider
+title: GPT
+description: OpenAI GPT API token pricing and prompt caching — the 272K long-context cliff, cache-write
+  fees, and keep-alive economics.
+resource: https://developers.openai.com/api/docs/pricing
+tags:
+- ai-engineering
+- providers
+parent: /ai-engineering/providers.md
+related:
+- /ai-engineering/providers/claude.md
+- /ai-engineering/providers/gemini.md
+- /ai-engineering/context/context-engineering.md
+- /ai-engineering/harness/provider-tools.md
+- /ai-engineering/enterprise/llm-gateway.md
+pricing_unit: USD per 1 million tokens
+sources:
+- id: ref-1
+  resource: https://developers.openai.com/api/docs/pricing
+  title: developers.openai.com
+- id: ref-2
+  resource: https://developers.openai.com/api/docs/models/gpt-5.6-sol
+  title: developers.openai.com
+- id: ref-3
+  resource: https://developers.openai.com/api/docs/guides/prompt-caching
+  title: developers.openai.com
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://developers.openai.com/api/docs/pricing>
 
 Token pricing and prompt-caching behavior for OpenAI's GPT API — short- and
 long-context rates, the 272K-token pricing cliff, and cache-write economics. Read
-it alongside the [Claude](claude.md) and [Gemini](gemini.md)
+it alongside the [Claude](/ai-engineering/providers/claude.md) and [Gemini](/ai-engineering/providers/gemini.md)
 pricing notes for a cross-provider comparison. Caching is the concrete cost lever
-behind [context engineering](../context/context-engineering.md);
-[provider-side tools](../harness/provider-tools.md) are billed on top of these token
-rates; and an [LLM gateway](../enterprise/llm-gateway.md) is where per-provider
+behind [context engineering](/ai-engineering/context/context-engineering.md);
+[provider-side tools](/ai-engineering/harness/provider-tools.md) are billed on top of these token
+rates; and an [LLM gateway](/ai-engineering/enterprise/llm-gateway.md) is where per-provider
 costs get compared, routed, and capped.
 
 *Verified against OpenAI documentation on 2026-07-11. Prices below are for GPT-5.6 Sol, Standard processing.*
@@ -52,7 +80,7 @@ A request with **more than 272,000 input tokens** uses long-context prices for t
 | Cache write | $12.50 |
 | Output | $45.00 |
 
-This creates a real pricing cliff at 272,001 input tokens — a threshold [Claude's 1M-context models do not have](claude.md), and one that [Gemini](gemini.md) sets at a different point (200K).
+This creates a real pricing cliff at 272,001 input tokens — a threshold [Claude's 1M-context models do not have](/ai-engineering/providers/claude.md), and one that [Gemini](/ai-engineering/providers/gemini.md) sets at a different point (200K).
 
 The threshold is based on the request's **input tokens**. Output generated during that request does not retroactively trigger long-context pricing. However, if that output is included as conversation history in the next request, it becomes input and can push the next request over 272K.
 
@@ -89,7 +117,7 @@ But OpenAI guarantees only a **minimum 30-minute eligibility period**. Its docum
 - Compact or summarize conversations before approaching 272K input tokens.
 - Optimize for **cost per successful task**, not only listed price per token.
 
-## Citations
+## Resources
 
 - Pricing: <https://developers.openai.com/api/docs/pricing>
 - GPT-5.6 Sol model page: <https://developers.openai.com/api/docs/models/gpt-5.6-sol>

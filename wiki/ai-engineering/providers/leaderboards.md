@@ -1,6 +1,41 @@
-# LLM Leaderboards
-
-A curated bookmark set and benchmark map for choosing reliable, independent LLM evaluation sources across capabilities.
+---
+type: Reference
+title: LLM Leaderboards
+description: A curated bookmark set and benchmark map for choosing reliable, independent LLM evaluation
+  sources across capabilities.
+tags:
+- ai-engineering
+- providers
+parent: /ai-engineering/providers.md
+related:
+- /ai-engineering/observability/langsmith-evals.md
+- /ai-engineering/providers/claude.md
+- /ai-engineering/providers/gpt.md
+- /ai-engineering/providers/gemini.md
+note_date: '2026-07-13'
+sources:
+- id: ref-1
+  resource: https://artificialanalysis.ai/
+  title: Artificial Analysis
+- id: ref-2
+  resource: https://benchlm.ai/
+  title: BenchLM
+- id: ref-3
+  resource: https://labs.scale.com/leaderboard/swe_bench_pro_public
+  title: Scale Labs SWE-Bench Pro
+- id: ref-4
+  resource: https://gorilla.cs.berkeley.edu/leaderboard.html
+  title: Berkeley Function Calling Leaderboard
+- id: ref-5
+  resource: https://livebench.ai/
+  title: LiveBench
+- id: ref-6
+  resource: https://arena.ai/leaderboard/text
+  title: Arena
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Note dated: 2026-07-13.
 
@@ -9,10 +44,10 @@ Topics: leaderboards, evaluation, benchmarks, model-selection.
 A curated set of external LLM leaderboards and benchmarks for picking models, and
 a capability-to-benchmark map for verifying results. These are the *public,
 cross-model* evaluation sources — complementary to the *internal, task-specific*
-evaluation covered by [LangSmith Evals](../observability/langsmith-evals.md). Pair
+evaluation covered by [LangSmith Evals](/ai-engineering/observability/langsmith-evals.md). Pair
 model-quality signals here with the per-provider cost signals in the
-[Claude](claude.md), [GPT](gpt.md), and
-[Gemini](gemini.md) pricing notes when selecting a model.
+[Claude](/ai-engineering/providers/claude.md), [GPT](/ai-engineering/providers/gpt.md), and
+[Gemini](/ai-engineering/providers/gemini.md) pricing notes when selecting a model.
 
 There is currently no single LLM leaderboard that is simultaneously:
 

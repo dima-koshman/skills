@@ -1,6 +1,27 @@
-# Google File System
-
-A filesystem designed around large data workloads and routine hardware failure.
+---
+type: Reference
+title: Google File System
+description: A filesystem designed around large data workloads and routine hardware failure.
+tags:
+- software-engineering
+- distributed-systems
+parent: /software-engineering/distributed-systems.md
+related:
+- /software-engineering/infrastructure/planes.md
+- /software-engineering/distributed-systems/map_reduce.md
+- /software-engineering/distributed-systems/bigtable.md
+publication: Sanjay Ghemawat, Howard Gobioff, and Shun-Tak Leung, **The Google File System**, SOSP 2003.
+sources:
+- id: ref-1
+  resource: https://storage.googleapis.com/gweb-research2023-media/pubtools/4446.pdf
+  title: Download paper (PDF, Google)
+- id: ref-2
+  resource: https://research.google/pubs/the-google-file-system/
+  title: Publication page
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: Sanjay Ghemawat, Howard Gobioff, and Shun-Tak Leung,
 **The Google File System**, SOSP 2003.
@@ -21,8 +42,8 @@ Read **Design Overview**, especially the consistency model, then
 Ask which guarantees belong to storage and which remain application work.
 
 Compare the metadata/data split with
-[control and data planes](../infrastructure/planes.md), then read
-[MapReduce](map_reduce.md) and [Bigtable](bigtable.md).
+[control and data planes](/software-engineering/infrastructure/planes.md), then read
+[MapReduce](/software-engineering/distributed-systems/map_reduce.md) and [Bigtable](/software-engineering/distributed-systems/bigtable.md).
 
 ## Resources
 

@@ -1,6 +1,28 @@
-# Data, Control & Management Planes
-
-The decomposition of a distributed system into traffic-carrying, policy-distributing, and operator-facing layers.
+---
+type: Concept
+title: Data, Control & Management Planes
+description: The decomposition of a distributed system into traffic-carrying, policy-distributing, and
+  operator-facing layers.
+tags:
+- software-engineering
+- infrastructure
+parent: /software-engineering/infrastructure.md
+related:
+- /software-engineering/infrastructure/service-mesh.md
+sources:
+- id: ref-1
+  resource: https://www.ibm.com/think/topics/control-plane-vs-data-plane
+  title: Control plane vs. data plane — IBM
+- id: ref-2
+  resource: https://kubernetes.io/docs/concepts/architecture/
+  title: Kubernetes cluster architecture
+- id: ref-3
+  resource: https://systemsapproach.substack.com/p/control-planes-are-more-than-signalling
+  title: Control planes are more than signalling — Systems Approach
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 "Plane" is the vocabulary for separating a system by *what kind of work* a
 component does, independent of how it is deployed. The split originates in
@@ -24,7 +46,7 @@ and access-control requirements, which in regulated environments it does.
 
 Concrete instances make the pattern easy to recognize:
 
-- **[Istio](service-mesh.md)** — Envoy sidecars (or `ztunnel`)
+- **[Istio](/software-engineering/infrastructure/service-mesh.md)** — Envoy sidecars (or `ztunnel`)
   are the data plane; `istiod` is the control plane.
 - **Kubernetes** — the API server, scheduler, and controller manager form the
   control plane; `kubelet` and `kube-proxy` on each node do the data-plane work.

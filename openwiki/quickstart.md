@@ -34,7 +34,7 @@ concepts, workflows, integrations, operations, and evidence review.
 
 ### AI engineering
 
-Begin with the [AI Engineering source map](../wiki/ai-engineering/ai-engineering.md).
+Begin with the [AI Engineering source map](../wiki/ai-engineering.md).
 It is broader than agent execution and covers models and decision models, context,
 tools and enterprise boundaries, agents and harnesses, development, observability
 and evaluation, and security.
@@ -61,7 +61,7 @@ pages provide a navigable interpretation and pointers for further checking.
 
 ### Software engineering
 
-Begin with the [Software Engineering source map](../wiki/software-engineering/development.md).
+Begin with the [Software Engineering source map](../wiki/software-engineering.md).
 It remains distinct from model-specific AI notes and organizes general development
 and distributed-systems concerns:
 

@@ -1,6 +1,40 @@
-# Service Mesh
-
-A dedicated infrastructure layer handling service-to-service routing, security, reliability, and observability outside application code.
+---
+type: Concept
+title: Service Mesh
+description: A dedicated infrastructure layer handling service-to-service routing, security, reliability,
+  and observability outside application code.
+tags:
+- software-engineering
+- infrastructure
+parent: /software-engineering/infrastructure.md
+related:
+- /software-engineering/infrastructure/planes.md
+- /software-engineering/communication/grpc.md
+uses: /software-engineering/infrastructure/planes.md
+implementation_example: Istio
+data_plane_modes:
+- sidecar
+- ambient
+sources:
+- id: ref-1
+  resource: https://istio.io
+  title: Istio
+- id: ref-2
+  resource: https://istio.io/latest/docs/overview/what-is-istio/
+  title: What is Istio?
+- id: ref-3
+  resource: https://istio.io/latest/docs/ambient/overview/
+  title: Istio ambient mode
+- id: ref-4
+  resource: https://www.envoyproxy.io/
+  title: Envoy proxy
+- id: ref-5
+  resource: https://linkerd.io/
+  title: Linkerd
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 A service mesh is a distributed infrastructure layer that takes over the concerns
 every service-to-service call shares — routing, security, reliability, traffic
@@ -14,7 +48,7 @@ workloads, so it is configured once and applies uniformly, including to services
 whose source you do not control.
 
 Architecturally a mesh is the textbook
-[data-plane/control-plane split](planes.md): proxies carry the
+[data-plane/control-plane split](/software-engineering/infrastructure/planes.md): proxies carry the
 actual request traffic, and a controller compiles operator intent into proxy
 configuration and pushes it out.
 
@@ -32,7 +66,7 @@ transparently being the operative claim, since application code is unchanged.
 - **Control plane** — `istiod` watches the services and dynamically programs
   proxy behavior as rules and the environment change.
 
-What that buys: automatic load balancing for HTTP, [gRPC](../communication/grpc.md),
+What that buys: automatic load balancing for HTTP, [gRPC](/software-engineering/communication/grpc.md),
 WebSocket, and TCP, with fine-grained routing, retries, failover, and fault
 injection; mutual TLS with identity-based authentication and authorization
 between services; and automatic metrics, logs, and traces for all traffic

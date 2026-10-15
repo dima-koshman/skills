@@ -1,6 +1,40 @@
-# htmx
-
-Small, dependency-free JavaScript library that lets any HTML element issue HTTP requests and swap the returned HTML into the page — interactivity without a frontend framework.
+---
+type: Tool
+title: htmx
+description: Small, dependency-free JavaScript library that lets any HTML element issue HTTP requests
+  and swap the returned HTML into the page — interactivity without a frontend framework.
+resource: https://htmx.org
+tags:
+- software-engineering
+- frontend
+parent: /software-engineering/frontend.md
+note_date: '2026-10-03'
+sources:
+- id: ref-1
+  resource: https://htmx.org
+  title: htmx.org
+- id: ref-2
+  resource: https://four.htmx.org
+  title: four.htmx.org
+- id: ref-3
+  resource: https://htmx.org/docs/
+  title: Documentation
+- id: ref-4
+  resource: https://htmx.org/reference/
+  title: Attribute reference
+- id: ref-5
+  resource: https://htmx.org/examples/
+  title: Examples
+- id: ref-6
+  resource: https://htmx.org/essays/
+  title: Essays
+- id: ref-7
+  resource: https://hypermedia.systems/
+  title: Hypermedia Systems
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://htmx.org>
 

@@ -1,10 +1,27 @@
-# Peer Agents
+---
+type: Concept
+title: Peer Agents
+description: Independently governed agents that own goals and coordinate as peers rather than through
+  a permanent parent.
+tags:
+- ai-engineering
+- agents
+parent: /ai-engineering/agents.md
+related:
+- /ai-engineering/agents/agent.md
+- /ai-engineering/harness/subagents.md
+- /ai-engineering/harness/tools.md
+- /ai-engineering/agents/A2A.md
+- /ai-engineering/security/risks/insecure-inter-agent-communication.md
+- /ai-engineering/security/risks/cascading-agent-failures.md
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
-Independently governed agents that own goals and coordinate as peers rather than through a permanent parent.
-
-Peer agents are autonomous [agents](agent.md) that cooperate without one
+Peer agents are autonomous [agents](/ai-engineering/agents/agent.md) that cooperate without one
 permanently owning the others' goals, lifecycles, or authority. Unlike a
-[parent with subagents](../harness/subagents.md), each peer can initiate work,
+[parent with subagents](/ai-engineering/harness/subagents.md), each peer can initiate work,
 accept or reject requests, and continue operating independently.
 
 ## Control model
@@ -22,12 +39,12 @@ neither has standing authority over the other.
 ## Communication
 
 Peer and subagent implementations often use the same machinery: an agent is
-exposed as a callable endpoint or [tool](../harness/tools.md), messages carry task
+exposed as a callable endpoint or [tool](/ai-engineering/harness/tools.md), messages carry task
 context, and results arrive synchronously or asynchronously. Peers can also
 coordinate indirectly through shared files, databases, repositories, queues, or
 blackboards, provided ownership and concurrent updates are controlled.
 
-[Agent2Agent](A2A.md) standardizes remote-agent discovery and the
+[Agent2Agent](/ai-engineering/agents/A2A.md) standardizes remote-agent discovery and the
 exchange of messages, stateful tasks, status updates, and artifacts. It does not
 make agents peers by itself: peerhood comes from independent goal and authority
 ownership, not from the transport or message format.
@@ -48,5 +65,5 @@ Peer coordination introduces distributed-systems concerns beyond ordinary
 delegation: authenticated identities, task and ancestry IDs, idempotency,
 concurrency control, distributed termination, and cycle detection when A calls
 B and B calls A. Compromise or failure can propagate through
-[inter-agent communication](../security/risks/insecure-inter-agent-communication.md)
-and cause [cascading failures](../security/risks/cascading-agent-failures.md).
+[inter-agent communication](/ai-engineering/security/risks/insecure-inter-agent-communication.md)
+and cause [cascading failures](/ai-engineering/security/risks/cascading-agent-failures.md).

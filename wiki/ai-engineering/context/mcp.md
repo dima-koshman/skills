@@ -1,14 +1,42 @@
-# Model Context Protocol (MCP)
-
-Open protocol standardizing how LLM apps expose and consume tools, resources, and prompts.
+---
+type: Protocol
+title: Model Context Protocol (MCP)
+description: Open protocol standardizing how LLM apps expose and consume tools, resources, and prompts.
+resource: https://modelcontextprotocol.io
+tags:
+- ai-engineering
+- context
+parent: /ai-engineering/context.md
+related:
+- /ai-engineering/harness/tools.md
+- /ai-engineering/agents/agent.md
+- /ai-engineering/enterprise/mcp-gateway.md
+participants: LLM applications and tool/resource servers
+sources:
+- id: ref-1
+  resource: https://modelcontextprotocol.io
+  title: modelcontextprotocol.io
+- id: ref-2
+  resource: https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1442
+  title: SEP-1442
+- id: ref-3
+  resource: https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2575
+  title: SEP-2575
+- id: ref-4
+  resource: https://gofastmcp.com
+  title: FastMCP
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://modelcontextprotocol.io>
 
 MCP is a JSON-RPC-based protocol that standardizes the boundary between an LLM
 client and external capabilities — mainly **tools**, but it also supports
-**resources** and **prompts**. Its [tools](../harness/tools.md) are consumed by
-[agent architectures](../agents/agent.md) and, in production, fronted by an
-[MCP gateway](../enterprise/mcp-gateway.md) that multiplexes and secures many
+**resources** and **prompts**. Its [tools](/ai-engineering/harness/tools.md) are consumed by
+[agent architectures](/ai-engineering/agents/agent.md) and, in production, fronted by an
+[MCP gateway](/ai-engineering/enterprise/mcp-gateway.md) that multiplexes and secures many
 servers.
 
 It was designed **stateful**: a session opens with an initialization handshake

@@ -1,11 +1,46 @@
-# gRPC
-
-RPC framework using Protocol Buffers as its IDL to generate client and server stubs — a service-to-service alternative to REST.
+---
+type: Protocol
+title: gRPC
+description: RPC framework using Protocol Buffers as its IDL to generate client and server stubs — a service-to-service
+  alternative to REST.
+resource: https://grpc.io
+tags:
+- software-engineering
+- communication
+parent: /software-engineering/communication.md
+related:
+- /software-engineering/communication/protobuf.md
+- /software-engineering/infrastructure/service-mesh.md
+- /software-engineering/infrastructure/planes.md
+uses: /software-engineering/communication/protobuf.md
+transport: HTTP/2
+call_shapes:
+- unary
+- server streaming
+- client streaming
+- bidirectional streaming
+sources:
+- id: ref-1
+  resource: https://grpc.io
+  title: grpc.io
+- id: ref-2
+  resource: https://grpc.io/docs/what-is-grpc/core-concepts/
+  title: gRPC core concepts
+- id: ref-3
+  resource: https://grpc.io/docs/what-is-grpc/introduction/
+  title: Introduction to gRPC
+- id: ref-4
+  resource: https://grpc.io/docs/guides/status-codes/
+  title: Status codes and their use
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://grpc.io>
 
 gRPC is a remote procedure call framework that uses
-[Protocol Buffers](protobuf.md) as its interface definition
+[Protocol Buffers](/software-engineering/communication/protobuf.md) as its interface definition
 language: a `.proto` file declares both the payload messages *and* the service —
 its methods, their request types, and their response types. From that single
 definition, codegen produces a client **stub** and a server skeleton, so calling
@@ -44,10 +79,10 @@ it efficient also makes it opaque to `curl`, generic log tooling, and casual
 inspection. And the schema must be distributed to every consumer, which is a
 build-and-release concern, not just a coding one.
 
-Its shape aligns well with a [service mesh](../infrastructure/service-mesh.md):
+Its shape aligns well with a [service mesh](/software-engineering/infrastructure/service-mesh.md):
 because gRPC keeps long-lived HTTP/2 connections and multiplexes calls over them,
 naive connection-level load balancing distributes badly, and request-level
-balancing in the mesh's [data plane](../infrastructure/planes.md) is the standard
+balancing in the mesh's [data plane](/software-engineering/infrastructure/planes.md) is the standard
 fix. Istio load-balances gRPC as a first-class protocol for this reason.
 
 ## Resources

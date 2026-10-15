@@ -1,12 +1,41 @@
-# OKF Visualizers
-
-Comparison of the upstream static HTML viewer with our custom graph-and-reader renderer, including adoption instructions and compatibility limits.
+---
+type: Concept
+title: OKF Visualizers
+description: Comparison of the upstream static HTML viewer with our custom graph-and-reader renderer,
+  including adoption instructions and compatibility limits.
+tags:
+- ai-engineering
+- context
+parent: /ai-engineering/context.md
+related:
+- /ai-engineering/context/okf.md
+note_date: '2026-09-30'
+sources:
+- id: ref-1
+  resource: https://github.com/GoogleCloudPlatform/open-knowledge-format#visualize
+  title: github.com
+- id: ref-2
+  resource: https://okf.md/tools/#2-static-html-visualizer-vizhtml
+  title: 'Tools directory: static visualizer'
+- id: ref-3
+  resource: https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/src/reference_agent/viewer/generator.py
+  title: 'Generator: link extraction, reserved-file handling, type colors'
+- id: ref-4
+  resource: https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/src/reference_agent/viewer/static/viz.js
+  title: Browser logic and metadata display
+- id: ref-5
+  resource: https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/pyproject.toml
+  title: Package dependencies
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://github.com/GoogleCloudPlatform/open-knowledge-format#visualize>
 
 Note dated: 2026-09-30 18:00:00+00:00.
 
-The [OKF](okf.md) tools directory links Google's reference-agent
+The [OKF](/ai-engineering/context/okf.md) tools directory links Google's reference-agent
 `visualize` command. It renders a bundle into one HTML file with embedded data
 and a browser-side graph. This is a reference consumer, not a required part of
 the format. Comparison below is based on upstream source and generator runs
@@ -17,10 +46,10 @@ against both local bundles on 2026-09-30.
 | Capability | Local `okf_site.py` | Upstream `visualize` |
 | --- | --- | --- |
 | Basic view | Graph and reader, directory tree | Graph and detail panel |
-| Navigation | Index landing page, change log, mobile Contents/Graph controls | Computed “Cited by” backlinks and selectable graph layouts |
+| Navigation | Index landing page, change log, mobile Contents/Graph controls, Back/Forward history, typed backlinks | Computed “Cited by” backlinks and selectable graph layouts |
 | Search | Title, description, type, tags | Title, concept ID, tags |
 | Types | Dynamically assigned colors and clickable legend | Type filter; fixed colors for BigQuery Dataset, BigQuery Table, Reference; other types share gray |
-| v0.2 metadata | Does not surface provenance/trust/lifecycle fields | Displays sources, authorship, verification, status, trust tier, and staleness |
+| v0.2 metadata | Shows lifecycle status; preserves provenance/trust in embedded data without displaying them | Displays sources, authorship, verification, status, trust tier, and staleness |
 | Bundle-relative graph links | Resolves `/concept.md` and relative links | Current extractor skips targets starting with `/` |
 | Reserved files | Excludes index and log from concepts; renders them separately | Skips index, but includes log as an Unknown concept |
 | Dependencies | Python standard library and PyYAML | Full CLI package also depends on Google ADK, BigQuery, Pydantic, and markdownify |
@@ -52,6 +81,15 @@ Three options:
    the graph without rewriting canonical bundle identities. Verify mobile
    reading and index/log access before replacing the current workflow.
 
+## Current local workflow (2026-10-15)
+
+**Wiki: regenerate, render and open** selects `wiki/` (the authoritative source,
+default) or `openwiki/` (generated experiment). The local reader merges sibling
+directory-overview concepts, uses `_types/` descriptions and `primary_fields` for
+properties and technical details, draws typed frontmatter edges, and renders
+Mermaid diagrams. Both bundles can therefore be inspected directly. The upstream
+comparison above remains the result of the dated inspection, not a fresh upstream audit.
+
 ## How to run upstream
 
 From a checkout of the upstream repository, the documented CLI path is:
@@ -62,13 +100,13 @@ cd open-knowledge-format
 python3 -m venv .venv
 .venv/bin/pip install .
 .venv/bin/python -m reference_agent visualize \
-  --bundle /Users/dima/Projects/dima/.agents/skills/okf-ai-engineering/ai-engineering \
-  --out /tmp/ai-engineering-viz.html \
-  --name "AI Engineering"
+  --bundle /Users/koshmandmitry/Projects/dima/wiki \
+  --out /tmp/wiki-viz.html \
+  --name "Maintained Wiki"
 .venv/bin/python -m reference_agent visualize \
-  --bundle /Users/dima/Projects/dima/.agents/skills/okf-development/development \
-  --out /tmp/development-viz.html \
-  --name "Development"
+  --bundle /Users/koshmandmitry/Projects/dima/openwiki \
+  --out /tmp/openwiki-viz.html \
+  --name "Generated OpenWiki"
 ```
 
 The package requires Python >=3.11. Pin the checkout to a reviewed commit for

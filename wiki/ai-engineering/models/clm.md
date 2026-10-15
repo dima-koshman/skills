@@ -1,12 +1,50 @@
-# Contrastive Language Models (CLM)
-
-Open-source state-action scoring models with a TypeSafe-compatible API for typed decisions and candidate ranking.
+---
+type: Decision Model
+title: Contrastive Language Models (CLM)
+description: Open-source state-action scoring models with a TypeSafe-compatible API for typed decisions
+  and candidate ranking.
+resource: https://github.com/Contrastive-LM/CLM
+tags:
+- ai-engineering
+- models
+parent: /ai-engineering/models.md
+related:
+- /ai-engineering/models/jev.md
+- /ai-engineering/harness/workflows.md
+decision_interface:
+- Choice
+- Score
+- Noul
+- candidate ranking
+serving_model: self-hosted
+encoder: Qwen3-8B
+api_routes:
+- /v1/systemone
+- /v1/rank
+note_date: '2026-09-30'
+sources:
+- id: ref-1
+  resource: https://github.com/Contrastive-LM/CLM
+  title: github.com
+- id: ref-2
+  resource: https://huggingface.co/Contrastive-LM/CLM-v0.1-8B
+  title: Released CLM-v0.1-8B head
+- id: ref-3
+  resource: https://github.com/Contrastive-LM/CLM/blob/main/docs/FINETUNING.md
+  title: Fine-tuning instructions
+- id: ref-4
+  resource: https://github.com/Contrastive-LM/CLM/blob/main/examples/common.py
+  title: Shared CLM/Jev example client
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://github.com/Contrastive-LM/CLM>
 
 Note dated: 2026-09-30 18:00:00+00:00.
 
-CLM is an open-source alternative to [Jev](jev.md) for System One
+CLM is an open-source alternative to [Jev](/ai-engineering/models/jev.md) for System One
 decisions. It learns to align a state with appropriate candidate actions using
 a contrastive objective (InfoNCE). State and action representations are computed
 separately, allowing repeated candidates and states to reuse cached embeddings.
@@ -25,7 +63,7 @@ does not provide the 8B encoder.
 The HTTP service exposes TypeSafe-compatible `Choice`, `Score`, and `Noul`
 questions through `POST /v1/systemone`, plus candidate ranking through
 `POST /v1/rank`. This makes it a candidate backend for the same bounded
-[workflows](../harness/workflows.md), subject to checking response semantics,
+[workflows](/ai-engineering/harness/workflows.md), subject to checking response semantics,
 limits, and calibration rather than assuming identical behavior.
 
 The documented serving path runs Qwen3-8B with vLLM's pooling runner and

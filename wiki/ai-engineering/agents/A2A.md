@@ -1,6 +1,31 @@
-# Agent2Agent
-
-An protocol designed by Google enabling communication and interoperability between opaque agentic applications.
+---
+type: Protocol
+title: Agent2Agent
+description: An protocol designed by Google enabling communication and interoperability between opaque
+  agentic applications.
+resource: https://a2a-protocol.org
+tags:
+- ai-engineering
+- agents
+parent: /ai-engineering/agents.md
+participants: independently governed agents
+sources:
+- id: ref-1
+  resource: https://a2a-protocol.org
+  title: a2a-protocol.org
+- id: ref-2
+  resource: https://discuss.google.dev/t/agents-are-not-tools/
+  title: Agents are not tools
+- id: ref-3
+  resource: https://discuss.google.dev/t/a2a-protocol-demystifying-tasks-vs-messages/
+  title: blog post
+- id: ref-4
+  resource: https://a2a-protocol.org/latest/specification/#4-protocol-data-model
+  title: data types
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://a2a-protocol.org>
 

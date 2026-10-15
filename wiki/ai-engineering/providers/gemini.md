@@ -1,17 +1,48 @@
-# Gemini
-
-Google Gemini API token pricing plus implicit and explicit context caching, with break-even guidance.
+---
+type: Model Provider
+title: Gemini
+description: Google Gemini API token pricing plus implicit and explicit context caching, with break-even
+  guidance.
+resource: https://ai.google.dev/gemini-api/docs/pricing
+tags:
+- ai-engineering
+- providers
+parent: /ai-engineering/providers.md
+related:
+- /ai-engineering/providers/claude.md
+- /ai-engineering/providers/gpt.md
+- /ai-engineering/context/context-engineering.md
+- /ai-engineering/harness/provider-tools.md
+- /ai-engineering/enterprise/llm-gateway.md
+pricing_unit: USD per 1 million tokens
+sources:
+- id: ref-1
+  resource: https://ai.google.dev/gemini-api/docs/pricing
+  title: ai.google.dev
+- id: ref-2
+  resource: https://ai.google.dev/gemini-api/docs/caching
+  title: ai.google.dev
+- id: ref-3
+  resource: https://ai.google.dev/gemini-api/docs/interactions
+  title: ai.google.dev
+- id: ref-4
+  resource: https://ai.google.dev/gemini-api/docs/tokens
+  title: ai.google.dev
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://ai.google.dev/gemini-api/docs/pricing>
 
 Token pricing and context-caching behavior for Google's Gemini API — per-model
 rates, the 200K prompt-size tier, and the difference between implicit and explicit
-caching. Read it alongside the [Claude](claude.md) and
-[OpenAI](gpt.md) pricing notes for a cross-provider comparison. Caching
+caching. Read it alongside the [Claude](/ai-engineering/providers/claude.md) and
+[OpenAI](/ai-engineering/providers/gpt.md) pricing notes for a cross-provider comparison. Caching
 is the concrete cost lever behind
-[context engineering](../context/context-engineering.md);
-[provider-side tools](../harness/provider-tools.md) are billed on top of these token
-rates; and an [LLM gateway](../enterprise/llm-gateway.md) is where per-provider
+[context engineering](/ai-engineering/context/context-engineering.md);
+[provider-side tools](/ai-engineering/harness/provider-tools.md) are billed on top of these token
+rates; and an [LLM gateway](/ai-engineering/enterprise/llm-gateway.md) is where per-provider
 costs get compared, routed, and capped.
 
 *Verified against Google documentation on 2026-07-11. Prices are per 1 million tokens unless noted.*
@@ -38,7 +69,7 @@ Batch pricing is $0.75 input and $4.50 output; cached input is $0.075.
 
 Cache storage is $4.50 per 1M tokens per hour.
 
-Google lists separate request-wide rates for prompts up to and over 200K tokens; it does not describe the higher tier as marginal pricing applied only to excess tokens. Budget conservatively as a full-request tier — the same cliff shape [OpenAI has at 272K](gpt.md), just at a lower threshold, and one [Claude's 1M-context models avoid](claude.md).
+Google lists separate request-wide rates for prompts up to and over 200K tokens; it does not describe the higher tier as marginal pricing applied only to excess tokens. Budget conservatively as a full-request tier — the same cliff shape [OpenAI has at 272K](/ai-engineering/providers/gpt.md), just at a lower threshold, and one [Claude's 1M-context models avoid](/ai-engineering/providers/claude.md).
 
 ## Implicit caching
 
@@ -59,7 +90,7 @@ The `generateContent` API also supports explicit cache objects:
 - Default TTL is 1 hour.
 - TTL can be chosen and updated.
 - Billing includes discounted cached-token reads plus token-hours of storage.
-- There is no [Claude](claude.md)/[OpenAI](gpt.md)-style cache-write multiplier in the published pricing table; storage duration is the main extra cost.
+- There is no [Claude](/ai-engineering/providers/claude.md)/[OpenAI](/ai-engineering/providers/gpt.md)-style cache-write multiplier in the published pricing table; storage duration is the main extra cost.
 
 Explicit caching is preferable when reuse is predictable and you need guaranteed cache identity. Implicit caching is simpler but offers no guaranteed savings.
 
@@ -77,7 +108,7 @@ Use `countTokens` before expensive requests and inspect cached-token fields in `
 - Compact conversations before approaching a model's pricing threshold.
 - Remember that thinking tokens are billed at the output rate.
 
-## Citations
+## Resources
 
 - Pricing: <https://ai.google.dev/gemini-api/docs/pricing>
 - Context caching: <https://ai.google.dev/gemini-api/docs/caching>

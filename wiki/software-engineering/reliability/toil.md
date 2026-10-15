@@ -1,6 +1,32 @@
-# Toil
-
-Manual, repetitive operational work that scales with the service — capped and engineered away so a team's effort grows sublinearly with what it runs.
+---
+type: Practice
+title: Toil
+description: Manual, repetitive operational work that scales with the service — capped and engineered
+  away so a team's effort grows sublinearly with what it runs.
+tags:
+- software-engineering
+- reliability
+parent: /software-engineering/reliability.md
+related:
+- /software-engineering/reliability/simplicity.md
+- /ai-engineering/observability/langsmith.md
+- /ai-engineering/observability/langfuse.md
+- /ai-engineering/observability/langsmith-evals.md
+- /ai-engineering/development/observability-driven-development.md
+- /ai-engineering/development/ai-native-sdlc.md
+- /software-engineering/reliability/sre.md
+note_date: '2026-10-03'
+sources:
+- id: ref-1
+  resource: https://sre.google/sre-book/eliminating-toil/
+  title: sre.google
+- id: ref-2
+  resource: https://docs.langchain.com/langsmith/engine-overview
+  title: LangSmith Engine
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://sre.google/sre-book/eliminating-toil/>
 
@@ -47,7 +73,7 @@ a team that absorbs operational work invites other teams to hand it more.
 - **"It needs human judgment" can hide toil.** A service that pages several
   times a day, each alert needing an expert response, is poorly designed. The
   judgment-heavy response stays toil until the system is
-  [simplified](simplicity.md) to remove the failure or handle it automatically.
+  [simplified](/software-engineering/reliability/simplicity.md) to remove the failure or handle it automatically.
 - **Running a script is still toil.** Automation that needs a human to trigger
   it removes steps, not the toil.
 - **Averages hide outliers.** A team average of 33% can contain people at 80%.
@@ -85,21 +111,21 @@ online and continuously, not only when someone asks:
 Two products cover parts of this loop:
 
 - **[LangSmith Engine](https://docs.langchain.com/langsmith/engine-overview)**
-  is this loop productized for agents traced in [LangSmith](../../ai-engineering/observability/langsmith.md).
+  is this loop productized for agents traced in [LangSmith](/ai-engineering/observability/langsmith.md).
   It scans tracing projects on a schedule, groups recurring failures into
   issues, and diagnoses root causes against connected source code. It then
   proposes fixes as pull requests, tracks each issue as matching traces arrive
   (reopening it if the issue recurs), and creates ground-truth dataset examples
   for offline evaluation. Code fixes target agents built with LangChain,
   LangGraph, and Deep Agents.
-- **[Langfuse](../../ai-engineering/observability/langfuse.md) evaluators**
+- **[Langfuse](/ai-engineering/observability/langfuse.md) evaluators**
   supply the quality signal. LLM-as-a-judge evaluators run asynchronously on
   incoming production observations that match a rule's filters, and they write
   numeric, categorical, or boolean scores with reasoning back onto the traces.
   The same evaluators score datasets in experiments. The detect-diagnose-fix
   agent around those scores is yours to build, for example a coding agent with
   read access to Langfuse and the repository.
-  [LangSmith Evals](../../ai-engineering/observability/langsmith-evals.md)
+  [LangSmith Evals](/ai-engineering/observability/langsmith-evals.md)
   plays the same role in LangSmith.
 
 The human role moves from doing the toil to reviewing what the agent produced.
@@ -108,12 +134,12 @@ speculative findings recreate the problem as *review* toil. Keep findings
 deduplicated and evidence-backed, keep fixes small, and keep agents read-only
 in production, with PRs and runbooks as their only route to change things. The
 general technique is
-[observability-driven development](../../ai-engineering/development/observability-driven-development.md),
+[observability-driven development](/ai-engineering/development/observability-driven-development.md),
 and the Maintain stage of the
-[AI-native SDLC](../../ai-engineering/development/ai-native-sdlc.md) wires it
+[AI-native SDLC](/ai-engineering/development/ai-native-sdlc.md) wires it
 into a closed loop.
 
 ## Resources
 
 - [Google SRE book, chapter 5: Eliminating Toil](https://sre.google/sre-book/eliminating-toil/) — Vivek Rau, edited by Betsy Beyer.
-- [Site Reliability Engineering](sre.md) — the book overview.
+- [Site Reliability Engineering](/software-engineering/reliability/sre.md) — the book overview.

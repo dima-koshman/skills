@@ -14,7 +14,8 @@ self-contained ``okf-site.html`` with:
 * a right pane showing unique inbound concept links by default, with a toggle
   for the Cytoscape.js graph (nodes = concepts colored by ``type``; edges =
   cross-links), and
-* Back and Forward controls following browser history through reader pages.
+* Back and Forward controls following browser history through reader pages, and
+* Mermaid fenced diagrams rendered as SVG in the reading area.
 
 The reader shows lifecycle ``status`` (draft and deprecated concepts are also
 styled in the graph and tree) and ``sources`` with ``[^id]`` footnotes linked to
@@ -724,6 +725,7 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
 <script src="https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/cytoscape-fcose@2.2.0/cytoscape-fcose.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js"></script>
 <style>
   :root {
     --bg:#ffffff; --sidebar:#f6f8fa; --ink:#1f2328; --muted:#656d76; --line:#d0d7de;
@@ -847,6 +849,8 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #doc code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:85%; background:var(--code); padding:.15em .4em; border-radius:5px; }
   #doc pre { background:var(--code); padding:13px; border-radius:8px; overflow-x:auto; }
   #doc pre code { background:none; padding:0; }
+  #doc .mermaid { margin:16px 0; overflow-x:auto; text-align:center; }
+  #doc .mermaid svg { max-width:100%; height:auto; }
   #doc .lifecycle { display:flex; flex-wrap:wrap; gap:6px; margin:-6px 0 12px; }
   #doc .pill { display:inline-block; padding:1px 8px; border-radius:10px; font-size:11px; font-weight:600; border:1px solid var(--line); color:var(--muted); background:var(--bg); }
   #doc .pill.status-draft { color:#9a6700; border-color:#d4a72c; background:#fff8c5; }
@@ -1520,8 +1524,32 @@ function focusOn(id) {
 }
 
 /* ---------- reader ---------- */
-// Wire a rendered markdown container: in-bundle links navigate the graph,
-// external links open in a new tab.
+let mermaidSequence = 0;
+if (typeof mermaid !== 'undefined') {
+  mermaid.initialize({startOnLoad: false, securityLevel: 'strict', suppressErrorRendering: true});
+}
+
+async function renderMermaid(container) {
+  if (typeof mermaid === 'undefined') return;
+  for (const code of container.querySelectorAll('pre > code.language-mermaid')) {
+    const pre = code.parentElement;
+    const id = 'okf-mermaid-' + ++mermaidSequence;
+    try {
+      const {svg} = await mermaid.render(id, code.textContent);
+      if (!pre.isConnected) continue;
+      const diagram = document.createElement('div');
+      diagram.className = 'mermaid';
+      diagram.innerHTML = svg;
+      pre.replaceWith(diagram);
+    } catch (error) {
+      // Keep the original code readable when a diagram cannot be rendered.
+      console.warn('Could not render Mermaid diagram:', error);
+    }
+  }
+}
+
+// Enhance rendered Markdown: wire links and render fenced diagrams.
+// In-bundle links navigate the reader; external links open in a new tab.
 function wireDocLinks(container) {
   container.querySelectorAll('a[href^="#node:"]').forEach(a => {
     const target = decodeURIComponent(a.getAttribute('href').slice(6));
@@ -1543,6 +1571,7 @@ function wireDocLinks(container) {
       setTimeout(() => li.classList.remove('flash'), 1600);
     });
   });
+  return renderMermaid(container);
 }
 
 function inboundConcepts(id) {

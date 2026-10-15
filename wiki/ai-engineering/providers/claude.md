@@ -1,16 +1,47 @@
-# Claude
-
-Anthropic Claude API token pricing and prompt-caching mechanics — cache multipliers, TTLs, and cost-optimization guidance.
+---
+type: Model Provider
+title: Claude
+description: Anthropic Claude API token pricing and prompt-caching mechanics — cache multipliers, TTLs,
+  and cost-optimization guidance.
+resource: https://docs.anthropic.com/en/docs/about-claude/pricing
+tags:
+- ai-engineering
+- providers
+parent: /ai-engineering/providers.md
+related:
+- /ai-engineering/providers/gpt.md
+- /ai-engineering/providers/gemini.md
+- /ai-engineering/context/context-engineering.md
+- /ai-engineering/harness/provider-tools.md
+- /ai-engineering/enterprise/llm-gateway.md
+pricing_unit: USD per 1 million tokens
+sources:
+- id: ref-1
+  resource: https://docs.anthropic.com/en/docs/about-claude/pricing
+  title: docs.anthropic.com
+- id: ref-2
+  resource: https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching
+  title: docs.anthropic.com
+- id: ref-3
+  resource: https://docs.anthropic.com/en/docs/build-with-claude/context-windows
+  title: docs.anthropic.com
+- id: ref-4
+  resource: https://docs.anthropic.com/en/api/rate-limits
+  title: docs.anthropic.com
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://docs.anthropic.com/en/docs/about-claude/pricing>
 
 Token pricing and prompt-caching behavior for Anthropic's Claude API — the
 per-model rates, cache multipliers, and TTL rules that drive cost. Read it
-alongside the [OpenAI](gpt.md) and [Gemini](gemini.md)
+alongside the [OpenAI](/ai-engineering/providers/gpt.md) and [Gemini](/ai-engineering/providers/gemini.md)
 pricing notes for a cross-provider comparison. Caching is the concrete cost lever
-behind [context engineering](../context/context-engineering.md);
-[provider-side tools](../harness/provider-tools.md) are billed on top of these token
-rates; and an [LLM gateway](../enterprise/llm-gateway.md) is where per-provider
+behind [context engineering](/ai-engineering/context/context-engineering.md);
+[provider-side tools](/ai-engineering/harness/provider-tools.md) are billed on top of these token
+rates; and an [LLM gateway](/ai-engineering/enterprise/llm-gateway.md) is where per-provider
 costs get compared, routed, and capped.
 
 *Verified against Anthropic documentation on 2026-07-11. Prices are per 1 million tokens.*
@@ -45,7 +76,7 @@ With a 5-minute cache, one later hit is already cheaper than sending the same pr
 
 ## Context and long-context pricing
 
-Current Claude models with a 1M-token context window use the same listed per-token rates throughout that window. Anthropic does not apply a [GPT-style](gpt.md) pricing cliff at a lower threshold for those models.
+Current Claude models with a 1M-token context window use the same listed per-token rates throughout that window. Anthropic does not apply a [GPT-style](/ai-engineering/providers/gpt.md) pricing cliff at a lower threshold for those models.
 
 Input, generated output, and thinking tokens share the context window. Generated output does not retroactively change the current request's input price, but it becomes input if preserved in a later turn. Cached tokens still occupy context.
 
@@ -63,7 +94,7 @@ Input, generated output, and thinking tokens share the context window. Generated
 - Inspect `cache_creation_input_tokens` and `cache_read_input_tokens`.
 - Bound any keep-alive loop; Claude's refresh-on-hit behavior makes it predictable, but unnecessary pings still cost money.
 
-## Citations
+## Resources
 
 - Pricing: <https://docs.anthropic.com/en/docs/about-claude/pricing>
 - Prompt caching: <https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching>

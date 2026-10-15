@@ -15,11 +15,31 @@ skills globally, using the same skill selection:
 
 ## Engineering knowledge with OpenWiki
 
-The Markdown notes in [`wiki/`](wiki/) are the maintained sources. OpenWiki reads only
-those notes and its own output, as configured by [`.openwikiignore`](.openwikiignore)
-and [`openwiki/INSTRUCTIONS.md`](openwiki/INSTRUCTIONS.md). Source notes can be
-plain Markdown without YAML frontmatter, generated indexes, or maintenance logs.
-OpenWiki generates its output separately under `openwiki/`.
+[`wiki/`](wiki/) is the authoritative, maintained **OKF v0.2 bundle**. Edit its
+concept Markdown and YAML frontmatter directly. Start at [the catalog](wiki/index.md)
+or the [AI Engineering](wiki/ai-engineering.md) and
+[Software Engineering](wiki/software-engineering.md) overviews. Local
+[`_types/`](wiki/_types/) schemas document the additional frontmatter fields.
+
+OpenWiki reads this ready-made OKF input and synthesizes a separate OKF bundle in
+[`openwiki/`](openwiki/), using [`.openwikiignore`](.openwikiignore) and
+[the generation brief](openwiki/INSTRUCTIONS.md). That second bundle is retained
+for testing OpenWiki's synthesis and maintenance behavior. Curated explanations,
+taxonomy, links, and custom properties are controlled in `wiki/`.
+
+Use **Wiki: regenerate, render and open** to choose **wiki/** (the default) or
+**openwiki/**. It regenerates the chosen catalog, renders the custom reader, and
+opens `dev/wiki-okf-site.html` or `dev/openwiki-okf-site.html`. Both outputs are
+ignored by Git. The component tasks **Wiki: regenerate index** and
+**Wiki: render and open** offer the same selector.
+
+A sibling `topic.md` overview and `topic/` directory share one sidebar row and graph
+node. The local type schemas use `primary_fields` to show important relationships
+while keeping technical YAML attributes under **Technical details**. Frontmatter
+concept paths create labeled edges; Mermaid fences render as diagrams. These are
+local consumer conventions built on OKF's extension fields, not extra requirements
+of the upstream format. Keep `index.md` generated and record meaningful edits in
+[`wiki/log.md`](wiki/log.md). Adding metadata does not re-verify dated source claims.
 
 ## OKF tooling (restored 2026-10-13, OKF v0.2)
 
@@ -36,8 +56,8 @@ The generic agent-harness overview lives in `scripts/harness_overview.py` with
 **Harnesses: build overview and open** from any workspace. The task runs this project's
 script and can inspect either global harness settings or the active workspace.
 
-It is used for OKF bundles outside this repo — the `wiki/` notes here stay on OpenWiki. Run
-the scripts by path from any repository (only PyYAML is needed):
+The same tooling renders the maintained `wiki/` source, generated `openwiki/` output,
+and bundles in other repositories. Run the scripts by path (only PyYAML is needed):
 
 ```sh
 okf=~/Projects/dima/.agents/skills/okf/scripts
@@ -45,28 +65,29 @@ uv run --no-project --with pyyaml python $okf/okf_index.py <bundle-dir>
 uv run --no-project --with pyyaml python $okf/okf_site.py <bundle-dir> -o <out.html>
 ```
 
-The two former bundles (`okf-ai-engineering`, `okf-development`) and their GitHub Pages
-deployment are not restored; the [manual OKF restoration guide](docs/manual-okf-restoration.md)
-still covers them.
+The original skill-contained bundles (`okf-ai-engineering`, `okf-development`) and
+their GitHub Pages deployment remain retired. Their maintained content now lives in
+the single `wiki/` OKF bundle. The [historical restoration guide](docs/manual-okf-restoration.md)
+is retained for recovery context.
 
-Use the workspace's **OpenWiki: update CLI**, **OpenWiki: init**, **OpenWiki: update**,
-and **OpenWiki: visualize** tasks. Initialize once; a fresh `--init` replaces generated
+Use **OpenWiki: update CLI**, **OpenWiki: init**, and **OpenWiki: update** for
+the generation experiment; **Wiki: regenerate, render and open** browses either bundle. Initialize once; a fresh `--init` replaces generated
 pages, while an interrupted init resumes its checkpoint.
 Routine `openwiki --update` runs use OpenWiki's saved provider and model independently
 of the coding agent. Review and commit generated changes after each update.
 
-The pre-push hook runs `openwiki --update --print` when a push changes source notes,
-the generation instructions, or the ignore configuration. Install hooks with the
-**Pre-commit: install** task. This run consumes model tokens and requires provider
-access. Initialize the wiki before the first push. If generation changes tracked
-files, pre-commit blocks the push; review and commit the output before retrying.
-Also check for newly generated untracked files with `git status` before pushing;
-pre-commit's modification check does not cover those. The hook never commits output.
-
-The legacy GitHub Pages deployment of the old bundles stays retired. Use
-`openwiki visualize openwiki` locally after generating the wiki.
+The model-backed OpenWiki pre-push hook is currently commented out in
+[the pre-commit configuration](.pre-commit-config.yaml). Generation remains an
+explicit CLI/task operation or a scheduled GitHub Actions run; it consumes model
+tokens and needs provider access. Review generated output before committing it.
+The legacy GitHub Pages deployment stays retired. **OpenWiki: visualize** remains
+available for comparing OpenWiki's own viewer with the custom OKF reader.
 
 ### Decisions and operating boundaries (2026-10-03)
+
+The source-format decision below records the earlier experiment. It was superseded
+on **2026-10-15** by restoring `wiki/` as the maintained OKF v0.2 bundle; OpenWiki
+remains a separately generated experiment.
 
 - **Keep sources separate from generated output.** The two former manual OKF
   bundles became 58 plain Markdown notes under `wiki/ai-engineering/` and

@@ -6,19 +6,29 @@ default output format and maintenance workflow.
 Build a subject-oriented knowledge base from Markdown under `wiki/` only.
 `wiki/ai-engineering/` covers AI systems; `wiki/software-engineering/` covers
 general software engineering, distributed systems, learning, and reliability.
-These are reference notes, not an application whose implementation needs documenting.
+This is an OKF-to-OKF synthesis experiment. `wiki/` is the authoritative curated
+bundle; `openwiki/` is derived output. These are reference notes, not an application
+whose implementation needs documenting.
 
 ## Sources and scope
 
 - Treat `wiki/` as human-maintained source material. Never modify it.
 - Ignore all other project files and unrelated Git history as subject matter.
-- Source notes are plain Markdown. They do not require OKF frontmatter, generated
-  indexes, or maintenance logs; OpenWiki owns the generated knowledge structure.
+- Source concepts already use OKF v0.2 YAML frontmatter, typed links, and local
+  `_types/` schemas. Read them as structured knowledge, including useful technical
+  attributes, rather than stripping them down to prose.
+- `wiki/index.md`, `wiki/log.md`, and `wiki/_types/` are catalog, maintenance, and
+  schema metadata. Use them to interpret the bundle; do not turn them into subject
+  pages. Account for them separately from factual source coverage.
+- A source `topic.md` beside `topic/` represents that area's overview. Prefer the
+  same convention for output subject overviews when it suits the synthesized
+  taxonomy, so the custom reader can merge their directory and concept.
 - Preserve primary-source URLs, qualifications, disagreements, and evidence gaps.
   A claim supported by a local note is not independently verified against its
   external source. Do not imply that linked web pages were fetched when they were not.
-- References to "our tooling" or "this bundle" describe the source notes' original
-  context; do not present those historical statements as current OpenWiki behavior.
+- References to "our tooling" and "this bundle" describe the maintained source
+  bundle and its local reader unless explicitly dated as historical. Distinguish
+  those conventions from OpenWiki behavior and upstream OKF requirements.
 
 ## Generated wiki
 
@@ -26,6 +36,12 @@ These are reference notes, not an application whose implementation needs documen
   output page per input file.
 - Preserve accurate curated explanations. Consolidate duplication without losing
   useful distinctions, citations, or caveats.
+- Preserve useful custom frontmatter attributes when their meaning survives
+  synthesis. Resolve source concept paths and map typed relationships to actual
+  output concepts; do not copy source-root paths as if the output had the same
+  layout. Carry compatible type-schema descriptions and `primary_fields` into
+  output schemas when using those types. OpenWiki owns its control fields and
+  generated provenance; source authorship is not output verification.
 - Use document-relative Markdown links between generated concepts so the
   OpenWiki visualizer resolves them correctly.
 - Keep AI engineering and software engineering discoverable from `quickstart.md`.
@@ -34,9 +50,10 @@ These are reference notes, not an application whose implementation needs documen
 
 ## Links and reading resources
 
-- When reusing a relative link, resolve its target from the original source
-  file's directory, then calculate a new relative path from the generated
-  page's directory. Preserve a fragment only when it exists at the chosen target.
+- Resolve source links beginning with `/` from the `wiki/` bundle root and
+  document-relative links from the original source directory. Then calculate the
+  generated page's relative link to its chosen output concept or source file.
+  Preserve a fragment only when it exists at the chosen target.
 - Link to generated subject pages for synthesized explanations and to actual
   `wiki/` files for source notes. Choose an existing target; the source tree and
   generated tree have different layouts. For example, a Raft source-note link

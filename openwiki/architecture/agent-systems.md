@@ -38,8 +38,8 @@ An **agent architecture** is the behavioral pattern: a model chooses an action, 
 
 The repository notes establish these boundaries:
 
-- An agent is generally an LLM in a loop with tools; the model directs control flow, whereas a fixed flow is better represented as a workflow. See [Agent](../../wiki/ai-engineering/agents/agent.md), [Workflows](../../wiki/ai-engineering/harness/workflows.md), and [Agent Harness](../../wiki/ai-engineering/harness/harness.md).
-- The harness parses model responses, dispatches tool calls, feeds results back, manages context and memory, enforces sandboxing and limits, and decides when to stop ([Agent Harness](../../wiki/ai-engineering/harness/harness.md)).
+- An agent is generally an LLM in a loop with tools; the model directs control flow, whereas a fixed flow is better represented as a workflow. See [Agent](../../wiki/ai-engineering/agents/agent.md), [Workflows](../../wiki/ai-engineering/harness/workflows.md), and [Agent Harness](../../wiki/ai-engineering/harness.md).
+- The harness parses model responses, dispatches tool calls, feeds results back, manages context and memory, enforces sandboxing and limits, and decides when to stop ([Agent Harness](../../wiki/ai-engineering/harness.md)).
 - Tools expose capabilities through provider APIs or protocols such as MCP. They may execute in a client backend, client frontend, or at the model provider ([Tools](../../wiki/ai-engineering/harness/tools.md)).
 - MCP standardizes an LLM client's boundary to tools, resources, and prompts. Its current note describes an initialization handshake and persistent, bidirectional session, with scaling implications for remote deployments ([Model Context Protocol](../../wiki/ai-engineering/context/mcp.md)).
 - An LLM gateway centralizes model-side authentication, authorization, rate limiting, routing/failover, content policy, and audit. An MCP gateway is the tool-side authenticated control point for permissions, secret injection, anonymization, guardrails, and audit ([LLM Gateway](../../wiki/ai-engineering/enterprise/llm-gateway.md), [MCP Gateway](../../wiki/ai-engineering/enterprise/mcp-gateway.md)).

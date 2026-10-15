@@ -1,21 +1,55 @@
-# Agent Skills
-
-Packaged instruction files an agent loads on demand — most useful as behavior control, and a context tax when installed indiscriminately.
+---
+type: Concept
+title: Agent Skills
+description: Packaged instruction files an agent loads on demand — most useful as behavior control, and
+  a context tax when installed indiscriminately.
+tags:
+- ai-engineering
+- context
+parent: /ai-engineering/context.md
+related:
+- /ai-engineering/agents/agent.md
+- /ai-engineering/harness.md
+- /ai-engineering/context/context-engineering.md
+- /ai-engineering/agents/claude-code.md
+- /ai-engineering/agents/opencode.md
+- /ai-engineering/agents/codex.md
+- /ai-engineering/context/mcp.md
+- /ai-engineering/security/risks/supply-chain-compromise.md
+- /ai-engineering/security/risks/agent-goal-hijack.md
+note_date: '2026-07-20'
+sources:
+- id: ref-1
+  resource: https://code.claude.com/docs/en/skills
+  title: code.claude.com
+- id: ref-2
+  resource: https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+  title: Anthropic — Equipping agents for the real world with Agent Skills
+- id: ref-3
+  resource: https://github.com/anthropics/skills
+  title: anthropics/skills
+- id: ref-4
+  resource: https://github.com/obra/superpowers
+  title: obra/superpowers
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://code.claude.com/docs/en/skills>
 
 Note dated: 2026-07-20.
 
 A skill is a directory holding a `SKILL.md` — YAML frontmatter (`name`,
-`description`) plus a markdown body — that an [agent](../agents/agent.md) loads on
-demand when the description matches the task. The [harness](../harness/harness.md)
+`description`) plus a markdown body — that an [agent](/ai-engineering/agents/agent.md) loads on
+demand when the description matches the task. The [harness](/ai-engineering/harness.md)
 keeps every installed skill's name and description in context every turn, and
 pulls the body in only when the skill is invoked. This two-tier design is
-[context engineering](context-engineering.md): descriptions are the
+[context engineering](/ai-engineering/context/context-engineering.md): descriptions are the
 always-on index, bodies are the progressive disclosure.
 
-Skills are portable across harnesses — [Claude Code](../agents/claude-code.md),
-[OpenCode](../agents/opencode.md), and [Codex](../agents/codex.md) all read the same
+Skills are portable across harnesses — [Claude Code](/ai-engineering/agents/claude-code.md),
+[OpenCode](/ai-engineering/agents/opencode.md), and [Codex](/ai-engineering/agents/codex.md) all read the same
 format, though each scans different directories. Installers such as `npx skills`
 copy a skill into a canonical store and symlink it into each harness's directory.
 
@@ -29,7 +63,7 @@ private or fast-moving knowledge — but it decays as frontier models improve.
 Content restating widely-known practice (what TDD is, how to bisect a bug) buys
 little from a frontier model that already knows it, while still costing context.
 For public library documentation specifically, live retrieval via
-[MCP](mcp.md) beats a vendored snapshot, which silently goes stale.
+[MCP](/ai-engineering/context/mcp.md) beats a vendored snapshot, which silently goes stale.
 
 **As behavior control**, a skill changes what the agent does by default at a
 decision point — investigate before patching, design before implementing. Here
@@ -72,8 +106,8 @@ third-party skill cannot.
   the original.
 - **Third-party skills execute with full agent permissions** and may ship scripts.
   Treat an installed skill as a dependency with the trust level of code, not
-  documentation — see [supply chain compromise](../security/risks/supply-chain-compromise.md)
-  and [agent goal hijack](../security/risks/agent-goal-hijack.md).
+  documentation — see [supply chain compromise](/ai-engineering/security/risks/supply-chain-compromise.md)
+  and [agent goal hijack](/ai-engineering/security/risks/agent-goal-hijack.md).
 
 ## Design considerations
 
@@ -96,7 +130,7 @@ third-party skill cannot.
 - **Reserve skills for what they are good at**: workflows with a clear entry point,
   genuinely private knowledge, and executable tooling the agent invokes.
 
-## Citations
+## Resources
 
 - [Claude Code — Agent Skills](https://code.claude.com/docs/en/skills)
 - [Anthropic — Equipping agents for the real world with Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)

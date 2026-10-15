@@ -1,6 +1,24 @@
-# Simplicity
-
-Reduce accidental complexity to make production systems easier to understand, change, and operate reliably.
+---
+type: Practice
+title: Simplicity
+description: Reduce accidental complexity to make production systems easier to understand, change, and
+  operate reliably.
+tags:
+- software-engineering
+- reliability
+parent: /software-engineering/reliability.md
+related:
+- /software-engineering/communication/protobuf.md
+- /software-engineering/infrastructure/service-mesh.md
+note_date: '2026-09-30'
+sources:
+- id: ref-1
+  resource: https://sre.google/sre-book/simplicity/
+  title: sre.google
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://sre.google/sre-book/simplicity/>
 
@@ -20,13 +38,13 @@ processes make changes easier to understand and failures easier to diagnose.
   behaviors to understand and maintain.
 - Give modules and services clear responsibilities and loose coupling so they
   can change independently. Version interfaces and preserve compatibility;
-  [Protocol Buffers](../communication/protobuf.md) illustrate the importance of
+  [Protocol Buffers](/software-engineering/communication/protobuf.md) illustrate the importance of
   compatibility at the data-format boundary.
 - Release small, understandable changes so regressions can be attributed to a
   narrower set of causes.
 
 Apply this when deciding whether to introduce a
-[service mesh](../infrastructure/service-mesh.md): centralized traffic policy
+[service mesh](/software-engineering/infrastructure/service-mesh.md): centralized traffic policy
 may remove duplicated application code while adding operational components.
 Judge the total complexity against a concrete requirement.
 

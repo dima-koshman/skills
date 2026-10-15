@@ -1,6 +1,55 @@
-# Site Reliability Engineering
-
-Google's discipline of running production with software engineering: explicit reliability targets, an error budget that balances them against change, and automation in place of manual operations.
+---
+type: Practice
+title: Site Reliability Engineering
+description: 'Google''s discipline of running production with software engineering: explicit reliability
+  targets, an error budget that balances them against change, and automation in place of manual operations.'
+tags:
+- software-engineering
+- reliability
+parent: /software-engineering/reliability.md
+related:
+- /software-engineering/reliability/toil.md
+- /software-engineering/reliability/simplicity.md
+- /ai-engineering/development/ai-native-sdlc.md
+- /ai-engineering/development/observability-driven-development.md
+sources:
+- id: ref-1
+  resource: https://sre.google/sre-book/
+  title: sre.google
+- id: ref-2
+  resource: https://sre.google/sre-book/embracing-risk/
+  title: Embracing risk
+- id: ref-3
+  resource: https://sre.google/sre-book/service-level-objectives/
+  title: Service level objectives
+- id: ref-4
+  resource: https://sre.google/sre-book/eliminating-toil/
+  title: Eliminating toil
+- id: ref-5
+  resource: https://sre.google/sre-book/monitoring-distributed-systems/
+  title: Monitoring distributed systems
+- id: ref-6
+  resource: https://sre.google/sre-book/postmortem-culture/
+  title: Postmortem culture
+- id: ref-7
+  resource: https://sre.google/sre-book/release-engineering/
+  title: Release engineering
+- id: ref-8
+  resource: https://sre.google/sre-book/example-postmortem/
+  title: example postmortem
+- id: ref-9
+  resource: https://sre.google/sre-book/launch-checklist/
+  title: launch checklist
+- id: ref-10
+  resource: https://sre.google/sre-book/table-of-contents/
+  title: Site Reliability Engineering — table of contents
+- id: ref-11
+  resource: https://sre.google/workbook/table-of-contents/
+  title: The Site Reliability Workbook
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://sre.google/sre-book/>
 
@@ -19,7 +68,7 @@ chapters stand on their own.
   a target (SLO), and treat the shortfall allowed by the SLO as a budget. While
   budget remains, ship; once it is spent, slow releases and invest in stability
   ([Service level objectives](https://sre.google/sre-book/service-level-objectives/)).
-- **Cap [toil](toil.md).** Toil is manual, repetitive, automatable work that
+- **Cap [toil](/software-engineering/reliability/toil.md).** Toil is manual, repetitive, automatable work that
   scales with the service. SRE teams keep it under about half their time and
   engineer it away ([Eliminating toil](https://sre.google/sre-book/eliminating-toil/)).
   Agents now cover much of that automation, including continuous analysis of
@@ -30,7 +79,7 @@ chapters stand on their own.
 - **Blameless postmortems.** Incidents are written up to fix systems and
   processes, not to assign fault
   ([Postmortem culture](https://sre.google/sre-book/postmortem-culture/)).
-- **Release engineering and [simplicity](simplicity.md).** Small, reproducible,
+- **Release engineering and [simplicity](/software-engineering/reliability/simplicity.md).** Small, reproducible,
   gradual releases and minimal accidental complexity make failures rare and
   attributable ([Release engineering](https://sre.google/sre-book/release-engineering/)).
 
@@ -49,9 +98,9 @@ The appendices include practical templates, such as an
 [launch checklist](https://sre.google/sre-book/launch-checklist/).
 
 The same ideas reappear in agent-era practice. The
-[AI-native SDLC](../../ai-engineering/development/ai-native-sdlc.md) uses
+[AI-native SDLC](/ai-engineering/development/ai-native-sdlc.md) uses
 control-band monitoring and postmortem-to-eval loops in its Maintain stage, and
-[observability-driven development](../../ai-engineering/development/observability-driven-development.md)
+[observability-driven development](/ai-engineering/development/observability-driven-development.md)
 makes telemetry evidence for code changes.
 
 ## Resources

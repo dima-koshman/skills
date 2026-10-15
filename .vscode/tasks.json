@@ -296,6 +296,25 @@
             }
         },
         {
+            "label": "Wiki: regenerate index",
+            "detail": "Regenerate the selected OKF bundle index from concept frontmatter. Defaults to the maintained wiki/ source; review index.md before committing.",
+            "command": "uv run --no-project --with pyyaml python \"${workspaceFolder}/.agents/skills/okf/scripts/okf_index.py\" \"${workspaceFolder}/${input:wikiBundle}\""
+        },
+        {
+            "label": "Wiki: render and open",
+            "detail": "Render the selected OKF bundle with directory overviews, typed properties, and Mermaid diagrams, then open dev/<bundle>-okf-site.html (git-ignored). Defaults to wiki/.",
+            "command": "mkdir -p \"${workspaceFolder}/dev\" && uv run --no-project --with pyyaml python \"${workspaceFolder}/.agents/skills/okf/scripts/okf_site.py\" \"${workspaceFolder}/${input:wikiBundle}\" --output \"${workspaceFolder}/dev/${input:wikiBundle}-okf-site.html\" && open \"${workspaceFolder}/dev/${input:wikiBundle}-okf-site.html\""
+        },
+        {
+            "label": "Wiki: regenerate, render and open",
+            "detail": "Choose wiki/ (maintained source, default) or openwiki/ (generated experiment), then regenerate its index, render it, and open the reader in sequence.",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Wiki: regenerate index",
+                "Wiki: render and open"
+            ]
+        },
+        {
             "label": "OpenWiki: visualize",
             "command": "openwiki visualize openwiki",
             "detail": "Open the generated wiki graph and reader.",
@@ -350,6 +369,22 @@
         }
     ],
     "inputs": [
+        {
+            "id": "wikiBundle",
+            "type": "pickString",
+            "description": "Which OKF bundle should be regenerated and rendered?",
+            "options": [
+                {
+                    "label": "wiki/ — maintained source",
+                    "value": "wiki"
+                },
+                {
+                    "label": "openwiki/ — generated output",
+                    "value": "openwiki"
+                }
+            ],
+            "default": "wiki"
+        },
         {
             "id": "overviewScope",
             "type": "pickString",

@@ -1,6 +1,35 @@
-# Protocol Buffers
-
-Language-neutral binary serialization for small structured records — schema-first `.proto` definitions compiled into native bindings.
+---
+type: Knowledge Format
+title: Protocol Buffers
+description: Language-neutral binary serialization for small structured records — schema-first `.proto`
+  definitions compiled into native bindings.
+resource: https://protobuf.dev
+tags:
+- software-engineering
+- communication
+parent: /software-engineering/communication.md
+related:
+- /software-engineering/communication/grpc.md
+- /software-engineering/infrastructure/service-mesh.md
+schema_language: .proto
+encoding: binary field-number encoding
+sources:
+- id: ref-1
+  resource: https://protobuf.dev
+  title: protobuf.dev
+- id: ref-2
+  resource: https://protobuf.dev/overview/
+  title: Protocol Buffers overview
+- id: ref-3
+  resource: https://protobuf.dev/programming-guides/editions/
+  title: Language guide (editions)
+- id: ref-4
+  resource: https://protobuf.dev/programming-guides/encoding/
+  title: Encoding — the wire format
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: <https://protobuf.dev>
 
@@ -19,7 +48,7 @@ compatibility in both directions: old code reads new messages by ignoring
 unrecognized fields, and new code reads old messages by applying defaults for
 absent ones. Producers and consumers can therefore be deployed independently —
 the property that makes protobuf viable as a service contract rather than merely
-a wire encoding, and the foundation [gRPC](grpc.md) builds on.
+a wire encoding, and the foundation [gRPC](/software-engineering/communication/grpc.md) builds on.
 
 The same field-number encoding is why messages are **not self-describing**: a
 payload cannot be interpreted without its `.proto`. This is the central trade
@@ -27,7 +56,7 @@ against JSON. You gain compactness and parse speed and lose the ability to
 inspect traffic with generic tooling — which pushes schema distribution (a
 registry, a shared repo, or a build dependency) from a nicety to a requirement,
 and makes debugging harder at exactly the boundaries a
-[service mesh](../infrastructure/service-mesh.md) is watching.
+[service mesh](/software-engineering/infrastructure/service-mesh.md) is watching.
 
 Language support is direct from `protoc` for C++, C#, Java, Kotlin, Objective-C,
 PHP, Python, and Ruby; Go and Dart come via plugins, and other languages exist as

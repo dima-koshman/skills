@@ -1,6 +1,29 @@
-# Designing Data-Intensive Applications
-
-Martin Kleppmann's guide to the trade-offs behind reliable storage and data processing.
+---
+type: Reference
+title: Designing Data-Intensive Applications
+description: Martin Kleppmann's guide to the trade-offs behind reliable storage and data processing.
+tags:
+- software-engineering
+- distributed-systems
+parent: /software-engineering/distributed-systems.md
+related:
+- /software-engineering/architecture/architectural-patterns.md
+- /software-engineering/distributed-systems/dynamo.md
+- /software-engineering/distributed-systems/raft.md
+- /software-engineering/distributed-systems/spanner.md
+- /software-engineering/distributed-systems/map_reduce.md
+- /software-engineering/distributed-systems/bigtable.md
+sources:
+- id: ref-1
+  resource: https://dataintensive.net/
+  title: Author's book site
+- id: ref-2
+  resource: https://dataintensive.net/buy.html
+  title: Ebook purchase and download options
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 The inspected copy is the **sixth early release, 2016-07-11**, with 491 PDF
 pages. It predates the finished first edition; chapter numbering below follows
@@ -13,7 +36,7 @@ Use Designing Data-Intensive Applications to connect database internals with
 application-visible behavior:
 replication lag, concurrency, schema compatibility, partial failure, and
 derived data. It complements the vocabulary in
-[architectural patterns](../architecture/architectural-patterns.md) with the
+[architectural patterns](/software-engineering/architecture/architectural-patterns.md) with the
 mechanisms that make a design correct or fragile.
 
 ## Selected chapters in the inspected draft
@@ -37,5 +60,5 @@ suggested reading route, not the book's prescribed order.
 - [Author's book site](https://dataintensive.net/) — overview and publisher links.
 - [Ebook purchase and download options](https://dataintensive.net/buy.html) — the author links to paid PDF/EPUB editions; this is not a free full-book download.
 
-Related papers: [Dynamo](dynamo.md), [Raft](raft.md), [Spanner](spanner.md),
-[MapReduce](map_reduce.md), and [Bigtable](bigtable.md).
+Related papers: [Dynamo](/software-engineering/distributed-systems/dynamo.md), [Raft](/software-engineering/distributed-systems/raft.md), [Spanner](/software-engineering/distributed-systems/spanner.md),
+[MapReduce](/software-engineering/distributed-systems/map_reduce.md), and [Bigtable](/software-engineering/distributed-systems/bigtable.md).

@@ -1,6 +1,65 @@
-# Architectural Patterns
-
-Choose component boundaries, communication styles, and dependency directions according to the forces acting on a system.
+---
+type: Concept
+title: Architectural Patterns
+description: Choose component boundaries, communication styles, and dependency directions according to
+  the forces acting on a system.
+tags:
+- software-engineering
+- architecture
+parent: /software-engineering/architecture.md
+related:
+- /ai-engineering/enterprise/mcp-gateway.md
+- /ai-engineering/agents/agent.md
+- /ai-engineering/context/rag.md
+- /software-engineering/infrastructure/service-mesh.md
+- /software-engineering/reliability/simplicity.md
+sources:
+- id: ref-1
+  resource: https://metapatterns.io/
+  title: 'Architectural Metapatterns: The Pattern Language of Software Architecture'
+- id: ref-2
+  resource: https://metapatterns.io/introduction/metapatterns/
+  title: metapatterns introduction
+- id: ref-3
+  resource: https://martinfowler.com/articles/microservice-trade-offs.html
+  title: Microservice Trade-Offs
+- id: ref-4
+  resource: https://metapatterns.io/analytics/the-heart-of-software-architecture/cohesers-and-decouplers/
+  title: Cohesers and decouplers
+- id: ref-5
+  resource: https://metapatterns.io/introduction/system-topologies/
+  title: system topologies
+- id: ref-6
+  resource: https://alistair.cockburn.us/hexagonal-architecture
+  title: Ports and Adapters article
+- id: ref-7
+  resource: https://www.enterpriseintegrationpatterns.com/patterns/messaging/PipesAndFilters.html
+  title: Pipes and Filters
+- id: ref-8
+  resource: https://metapatterns.io/extension-metapatterns/proxy/
+  title: Proxy
+- id: ref-9
+  resource: https://metapatterns.io/extension-metapatterns/orchestrator/
+  title: Orchestrator
+- id: ref-10
+  resource: https://metapatterns.io/implementation-metapatterns/plugins/
+  title: Plugins
+- id: ref-11
+  resource: https://metapatterns.io/foundations-of-software-architecture/arranging-communication/comparison-of-communication-styles/
+  title: Comparison of communication styles
+- id: ref-12
+  resource: https://metapatterns.io/implementation-metapatterns/hexagonal-architecture/
+  title: Hexagonal Architecture
+- id: ref-13
+  resource: https://metapatterns.io/analytics/architecture-and-product-life-cycle/
+  title: Architecture and product life cycle
+- id: ref-14
+  resource: https://sre.google/sre-book/simplicity/
+  title: 'Google SRE book: Simplicity'
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Primary reference: [Architectural Metapatterns: The Pattern Language of Software Architecture](https://metapatterns.io/), by Denys Poltorak and Lars Noodén.
 
@@ -78,20 +137,20 @@ effects. These are decision questions to resolve before selecting infrastructure
 
 These examples are design lenses, not an audit of any implementation:
 
-- An [MCP gateway](../../ai-engineering/enterprise/mcp-gateway.md) can combine
+- An [MCP gateway](/ai-engineering/enterprise/mcp-gateway.md) can combine
   proxy routing, a policy pipeline, and adapters to downstream systems.
-- An [agent](../../ai-engineering/agents/agent.md) can coordinate a use case as an
+- An [agent](/ai-engineering/agents/agent.md) can coordinate a use case as an
   orchestrator. Tool interfaces and workflow state deserve separate attention.
-- A [RAG](../../ai-engineering/context/rag.md) ingestion flow can be modeled as
+- A [RAG](/ai-engineering/context/rag.md) ingestion flow can be modeled as
   stages for extraction, normalization, chunking, and indexing.
-- A [service mesh](../infrastructure/service-mesh.md) moves communication policy
+- A [service mesh](/software-engineering/infrastructure/service-mesh.md) moves communication policy
   into infrastructure. Evaluate its operational cost against the duplication it
   removes from services.
 
 When reviewing a design, ask what changes together, which boundary protects
 independent change, and which failure must be contained. Draw the request path
 and state owners, then compare a simpler arrangement against the proposed one.
-The existing [simplicity note](../reliability/simplicity.md) complements this:
+The existing [simplicity note](/software-engineering/reliability/simplicity.md) complements this:
 reduce accidental complexity and keep APIs purposeful.
 
 ## Selected reading

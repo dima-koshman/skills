@@ -1,6 +1,48 @@
-# AI-Native SDLC
-
-A software lifecycle rebuilt as a loop of committed artifacts, with agents doing the work between gates and humans owning every judgment call.
+---
+type: Practice
+title: AI-Native SDLC
+description: A software lifecycle rebuilt as a loop of committed artifacts, with agents doing the work
+  between gates and humans owning every judgment call.
+tags:
+- ai-engineering
+- development
+parent: /ai-engineering/development.md
+related:
+- /ai-engineering/agents/claude-code.md
+- /ai-engineering/agents/agent.md
+- /ai-engineering/harness.md
+- /ai-engineering/context/skills.md
+- /ai-engineering/harness/subagents.md
+- /ai-engineering/observability/langsmith-evals.md
+- /ai-engineering/context/mcp.md
+- /ai-engineering/development/observability-driven-development.md
+- /ai-engineering/security.md
+sources:
+- id: ref-1
+  resource: https://claude.com/blog/the-ai-native-sdlc-playbook
+  title: AI-Native SDLC Playbook
+- id: ref-2
+  resource: https://code.claude.com/docs/en/admin-setup
+  title: Claude Code admin setup
+- id: ref-3
+  resource: https://code.claude.com/docs/en/settings
+  title: Claude Code settings reference
+- id: ref-4
+  resource: https://code.claude.com/docs/en/hooks
+  title: Claude Code hooks
+- id: ref-5
+  resource: https://code.claude.com/docs/en/skills
+  title: Claude Code skills
+- id: ref-6
+  resource: https://code.claude.com/docs/en/sandboxing
+  title: Claude Code sandboxing
+- id: ref-7
+  resource: https://code.claude.com/docs/en/monitoring-usage
+  title: Claude Code monitoring (OpenTelemetry)
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 The AI-native SDLC (also called the agentic SDLC or AI SDLC) keeps the control
 objectives of the traditional lifecycle — accountability, review, separation of
@@ -14,8 +56,8 @@ starting each stage from scratch.
 This page summarizes Anthropic's
 [AI-Native SDLC Playbook](https://claude.com/blog/the-ai-native-sdlc-playbook)
 (Louis Claxton, August 2026). The playbook is written around
-[Claude Code](../agents/claude-code.md), but the structure carries over to any
-capable coding [agent](../agents/agent.md) and [harness](../harness/harness.md).
+[Claude Code](/ai-engineering/agents/claude-code.md), but the structure carries over to any
+capable coding [agent](/ai-engineering/agents/agent.md) and [harness](/ai-engineering/harness.md).
 
 ## Why the lifecycle has to change
 
@@ -46,7 +88,7 @@ file; from Build onward the artifact is code and its records.
 | Stage | Traditional | AI-native | Committed artifact | Commit triggers |
 | --- | --- | --- | --- | --- |
 | Plan | Requirements by committee, workshops, sign-offs | Originator brainstorms with the agent; result captured as a proto-spec | `intent.md` | Requirements and design pass |
-| Design | Analysts write the spec, designers parse it | One session produces requirements and design, constrained by policy [skills](../context/skills.md) | `spec.md` | Plan mode |
+| Design | Analysts write the spec, designers parse it | One session produces requirements and design, constrained by policy [skills](/ai-engineering/context/skills.md) | `spec.md` | Plan mode |
 | Build | Handwritten code and tests, docs after the fact | Plan-first implementation; knowledge in `CLAUDE.md` and skills; hooks as guardrails | `plan.md`, diff, tests | PR |
 | Test | QA gates at stage boundaries | Agent verifies its own work; continuous evals on agent configuration | Check output, eval results | Review |
 | Deploy | Humans read every line; inconsistent governance | Agentic review passes; human approval for intent and risk; hooks as approval gates | PR with review findings | Pipeline |
@@ -112,7 +154,7 @@ each flag with its policy owner, and escalates higher-risk work to a tech lead.
   protected paths, run formatters and linters after edits, keep credentials out
   of diffs. Keep them fast and file-scoped; heavy checks belong at commit or PR.
   Approval-asking hooks belong at Deploy, not in the parallel build path.
-- **Parallel sessions and [subagents](../harness/subagents.md).** One engineer
+- **Parallel sessions and [subagents](/ai-engineering/harness/subagents.md).** One engineer
   runs two or three sessions in separate git worktrees on independent tasks, and
   scales only while review keeps up. Recurring jobs (verifier, simplifier,
   researcher) become subagents with their own context and tool limits. The
@@ -133,7 +175,7 @@ each flag with its policy owner, and escalates higher-risk work to a tech lead.
   run them non-interactively on schedule and on any configuration change, and
   gate merges on pass rate. Every production incident becomes a permanent eval.
   The suite is live: retire cases that stop discriminating as models improve.
-  See [LangSmith Evals](../observability/langsmith-evals.md) for a comparable
+  See [LangSmith Evals](/ai-engineering/observability/langsmith-evals.md) for a comparable
   evaluation system.
 
 ### 5. Deploy — review both ways, governance as code
@@ -151,7 +193,7 @@ each flag with its policy owner, and escalates higher-risk work to a tech lead.
   settings engineers cannot override. The playbook's regulated-enterprise
   example also uses managed permission rules, an OS-level sandbox with a
   network allowlist and credential denial, managed-only hooks and
-  [MCP](../context/mcp.md) servers, an approved plugin marketplace, and a
+  [MCP](/ai-engineering/context/mcp.md) servers, an approved plugin marketplace, and a
   minimum client version.
 - **CI/CD integration.** Start with read-only judgment steps in the pipeline
   (triage a failed build, summarize a flaky test, draft a changelog), then add
@@ -180,7 +222,7 @@ whether output continues or escalates to a human.
   `intent.md`, triaged by the on-call engineer (fix, schedule, dismiss —
   dismissals tune the bands), and the eventual fix adds an eval. This is the
   same evidence-to-change loop as
-  [observability-driven development](observability-driven-development.md), wired
+  [observability-driven development](/ai-engineering/development/observability-driven-development.md), wired
   to run headless.
 - **Recurring security scans.** A scan is a point-in-time statement about code
   under a particular model, and both halves go stale. Run scans on a schedule
@@ -211,7 +253,7 @@ whether output continues or escalates to a human.
   separate the two.
 - **Everything is versioned.** Intent, spec, plan, prompts, skill versions,
   hooks, review policy, and monitoring bands all live in git and change through
-  review. See [security](../security/security.md) for the threat model these
+  review. See [security](/ai-engineering/security.md) for the threat model these
   controls address.
 
 ## Legacy systems and source of truth
@@ -256,7 +298,7 @@ accelerates anything through them; and closing the loop needs intent, review,
 hooks, and a rehearsed rollback. Start by prompting each step by hand; the end
 state is a loop in which each accepted artifact fires the next gate.
 
-## Citations
+## Resources
 
 - [The AI-Native SDLC Playbook — Claude blog](https://claude.com/blog/the-ai-native-sdlc-playbook)
 - [Claude Code admin setup](https://code.claude.com/docs/en/admin-setup)

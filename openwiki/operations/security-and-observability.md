@@ -57,7 +57,7 @@ Agent security is an operating discipline, not a prompt-writing feature. An agen
 3. **Signal** — what makes the threat or control outcome visible.
 4. **Action** — what an operator, evaluator, or system does next.
 
-This page complements [agent systems architecture](../architecture/agent-systems.md), [context and knowledge](../concepts/context-and-knowledge.md), [skills and tooling](../concepts/skills-and-tooling.md), and [reliability and learning](../software-engineering/reliability-and-learning.md). The [security catalogue](../../wiki/ai-engineering/security/security.md) separates risks from mitigations: mitigations minimize risk rather than eliminate it; observability records what happened; evaluation tests whether controls work.
+This page complements [agent systems architecture](../architecture/agent-systems.md), [context and knowledge](../concepts/context-and-knowledge.md), [skills and tooling](../concepts/skills-and-tooling.md), and [reliability and learning](../software-engineering/reliability-and-learning.md). The [security catalogue](../../wiki/ai-engineering/security.md) separates risks from mitigations: mitigations minimize risk rather than eliminate it; observability records what happened; evaluation tests whether controls work.
 
 ## Control-plane placement
 

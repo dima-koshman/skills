@@ -1,6 +1,27 @@
-# LLM Architecture
-
-Design choices inside modern open-weight LLMs — sparsity, attention efficiency, and the empirical tweaks — and the two main ways to make them multimodal.
+---
+type: Concept
+title: LLM Architecture
+description: Design choices inside modern open-weight LLMs — sparsity, attention efficiency, and the empirical
+  tweaks — and the two main ways to make them multimodal.
+tags:
+- ai-engineering
+- models
+parent: /ai-engineering/models.md
+related:
+- /ai-engineering/providers/claude.md
+- /ai-engineering/providers/leaderboards.md
+note_date: '2026-10-03'
+sources:
+- id: ref-1
+  resource: https://magazine.sebastianraschka.com/p/the-big-llm-architecture-comparison
+  title: magazine.sebastianraschka.com
+- id: ref-2
+  resource: https://magazine.sebastianraschka.com/p/understanding-multimodal-llms
+  title: magazine.sebastianraschka.com
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 References:
 
@@ -44,7 +65,7 @@ recomputing them for the whole prefix at every step. This greatly speeds up
 inference at the cost of memory that grows with context length, layers, and
 attention heads. Within a single model call the cache is per sequence. Serving
 stacks can additionally reuse cached prefixes across requests that share them;
-this is what provider [prompt caching](../providers/claude.md) and vLLM prefix
+this is what provider [prompt caching](/ai-engineering/providers/claude.md) and vLLM prefix
 caching do.
 
 Because KV-cache memory is often the binding constraint, most attention
@@ -140,6 +161,6 @@ Hybrids exist as well, such as NVLM-H, which mixes both.
 - Long-context quality depends on how much **global attention** remains;
   sliding-window and linear-attention layers make long contexts cheaper, not
   automatically better.
-- Benchmarks and [leaderboards](../providers/leaderboards.md) measure
+- Benchmarks and [leaderboards](/ai-engineering/providers/leaderboards.md) measure
   outcomes. Architecture explains cost and failure modes, but no single tweak
   reliably predicts quality.

@@ -22,7 +22,7 @@ accountable for intent, risk decisions, approvals, and production change. The us
 unit is not an autonomous coding session; it is a chain of inspectable artifacts and
 gates that connects a requested outcome to evidence that the change works.
 
-This page synthesizes the source notes [AI-Native SDLC](../../wiki/ai-engineering/development/ai-native-sdlc.md), [Observability-Driven Development](../../wiki/ai-engineering/development/observability-driven-development.md), and [Software Development](../../wiki/software-engineering/development.md). It describes a general practice, not this repository's own development process.
+This page synthesizes the source notes [AI-Native SDLC](../../wiki/ai-engineering/development/ai-native-sdlc.md), [Observability-Driven Development](../../wiki/ai-engineering/development/observability-driven-development.md), and [Software Development](../../wiki/software-engineering.md). It describes a general practice, not this repository's own development process.
 
 ## Lifecycle at a glance
 

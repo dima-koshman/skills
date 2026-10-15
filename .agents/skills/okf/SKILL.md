@@ -116,6 +116,9 @@ python scripts/okf_site.py <bundle-dir>          # writes <bundle>/okf-site.html
 python scripts/okf_site.py <bundle-dir> -o /tmp/graph.html
 ```
 
+Fenced `mermaid` blocks render as SVG diagrams in the reader, including after page navigation.
+The source stays readable if Mermaid is unavailable or a diagram is invalid.
+
 The reader opens with right-hand backlinks grouped into separate cards by concept type; each card has the same colored
 type badge used on concept pages and lists unique clickable concept titles. A switch at the top of that pane reveals
 the interactive graph (nodes = concepts colored by `type`,

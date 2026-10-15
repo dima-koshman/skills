@@ -1949,3 +1949,64 @@ def test_index_lists_underscore_meta_directories_last(bundle: pathlib.Path) -> N
         if line.startswith("# ")
     ]
     assert headings[-1] == "# _types"
+
+
+@pytest.mark.parametrize("mode", ["success", "invalid", "unavailable", "detached"])
+def test_site_renders_mermaid_fences_and_preserves_source_on_failure(
+    bundle: pathlib.Path, mode: str
+) -> None:
+    """Catch missing reader enhancement, source corruption, and lost error fallbacks."""
+    output = bundle.parent / "mermaid.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const mode = process.argv[2];
+const definitions = ['renderMermaid', 'wireDocLinks'].map(name => {
+  const match = html.match(new RegExp('(?:async )?function ' + name + '\\([^]*?\\n}', 's'));
+  return match ? match[0] : '';
+}).join('\n');
+const source = 'flowchart LR\n  Parent["Parent & agent"] -->|delegates bounded goal| Sub["Subagent"]\n';
+const pre = {replacement: null, isConnected: mode !== 'detached',
+  replaceWith(element) {this.replacement = element;}};
+const code = {textContent: source, parentElement: pre};
+const container = {querySelectorAll: selector => selector === 'pre > code.language-mermaid' ? [code] : []};
+const context = {
+  document: {createElement: () => ({className: '', innerHTML: ''})},
+  console: {warn() {}},
+};
+if (mode !== 'unavailable') {
+  context.mermaid = {
+    initialize() {},
+    async render(id, text) {
+      if (mode === 'invalid') throw new Error('Invalid Mermaid syntax');
+      if (text !== source) throw new Error('Source was corrupted');
+      return {svg: '<svg><text>Parent &amp; agent</text></svg>'};
+    },
+  };
+}
+(async () => {
+  vm.runInNewContext('let mermaidSequence = 0;\n' + definitions + '\nglobalThis.enhance = wireDocLinks;', context);
+  await context.enhance(container);
+  process.stdout.write(JSON.stringify({replacement: pre.replacement, source: code.textContent}));
+})().catch(error => {console.error(error); process.exitCode = 1;});
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output), mode],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    actual = cast(dict[str, object], json.loads(result.stdout))
+    if mode == "success":
+        assert actual["replacement"] == {
+            "className": "mermaid",
+            "innerHTML": "<svg><text>Parent &amp; agent</text></svg>",
+        }
+    else:
+        assert actual["replacement"] is None
+    assert actual["source"] == (
+        'flowchart LR\n  Parent["Parent & agent"] -->|delegates bounded goal| Sub["Subagent"]\n'
+    )

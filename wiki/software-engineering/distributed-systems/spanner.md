@@ -1,6 +1,27 @@
-# Spanner
-
-A globally replicated database combining transactions with explicit clock uncertainty.
+---
+type: Reference
+title: Spanner
+description: A globally replicated database combining transactions with explicit clock uncertainty.
+tags:
+- software-engineering
+- distributed-systems
+parent: /software-engineering/distributed-systems.md
+related:
+- /software-engineering/distributed-systems/dynamo.md
+- /software-engineering/distributed-systems/raft.md
+publication: 'James C. Corbett and colleagues, **Spanner: Google''s Globally Distributed Database**, ACM
+  TOCS 31(3), Article 8, August 2013. The inspected copy is this 22-page journal article.'
+sources:
+- id: ref-1
+  resource: https://research.google/pubs/spanner-googles-globally-distributed-database/
+  title: 2013 journal article
+- id: ref-2
+  resource: https://www.usenix.org/system/files/conference/osdi12/osdi12-final-16.pdf
+  title: Download OSDI 2012 conference paper (PDF, USENIX)
+generated:
+  by: codex/gpt-6
+  at: '2026-10-15T15:23:06+04:00'
+---
 
 Reference: James C. Corbett and colleagues,
 **Spanner: Google's Globally Distributed Database**, ACM TOCS 31(3),
@@ -17,8 +38,8 @@ Article 8, August 2013. The inspected copy is this 22-page journal article.
 ## Read selectively
 
 Read **TrueTime**, **Concurrency Control**, and **Evaluation**. Compare the
-cost of waiting and coordination with [Dynamo](dynamo.md), then use
-[Raft](raft.md) to review the underlying consensus problem.
+cost of waiting and coordination with [Dynamo](/software-engineering/distributed-systems/dynamo.md), then use
+[Raft](/software-engineering/distributed-systems/raft.md) to review the underlying consensus problem.
 
 ## Resources
 

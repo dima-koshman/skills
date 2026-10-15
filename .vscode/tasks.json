@@ -144,6 +144,11 @@
             ]
         },
         {
+            "label": "Skills: remove (global or this project)",
+            "detail": "Remove installed skills by name (space- or comma-separated) from the global skill dirs (~/.agents/skills, ~/.claude/skills, OpenCode, Codex, agy) or from this project, plus their lock entries. Symlinks are unlinked, installed copies deleted; a skill's source (git-tracked, or the dir a local install copies from) is never deleted, unlike `npx skills remove`. Prints the plan unless you type 'yes'.",
+            "command": "python3 \"${workspaceFolder}/scripts/remove_skills.py\" ${input:skillScope} --project \"${workspaceFolder}\" --confirm=${input:removeConfirm} ${input:skillNames}"
+        },
+        {
             "label": "Skills: update from remote sources",
             "detail": "Re-fetch all skills tracked in ~/.agents/.skill-lock.json from their remote sources and re-copy if changed",
             "command": "npx skills update --yes"
@@ -377,6 +382,17 @@
                 }
             ],
             "default": ""
+        },
+        {
+            "id": "skillNames",
+            "type": "promptString",
+            "description": "Skill names to remove (space- or comma-separated), e.g. supabase supabase-postgres-best-practices"
+        },
+        {
+            "id": "removeConfirm",
+            "type": "promptString",
+            "description": "Type 'yes' to remove the skills; anything else only prints what would be removed",
+            "default": "no"
         },
         {
             "id": "syncConfirm",

@@ -224,6 +224,12 @@ the source, compares hashes, and re-copies only changed skills. `npx skills list
 file to show what's installed and where. `npx skills remove` deletes the skill files and the lock
 entry.
 
+`npx skills remove` also deletes a skill's *source* when the lock says it was installed from a local
+path (this project's own `.agents/skills/<name>`, or a project skill reached through a global
+symlink). Use the **"Skills: remove (global or this project)"** task (`scripts/remove_skills.py`)
+instead: it unlinks symlinks, deletes installed copies, drops their lock entries, and never deletes a
+git-tracked or local-source skill. It prints the plan unless you confirm with `yes`.
+
 Skills installed from a **local path** (like `.agents/skills/`) are tracked with `sourceType:
 "local"`. `npx skills update` re-copies from the local path, so edits to the source are picked up on
 the next update.

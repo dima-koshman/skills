@@ -91,6 +91,11 @@ SECTIONS = {
 
 SECRET_VALUES: list[str] = []
 CAPTURE = True  # --no-capture turns off the mock-API request captures
+SKIPPED_CAPTURE = {
+    "source": "skipped",
+    "note": "built with --no-capture; rebuild without it to capture the request",
+    "parts": [],
+}
 # Each subscription's own usage page. None of the CLIs expose the OpenCode workspace id (only an API key is stored),
 # so its link defaults to the console root; pass --opencode-console (or OPENCODE_CONSOLE_URL) for the workspace page.
 USAGE_PAGES = {
@@ -1211,6 +1216,8 @@ def claude(cwd: Path, project: Path | None, usage: bool) -> Harness:
         attempt(h, "claude -p /usage", read_usage)
     if CAPTURE:
         attempt(h, "request capture", capture)
+    else:
+        h.request = SKIPPED_CAPTURE
     return h
 
 
@@ -1703,6 +1710,8 @@ def opencode(cwd: Path, project: Path | None, usage: bool) -> Harness:
     attempt(h, "opencode models", models)
     if CAPTURE:
         attempt(h, "request capture", capture)
+    else:
+        h.request = SKIPPED_CAPTURE
     attempt(h, "instruction files", prompts)
     if usage:
         attempt(h, "opencode stats", read_usage)

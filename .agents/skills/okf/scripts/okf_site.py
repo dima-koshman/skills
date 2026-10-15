@@ -792,16 +792,18 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   .pane-switch button[aria-selected="true"] { background:var(--active); border-color:var(--accent); color:var(--ink); font-weight:600; }
   #graph-area { flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
   #graph-wrap[data-view="backlinks"] #graph-area { visibility:hidden; pointer-events:none; }
-  #backlinks { display:none; position:absolute; inset:48px 0 0; overflow-y:auto; padding:18px 16px; }
+  #backlinks { display:none; position:absolute; inset:48px 0 0; overflow-y:auto; padding:18px 16px; background:var(--sidebar); }
   #graph-wrap[data-view="backlinks"] #backlinks { display:block; }
   #backlinks h2 { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:0 0 12px; }
   #backlinks p { color:var(--muted); font-size:13px; line-height:1.5; }
+  #backlinks .backlink-group { margin:0 0 12px; padding:12px; border:1px solid var(--line); border-radius:12px;
+    background:var(--bg); box-shadow:0 3px 10px #1f23280d; }
+  #backlinks h3 { display:flex; align-items:center; gap:8px; margin:0 0 7px; }
+  #backlinks .group-count { color:var(--muted); font-size:11px; font-weight:500; }
   #backlinks ul { list-style:none; padding:0; margin:0; }
-  #backlinks li { margin:0 0 6px; }
-  #backlinks a { display:flex; align-items:center; gap:8px; padding:8px 10px; color:var(--ink); text-decoration:none; border-radius:6px; }
+  #backlinks li { margin:0; }
+  #backlinks a { display:block; padding:7px 9px; color:var(--ink); text-decoration:none; border-radius:6px; }
   #backlinks a:hover, #backlinks a:focus-visible { background:var(--hover); }
-  #backlinks .dot { width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
-  #backlinks .type { margin-left:auto; color:var(--muted); font-size:11px; }
   #legend { flex:0 0 auto; display:flex; flex-wrap:wrap; align-items:center; gap:2px 6px; padding:8px 12px; border-bottom:1px solid var(--line); }
   #legend .legend-title { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-right:4px; }
   #legend .legend-item { display:inline-flex; align-items:center; gap:5px; cursor:pointer; border:0; background:none; font:inherit; font-size:11.5px; color:var(--muted); padding:2px 6px; border-radius:5px; }
@@ -826,7 +828,7 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #doc h2 { font-size:17px; margin:1.5em 0 .4em; padding-bottom:5px; border-bottom:1px solid var(--line); }
   #doc .prose h1 { font-size:17px; font-weight:600; margin:1.6em 0 .4em; padding-bottom:5px; border-bottom:1px solid var(--line); }
   #doc .meta { display:flex; align-items:center; gap:10px; margin:8px 0 16px; font-size:12.5px; }
-  #doc .badge { flex:0 0 auto; display:inline-block; padding:2px 9px; border-radius:11px; font-size:11px; color:#fff; font-weight:600; }
+  #doc .badge, #backlinks .badge { flex:0 0 auto; display:inline-block; padding:2px 9px; border-radius:11px; font-size:11px; color:#fff; font-weight:600; }
   #doc .resource { flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   #doc .meta-right { flex:0 0 auto; margin-left:auto; display:flex; align-items:center; gap:8px; }
   #doc .tags-inline { display:flex; gap:5px; }
@@ -1302,21 +1304,21 @@ function onSingleClick(target) {
 
 // A directory can toggle its own children or fold into its parent. Graph double-clicks
 // use the latter for nested directories; the sidebar and menu can still toggle children.
-function toggleDirectory(path) {
-  if (expanded.has(path)) collapseDir(path, () => openDir(path));
-  else expandDir(path, () => openDir(path));
+function toggleDirectory(path, attention = true) {
+  if (expanded.has(path)) collapseDir(path, () => openDir(path, attention));
+  else expandDir(path, () => openDir(path, attention));
 }
 
-function collapseNodeIntoParent(id) {
+function collapseNodeIntoParent(id, attention = true) {
   const directory = directoryForNode(id);
   const parent = parentDirOf(directory || id);
-  if (parent) collapseDir(parent, () => openDir(parent));
+  if (parent) collapseDir(parent, () => openDir(parent, attention));
   return !!parent;
 }
 
-function onNodeDoubleClick(id) {
+function onNodeDoubleClick(id, attention = true) {
   const directory = directoryForNode(id);
-  if (!collapseNodeIntoParent(id) && directory) toggleDirectory(directory);
+  if (!collapseNodeIntoParent(id, attention) && directory) toggleDirectory(directory, attention);
 }
 
 // Empty graph space or an edge resets the zoom to fit everything.
@@ -1555,10 +1557,17 @@ function updateBacklinks(id) {
     return;
   }
   const inbound = inboundConcepts(id);
+  const groups = new Map();
+  inbound.forEach(n => {
+    if (!groups.has(n.type)) groups.set(n.type, []);
+    groups.get(n.type).push(n);
+  });
   backlinks.innerHTML = `<h2>Backlinks · ${inbound.length}</h2>` + (inbound.length
-    ? '<ul>' + inbound.map(n => `<li><a href="#${encodeURIComponent(n.id)}" data-backlink="${escapeAttr(n.id)}">` +
-        `<span class="dot" style="background:${n.color}"></span><span>${escapeHtml(n.title)}</span>` +
-        `<span class="type">${escapeHtml(n.type)}</span></a></li>`).join('') + '</ul>'
+    ? [...groups.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([type, members]) =>
+        `<section class="backlink-group"><h3><span class="badge" style="background:${members[0].color}">` +
+        `${escapeHtml(type)}</span><span class="group-count">${members.length}</span></h3><ul>` +
+        members.map(n => `<li><a href="#${encodeURIComponent(n.id)}" data-backlink="${escapeAttr(n.id)}">` +
+          `${escapeHtml(n.title)}</a></li>`).join('') + '</ul></section>').join('')
     : '<p>No other concepts link to this one.</p>');
   backlinks.querySelectorAll('a[data-backlink]').forEach(a => a.addEventListener('click', ev => {
     ev.preventDefault();
@@ -1666,10 +1675,10 @@ function renderDoc(markdown) {
   doc.scrollTop = 0;
 }
 
-function openConcept(id) {
+function openConcept(id, attention = true) {
   const n = byId[id];
   if (!n) return;
-  if (representative(id) !== id) { revealConcept(id, () => openConcept(id)); return; }
+  if (representative(id) !== id) { revealConcept(id, () => openConcept(id, attention)); return; }
   closeMobilePanels();
   main.classList.remove('graph-only');
   const resourceHtml = n.resource
@@ -1694,7 +1703,7 @@ function openConcept(id) {
   doc.appendChild(bodyHtml);
   wireDocLinks(bodyHtml);
   doc.scrollTop = 0;
-  setActiveNav(id);
+  setActiveNav(id, attention);
   recordNavigation(id);
   updateBacklinks(id);
   highlight(id);
@@ -1718,11 +1727,11 @@ function openIndex() {
   collapseAllDirs(() => { clearHighlight(); relayout(); });
 }
 
-function openDir(path) {
+function openDir(path, attention = true) {
   // Reader view for a directory: its concepts and subdirectories; the graph keeps its state.
   const d = dirs[path];
   if (!d) return;
-  if (d.overviewId) { openConcept(d.overviewId); return; }
+  if (d.overviewId) { openConcept(d.overviewId, attention); return; }
   closeMobilePanels();
   main.classList.remove('graph-only');
   const direct = d.concepts.filter(id => parentDirOf(id) === path).map(id => byId[id])
@@ -1746,7 +1755,7 @@ function openDir(path) {
     expandDir(path, () => openDir(sub));
   }));
   doc.scrollTop = 0;
-  setActiveNav(DIR_PREFIX + path);
+  setActiveNav(DIR_PREFIX + path, attention);
   recordNavigation(DIR_PREFIX + path);
   updateBacklinks(null);
   const node = cy.getElementById(DIR_PREFIX + path);
@@ -1844,10 +1853,10 @@ function onNavConceptClick(ev, id) {
   const toggleSelected = !!directory && ev.currentTarget.classList.contains('active');
   const run = () => {
     if (toggleSelected) {
-      if (expanded.has(directory)) collapseDir(directory, () => openDir(directory));
-      else expandDir(directory, () => openDir(directory));
-    } else if (directory) expandDir(directory, () => openConcept(id));
-    else openConcept(id);
+      if (expanded.has(directory)) collapseDir(directory, () => openDir(directory, false));
+      else expandDir(directory, () => openDir(directory, false));
+    } else if (directory) expandDir(directory, () => openConcept(id, false));
+    else openConcept(id, false);
   };
   pendingNavClick = { id, run, timer: setTimeout(() => { pendingNavClick = null; run(); }, DOUBLE_CLICK_MS) };
 }
@@ -1861,8 +1870,8 @@ function onNavConceptDoubleClick(ev, id) {
     pendingNavClick = null;
   }
   const directory = directoryForNode(id);
-  if (directory) toggleDirectory(directory);
-  else onNodeDoubleClick(id);
+  if (directory) toggleDirectory(directory, false);
+  else onNodeDoubleClick(id, false);
 }
 
 function renderTree(tree, prefix = '') {
@@ -1901,7 +1910,7 @@ function renderTree(tree, prefix = '') {
     const label = document.createElement('div');
     label.className = 'label';
     const toggle = () => {
-      if (expanded.has(path)) collapseDir(path, () => openDir(path)); else expandDir(path, () => openDir(path));
+      if (expanded.has(path)) collapseDir(path, () => openDir(path, false)); else expandDir(path, () => openDir(path, false));
     };
     if (tree.dirs[name].overview) {
       const overview = tree.dirs[name].overview;
@@ -1951,13 +1960,15 @@ function paintTreeState() {
   });
 }
 
-function setActiveNav(id) {
+function setActiveNav(id, attention = true) {
   document.querySelectorAll('#nav a, #loglink a, #nav .dir > .label').forEach(a => a.classList.remove('active'));
   document.querySelectorAll('#nav .nav-attention').forEach(row => row.classList.remove('nav-attention'));
   const reveal = row => {
     row.scrollIntoView({block:'nearest'});
-    void row.offsetWidth; // restart the pulse when the same entry is selected again
-    row.classList.add('nav-attention');
+    if (attention) {
+      void row.offsetWidth; // restart the pulse when the same entry is selected again
+      row.classList.add('nav-attention');
+    }
   };
   if (id && isDirId(id)) {
     const li = document.querySelector(`#nav li.dir[data-dir="${cssEscape(dirOf(id))}"]`);

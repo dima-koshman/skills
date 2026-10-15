@@ -249,6 +249,43 @@ process.stdout.write(JSON.stringify(result.map(node => [node.title, node.type]))
     assert json.loads(result.stdout) == [["API", "Service"], ["Follower", "Service"]]
 
 
+def test_site_backlinks_render_separate_type_cards(bundle: pathlib.Path) -> None:
+    output = bundle.parent / "backlink-groups.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definition = html.match(/function updateBacklinks\(id\) \{.*?\n}/s)[0];
+const backlinks = {innerHTML: '', querySelectorAll: () => []};
+const concepts = [
+  {id: 'a.md', title: 'Alpha', type: 'Service', color: '#f00'},
+  {id: 'b.md', title: 'Beta', type: 'Repository', color: '#0f0'},
+  {id: 'c.md', title: 'Gamma', type: 'Service', color: '#f00'},
+];
+vm.runInNewContext(definition + '\nupdateBacklinks("target.md")', {
+  backlinks, byId: {'target.md': {}}, inboundConcepts: () => concepts,
+  escapeHtml: value => value, escapeAttr: value => value,
+});
+process.stdout.write(backlinks.innerHTML);
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    markup = result.stdout
+    assert markup.count('class="backlink-group"') == 2
+    assert markup.count('class="badge"') == 2
+    assert "#doc .badge, #backlinks .badge" in output.read_text()
+    assert markup.index(">Repository</span>") < markup.index(">Service</span>")
+    assert markup.count('data-backlink="') == 3
+    assert markup.index('data-backlink="a.md"') > markup.index(">Service</span>")
+    assert 'style="background:#0f0"' in markup
+
+
 def test_site_navigation_history_supports_back_forward_and_branching(
     bundle: pathlib.Path,
 ) -> None:
@@ -524,7 +561,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const html = fs.readFileSync(process.argv[1], 'utf8');
 const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
-const openDir = html.match(/function openDir\(path\) \{.*?\n}/s)[0];
+const openDir = html.match(/function openDir\([^)]*\) \{.*?\n}/s)[0];
 const node = data.nodes.find(n => n.id === 'services/prod.md');
 const doc = { innerHTML: '', scrollTop: 0, querySelectorAll: () => [] };
 const noop = () => {};
@@ -1531,7 +1568,7 @@ const context = {
   dirOf: id => id.slice(4),
   cssEscape: value => value,
 };
-vm.runInNewContext(definition + '\nsetActiveNav("leaf.md"); setActiveNav("overview.md"); setActiveNav("dir:Other"); setActiveNav("dir:Other");', context);
+vm.runInNewContext(definition + '\nsetActiveNav("leaf.md"); setActiveNav("overview.md"); setActiveNav("dir:Other"); setActiveNav("dir:Other"); setActiveNav("leaf.md", false);', context);
 process.stdout.write(JSON.stringify({scrolled, pulses, last: directoryRow.classList.contains('nav-attention'),
   reducedMotion: html.includes('prefers-reduced-motion: reduce'),
   keyframes: html.includes('@keyframes nav-attention')}));
@@ -1549,12 +1586,45 @@ process.stdout.write(JSON.stringify({scrolled, pulses, last: directoryRow.classL
             ["overview row", "nearest"],
             ["directory row", "nearest"],
             ["directory row", "nearest"],
+            ["leaf", "nearest"],
         ],
         "pulses": ["leaf", "overview row", "directory row", "directory row"],
-        "last": True,
+        "last": False,
         "reducedMotion": True,
         "keyframes": True,
     }
+
+
+def test_site_direct_sidebar_click_opens_without_attention_pulse(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "direct-sidebar-click.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definition = html.match(/function onNavConceptClick\(ev, id\) \{.*?\n}/s)[0];
+const opened = [];
+const context = {DOUBLE_CLICK_MS: 150,
+  directoryForNode: id => id === 'merged.md' ? 'Services' : null,
+  openConcept: (...args) => opened.push(args), expandDir: (_path, done) => done(),
+  clearTimeout: () => {},
+  setTimeout: callback => { callback(); return 1; }};
+vm.runInNewContext('let pendingNavClick = null;\n' + definition + '\n' +
+  'onNavConceptClick({preventDefault() {}, currentTarget: {classList: {contains: () => false}}}, "leaf.md");' +
+  'pendingNavClick = null;' +
+  'onNavConceptClick({preventDefault() {}, currentTarget: {classList: {contains: () => false}}}, "merged.md");', context);
+process.stdout.write(JSON.stringify(opened));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == [["leaf.md", False], ["merged.md", False]]
 
 
 def test_site_caption_counts_collapsed_merged_overviews_as_directories(

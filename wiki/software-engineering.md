@@ -18,6 +18,7 @@ related:
 - /software-engineering/frontend/htmx.md
 - /software-engineering/infrastructure/service-mesh.md
 - /software-engineering/infrastructure/planes.md
+- /software-engineering/source-control/monorepo.md
 generated:
   by: codex/gpt-6
   at: '2026-10-15T15:23:06+04:00'
@@ -29,6 +30,7 @@ topics:
 - /software-engineering/infrastructure.md
 - /software-engineering/learning.md
 - /software-engineering/reliability.md
+- /software-engineering/source-control.md
 ---
 
 Concepts behind building and operating distributed systems, kept separate from
@@ -60,3 +62,6 @@ not tutorials.
   [service mesh](/software-engineering/infrastructure/service-mesh.md), and the
   [data, control, and management planes](/software-engineering/infrastructure/planes.md) that
   describe how such systems are decomposed.
+- **Source control** — repository strategy:
+  [monorepo vs polyrepo](/software-engineering/source-control/monorepo.md), with
+  Google's, Meta's and Anthropic's scaling stories and the case against.

@@ -13,6 +13,7 @@ related:
 - /ai-engineering/harness.md
 - /ai-engineering/observability/langsmith-evals.md
 - /ai-engineering/models/clm.md
+- /ai-engineering/models/scaledown.md
 decision_interface:
 - Choice
 - Score
@@ -29,9 +30,14 @@ sources:
 - id: ref-3
   resource: https://github.com/Contrastive-LM/CLM
   title: CLM repository and Jev comparison
+- id: langchain-scaledown
+  resource: https://www.langchain.com/blog/building-long-running-agents-with-scaledown-and-deep-agents
+  title: Building long-running agents with ScaleDown and Deep Agents
+  author: Sydney Runkle, Srimanth Tangedipalli and Neal Patel (LangChain)
+  last_modified: '2026-10-13T00:00:00Z'
 generated:
-  by: codex/gpt-6
-  at: '2026-10-15T15:23:06+04:00'
+  by: claude-code/claude-opus-5-5
+  at: '2026-10-16T14:00:00+04:00'
 ---
 
 Reference: <https://docs.typesafe.ai/>
@@ -75,8 +81,23 @@ architecture. The sources reviewed on 2026-09-30 establish hosted Jev access;
 they do not establish a public Jev weight release. CLM is the concrete open
 implementation verified in this review.
 
+## Related constrained decoding models
+
+[ScaleDown](/ai-engineering/models/scaledown.md) sells the same idea as
+constrained decoding models (CDMs). Its Classify model is the closest
+counterpart: a typed answer with a probability. Jev takes text only, up to 32K
+tokens of state per question. Classify takes up to 1M tokens, images included,
+and adds a one-sentence reason.[^langchain-scaledown] ScaleDown also has
+Summarize, Compress and Extract models. LangChain wires them into
+[Deep Agents](/ai-engineering/agents/deep-agents.md) as middleware, under the
+same "cheap by default, frontier on exception" principle LangChain applies to
+Jev.
+
 ## Resources
 
 - [TypeSafe documentation: Jev and its primitives](https://docs.typesafe.ai/)
 - [TypeSafe: System One and RLCD](https://typesafe.ai/)
 - [CLM repository and Jev comparison](https://github.com/Contrastive-LM/CLM)
+- [Building long-running agents with ScaleDown and Deep Agents](https://www.langchain.com/blog/building-long-running-agents-with-scaledown-and-deep-agents) — Jev vs ScaleDown Classify
+
+[^langchain-scaledown]: LangChain blog, 2026-10-13

@@ -1,5 +1,11 @@
 # Knowledge history
 
+## 2026-10-16
+
+- **Creation**: Added [ScaleDown](/ai-engineering/models/scaledown.md), hosted constrained decoding models (Summarize, Compress, Extract, Classify), from LangChain's 2026-10-13 post on using them as Deep Agents middleware. Cross-linked it from [Jev](/ai-engineering/models/jev.md), with the Classify comparison, and from [Deep Agents](/ai-engineering/agents/deep-agents.md).
+- **Update**: Added a One-Version Rule section to [Monorepo vs Polyrepo](/software-engineering/source-control/monorepo.md). It quotes *Software Engineering at Google*: every consumer uses one version of each dependency, which a polyrepo can also enforce, and the cost is coupled migrations. Noted in [Site Reliability Engineering](/software-engineering/reliability/sre.md) that Google's rewritten 2026 second edition is paid, while the first edition, the Workbook and the per-chapter book update pages stay free.
+- **Creation**: Added the [Source Control](/software-engineering/source-control.md) area with [Monorepo vs Polyrepo](/software-engineering/source-control/monorepo.md), comparing the two repository strategies, prompted by Anthropic's October 2026 post on replacing git with Scion for its monorepo. It cites Google's Piper paper, Meta's Sapling, and Dan Luu's and Matt Klein's opposing essays.
+
 ## 2026-10-15
 
 - **Initialization**: Converted all 72 maintained Markdown notes into one OKF v0.2 bundle, preserving their explanations, dated context, reading resources, and local relationships. [AI Engineering](/ai-engineering.md) and [Software Engineering](/software-engineering.md) are the two subject roots.

@@ -481,6 +481,15 @@ def test_site_links_sources_and_footnotes(bundle: pathlib.Path) -> None:
     assert re.search(r'<sup class="fn"><a href="#src-conf">', body)
 
 
+def test_reader_shows_source_ids_only_when_the_body_cites_them(
+    bundle: pathlib.Path,
+) -> None:
+    rendered = _reader_html(bundle, "services/api.md", {})
+
+    assert "<code>conf</code>" in rendered
+    assert "<code>db</code>" not in rendered
+
+
 @pytest.mark.parametrize("trust", ["unverified", "machine-confirmed", "human-reviewed"])
 def test_reader_omits_verification_pills(bundle: pathlib.Path, trust: str) -> None:
     rendered = _reader_html(bundle, "services/api.md", {"trust": trust})

@@ -61,8 +61,10 @@ PyYAML. From any repository, run them by absolute path, e.g.
 - **Provenance, trust, lifecycle (v0.2, §5)** — all optional, but use them:
   - `sources:` list of `{ id, resource, title, author?, last_modified? }`; `resource` is
     a URL, a bundle-relative path, or a scope descriptor. Attribute individual claims
-    with markdown footnotes whose label is a source `id` (`…sharded daily.[^ga4]`).
-    This **replaces** v0.1's body `# Citations` list.
+    with markdown footnotes whose label is a source `id` (`…sharded daily.[^ga4]`),
+    plus a `[^ga4]: …` definition line. This **replaces** v0.1's body `# Citations` list.
+    Name ids after the source (`ga4-schema`, not positional `ref-1`) and add one only
+    when the body cites it; the renderer hides ids nothing cites.
   - `generated: { by, at }` — who wrote the current content and when it last changed
     meaningfully. This **replaces** v0.1's `timestamp`.
   - `verified:` list of `{ by, at }` — who confirmed it against its sources; separate

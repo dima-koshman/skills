@@ -46,9 +46,13 @@ sources:
 - id: ref-11
   resource: https://sre.google/workbook/table-of-contents/
   title: The Site Reliability Workbook
+- resource: https://sre.google/books/
+  title: Google SRE books (2nd edition announcement and free editions)
+- resource: https://sre.google/resources/book-update/
+  title: SRE book update pages
 generated:
-  by: codex/gpt-6
-  at: '2026-10-15T15:23:06+04:00'
+  by: claude-code/claude-opus-5-5
+  at: '2026-10-16T13:00:00+04:00'
 ---
 
 Reference: <https://sre.google/sre-book/>
@@ -103,7 +107,17 @@ control-band monitoring and postmortem-to-eval loops in its Maintain stage, and
 [observability-driven development](/ai-engineering/development/observability-driven-development.md)
 makes telemetry evidence for code changes.
 
+## Second edition (2026)
+
+Google published a completely rewritten second edition in autumn 2026, ten
+years after the original. It is **not free**: it is sold through O'Reilly and
+Google Books. The first edition, the Workbook, and *Building Secure & Reliable
+Systems* remain free to read online. Each chapter of the original has a
+[book update page](https://sre.google/resources/book-update/) that links the
+related papers and SREcon talks Google SREs have published since.
+
 ## Resources
 
 - [Site Reliability Engineering — table of contents](https://sre.google/sre-book/table-of-contents/)
 - [The Site Reliability Workbook](https://sre.google/workbook/table-of-contents/) — the hands-on companion on implementing SLOs, alerting, and on-call
+- [Site Reliability Engineering, 2nd edition](https://sre.google/books/) (2026, paid) — the full rewrite; buy links on the books page

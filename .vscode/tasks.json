@@ -59,9 +59,15 @@
         },
         {
             "label": "Skills: install local (okf)",
-            "detail": "Publish this repo's okf skill globally (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/). Cross-project by nature: lets any agent delegate to the claude, opencode and agy CLIs headlessly, to reach another model family or subscription.",
+            "detail": "Publish this repo's okf skill globally (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/). Cross-project by nature: reads, authors and renders OKF knowledge bundles from any repo.",
             "hide": true,
             "command": "npx --yes skills add ./.agents/skills/okf --agent claude-code --agent opencode --agent codex --global --yes"
+        },
+        {
+            "label": "Skills: install local (finding-high-value-reading)",
+            "detail": "Publish this repo's finding-high-value-reading skill globally (copies to ~/.agents/skills/, symlinks to ~/.claude/skills/). Cross-project by nature: finds verified, high-signal posts, papers and postmortems matched to the interests recorded in the wiki/ OKF bundle.",
+            "hide": true,
+            "command": "npx --yes skills add ./.agents/skills/finding-high-value-reading --agent claude-code --agent opencode --agent codex --global --yes"
         },
         {
             "label": "Skills: install local (all)",
@@ -71,18 +77,19 @@
                 "Skills: install local (development-best-practices)",
                 "Skills: install local (python-styleguide)",
                 "Skills: install local (cli-subagents)",
-                "Skills: install local (okf)"
+                "Skills: install local (okf)",
+                "Skills: install local (finding-high-value-reading)"
             ]
         },
         {
             "label": "Skills: link local (all)",
             "detail": "Symlink alternative to 'Skills: install local (all)' — same skill selection (keep the two lists in sync), same global layout (~/.agents/skills/<name> -> this repo, ~/.claude/skills/<name> -> ../../.agents/skills/<name>), but edits here apply everywhere with no re-run. Replaces an existing npx copy of the same skill; refuses anything else in the way. Use one mechanism or the other: before going back to npx, run 'Skills: unlink local (all)'.",
-            "command": "link_global_skills.sh \"${workspaceFolder}/.agents/skills/development-best-practices\" \"${workspaceFolder}/.agents/skills/python-styleguide\" \"${workspaceFolder}/.agents/skills/cli-subagents\""
+            "command": "link_global_skills.sh \"${workspaceFolder}/.agents/skills/development-best-practices\" \"${workspaceFolder}/.agents/skills/python-styleguide\" \"${workspaceFolder}/.agents/skills/cli-subagents\" \"${workspaceFolder}/.agents/skills/finding-high-value-reading\""
         },
         {
             "label": "Skills: unlink local (all)",
             "detail": "Remove the global symlinks created by 'Skills: link local (all)' (only links pointing into this repo). Run before switching back to 'Skills: install local (all)'.",
-            "command": "link_global_skills.sh --unlink \"${workspaceFolder}/.agents/skills/development-best-practices\" \"${workspaceFolder}/.agents/skills/python-styleguide\" \"${workspaceFolder}/.agents/skills/cli-subagents\""
+            "command": "link_global_skills.sh --unlink \"${workspaceFolder}/.agents/skills/development-best-practices\" \"${workspaceFolder}/.agents/skills/python-styleguide\" \"${workspaceFolder}/.agents/skills/cli-subagents\" \"${workspaceFolder}/.agents/skills/finding-high-value-reading\""
         },
         {
             "label": "Setup: link scripts and IDE to ~/.local/bin",

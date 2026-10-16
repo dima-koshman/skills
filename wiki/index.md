@@ -65,6 +65,7 @@ okf_version: "0.2"
 * [Contrastive Language Models (CLM)](/ai-engineering/models/clm.md) `[Decision Model]` - Open-source state-action scoring models with a TypeSafe-compatible API for typed decisions and candidate ranking.
 * [Jev](/ai-engineering/models/jev.md) `[Decision Model]` - TypeSafe's System One model for fast typed decisions with probabilities, composed into software workflows.
 * [LLM Architecture](/ai-engineering/models/llm-architecture.md) `[Concept]` - Design choices inside modern open-weight LLMs — sparsity, attention efficiency, and the empirical tweaks — and the two main ways to make them multimodal.
+* [ScaleDown](/ai-engineering/models/scaledown.md) `[Decision Model]` - Hosted constrained decoding models (CDMs) for summarizing, compressing, extracting and classifying agent context — small task-specific models that return only answers the task allows.
 
 ## observability
 
@@ -111,6 +112,7 @@ okf_version: "0.2"
 * [Service Communication](/software-engineering/communication.md) `[Knowledge Area]` - Protocol Buffers schemas and gRPC contracts for communication between services.
 * [Service Infrastructure](/software-engineering/infrastructure.md) `[Knowledge Area]` - Service meshes and data, control, and management planes around distributed applications.
 * [Software Architecture](/software-engineering/architecture.md) `[Knowledge Area]` - Component boundaries, communication styles, and dependency trade-offs in software design.
+* [Source Control](/software-engineering/source-control.md) `[Knowledge Area]` - How code is stored, versioned, and shared across projects — repository strategy and version-control systems at scale.
 
 ## architecture
 
@@ -150,6 +152,10 @@ okf_version: "0.2"
 * [Simplicity](/software-engineering/reliability/simplicity.md) `[Practice]` - Reduce accidental complexity to make production systems easier to understand, change, and operate reliably.
 * [Site Reliability Engineering](/software-engineering/reliability/sre.md) `[Practice]` - Google's discipline of running production with software engineering: explicit reliability targets, an error budget that balances them against change, and automation in place of manual operations.
 * [Toil](/software-engineering/reliability/toil.md) `[Practice]` - Manual, repetitive operational work that scales with the service — capped and engineered away so a team's effort grows sublinearly with what it runs.
+
+## source-control
+
+* [Monorepo vs Polyrepo](/software-engineering/source-control/monorepo.md) `[Practice]` - Keep many projects in one version-controlled repository, or give each its own — a trade between atomic, globally consistent change and independent, loosely coupled ownership.
 
 # _types
 

@@ -1692,7 +1692,9 @@ function sourcesHtml(n) {
     const link = src.href ? `<a href="${escapeAttr(src.href)}">${label}</a>` : label;
     const extra = [src.author, src.last_modified].filter(Boolean).map(escapeHtml).join(' · ');
     const id = src.id ? ` id="src-${escapeAttr(src.id)}"` : '';
-    const tag = src.id ? `<code>${escapeHtml(src.id)}</code> ` : '';
+    // An id is only a footnote key; show it when a [^id] in the body points here.
+    const cited = src.id && n.body.includes(`href="#src-${src.id}"`);
+    const tag = cited ? `<code>${escapeHtml(src.id)}</code> ` : '';
     return `<li${id}>${tag}${link}${extra ? ' — ' + extra : ''}</li>`;
   }).join('');
   return `<div class="sources"><h1>Sources</h1><ul>${items}</ul></div>`;

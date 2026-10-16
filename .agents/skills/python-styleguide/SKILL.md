@@ -836,6 +836,27 @@ import myapp
 __version__ = importlib.metadata.version(myapp.__name__)
 ```
 
+## Python version
+
+Declare the supported Python versions once, as `requires-python` in `pyproject.toml`. Do not
+add a `.python-version` file: it restates that constraint in a second place that drifts from
+it, and pins one exact interpreter for everyone. uv already picks an interpreter that satisfies
+`requires-python`, downloading one when none is installed, so the file adds nothing.
+
+Tool settings that take a single version (basedpyright's `pythonVersion`, ruff's
+`target-version` where it can't read `requires-python` itself, a Dockerfile's base image) follow
+the lower bound of `requires-python`.
+
+```toml
+# Good — the one source of truth
+[project]
+requires-python = ">=3.14"
+
+# Bad — the same fact again, in a file that drifts
+# .python-version
+3.14
+```
+
 ## Multiline function arguments
 
 Always wrap multiline expressions used as function arguments in parentheses. This makes it

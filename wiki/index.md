@@ -10,6 +10,7 @@ okf_version: "0.2"
 * [Agent Harness](/ai-engineering/harness.md) `[Knowledge Area]` - The runtime scaffolding around the model loop: tool dispatch, state, sandboxing, and loop control.
 * [Agent Security](/ai-engineering/security.md) `[Knowledge Area]` - How enterprise agent platforms are attacked and defended — the OWASP Agentic Top 10 risks and the mitigations that contain them.
 * [Agents](/ai-engineering/agents.md) `[Knowledge Area]` - Agent architectures, coding-agent implementations, and protocols for delegation and peer coordination.
+* [AI Compute](/ai-engineering/compute.md) `[Knowledge Area]` - How AI workloads run on hardware — GPU and NPU programming models, what limits a model's speed, the compiler stack underneath, the CUDA ecosystem, and Modular's Mojo and MAX.
 * [AI Development](/ai-engineering/development.md) `[Knowledge Area]` - Artifact-driven software development and telemetry-led diagnosis with AI agents.
 * [Context and Knowledge](/ai-engineering/context.md) `[Knowledge Area]` - Context assembly, memory, retrieval, skills, and portable knowledge formats for agents.
 * [Enterprise Gateways](/ai-engineering/enterprise.md) `[Knowledge Area]` - Model-side and tool-side gateways that centralize access, policy, routing, and audit.
@@ -29,6 +30,16 @@ okf_version: "0.2"
 * [Devin](/ai-engineering/agents/devin.md) `[Tool]` - Cognition's autonomous AI software engineer — a cloud agent that executes coding tasks end-to-end in its own sandbox.
 * [OpenCode](/ai-engineering/agents/opencode.md) `[Tool]` - Open-source, terminal-native, model-agnostic coding agent — a vendor-neutral alternative to Claude Code.
 * [Peer Agents](/ai-engineering/agents/peer-agents.md) `[Concept]` - Independently governed agents that own goals and coordinate as peers rather than through a permanent parent.
+
+## compute
+
+* [Compute, Memory and Overhead Bound](/ai-engineering/compute/performance-regimes.md) `[Concept]` - A slow model is limited by one of three things — math throughput, memory bandwidth, or host-side overhead — and each needs a different fix.
+* [CUDA Ecosystem](/ai-engineering/compute/cuda.md) `[Concept]` - Why NVIDIA's CUDA became the default AI software stack, why chip companies struggle to match it, and the main attempts to break the lock-in — compilers, Python DSLs, Mojo, and NVIDIA's own CUDA Rust.
+* [LLVM and MLIR](/ai-engineering/compute/compilers.md) `[Concept]` - The compiler infrastructure under Mojo — LLVM's shared intermediate representation that decouples languages from chips, and MLIR's many-level IRs (dialects) that keep AI operations meaningful until late in compilation.
+* [MAX](/ai-engineering/compute/max.md) `[Tool]` - Modular's AI serving and modeling framework — OpenAI-compatible model serving, a PyTorch-like Python modeling API, and Mojo kernels for CPUs, GPUs and ASICs without depending on CUDA or ROCm.
+* [Mojo](/ai-engineering/compute/mojo.md) `[Tool]` - Modular's Python-like systems language for CPUs, GPUs and other accelerators, built on MLIR; 1.0 and open source (Apache 2.0) since August 2026, owned by Qualcomm.
+* [Neural Processing Unit (NPU)](/ai-engineering/compute/npu.md) `[Concept]` - A hardware accelerator built specifically for neural-network math, usually low-precision and power-efficient, programmed with explicit memory movement rather than the GPU's thread model; Google's TPU is one, and GPU Tensor Cores are the same idea as a unit inside a GPU.
+* [SIMD and SIMT](/ai-engineering/compute/simd-simt.md) `[Concept]` - Two ways to run one instruction over many data elements — explicit vector instructions (SIMD) vs NVIDIA's per-thread model on top of vector hardware (SIMT) — and why the difference matters for portable kernels.
 
 ## context
 
@@ -54,7 +65,9 @@ okf_version: "0.2"
 
 ## harness
 
+* [Agent Sandboxes](/ai-engineering/harness/sandboxes.md) `[Practice]` - Run the harness outside the sandbox and call the sandbox as a tool, keeping session state in a durable store, so harness, sandbox and session can each fail or be replaced on their own ("cattle, not pets").
 * [Frontend Tools](/ai-engineering/harness/frontend-tools.md) `[Concept]` - Client-side tools executed in the frontend, typically for UI interactions — a newer, less standardized category.
+* [Model Routing](/ai-engineering/harness/model-routing.md) `[Practice]` - Choosing a cheaper or stronger model per task belongs in the harness, which knows the task, and should happen once per thread, because switching models mid-conversation throws away the prompt cache.
 * [Provider-Side Tools](/ai-engineering/harness/provider-tools.md) `[Concept]` - Tools defined and executed by the model provider — built-in web search, code execution — that clients just enable.
 * [Subagents](/ai-engineering/harness/subagents.md) `[Concept]` - Delegating focused subtasks to separate agent instances, and orchestrating multiple agents together.
 * [Tools](/ai-engineering/harness/tools.md) `[Concept]` - The primitive that turns an LLM into an agent — functions the model can call to act on and read from its environment.
@@ -149,6 +162,7 @@ okf_version: "0.2"
 
 ## reliability
 
+* [Metastable Failures](/software-engineering/reliability/metastable-failures.md) `[Concept]` - Outages that persist after their trigger is gone, because the degraded system does extra work (retries, cache misses) that keeps it overloaded — fixed by attacking the feedback loop, not the trigger.
 * [Simplicity](/software-engineering/reliability/simplicity.md) `[Practice]` - Reduce accidental complexity to make production systems easier to understand, change, and operate reliably.
 * [Site Reliability Engineering](/software-engineering/reliability/sre.md) `[Practice]` - Google's discipline of running production with software engineering: explicit reliability targets, an error budget that balances them against change, and automation in place of manual operations.
 * [Toil](/software-engineering/reliability/toil.md) `[Practice]` - Manual, repetitive operational work that scales with the service — capped and engineered away so a team's effort grows sublinearly with what it runs.

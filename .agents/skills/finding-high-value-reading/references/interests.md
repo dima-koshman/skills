@@ -28,5 +28,11 @@ looking for now.
 
 ## Not interested
 
-Nothing recorded yet. Add topics he dismisses so they are filtered next time,
-including trending-repo categories.
+Add topics he dismisses so they are filtered next time, including trending-repo
+categories.
+
+- **Indexed code-search servers for agents** (e.g. xerj), dismissed 2026-10-16. The
+  index has to be kept fresh and the server kept running. Gains over the grep and
+  file reads agents already handle well are modest, and only on unfamiliar code.
+  Mention one only if it is a big step beyond grep on large private codebases,
+  backed by an independent benchmark.

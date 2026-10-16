@@ -1,6 +1,6 @@
 ---
 name: finding-high-value-reading
-description: Use when Dima asks what to read, learn or follow on a topic — engineering blog posts, papers, talks, postmortems, newsletters, "lessons learned", "why did company X decide Y", industry best practices, news worth knowing, trending or "repo of the day" GitHub repositories, or "what don't I know that I don't know" about something he is working on. Finds a short, verified list of high-signal resources (old or new) matched to his reader profile and the OKF wiki at ~/Projects/dima/wiki, and offers to capture the best ones into it.
+description: Use when Dima asks what to read, learn or follow on a topic — engineering blog posts, papers, talks, postmortems, newsletters, "lessons learned", "why did company X decide Y", industry best practices, news worth knowing, trending or "repo of the day" GitHub repositories, or "what don't I know that I don't know" about something he is working on. Finds a short, verified list of high-signal resources (old or new) matched to his reader profile and the OKF wiki at ~/Projects/dima/wiki, and offers to capture the best ones into it. Also use when Dima asks what a term means or asks for more detail or an explanation ("wdym", "what's X", "explain"), since that marks knowledge missing from the wiki.
 ---
 
 # Finding High-Value Reading
@@ -99,6 +99,24 @@ valuable, using the `okf` skill:
 - Or create a concept (`type: Practice`/`Concept`, or `Reference` for a reading
   note) under the matching area. Then regenerate `index.md`, add a `log.md` entry,
   and re-render the site. The `okf` skill covers each step.
+
+## Follow-up questions are capture signals
+
+When Dima asks what a term means, asks for more detail, or asks for an explanation of
+something ("wdym by X", "what's X", "explain Y", "that doesn't really explain it"),
+that is a signal: the topic matters to him and the wiki probably lacks it or covers it badly.
+Added at Dima's request on 2026-10-16.
+
+1. Answer the question first, in chat.
+2. Check the wiki for the topic (`grep -ril "<term>" ~/Projects/dima/wiki --include='*.md'`).
+3. If it is missing or thin, add it with the `okf` skill: a new concept under the
+   matching area, or a section in an existing one. Cite sources fetched in this
+   session, link related concepts, regenerate `index.md` and add a `log.md` entry.
+   Say in your reply which concepts you added or changed.
+4. If he says an explanation fell short ("that doesn't really explain it"), put the
+   better explanation into the concept, not only into the chat reply.
+
+Skip trivia that is clearly one-off (a CLI flag, a typo) and anything already covered well.
 
 ## Trending repositories
 

@@ -502,11 +502,13 @@ import importlib.metadata
 
 import fastapi
 
+import myapp
+
 app = fastapi.FastAPI()
 
 @app.get("/livez")
 def livez() -> dict:
-    return {"status": "ok", "version": importlib.metadata.version("myapp")}
+    return {"status": "ok", "version": importlib.metadata.version(myapp.__name__)}
 
 @app.get("/readyz")
 def readyz(response: fastapi.Response) -> dict:
@@ -808,13 +810,21 @@ from .tool_exposure import CodeModeConfig, SearchType, ToolExposureMode, ToolSea
 
 The version lives only in `pyproject.toml` (`[project] version`). Code that reports it, such
 as `/livez` or a telemetry resource attribute, reads it from the installed distribution's
-metadata at that spot:
+metadata at that spot, naming the distribution through the package object rather than a string:
 
 ```python
 import importlib.metadata
 
-version = importlib.metadata.version("myapp")  # the [project] name in pyproject.toml
+import myapp
+
+version = importlib.metadata.version(myapp.__name__)
 ```
+
+`importlib.metadata.version()` takes a distribution name and treats `-` and `_` alike, so the
+import name works when it matches the `[project] name` up to that difference (`my_app` finds
+`my-app`); keep them matching. Unlike a string literal, a renamed package then fails loudly at
+the import instead of reporting the wrong version. Importing the root package from one of its
+own modules is fine as long as the name is used at call time, not at import time.
 
 Do not define a `__version__` attribute in `__init__.py` by default. It is a library
 convention (the PEP that proposed it, PEP 396, was rejected), any consumer can ask
@@ -829,10 +839,13 @@ The metadata is written when the package is installed, so after changing the ver
 # Good — read where it is reported
 @app.get("/livez")
 def livez() -> dict:
-    return {"status": "ok", "version": importlib.metadata.version("myapp")}
+    return {"status": "ok", "version": importlib.metadata.version(myapp.__name__)}
 
 # Bad — a literal that drifts from pyproject.toml
 __version__ = "1.4.0"
+
+# Bad — the name as a string literal, which a rename leaves behind
+importlib.metadata.version("myapp")
 
 # Bad — an attribute nothing reads
 # myapp/__init__.py

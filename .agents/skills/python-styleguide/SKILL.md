@@ -498,15 +498,15 @@ Splitting the two lets an orchestrator restart a genuinely dead process (livenes
 pulling a slow-to-warm but healthy instance out of rotation (readiness).
 
 ```python
-import fastapi
+import importlib.metadata
 
-import myapp  # exposes myapp.__version__
+import fastapi
 
 app = fastapi.FastAPI()
 
 @app.get("/livez")
 def livez() -> dict:
-    return {"status": "ok", "version": myapp.__version__}
+    return {"status": "ok", "version": importlib.metadata.version("myapp")}
 
 @app.get("/readyz")
 def readyz(response: fastapi.Response) -> dict:
@@ -806,34 +806,37 @@ from .tool_exposure import CodeModeConfig, SearchType, ToolExposureMode, ToolSea
 
 ## Package version
 
-Declare the package version in the project root `__init__.py` by reading it from the
-installed distribution metadata rather than hardcoding a literal:
+The version lives only in `pyproject.toml` (`[project] version`). Code that reports it, such
+as `/livez` or a telemetry resource attribute, reads it from the installed distribution's
+metadata at that spot:
 
 ```python
 import importlib.metadata
 
-__version__ = importlib.metadata.version(__name__)
+version = importlib.metadata.version("myapp")  # the [project] name in pyproject.toml
 ```
 
-Inside the root `__init__.py`, `__name__` is already the package name, so passing it keeps
-a single source of truth (`pyproject.toml`) and stays correct if the package is renamed —
-no duplicated magic string. `importlib.metadata.version()` looks up a *distribution* name,
-so this only works when the distribution name equals the import name. Keep them identical:
-the `[project] name` in `pyproject.toml` must match the importable package name.
+Do not define a `__version__` attribute in `__init__.py` by default. It is a library
+convention (the PEP that proposed it, PEP 396, was rejected), any consumer can ask
+`importlib.metadata` itself, and in an app it is usually dead code. Add one only when several
+places in the package report the version, and then read it the same way. Never hardcode the
+version literal.
 
-```toml
-# pyproject.toml — distribution name matches the src/<package> import name
-[project]
-name = "myapp"      # -> importlib.metadata.version("myapp"), i.e. version(__name__)
-```
+The metadata is written when the package is installed, so after changing the version in
+`pyproject.toml`, re-run `uv sync` before the new value shows (editable installs too).
 
 ```python
-# Bad — hardcoded string drifts from pyproject and duplicates the name
-__version__ = importlib.metadata.version("myapp")
+# Good — read where it is reported
+@app.get("/livez")
+def livez() -> dict:
+    return {"status": "ok", "version": importlib.metadata.version("myapp")}
 
-# Bad — self-import to recover the name; __name__ already is it
-import myapp
-__version__ = importlib.metadata.version(myapp.__name__)
+# Bad — a literal that drifts from pyproject.toml
+__version__ = "1.4.0"
+
+# Bad — an attribute nothing reads
+# myapp/__init__.py
+__version__ = importlib.metadata.version(__name__)
 ```
 
 ## Python version

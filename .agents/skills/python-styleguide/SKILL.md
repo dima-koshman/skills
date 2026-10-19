@@ -505,10 +505,11 @@ import fastapi
 import myapp
 
 app = fastapi.FastAPI()
+version = importlib.metadata.version(myapp.__name__)
 
 @app.get("/livez")
 def livez() -> dict:
-    return {"status": "ok", "version": importlib.metadata.version(myapp.__name__)}
+    return {"status": "ok", "version": version}
 
 @app.get("/readyz")
 def readyz(response: fastapi.Response) -> dict:
@@ -810,7 +811,8 @@ from .tool_exposure import CodeModeConfig, SearchType, ToolExposureMode, ToolSea
 
 The version lives only in `pyproject.toml` (`[project] version`). Code that reports it, such
 as `/livez` or a telemetry resource attribute, reads it from the installed distribution's
-metadata at that spot, naming the distribution through the package object rather than a string:
+metadata where it is used, naming the distribution through the package object rather than a
+string:
 
 ```python
 import importlib.metadata
@@ -832,11 +834,26 @@ convention (the PEP that proposed it, PEP 396, was rejected), any consumer can a
 places in the package report the version, and then read it the same way. Never hardcode the
 version literal.
 
+Read it once, when the app or component is built, and reuse the value: each call scans the
+`sys.path` entries for the distribution and parses its `METADATA` file (~0.3 ms), so it does not
+belong in a per-request path. That one-time read is the only thing `__version__` offered.
+
 The metadata is written when the package is installed, so after changing the version in
 `pyproject.toml`, re-run `uv sync` before the new value shows (editable installs too).
 
 ```python
-# Good — read where it is reported
+# Good — read once where the app is built, reported by the handler
+def build_app() -> fastapi.FastAPI:
+    app = fastapi.FastAPI()
+    version = importlib.metadata.version(myapp.__name__)
+
+    @app.get("/livez")
+    def livez() -> dict:
+        return {"status": "ok", "version": version}
+
+    return app
+
+# Bad — the lookup repeated on every probe
 @app.get("/livez")
 def livez() -> dict:
     return {"status": "ok", "version": importlib.metadata.version(myapp.__name__)}

@@ -98,6 +98,16 @@
     "notebook.showCellStatusBar": "visibleAfterExecute",
     "prettier.tabWidth": 4,
     "prettier.trailingComma": "none",
+    // Pylance low-memory mode, against one 0.5-2.5 GB Pylance per window. It changes these defaults:
+    // - indexing: false - no index of installed packages and workspace files, so no auto-import
+    //   completions or add-import fixes for names not imported yet, and only open files in
+    //   workspace symbol search (Cmd+T).
+    // - useLibraryCodeForTypes: false - libraries without stubs or py.typed are no longer read
+    //   for types, so their objects show as Unknown in hovers and completions.
+    // - enablePytestSupport: false - no fixture types, completions or go-to-definition in tests.
+    // - exclude: ["**"] - overridden by python.analysis.exclude below, which is set explicitly.
+    // Any of these set explicitly here wins over the mode; "default" restores the normal mode.
+    "python.analysis.languageServerMode": "light",
     "python.analysis.exclude": [
         "**/.venv/**",
         "**/__pycache__/**",

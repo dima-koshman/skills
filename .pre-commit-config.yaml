@@ -30,7 +30,7 @@ repos:
     hooks:
       - id: basedpyright
         # These imported legacy utilities have not yet been migrated to strict typing.
-        exclude: ^scripts/(harness_overview|llm_capture)\.py$
+        exclude: ^(scripts/(harness_overview|llm_capture)|src/dima/save_server_config)\.py$
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.21.0

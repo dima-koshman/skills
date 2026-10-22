@@ -144,6 +144,7 @@
         "**/.forgejo/workflows/*.yml",
         "**/.forgejo/workflows/*.yaml"
     ],
+    "indentRainbow.ignoreErrorLanguages": ["markdown", "python"],
     "shfmt.executablePath": "/opt/homebrew/bin/shfmt",
     "pixi-code.pixiExecutable": "/Users/koshmandmitry/.pixi/bin/pixi"
 }

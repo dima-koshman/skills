@@ -2,6 +2,7 @@ import collections.abc
 import concurrent.futures
 import inspect
 import os
+import shlex
 import typing
 
 import consul  # pyright: ignore[reportMissingTypeStubs]
@@ -194,3 +195,87 @@ class _ConsulKv(typing.Protocol):
 
 class _ConsulClient(typing.Protocol):
     kv: _ConsulKv
+
+
+def build_secret_mappings(
+    enter_enriched_environ_from_secret_store,
+    SecretMapping: type[pydantic.BaseModel],
+    Config: type[pydantic.BaseModel],
+    secret_env_var_path_values: dict[str, str | None],
+):
+    """Build the config's secret mappings, verifying each one is readable from Vault.
+
+    Maps every config field path to the Vault field of the same (prefixed) name under this
+    app's secret, then reads them all back to prove the deployment will find them. If that
+    fails, the values passed here are the ones that belong in Vault, so the raised error
+    carries a ready ``vault`` CLI command an operator can copy and run to store them.
+    """
+    env_var_prefix = Config.model_config["env_prefix"]
+    secret_mappings = [
+        {
+            "mount_point": "secret",
+            "key": f"apollo/{CONSUL_CONFIG_LOADER_APP}",
+            "payload_field": f"{env_var_prefix}{secret_env_var_path}",
+            "env_var": f"{env_var_prefix}{secret_env_var_path}",
+        }
+        for secret_env_var_path in secret_env_var_path_values
+    ]
+    try:
+        with enter_enriched_environ_from_secret_store(
+            [SecretMapping(**secret_mapping) for secret_mapping in secret_mappings]
+        ):
+            pass
+    except Exception as error:
+        command = build_vault_write_command(secret_env_var_path_values)
+        raise RuntimeError(
+            f"{error}\n\nStore these secrets in Vault by running:\n\n{command}\n"
+        ) from error
+
+    return secret_mappings
+
+
+def build_vault_write_command(
+    Config: type[pydantic.BaseModel], secret_env_var_path_values: dict[str, str | None]
+) -> str:
+    """Build a copy-pasteable ``vault`` CLI command that stores every mapped secret.
+
+    Writes every mapping rather than only the ones that failed to read: the write is
+    idempotent, so re-storing a value Vault already holds leaves the same value there, and
+    it keeps this independent of how the read failure was reported.
+
+    A field with no value in this process is named in a comment instead of being written,
+    so running the command unedited cannot overwrite a healthy Vault field with a
+    placeholder.
+
+    Uses ``kv patch``, never ``kv put``: the secret is shared and may hold fields belonging
+    to other apps, which ``put`` would delete since it replaces the whole payload. The
+    trade-off is that patch fails when the secret does not exist yet, which someone has to
+    create by hand.
+    """
+    env_var_prefix = Config.model_config["env_prefix"]
+    values_by_field = {
+        f"{env_var_prefix}{secret_env_var_path}": value
+        for secret_env_var_path, value in secret_env_var_path_values.items()
+    }
+    lines = []
+    if vault_url := os.environ.get("VAULT_URL"):
+        lines.append(f"export VAULT_ADDR={shlex.quote(vault_url)}")
+
+    lines.append("# vault login  # skip if VAULT_TOKEN is already set")
+    lines.extend(
+        f"# No value available for {field}; add it to the command by hand."
+        for field, value in values_by_field.items()
+        if not value
+    )
+    arguments = " \\\n    ".join(
+        shlex.quote(f"{field}={value}")
+        for field, value in values_by_field.items()
+        if value
+    )
+    if arguments:
+        lines.append(
+            f"vault kv patch -mount=secret {shlex.quote(f'apollo/{CONSUL_CONFIG_LOADER_APP}')} \\\n"
+            f"    {arguments}"
+        )
+
+    return "\n".join(lines)

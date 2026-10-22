@@ -1,15 +1,18 @@
 # Runpod GPU workspace
 
 Run **Tasks: Run Task → Runpod: GPU workspace** from the Command Palette.
-The task creates an RTX 4090 Pod in the network volume's data center, checks
-CUDA and PyTorch inside the container, starts VS Code Remote Tunnels, then opens
-`/workspace` in a new desktop VS Code window. No SSH access or public port is
-needed. A saved Pod from an interrupted tunnel session can be reused.
+Choose **VS Code Remote Tunnels** (default) or **Direct SSH** in the connection
+picker. The task creates an RTX 4090 Pod in the network volume's data center,
+checks CUDA and PyTorch, then opens `/workspace` in a new desktop VS Code window
+using the selected method. A saved Pod from an interrupted session can be reused
+with the same connection method. Tunnels need no direct SSH access or public port;
+SSH requires a network that permits the Pod's assigned TCP port.
 
-Requirements: Python 3.11+, `runpodctl`, the `code` CLI on PATH, and Microsoft's
-**Remote - Tunnels** extension (`ms-vscode.remote-server`) in local VS Code.
-The extension is already installed on this host. Both ends need outbound access
-to Microsoft's tunnel service; corporate policy can still restrict this traffic.
+Requirements: Python 3.11+, `runpodctl`, and the `code` CLI on PATH. Install the
+local VS Code extension for the selected method: **Remote - Tunnels**
+(`ms-vscode.remote-server`) or **Remote - SSH** (`ms-vscode-remote.remote-ssh`).
+For tunnels, both ends need outbound access to Microsoft's tunnel service;
+corporate policy can still restrict this traffic.
 
 On first use, follow the GitHub device sign-in URL and code printed in the task
 terminal. Use the same GitHub account in VS Code's **Remote Tunnels: Connect to
@@ -44,10 +47,11 @@ The script reads `RUNPOD_API_KEY` from
 runs the CLI outside the project so a project `.env` cannot select an unintended
 account. API response bodies and credentials are not printed.
 
-Run `python3 scripts/runpod_dev.py --help` for options. The task passes
-`--connection tunnel`; direct script calls retain `--connection ssh` as the default.
-SSH mode registers the selected public key, updates the `runpod-devbox` alias,
-and requires Microsoft's Remote - SSH extension. Use a network that permits SSH.
+Run `python3 scripts/runpod_dev.py --help` for options. The task passes the picker
+value to `--connection`; direct script calls retain `--connection ssh` as the default.
+SSH mode uses the task's existing key `~/.runpod/ssh/RunPod-Key-Go`, registers its
+public key, updates the `runpod-devbox` alias, and requires Microsoft's
+Remote - SSH extension. Use a network that permits SSH.
 Explicit `--adopt-pod-id` is supported for SSH mode and authorizes deleting that
 Pod when the task ends; volume and GPU must match. Tunnel mode creates its own
 Pod with the startup bootstrap. Clean up a saved SSH session before switching

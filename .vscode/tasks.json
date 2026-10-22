@@ -11,13 +11,14 @@
     "tasks": [
         {
             "label": "Runpod: GPU workspace",
-            "detail": "Create an RTX 4090 Pod, verify CUDA, and open /workspace via VS Code Remote Tunnels (no SSH needed). Complete GitHub device sign-in printed in this terminal on first use. Keep this task running: Ctrl+C or task termination deletes the Pod and retains the 10 GB network volume and VS Code login. Retry failed cleanup with Runpod: cleanup GPU workspace.",
+            "detail": "Choose VS Code Remote Tunnels (default) or direct SSH, create an RTX 4090 Pod, verify CUDA, and open /workspace. Tunnels may require GitHub sign-in; SSH requires a network that permits it. Keep this task running: Ctrl+C or task termination deletes the Pod and retains the 10 GB network volume and saved login. Retry failed cleanup with Runpod: cleanup GPU workspace.",
             "type": "process",
             "command": "python3",
             "args": [
                 "${userHome}/Projects/dima/scripts/runpod_dev.py",
                 "--volume-id", "gpe8lh1zzb",
-                "--connection", "tunnel",
+                "--connection", "${input:runpodConnection}",
+                "--ssh-key", "${userHome}/.runpod/ssh/RunPod-Key-Go",
                 "--ready-timeout", "900"
             ],
             "runOptions": { "instanceLimit": 1 },
@@ -420,6 +421,22 @@
         }
     ],
     "inputs": [
+        {
+            "id": "runpodConnection",
+            "type": "pickString",
+            "description": "How should VS Code connect to the Runpod GPU workspace?",
+            "options": [
+                {
+                    "label": "VS Code Remote Tunnels",
+                    "value": "tunnel"
+                },
+                {
+                    "label": "Direct SSH",
+                    "value": "ssh"
+                }
+            ],
+            "default": "tunnel"
+        },
         {
             "id": "wikiBundle",
             "type": "pickString",

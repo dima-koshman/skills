@@ -1,8 +1,7 @@
 ---
 type: Knowledge Area
 title: AI Compute
-description: How AI workloads run on hardware — GPU and NPU programming models, what limits a model's speed, the
-  compiler stack underneath, the CUDA ecosystem, and Modular's Mojo and MAX.
+description: How AI workloads run on hardware — inference and serving techniques, GPU and NPU programming models, performance limits, compilers, CUDA, Mojo and MAX.
 tags:
 - ai-engineering
 - compute
@@ -15,6 +14,7 @@ topics:
 - /ai-engineering/compute/cuda.md
 - /ai-engineering/compute/mojo.md
 - /ai-engineering/compute/max.md
+- /ai-engineering/compute/serving.md
 sources:
 - id: modular-blog
   resource: https://www.modular.com/blog
@@ -26,8 +26,8 @@ sources:
   resource: https://puzzles.modular.com/
   title: Mojo GPU Puzzles
 generated:
-  by: claude-code/claude-opus-5-5
-  at: '2026-10-16T16:00:00+04:00'
+  by: codex/gpt-6
+  at: '2026-10-22T13:46:52+04:00'
 ---
 
 The layer under the model: how its math becomes instructions on a GPU or another accelerator, and why
@@ -47,6 +47,8 @@ the software for that layer looks the way it does. Started 2026-10-16 while lear
 - [Mojo](/ai-engineering/compute/mojo.md) — Modular's Python-like systems language for CPUs, GPUs and other
   accelerators.
 - [MAX](/ai-engineering/compute/max.md) — Modular's serving and modeling framework built on Mojo kernels.
+- [LLM Inference and Serving](/ai-engineering/compute/serving.md) — inference phases, KV memory,
+  batching, attention kernels, quantization, disaggregation and GPU parallelism.
 
 ## Learning path
 

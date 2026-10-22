@@ -28,7 +28,7 @@ related:
 - /ai-engineering/agents/antigravity.md
 - /ai-engineering/harness.md
 - /ai-engineering/harness/subagents.md
-- /ai-engineering/harness/workflows.md
+- /ai-engineering/harness/programmatic-tool-calling.md
 - /ai-engineering/harness/sandboxes.md
 - /ai-engineering/harness/model-routing.md
 - /ai-engineering/compute.md
@@ -95,7 +95,7 @@ topics:
   [Codex](/ai-engineering/agents/codex.md), [Devin](/ai-engineering/agents/devin.md), and
   [Antigravity](/ai-engineering/agents/antigravity.md).
 - **Harness** — the machinery that runs them: the [harness](/ai-engineering/harness.md),
-  [subagents](/ai-engineering/harness/subagents.md), [workflows](/ai-engineering/harness/workflows.md),
+  [subagents](/ai-engineering/harness/subagents.md), [programmatic tool calling](/ai-engineering/harness/programmatic-tool-calling.md),
   [sandboxes](/ai-engineering/harness/sandboxes.md), and [model routing](/ai-engineering/harness/model-routing.md).
 - **Compute** — what runs underneath: [AI compute](/ai-engineering/compute.md), from
   [GPU performance regimes](/ai-engineering/compute/performance-regimes.md) and

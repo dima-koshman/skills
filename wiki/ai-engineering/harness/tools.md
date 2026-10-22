@@ -8,7 +8,7 @@ tags:
 - harness
 parent: /ai-engineering/harness.md
 related:
-- /ai-engineering/harness/workflows.md
+- /ai-engineering/harness/programmatic-tool-calling.md
 - /ai-engineering/harness/subagents.md
 - /ai-engineering/context/mcp.md
 - /ai-engineering/harness/frontend-tools.md
@@ -30,7 +30,7 @@ with the environment, fetch new context to condition their output on, and perfor
 complex tasks. They are like control statements in programming languages.
 Additionally, tools are generic and can be used for almost any use case — ranging
 from direct actions like querying a database to meta operations like
-[workflow](/ai-engineering/harness/workflows.md) orchestration or recursive
+[programmatic tool calling](/ai-engineering/harness/programmatic-tool-calling.md) or recursive
 [subagent](/ai-engineering/harness/subagents.md) calling. Tools are exposed to models through
 provider APIs and protocols like [MCP](/ai-engineering/context/mcp.md).
 

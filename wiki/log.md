@@ -1,5 +1,14 @@
 # Knowledge history
 
+## 2026-10-22
+
+- **Creation**: Added [Dynamic Subagents](/ai-engineering/harness/dynamic-subagents.md) as the code-orchestrated subagent subtype of [PTC](/ai-engineering/harness/programmatic-tool-calling.md), with aliases, cost comparisons and the existing harness-support evidence moved into the dedicated page. Clarified that code mode is generic PTC and that dynamically spawning a worker need not involve generated code.
+- **Creation**: Added [LLM Inference and Serving](/ai-engineering/compute/serving.md) with 21 linked concept pages: inference phases and metrics; KV caching, paging, prefix reuse and offloading; continuous batching, chunked prefill and phase disaggregation; speculative decoding, quantization, FlashAttention, GQA/MQA, CUDA graphs and kernel fusion; five GPU parallelism strategies and cache-aware routing. Used the Modular handbook for orientation and original papers/current engine documentation for mechanisms and trade-offs. Linked the existing MAX and Prompt Caching notes and removed the latter's blanket cold-subagent-cache claim.
+
+- **Update**: Distinguished programmatic subagent orchestration from generic PTC in [Programmatic Tool Calling](/ai-engineering/harness/programmatic-tool-calling.md), with current Claude Code, Codex and OpenCode V2 support boundaries. Corrected [Subagents](/ai-engineering/harness/subagents.md): scripting can save coordinator work without saving total worker tokens, and new worker threads are not necessarily cold prompt caches.
+- **Update**: Expanded the concept formerly titled Workflows with code mode, programmatic tool calling, CodeAct and code-agent terminology. Compared Claude Code's subagent orchestration with FastMCP's MCP tool orchestration, separated progressive discovery from code execution, and added verified primary sources. See [Programmatic Tool Calling](/ai-engineering/harness/programmatic-tool-calling.md).
+- **Update**: Renamed Workflows to [Programmatic Tool Calling](/ai-engineering/harness/programmatic-tool-calling.md) at Dima's request and updated incoming links. Distinguished PTC from fixed workflows and durable execution; added product adoption evidence, workload trade-offs, and an explicitly qualified assessment of how improving models affect its value.
+
 ## 2026-10-16
 
 - **Update**: Added a Running it locally section to [Service Mesh](/software-engineering/infrastructure/service-mesh.md): Istio ambient mode on OrbStack Kubernetes, with OrbStack's CNI path flags and the waypoint needed for L7 policy.

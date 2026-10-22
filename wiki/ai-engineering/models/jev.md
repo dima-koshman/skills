@@ -9,7 +9,7 @@ tags:
 - models
 parent: /ai-engineering/models.md
 related:
-- /ai-engineering/harness/workflows.md
+- /ai-engineering/harness/programmatic-tool-calling.md
 - /ai-engineering/harness.md
 - /ai-engineering/observability/langsmith-evals.md
 - /ai-engineering/models/clm.md
@@ -61,7 +61,7 @@ Reinforcement Learning for Calibrated Decisions (RLCD).
 Questions in a request are evaluated independently against the same state.
 Decompose a compound judgment into atomic questions and combine the results in
 code. Useful applications include intent and tool routing, candidate selection,
-and confidence-gated automation in a [workflow](/ai-engineering/harness/workflows.md).
+and confidence-gated automation in a workflow.
 An [agent harness](/ai-engineering/harness.md) can use a decision model for frequent,
 bounded choices while using a generative model for proposing candidates or
 extended reasoning.

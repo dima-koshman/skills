@@ -11,7 +11,7 @@ related:
 - /ai-engineering/agents/agent.md
 - /ai-engineering/harness/subagents.md
 - /ai-engineering/context/memory.md
-- /ai-engineering/harness/workflows.md
+- /ai-engineering/harness/programmatic-tool-calling.md
 - /ai-engineering/harness.md
 - /ai-engineering/models/scaledown.md
 implements: /ai-engineering/agents/agent.md
@@ -30,7 +30,7 @@ generated:
 
 Reference: <https://docs.langchain.com/oss/python/deepagents/overview>
 
-Deep Agents is the LangChain library that packages production [agent](/ai-engineering/agents/agent.md) patterns — planning, [subagents](/ai-engineering/harness/subagents.md), durable [memory](/ai-engineering/context/memory.md), human-in-the-loop, and [workflows](/ai-engineering/harness/workflows.md) — on top of LangGraph, which serves as its [harness](/ai-engineering/harness.md).
+Deep Agents is the LangChain library that packages production [agent](/ai-engineering/agents/agent.md) patterns — planning, [subagents](/ai-engineering/harness/subagents.md), durable [memory](/ai-engineering/context/memory.md), human-in-the-loop, and [programmatic tool calling](/ai-engineering/harness/programmatic-tool-calling.md) — on top of LangGraph, which serves as its [harness](/ai-engineering/harness.md).
 
 Middleware can hand Deep Agents' frequent context chores to small models. For
 example, [ScaleDown](/ai-engineering/models/scaledown.md) replaces the built-in

@@ -10,6 +10,33 @@
     "problemMatcher": [],
     "tasks": [
         {
+            "label": "Runpod: GPU workspace",
+            "detail": "Create an RTX 4090 Pod, verify CUDA, and open /workspace via VS Code Remote Tunnels (no SSH needed). Complete GitHub device sign-in printed in this terminal on first use. Keep this task running: Ctrl+C or task termination deletes the Pod and retains the 10 GB network volume and VS Code login. Retry failed cleanup with Runpod: cleanup GPU workspace.",
+            "type": "process",
+            "command": "python3",
+            "args": [
+                "${userHome}/Projects/dima/scripts/runpod_dev.py",
+                "--volume-id", "gpe8lh1zzb",
+                "--connection", "tunnel",
+                "--ready-timeout", "900"
+            ],
+            "runOptions": { "instanceLimit": 1 },
+            "presentation": { "reveal": "always", "focus": true, "panel": "dedicated" }
+        },
+        {
+            "label": "Runpod: cleanup GPU workspace",
+            "detail": "Recover after an interrupted GPU task: delete only its recorded Pod (or the explicitly adopted development Pod) and retain the network volume. Refuses to run while a workspace task still owns the session.",
+            "type": "process",
+            "command": "python3",
+            "args": [
+                "${userHome}/Projects/dima/scripts/runpod_dev.py",
+                "--volume-id", "gpe8lh1zzb",
+                "--cleanup"
+            ],
+            "runOptions": { "instanceLimit": 1 },
+            "presentation": { "reveal": "always", "focus": true, "panel": "dedicated" }
+        },
+        {
             "label": "Harnesses: build overview and open",
             "detail": "Build the generic Claude Code, Codex, OpenCode and Antigravity harness overview. Global scope shows host configuration; project scope inspects the active workspace. Output is written to this project's dev/harness-overview/ and opened in the browser. The collector may take about 25 seconds.",
             "command": "uv run --no-project --with tiktoken python \"$HOME/Projects/dima/scripts/harness_overview.py\" --scope ${input:overviewScope} --project \"${workspaceFolder}\" --open"
@@ -20,7 +47,7 @@
         },
         {
             "label": "Setup: full sync this project to host",
-            "detail": "Run the full local-setup sequence for a host: update package managers, publish local skills, link scripts/IDE and Claude skills, refresh and install remote skills, sync OpenCode, Antigravity and VSCode configs, install OpenWiki agent integrations, install the daily update LaunchAgent, and install pre-commit. Skips 'Sync: Claude settings globally' (it replaces the file wholesale). Prompts once for skill scope and once for sync-confirm — type 'yes' at the sync prompt or the Sync tasks stay dry-run. Stops if any step exits non-zero (most likely 'Setup: link scripts and IDE' when no editor bundle is found).",
+            "detail": "Run the full local-setup sequence for a host: update package managers, publish local skills, link scripts/IDE and Claude skills, refresh and install remote skills, sync OpenCode, Antigravity and VSCode configs, install OpenWiki agent integrations, install the daily update LaunchAgent, install pre-commit, then open the interactive Codex import step. Skips 'Sync: Claude settings globally' (it replaces the file wholesale). Prompts once for skill scope and once for sync-confirm — type 'yes' at the sync prompt to apply file copies. The final Codex step has its own interactive review: type /import, choose Claude Code and the desired settings/MCP configuration, then /quit when finished. It is not controlled by sync-confirm and does not enable continuous sync. Stops if any step exits non-zero.",
             "dependsOrder": "sequence",
             "dependsOn": [
                 "Setup: update and upgrade Homebrew, npm",
@@ -134,6 +161,11 @@
             "command": "npx --yes skills add langfuse/skills --skill langfuse --agent opencode --agent claude-code ${input:skillScope} --yes"
         },
         {
+            "label": "Skills: install remote (runpod)",
+            "detail": "Install the upstream logfire skills from runpod/runpod-plugins-official.",
+            "command": "npx --yes skills add runpod/runpod-plugins-official --skill '*' --agent claude-code --agent opencode ${input:skillScope} --yes"
+        },
+        {
             "label": "Langfuse: generate auth header",
             "detail": "Base64 Basic-auth header from LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY, for the LANGFUSE_AUTH_HEADER var consumed by the Langfuse docs MCP server in .mcp.json. https://langfuse.com/docs/api-and-data-platform/features/mcp-server#set-up",
             "command": "echo -n '${env:LANGFUSE_PUBLIC_KEY}:${env:LANGFUSE_SECRET_KEY}' | base64"
@@ -167,8 +199,23 @@
         },
         {
             "label": "Sync: Antigravity config globally",
-            "detail": "Copy this project's .gemini/config/skills.json to ~/.gemini/config/skills.json. Shows a diff unless you type 'yes'. agy reads global skills only from its own config dir, not ~/.agents/skills/, so this file registers ~/.agents/skills/ as an extra skill root and every globally published skill reaches agy. The path must be absolute: agy expands neither ~ nor a relative path there.",
-            "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.gemini/config/skills.json\" \"$HOME/.gemini/config/skills.json\""
+            "detail": "Copy this project's .gemini/config/skills.json, .gemini/config/hooks.json and .gemini/antigravity-cli/settings.json to ~/.gemini/. Shows a diff unless you type 'yes'. agy reads global skills only from its own config dir, not ~/.agents/skills/, so skills.json registers ~/.agents/skills/ as an extra skill root (must be an absolute path: agy expands neither ~ nor a relative path there); hooks.json configures macOS desktop notifications on turn stop and ask_question; settings.json configures the agy CLI's default agentMode, notifications and permissions (replaces ~/.gemini/antigravity-cli/settings.json wholesale, so read the diff before confirming).",
+            "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.gemini/config/skills.json\" \"$HOME/.gemini/config/skills.json\" \"${workspaceFolder}/.gemini/config/hooks.json\" \"$HOME/.gemini/config/hooks.json\" \"${workspaceFolder}/.gemini/antigravity-cli/settings.json\" \"$HOME/.gemini/antigravity-cli/settings.json\""
+        },
+        {
+            "label": "Sync: import Claude setup into Codex (interactive)",
+            "detail": "Open a local Codex CLI in this workspace. Type /import, choose Claude Code, and select/review the desired setup and MCP configuration; type /quit when finished so the task completes. Re-run after Claude configuration changes; this is an interactive import, not continuous sync. --no-daemon keeps the picker available on CLI versions that require a standalone local session. Do not pass /import as a CLI argument: it is sent as a chat prompt instead of executing the slash command.",
+            "command": "codex",
+            "args": ["--no-daemon"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            }
         },
         {
             "label": "Sync: Claude settings globally",
@@ -316,10 +363,7 @@
             "label": "Wiki: regenerate, render and open",
             "detail": "Choose wiki/ (maintained source, default) or openwiki/ (generated experiment), then regenerate its index, render it, and open the reader in sequence.",
             "dependsOrder": "sequence",
-            "dependsOn": [
-                "Wiki: regenerate index",
-                "Wiki: render and open"
-            ]
+            "dependsOn": ["Wiki: regenerate index", "Wiki: render and open"]
         },
         {
             "label": "OpenWiki: visualize",

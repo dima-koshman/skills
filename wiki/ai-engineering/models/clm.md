@@ -10,7 +10,7 @@ tags:
 parent: /ai-engineering/models.md
 related:
 - /ai-engineering/models/jev.md
-- /ai-engineering/harness/workflows.md
+- /ai-engineering/harness/programmatic-tool-calling.md
 decision_interface:
 - Choice
 - Score
@@ -63,7 +63,7 @@ does not provide the 8B encoder.
 The HTTP service exposes TypeSafe-compatible `Choice`, `Score`, and `Noul`
 questions through `POST /v1/systemone`, plus candidate ranking through
 `POST /v1/rank`. This makes it a candidate backend for the same bounded
-[workflows](/ai-engineering/harness/workflows.md), subject to checking response semantics,
+workflows, subject to checking response semantics,
 limits, and calibration rather than assuming identical behavior.
 
 The documented serving path runs Qwen3-8B with vLLM's pooling runner and

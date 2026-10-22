@@ -1,0 +1,11 @@
+{
+  "agentMode": "auto",
+  "notifications": true,
+  "permissions": {
+    "allow": [
+      "mcp(*)"
+    ],
+    "ask": [],
+    "deny": []
+  }
+}

@@ -14,6 +14,7 @@ related:
 - /ai-engineering/compute/npu.md
 - /ai-engineering/compute/cuda.md
 - /ai-engineering/enterprise/llm-gateway.md
+- /ai-engineering/compute/serving.md
 sources:
 - id: max-intro
   resource: https://max.modular.com/intro
@@ -30,8 +31,8 @@ sources:
   author: Modular
   last_modified: '2026-08-18T00:00:00Z'
 generated:
-  by: claude-code/claude-opus-5-5
-  at: '2026-10-16T16:00:00+04:00'
+  by: codex/gpt-6
+  at: '2026-10-22T13:46:52+04:00'
 ---
 
 MAX is where [Mojo](/ai-engineering/compute/mojo.md) kernels turn into a product: a framework for serving and
@@ -56,6 +57,10 @@ optimization.[^modular-qualcomm-npu] So "same code" holds at the model and API l
 kernels. See [NPU](/ai-engineering/compute/npu.md).
 
 ## Relation to an LLM gateway
+
+The techniques used inside serving engines are mapped in
+[LLM Inference and Serving](/ai-engineering/compute/serving.md), including KV-cache
+management, batching, quantization and parallelism.
 
 MAX is an inference server, like vLLM: it sits behind an [LLM gateway](/ai-engineering/enterprise/llm-gateway.md)
 as one more OpenAI-compatible upstream, not in place of it.

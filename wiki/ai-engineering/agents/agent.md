@@ -9,7 +9,7 @@ tags:
 parent: /ai-engineering/agents.md
 related:
 - /ai-engineering/harness/tools.md
-- /ai-engineering/harness/workflows.md
+- /ai-engineering/harness/programmatic-tool-calling.md
 - /ai-engineering/context/memory.md
 - /ai-engineering/harness/subagents.md
 - /ai-engineering/harness.md
@@ -30,7 +30,7 @@ with tools**: the model picks the next action, calls a [tool](/ai-engineering/ha
 observes the result, and repeats until the task is done. What distinguishes an
 agent from a fixed pipeline is that the *model* — not hard-coded logic — directs
 the control flow; when the flow can be fixed instead, a
-[workflow](/ai-engineering/harness/workflows.md) is the leaner option. The recurring ingredients
+fixed workflow is the leaner option. The recurring ingredients
 are the loop, planning (decomposing a goal into steps), tool use,
 [memory](/ai-engineering/context/memory.md) (carrying context across steps), and often
 [subagents](/ai-engineering/harness/subagents.md) for delegating focused subtasks. The loop is

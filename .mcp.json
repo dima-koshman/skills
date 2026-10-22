@@ -27,6 +27,10 @@
             "type": "stdio",
             "command": "npx",
             "args": ["-y", "@playwright/mcp@latest"]
+        },
+        "runpod": {
+            "type": "http",
+            "url": "https://mcp.runpod.io/"
         }
     }
 }

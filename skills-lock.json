@@ -2,42 +2,138 @@
   "version": 1,
   "skills": {
     "brainstorming": {
-      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "source": "../../../dima/Projects/dima/.agents/skills",
       "sourceType": "local",
       "computedHash": "253570c46990ea018dd4520dba80cd77c35f9e5a8654057da1812face7be30cd"
     },
+    "companion-clis": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/companion-clis/SKILL.md",
+      "computedHash": "500035f71e9072401b0677354bc3a87ab2c8bd4ef40b5af1e3475e0f986d330c"
+    },
+    "cost-audit": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/cost-audit/SKILL.md",
+      "computedHash": "e5e49b53924d45ccc3c723e52f668ad7dde2ce9306815416f49963684c5d8bef"
+    },
     "development-best-practices": {
-      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "source": "../../../dima/Projects/dima/.agents/skills",
       "sourceType": "local",
       "computedHash": "ed9b8fc31b50f24dd2be46ebceed728ccd320101c5f3f02cd0884af0129ab936"
     },
+    "discovery": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/discovery/SKILL.md",
+      "computedHash": "34454d5f5b8817b652b8eb3437961362442c4e5c0ee5fe6fe055e9b0db43f311"
+    },
+    "endpoint-ops": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/endpoint-ops/SKILL.md",
+      "computedHash": "43e48bfcf3b33ad457c0db75123b23e1f4efd44aa8e1a9574a8a1f5ff0db6f5b"
+    },
+    "flash": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/flash/SKILL.md",
+      "computedHash": "d201e68ad618c5c22eb2884f138bcb3a4a5349989c2edf4ef00786052e437871"
+    },
+    "lifecycle-crud": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/lifecycle-crud/SKILL.md",
+      "computedHash": "94aa60974eac5562908c5ba906ecbe6ac9e54338826c9131f875a225424f3b2c"
+    },
     "macos-disk-cleanup": {
-      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "source": "../../../dima/Projects/dima/.agents/skills",
       "sourceType": "local",
       "computedHash": "61023a8662c5dd8ce77368f3f9d3771e2fa4ffb520352d87b6e2483081a2aa44"
     },
+    "pod-deploy": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/pod-deploy/SKILL.md",
+      "computedHash": "6cf3f4c6cca15e448247514ca09ec4d8d22bacd2bbe6362283a4bd291afa7a67"
+    },
+    "pod-doctor": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/pod-doctor/SKILL.md",
+      "computedHash": "e27a0f96f81ed1160f2f9be0b067190160865941ef59860f6a5691052af44420"
+    },
     "portfolio": {
-      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "source": "../../../dima/Projects/dima/.agents/skills",
       "sourceType": "local",
       "computedHash": "83e1c682a8916cd781aab6192b71532698368c13bd0790d653a5c28fb36475cf"
     },
     "python-styleguide": {
-      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "source": "../../../dima/Projects/dima/.agents/skills",
       "sourceType": "local",
       "computedHash": "4435b1d4c20596c2118241f0ac73558b98bd7d9054602478efbc9bcac663a470"
     },
+    "runpod": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/runpod/SKILL.md",
+      "computedHash": "0e8c091df210ccbfc9ff37a15e74c686395a90990c9f6ef4450687ce1120d55c"
+    },
+    "runpod-build-template": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/runpod-build-template/SKILL.md",
+      "computedHash": "d701b76f0ebce6d82a87bc76b3cc83a4a655655460f7ba38c8de3e71876aa441"
+    },
+    "runpod-mcp": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/runpod-mcp/SKILL.md",
+      "computedHash": "173970959ed0205b8e4cbbb01871b3ee60e2d034c22b6b72e6bbd38f0db75b89"
+    },
+    "runpod-migrate": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/runpod-migrate/SKILL.md",
+      "computedHash": "8dfd3871e47aa2079339e7f8baa6edc3c305bac19eb2a60a54ecb8693ed8b2a3"
+    },
+    "runpod-templates": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/runpod-templates/SKILL.md",
+      "computedHash": "ed45ee667fe3376392034f31bf98eb3b32189acdaf5ad3802bce1b415fb804ec"
+    },
+    "runpod-usage": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/runpod-usage/SKILL.md",
+      "computedHash": "e9c36ca60a1b3554cc64581d53d882ca8d09cc002582005bd0bfbcb1a75a7e12"
+    },
+    "runpodctl": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/runpodctl/SKILL.md",
+      "computedHash": "9029b244fb7e9526463d43668c53c22d261188be500b9196e9807dc2b08c8d5d"
+    },
+    "serverless-deploy": {
+      "source": "runpod/runpod-plugins-official",
+      "sourceType": "github",
+      "skillPath": "plugins/runpod/skills/serverless-deploy/SKILL.md",
+      "computedHash": "37f684a845b2655f5efcaf4ddcdf00f6d274fe8f3e6d9c4d776f285cdf7c45c8"
+    },
     "skill-creator": {
-      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "source": "../../../dima/Projects/dima/.agents/skills",
       "sourceType": "local",
       "computedHash": "5ea13a6d9f0d4bb694405d79acd00cadec0d21bb138c4dd10fcf3c500cb835c2"
     },
     "systematic-debugging": {
-      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "source": "../../../dima/Projects/dima/.agents/skills",
       "sourceType": "local",
       "computedHash": "792a368e074981d7e3138edb439e138489b2ac247cd1e5739fab52af680fb17b"
     },
     "writing-plans": {
-      "source": "/Users/dima/Projects/dima/.agents/skills",
+      "source": "../../../dima/Projects/dima/.agents/skills",
       "sourceType": "local",
       "computedHash": "b73b59d43c34c3fc225bfae419c458bb216af80df25fc0c545dfa7fd2a161722"
     }

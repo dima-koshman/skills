@@ -10,6 +10,8 @@ parent: /ai-engineering/harness.md
 related:
 - /ai-engineering/agents/peer-agents.md
 - /ai-engineering/context/prompt-caching.md
+- /ai-engineering/harness/programmatic-tool-calling.md
+- /ai-engineering/harness/dynamic-subagents.md
 - /ai-engineering/security/risks/insecure-inter-agent-communication.md
 sources:
 - id: ref-1
@@ -18,9 +20,15 @@ sources:
 - id: ref-2
   resource: https://claude.com/blog/lessons-from-building-claude-code-prompt-caching-is-everything
   title: claude.com/blog
+- id: claude-workflows
+  resource: https://code.claude.com/docs/en/workflows
+  title: Claude Code dynamic workflows
+- id: codex-subagents
+  resource: https://learn.chatgpt.com/docs/agent-configuration/subagents
+  title: Subagents
 generated:
-  by: antigravity/gemini-3-8-flash
-  at: '2026-10-15T17:36:00+04:00'
+  by: codex/gpt-6
+  at: '2026-10-22T13:46:52+04:00'
 ---
 
 Reference: <https://docs.langchain.com/oss/python/deepagents/subagents>
@@ -43,13 +51,32 @@ Subagents are not a universal organizational pattern; they introduce significant
 
 ## Parallelization and cost
 
-Running subagents in parallel is powerful for wall-clock throughput — such as executing multiple test runs, surveying different sections of a codebase, or testing independent hypotheses concurrently. However, parallelization is inherently expensive: token consumption multiplies linearly with each concurrently active subagent stream, rapidly burning through rate limits and budget.
+Running subagents in parallel can improve wall-clock throughput, but each worker
+still performs model and tool work. Cost depends on total worker effort, repeated
+context, models, caching, and coordination; concurrency alone does not determine
+total tokens. Codex documents greater token use than comparable single-agent
+runs.[^codex-subagents]
+
+[Dynamic Subagents](/ai-engineering/harness/dynamic-subagents.md), also called
+**programmatic subagent orchestration**, is the use of
+[PTC](/ai-engineering/harness/programmatic-tool-calling.md) to control these workers
+from code. It can reduce coordinator overhead for the same set of workers while
+still costing more overall than a single-agent solution. Separate worker contexts
+already exist with ordinary delegation; scripting additionally keeps dispatch
+logic and intermediate worker results outside the parent's model context.[^claude-workflows]
 
 ## Prompt caching and the context handoff trap
 
 The interaction between [prompt caching](/ai-engineering/context/prompt-caching.md) and agent contexts introduces an unintuitive cost dynamic:
 
-- In a long-running session, the parent agent's large context (often 50k–100k+ tokens) is warm in the model's cache. Subsequent turns in the main process hit this cached prefix, paying heavily discounted cache-read rates (~0.1× base input cost).
-- Spawning a subagent creates a new conversation thread with a **cold prompt cache**. Even if the subagent operates with a smaller context, initializing that context incurs full uncached input or cache-write fees.
-- If a task attempts to save money by routing work to a subagent on a smaller model (e.g., Claude Haiku instead of Opus), prompt caches do not transfer across models. The subagent must rebuild the cache on the new model.
-- Consequently, handing off work to a smaller subagent can be **more expensive** than simply continuing with the larger, but already-cached parent context, unless the subagent's handoff prompt is extremely compact or the subtask runs long enough to amortize the cold cache startup.
+- A warm parent context can make another turn cheaper than initializing a worker.
+  Compare billed usage, not only model list prices or raw context lengths.
+- A new thread is **not necessarily a cold cache**. Claude Code workflows explicitly
+  allow matching sibling agents to reuse the tools/system-prompt prefix; the
+  runtime can stagger starts to enable this reuse.[^claude-workflows]
+- Cache reuse depends on matching prefixes and provider/runtime cache boundaries.
+  Claude's workflow documentation requires matching model and agent configuration
+  for this sibling reuse, so changing models is not a cache-preserving handoff.[^claude-workflows]
+
+[^claude-workflows]: [Claude Code dynamic workflows](https://code.claude.com/docs/en/workflows), especially prompt caching and cost.
+[^codex-subagents]: [Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents), official OpenAI documentation.

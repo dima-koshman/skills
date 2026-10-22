@@ -5,13 +5,23 @@ a new interest or a depth preference, and give the change a date. The wiki
 (`~/Projects/dima/wiki`) records what he has learned; this file records what he is
 looking for now.
 
-## Current focus (as of 2026-10-16)
+## Current focus (as of 2026-10-22)
 
 - **Mojo, the MAX framework, and GPU programming / AI compute.** He is learning these
   now. Hardware-aware material, kernels explained conceptually, and Modular's own
   news and design rationale are all in scope.
+  - 2026-10-22: Building a conceptual map of LLM inference and serving techniques:
+    KV memory, scheduling, attention kernels, quantization, disaggregation and
+    parallelism; wants separate notes with mechanisms and trade-offs.
+  - 2026-10-22: Comparing interactive cloud GPU development environments for
+    PyTorch, vLLM and Mojo, especially local VS Code over SSH, browser IDEs,
+    Runpod, Modal and access to GPU clusters.
 - **AI engineering:** agents, harnesses, context engineering, evals, LLM gateways and
   observability (see `ai-engineering/` in the wiki).
+  - 2026-10-22: Interested in PTC adoption and whether improving models and harnesses
+    complement orchestration techniques or make them less useful.
+  - 2026-10-22: Main orchestration interest is dynamic subagents: generated code
+    coordinating workers, rather than generic API-tool orchestration.
 - **Software engineering decisions at scale:** why strong organizations choose what
   they choose (monorepos, SRE practice, distributed systems).
 - **State of LLMs:** which models lead on quality, price and speed. For an actual

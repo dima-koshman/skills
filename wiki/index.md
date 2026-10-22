@@ -10,7 +10,7 @@ okf_version: "0.2"
 * [Agent Harness](/ai-engineering/harness.md) `[Knowledge Area]` - The runtime scaffolding around the model loop: tool dispatch, state, sandboxing, and loop control.
 * [Agent Security](/ai-engineering/security.md) `[Knowledge Area]` - How enterprise agent platforms are attacked and defended — the OWASP Agentic Top 10 risks and the mitigations that contain them.
 * [Agents](/ai-engineering/agents.md) `[Knowledge Area]` - Agent architectures, coding-agent implementations, and protocols for delegation and peer coordination.
-* [AI Compute](/ai-engineering/compute.md) `[Knowledge Area]` - How AI workloads run on hardware — GPU and NPU programming models, what limits a model's speed, the compiler stack underneath, the CUDA ecosystem, and Modular's Mojo and MAX.
+* [AI Compute](/ai-engineering/compute.md) `[Knowledge Area]` - How AI workloads run on hardware — inference and serving techniques, GPU and NPU programming models, performance limits, compilers, CUDA, Mojo and MAX.
 * [AI Development](/ai-engineering/development.md) `[Knowledge Area]` - Artifact-driven software development and telemetry-led diagnosis with AI agents.
 * [Context and Knowledge](/ai-engineering/context.md) `[Knowledge Area]` - Context assembly, memory, retrieval, skills, and portable knowledge formats for agents.
 * [Enterprise Gateways](/ai-engineering/enterprise.md) `[Knowledge Area]` - Model-side and tool-side gateways that centralize access, policy, routing, and audit.
@@ -35,11 +35,36 @@ okf_version: "0.2"
 
 * [Compute, Memory and Overhead Bound](/ai-engineering/compute/performance-regimes.md) `[Concept]` - A slow model is limited by one of three things — math throughput, memory bandwidth, or host-side overhead — and each needs a different fix.
 * [CUDA Ecosystem](/ai-engineering/compute/cuda.md) `[Concept]` - Why NVIDIA's CUDA became the default AI software stack, why chip companies struggle to match it, and the main attempts to break the lock-in — compilers, Python DSLs, Mojo, and NVIDIA's own CUDA Rust.
+* [LLM Inference and Serving](/ai-engineering/compute/serving.md) `[Knowledge Area]` - A map of autoregressive inference phases, KV memory, scheduling, attention kernels, precision and distributed serving trade-offs.
 * [LLVM and MLIR](/ai-engineering/compute/compilers.md) `[Concept]` - The compiler infrastructure under Mojo — LLVM's shared intermediate representation that decouples languages from chips, and MLIR's many-level IRs (dialects) that keep AI operations meaningful until late in compilation.
 * [MAX](/ai-engineering/compute/max.md) `[Tool]` - Modular's AI serving and modeling framework — OpenAI-compatible model serving, a PyTorch-like Python modeling API, and Mojo kernels for CPUs, GPUs and ASICs without depending on CUDA or ROCm.
 * [Mojo](/ai-engineering/compute/mojo.md) `[Tool]` - Modular's Python-like systems language for CPUs, GPUs and other accelerators, built on MLIR; 1.0 and open source (Apache 2.0) since August 2026, owned by Qualcomm.
 * [Neural Processing Unit (NPU)](/ai-engineering/compute/npu.md) `[Concept]` - A hardware accelerator built specifically for neural-network math, usually low-precision and power-efficient, programmed with explicit memory movement rather than the GPU's thread model; Google's TPU is one, and GPU Tensor Cores are the same idea as a unit inside a GPU.
 * [SIMD and SIMT](/ai-engineering/compute/simd-simt.md) `[Concept]` - Two ways to run one instruction over many data elements — explicit vector instructions (SIMD) vs NVIDIA's per-thread model on top of vector hardware (SIMT) — and why the difference matters for portable kernels.
+
+### serving
+
+* [Cache-aware Inference Routing](/ai-engineering/compute/serving/inference-routing.md) `[Concept]` - Choose serving workers using prefix locality, queueing and KV pressure rather than only request counts.
+* [Chunked Prefill](/ai-engineering/compute/serving/chunked-prefill.md) `[Concept]` - Splitting prompt processing into bounded chunks lets a scheduler interleave new prompts with ongoing decode work.
+* [Context Parallelism](/ai-engineering/compute/serving/context-parallelism.md) `[Concept]` - Distribute one request's sequence-related attention work or KV state across devices to handle long contexts and reduce per-device pressure.
+* [Continuous Batching](/ai-engineering/compute/serving/continuous-batching.md) `[Concept]` - The server updates the active request batch between generation iterations so completed requests leave and new work can enter.
+* [CUDA Graphs](/ai-engineering/compute/serving/cuda-graphs.md) `[Concept]` - Capture and replay a compatible sequence of GPU operations to reduce repeated host dispatch and kernel-launch overhead.
+* [Expert Parallelism](/ai-engineering/compute/serving/expert-parallelism.md) `[Concept]` - Place different mixture-of-experts networks on different GPUs and route token activations to the devices that own selected experts.
+* [FlashAttention](/ai-engineering/compute/serving/flash-attention.md) `[Concept]` - Tiled attention keeps intermediates on chip and avoids materializing the full attention-score matrix in GPU memory.
+* [Grouped-Query Attention](/ai-engineering/compute/serving/grouped-query-attention.md) `[Concept]` - Multiple query heads share fewer key/value heads, reducing KV state and decode bandwidth through a model architecture choice.
+* [Inference Data Parallelism](/ai-engineering/compute/serving/data-parallelism.md) `[Concept]` - Replicate model capacity across workers and route independent requests to different replicas to scale aggregate serving throughput.
+* [Kernel Fusion](/ai-engineering/compute/serving/kernel-fusion.md) `[Concept]` - Execute multiple operations inside one GPU kernel to reduce launch overhead and avoid writing intermediate tensors to global memory.
+* [KV Cache](/ai-engineering/compute/serving/kv-cache.md) `[Concept]` - Cached attention keys and values avoid recomputing earlier tokens while making sequence length and concurrency consume serving memory.
+* [KV Cache Offloading](/ai-engineering/compute/serving/kv-cache-offloading.md) `[Concept]` - Moving KV state to CPU memory or storage trades GPU residency for transfer work and potentially avoids later recomputation.
+* [LLM Quantization](/ai-engineering/compute/serving/quantization.md) `[Concept]` - Represent weights, activations or KV state with fewer bits to reduce memory and potentially accelerate supported inference kernels.
+* [LLM Serving Metrics](/ai-engineering/compute/serving/serving-metrics.md) `[Concept]` - Latency, throughput and goodput measure different serving goals and must be compared under a specified workload and load.
+* [PagedAttention](/ai-engineering/compute/serving/paged-attention.md) `[Concept]` - A block table maps logical token positions to noncontiguous KV blocks, reducing allocation waste and enabling flexible sharing.
+* [Pipeline Parallelism](/ai-engineering/compute/serving/pipeline-parallelism.md) `[Concept]` - Place successive groups of model layers on different devices and pipeline requests or microbatches through the stages.
+* [Prefill and Decode](/ai-engineering/compute/serving/prefill-decode.md) `[Concept]` - The two inference phases process a known prompt in parallel, then generate a dependent output sequence token by token.
+* [Prefill–Decode Disaggregation](/ai-engineering/compute/serving/prefill-decode-disaggregation.md) `[Concept]` - Separate worker pools perform prompt processing and token generation, transferring KV state between independently tuned phases.
+* [Prefix Caching](/ai-engineering/compute/serving/prefix-caching.md) `[Concept]` - Reuse stored KV state for a matching prompt prefix to skip repeated prefill computation across requests.
+* [Speculative Decoding](/ai-engineering/compute/serving/speculative-decoding.md) `[Concept]` - A cheap proposer drafts multiple tokens and a target model verifies them together to reduce serial target-model passes.
+* [Tensor Parallelism](/ai-engineering/compute/serving/tensor-parallelism.md) `[Concept]` - Split tensors and layer computation across GPUs so a model replica can use their combined memory and compute.
 
 ## context
 
@@ -66,12 +91,13 @@ okf_version: "0.2"
 ## harness
 
 * [Agent Sandboxes](/ai-engineering/harness/sandboxes.md) `[Practice]` - Run the harness outside the sandbox and call the sandbox as a tool, keeping session state in a durable store, so harness, sandbox and session can each fail or be replaced on their own ("cattle, not pets").
+* [Dynamic Subagents](/ai-engineering/harness/dynamic-subagents.md) `[Concept]` - An agent writes code that dispatches subagents, branches on their results, and controls what returns to the coordinating model.
 * [Frontend Tools](/ai-engineering/harness/frontend-tools.md) `[Concept]` - Client-side tools executed in the frontend, typically for UI interactions — a newer, less standardized category.
 * [Model Routing](/ai-engineering/harness/model-routing.md) `[Practice]` - Choosing a cheaper or stronger model per task belongs in the harness, which knows the task, and should happen once per thread, because switching models mid-conversation throws away the prompt cache.
+* [Programmatic Tool Calling](/ai-engineering/harness/programmatic-tool-calling.md) `[Concept]` - Code mode and programmatic tool calling move tool or subagent orchestration into generated code, keeping intermediate results outside the main model context.
 * [Provider-Side Tools](/ai-engineering/harness/provider-tools.md) `[Concept]` - Tools defined and executed by the model provider — built-in web search, code execution — that clients just enable.
 * [Subagents](/ai-engineering/harness/subagents.md) `[Concept]` - Delegating focused subtasks to separate agent instances, and orchestrating multiple agents together.
 * [Tools](/ai-engineering/harness/tools.md) `[Concept]` - The primitive that turns an LLM into an agent — functions the model can call to act on and read from its environment.
-* [Workflows](/ai-engineering/harness/workflows.md) `[Concept]` - Workflows let an agent orchestrate its tool calls programmatically — scripted tool use for lower token cost and long-running tasks.
 
 ## models
 

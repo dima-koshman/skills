@@ -14,16 +14,23 @@ related:
 - /ai-engineering/observability/langfuse.md
 - /ai-engineering/providers/claude.md
 - /ai-engineering/providers/gpt.md
+- /ai-engineering/compute/serving/prefix-caching.md
+- /ai-engineering/compute/serving/kv-cache.md
 sources:
 - id: ref-1
   resource: https://claude.com/blog/lessons-from-building-claude-code-prompt-caching-is-everything
   title: "Lessons from building Claude Code: Prompt caching is everything"
 generated:
-  by: antigravity/gemini-3-8-flash
-  at: '2026-10-15T17:35:00+04:00'
+  by: codex/gpt-6
+  at: '2026-10-22T13:46:52+04:00'
 ---
 
 Reference: <https://claude.com/blog/lessons-from-building-claude-code-prompt-caching-is-everything>
+
+For the serving-side execution mechanism, see
+[Prefix Caching](/ai-engineering/compute/serving/prefix-caching.md) and
+[KV Cache](/ai-engineering/compute/serving/kv-cache.md). This page focuses on
+prompt layout and agent-harness economics.
 
 Prompt caching allows LLM providers to reuse KV-cache computation from previous requests whenever an incoming prompt matches a previously seen token prefix. Because cached prompt tokens are dramatically cheaper (e.g., 90% discount on [Claude](/ai-engineering/providers/claude.md) and [GPT](/ai-engineering/providers/gpt.md)) and significantly reduce time-to-first-token (TTFT), prompt caching is the primary technical and economic foundation for long-running agent loops.
 
@@ -76,4 +83,10 @@ Prompt cache hit ratio (`cache_read_tokens / total_prompt_tokens`) is a primary 
 
 ## Interaction with subagents
 
-The caching mechanics of the main agent context directly impact multi-agent orchestration. Spawning a [subagent](/ai-engineering/harness/subagents.md) starts a separate context thread with a cold cache, which can make subagent handoff more expensive than continuing with an existing, warm main context unless the subagent's scope and context are strictly compact and isolated.
+The caching mechanics of the main agent context affect multi-agent orchestration.
+A [subagent](/ai-engineering/harness/subagents.md) starts a separate context thread,
+but matching prompt prefixes may still be reused within the provider's cache
+boundaries. A warm parent can be cheaper than a new worker; compare actual cache
+usage and worker effort rather than assuming every worker is entirely cold. See
+[Dynamic Subagents](/ai-engineering/harness/dynamic-subagents.md) for Claude Code's
+documented sibling-prefix reuse.

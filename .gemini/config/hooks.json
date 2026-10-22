@@ -1,0 +1,21 @@
+{
+  "notifications": {
+    "Stop": [
+      {
+        "type": "command",
+        "command": "osascript -e 'on run argv' -e 'set p to paragraphs of (item 1 of argv)' -e 'if (count of p) is 3 then display notification (item 1 of p) with title \"Antigravity\" subtitle (item 2 of p) sound name (item 3 of p)' -e 'end run' -- \"$(/usr/bin/python3 -c 'import json,os,sys; d=json.load(sys.stdin); ws=(d.get(\"workspacePaths\") or [os.getcwd()])[0]; r=d.get(\"terminationReason\",\"\"); r!=\"USER_CANCELED\" and print((\"Turn ended with an error\\n\" if r==\"ERROR\" else \"Turn complete\\n\")+os.path.basename(ws.rstrip(\"/\"))+\"\\n\"+(\"Basso\" if r==\"ERROR\" else \"Ping\"))')\"; printf '{}\\n'"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "ask_question",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'on run argv' -e 'display notification (item 1 of argv) with title \"Antigravity\" subtitle (item 2 of argv) sound name \"Ping\"' -e 'end run' -- 'Antigravity has a question' \"$(/usr/bin/python3 -c 'import json,os,sys; d=json.load(sys.stdin); ws=(d.get(\"workspacePaths\") or [os.getcwd()])[0]; print(os.path.basename(ws.rstrip(\"/\")))')\" && printf '{\"decision\":\"allow\"}\\n'"
+          }
+        ]
+      }
+    ]
+  }
+}

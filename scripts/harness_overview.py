@@ -1729,7 +1729,12 @@ def antigravity(cwd: Path, project: Path | None, usage: bool) -> Harness:
     mcp_config = HOME / ".gemini/config/mcp_config.json"
     settings = HOME / ".gemini/antigravity-cli/settings.json"
     h = Harness("agy", "Antigravity (agy)")
-    files = existing(mcp_config, HOME / ".gemini/config/skills.json", settings)
+    files = existing(
+        mcp_config,
+        HOME / ".gemini/config/skills.json",
+        HOME / ".gemini/config/hooks.json",
+        settings,
+    )
     h.config_files = [tilde(p) for p in files]
     h.config_ref = files_explorer("config:agy", "Antigravity", files)
     h.tool_search = {

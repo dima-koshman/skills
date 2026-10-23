@@ -224,6 +224,36 @@
             "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.claude/settings.json\" \"$HOME/.claude/settings.json\""
         },
         {
+            "label": "Sync: MCP servers globally (all harnesses)",
+            "detail": "Render the chosen Claude-style .mcp.json (default: the open workspace's) with the ${VAR} values from the chosen dotenv file (empty for none; the shell environment is ignored) into the global MCP config of Claude Code (~/.claude.json), Codex (~/.codex/config.toml), OpenCode (~/.config/opencode/opencode.json) and Antigravity IDE + agy (~/.gemini/config/mcp_config.json). Mode merge adds/updates the file's servers and keeps every other one (a server deleted from the file stays installed); override makes each harness's server set exactly the file, dropping every other server, incl. other projects' and ones this script never installed (e.g. openwiki), and lists what it dropped. Idempotent; re-run after editing the file or rotating a token, then restart the harnesses.",
+            "command": "python3 \"$HOME/Projects/dima/scripts/global_mcp.py\" sync --mcp-json \"${input:mcpJson}\" --env-file \"${input:mcpEnvFile}\" --mode ${input:mcpSyncMode}"
+        },
+        {
+            "label": "Sync: MCP servers global status",
+            "detail": "Show per harness config whether the chosen .mcp.json's servers are current / outdated / absent for the sync mode, and which installed servers the file doesn't define (names only, no values printed).",
+            "command": "python3 \"$HOME/Projects/dima/scripts/global_mcp.py\" status --mcp-json \"${input:mcpJson}\" --env-file \"${input:mcpEnvFile}\" --mode ${input:mcpSyncMode}"
+        },
+        {
+            "label": "Sync: remove MCP servers globally",
+            "detail": "Delete the chosen .mcp.json's servers from the global harness configs; other servers are kept.",
+            "command": "python3 \"$HOME/Projects/dima/scripts/global_mcp.py\" remove --mcp-json \"${input:mcpJson}\""
+        },
+        {
+            "label": "Sync: global instructions (all harnesses)",
+            "detail": "Add or refresh the chosen Markdown file as a block marked with its path in ~/.claude/CLAUDE.md, ~/.config/opencode/AGENTS.md, ~/.codex/AGENTS.md and ~/.gemini/GEMINI.md (only for harnesses installed here). Idempotent; content outside the block, incl. other files' blocks, is never touched. Re-run after editing the file.",
+            "command": "python3 \"$HOME/Projects/dima/scripts/global_instructions.py\" sync --instructions-file \"${input:instructionsFile}\""
+        },
+        {
+            "label": "Sync: global instructions status",
+            "detail": "Show per global instruction file whether the chosen file's block is current / outdated / absent.",
+            "command": "python3 \"$HOME/Projects/dima/scripts/global_instructions.py\" status --instructions-file \"${input:instructionsFile}\""
+        },
+        {
+            "label": "Sync: remove global instructions",
+            "detail": "Delete the chosen file's block from the global instruction files (a file is deleted only if nothing else is left in it).",
+            "command": "python3 \"$HOME/Projects/dima/scripts/global_instructions.py\" remove --instructions-file \"${input:instructionsFile}\""
+        },
+        {
             "label": "Sync: VSCode settings and tasks to Code User",
             "detail": "Overwrite VS Code User settings.json and tasks.json with workspace .vscode config. Shows a diff unless you type 'yes'.",
             "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.vscode/settings.json\" \"$HOME/Library/Application Support/Code/User/settings.json\" \"${workspaceFolder}/.vscode/tasks.json\" \"$HOME/Library/Application Support/Code/User/tasks.json\""
@@ -473,6 +503,31 @@
             "type": "promptString",
             "description": "Type 'yes' to remove the skills; anything else only prints what would be removed",
             "default": "no"
+        },
+        {
+            "id": "mcpJson",
+            "type": "promptString",
+            "description": "Claude-style .mcp.json whose servers to sync (relative to the open workspace)",
+            "default": ".mcp.json"
+        },
+        {
+            "id": "mcpEnvFile",
+            "type": "promptString",
+            "description": "dotenv file with the values for the file's ${VAR} references (relative to the open workspace; empty for none)",
+            "default": ".env"
+        },
+        {
+            "id": "mcpSyncMode",
+            "type": "pickString",
+            "description": "merge: add/update the file's servers, keep the rest; override: also drop every server not in the file (incl. openwiki)",
+            "options": ["merge", "override"],
+            "default": "merge"
+        },
+        {
+            "id": "instructionsFile",
+            "type": "promptString",
+            "description": "Markdown file to keep in the global instruction files (relative to the open workspace)",
+            "default": "global-instructions.md"
         },
         {
             "id": "syncConfirm",

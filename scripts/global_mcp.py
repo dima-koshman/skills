@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Install the MCP servers of a Claude-style .mcp.json into every harness's GLOBAL MCP config.
+"""Install the MCP servers of a Claude-style MCP file (default: .global.mcp.json at the root of the current git
+project, or of the current directory outside git) into every harness's GLOBAL MCP config. The name keeps it apart
+from the project-scope .mcp.json that Claude Code loads by itself.
 
 No harness reads another's MCP file, and each has its own schema, so the file is rendered per harness with the
 ${VAR} references resolved:
@@ -10,7 +12,7 @@ ${VAR} references resolved:
                                                      with the hand-kept opencode.jsonc, whose servers are never touched)
     ~/.gemini/config/mcp_config.json   Antigravity   IDE and agy CLI ("serverUrl")
 
-Several projects can each sync their own .mcp.json. --mode merge (default) adds or updates the file's servers and
+Several projects can each sync their own file. --mode merge (default) adds or updates the file's servers and
 leaves every other server alone, so a server deleted from the file stays installed. --mode override makes each
 harness's server set exactly the file: it also drops servers the file doesn't define, including other projects'
 and ones this script never installed (e.g. openwiki).
@@ -93,6 +95,8 @@ def json_text(data: dict) -> str:
 
 def compare(current: dict, desired: dict, exact: bool) -> str:
     """absent / outdated / current; with exact, servers outside `desired` also make it outdated."""
+    if not desired:
+        return "outdated" if exact and current else "current"
     present = [name for name in desired if name in current]
     if not present:
         return "absent"
@@ -234,6 +238,8 @@ class Codex:
         return text.rstrip("\n") + "\n" if text.strip() else ""
 
     def block(self, servers) -> str:
+        if not servers:
+            return ""
         lines = [
             f"# BEGIN global_mcp.py {self.source} (managed by ~/Projects/dima/scripts/global_mcp.py: edit that file)"
         ]
@@ -255,11 +261,12 @@ class Codex:
         return "\n".join(lines + [f"# END global_mcp.py {self.source}"]) + "\n"
 
     def desired(self, servers):
-        return tomllib.loads(self.block(servers))["mcp_servers"]
+        return tomllib.loads(self.block(servers)).get("mcp_servers", {})
 
     def sync(self, servers, override: bool) -> None:
         rest = self.rest(lambda name: override or name in servers, all_markers=override)
-        text = rest + ("\n" if rest else "") + self.block(servers)
+        block = self.block(servers)
+        text = rest + ("\n" if rest and block else "") + block
         tomllib.loads(text)  # refuse to write a config Codex can't parse
         write_private(self.path, text)
 
@@ -332,6 +339,14 @@ def targets(source: str) -> list:
     ]
 
 
+def project_root() -> Path:
+    """The git top level of the current directory, or the directory itself outside git."""
+    out = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True
+    )
+    return Path(out.stdout.strip()) if out.returncode == 0 else Path.cwd()
+
+
 def display(path: Path) -> str:
     """The path with the home directory as ~, so markers don't depend on who reads them."""
     home = str(Path.home())
@@ -349,8 +364,7 @@ def main() -> None:
     parser.add_argument("command", choices=["sync", "status", "remove"])
     parser.add_argument(
         "--mcp-json",
-        default=".mcp.json",
-        help="Claude-style file with an mcpServers map (default ./.mcp.json)",
+        help="Claude-style file with an mcpServers map (default .global.mcp.json at the project root)",
     )
     parser.add_argument(
         "--env-file",
@@ -372,7 +386,11 @@ def main() -> None:
     args = parser.parse_args()
     cmd = args.command
     override = args.mode == "override"
-    mcp_json = Path(args.mcp_json).expanduser().resolve()
+    mcp_json = (
+        Path(args.mcp_json).expanduser()
+        if args.mcp_json
+        else project_root() / ".global.mcp.json"
+    ).resolve()
     if not mcp_json.is_file():
         sys.exit(f"MCP file not found: {mcp_json}")
     names = list(json.loads(mcp_json.read_text())["mcpServers"])

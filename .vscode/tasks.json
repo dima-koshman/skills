@@ -225,17 +225,17 @@
         },
         {
             "label": "Sync: MCP servers globally (all harnesses)",
-            "detail": "Render the chosen Claude-style .mcp.json (default: the open workspace's) with the ${VAR} values from the chosen dotenv file (empty for none; the shell environment is ignored) into the global MCP config of Claude Code (~/.claude.json), Codex (~/.codex/config.toml), OpenCode (~/.config/opencode/opencode.json) and Antigravity IDE + agy (~/.gemini/config/mcp_config.json). Mode merge adds/updates the file's servers and keeps every other one (a server deleted from the file stays installed); override makes each harness's server set exactly the file, dropping every other server, incl. other projects' and ones this script never installed (e.g. openwiki), and lists what it dropped. Idempotent; re-run after editing the file or rotating a token, then restart the harnesses.",
+            "detail": "Render the chosen Claude-style MCP file (default: .global.mcp.json in the open workspace; it is not the project-scope .mcp.json Claude Code loads) with the ${VAR} values from the chosen dotenv file (empty for none; the shell environment is ignored) into the global MCP config of Claude Code (~/.claude.json), Codex (~/.codex/config.toml), OpenCode (~/.config/opencode/opencode.json) and Antigravity IDE + agy (~/.gemini/config/mcp_config.json). Mode merge adds/updates the file's servers and keeps every other one (a server deleted from the file stays installed); override makes each harness's server set exactly the file, dropping every other server, incl. other projects' and ones this script never installed (e.g. openwiki), and lists what it dropped. Idempotent; re-run after editing the file or rotating a token, then restart the harnesses.",
             "command": "python3 \"$HOME/Projects/dima/scripts/global_mcp.py\" sync --mcp-json \"${input:mcpJson}\" --env-file \"${input:mcpEnvFile}\" --mode ${input:mcpSyncMode}"
         },
         {
             "label": "Sync: MCP servers global status",
-            "detail": "Show per harness config whether the chosen .mcp.json's servers are current / outdated / absent for the sync mode, and which installed servers the file doesn't define (names only, no values printed).",
+            "detail": "Show per harness config whether the chosen MCP file's servers are current / outdated / absent for the sync mode, and which installed servers the file doesn't define (names only, no values printed).",
             "command": "python3 \"$HOME/Projects/dima/scripts/global_mcp.py\" status --mcp-json \"${input:mcpJson}\" --env-file \"${input:mcpEnvFile}\" --mode ${input:mcpSyncMode}"
         },
         {
             "label": "Sync: remove MCP servers globally",
-            "detail": "Delete the chosen .mcp.json's servers from the global harness configs; other servers are kept.",
+            "detail": "Delete the chosen MCP file's servers from the global harness configs; other servers are kept.",
             "command": "python3 \"$HOME/Projects/dima/scripts/global_mcp.py\" remove --mcp-json \"${input:mcpJson}\""
         },
         {
@@ -507,8 +507,8 @@
         {
             "id": "mcpJson",
             "type": "promptString",
-            "description": "Claude-style .mcp.json whose servers to sync (relative to the open workspace)",
-            "default": ".mcp.json"
+            "description": "Claude-style MCP file whose servers to sync (relative to the open workspace)",
+            "default": ".global.mcp.json"
         },
         {
             "id": "mcpEnvFile",

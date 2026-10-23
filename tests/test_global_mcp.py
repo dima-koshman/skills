@@ -187,6 +187,32 @@ def test_merge_keeps_and_override_drops_servers_not_in_file(env: "_Env") -> None
     assert "ok" in env.run("sync", "--mcp-json", str(a), "--mode", "override")
 
 
+def test_default_file_is_global_mcp_json_at_project_root(env: "_Env") -> None:
+    project = env.home / "project"
+    (project / "sub").mkdir(parents=True)
+    _ = subprocess.run(["git", "init", "-q", str(project)], check=True)
+    _ = (project / ".global.mcp.json").write_text(
+        json.dumps({"mcpServers": {"p1": LOCAL_SERVER}})
+    )
+
+    _ = env.run("sync", cwd=project / "sub")
+
+    assert env.claude()["p1"] == LOCAL_SERVER
+    assert "# BEGIN global_mcp.py ~/project/.global.mcp.json " in (
+        env.codex_path.read_text()
+    )
+
+
+def test_empty_file_changes_nothing_in_merge_mode(env: "_Env") -> None:
+    empty = env.mcp_json("empty.json", {})
+    before = [path.read_text() for path in env.configs if path.exists()]
+
+    output = env.run("sync", "--mcp-json", str(empty))
+
+    assert output.count("ok ") == 4
+    assert [path.read_text() for path in env.configs if path.exists()] == before
+
+
 @final
 class _Env:
     def __init__(self, tmp_path: pathlib.Path) -> None:
@@ -216,7 +242,9 @@ class _Env:
         _ = path.write_text(json.dumps({"mcpServers": servers}))
         return path
 
-    def run(self, *args: str, check: bool = True) -> str:
+    def run(
+        self, *args: str, check: bool = True, cwd: pathlib.Path | None = None
+    ) -> str:
         environment = {"HOME": str(self.home), "PATH": os.environ["PATH"]}
         result = subprocess.run(
             ["python3", str(_SCRIPT), *args],
@@ -224,6 +252,7 @@ class _Env:
             text=True,
             env=environment,
             check=False,
+            cwd=cwd or self.home,
         )
         if check:
             assert result.returncode == 0, result.stderr

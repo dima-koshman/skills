@@ -1,20 +1,6 @@
 {
     "$schema": "./.opencode/schemas/claude-mcp.schema.json",
     "mcpServers": {
-        "github": {
-            "type": "streamable-http",
-            "url": "https://api.githubcopilot.com/mcp",
-            "headers": {
-                "Authorization": "Bearer ${GITHUB_PAT}"
-            }
-        },
-        "langfuse": {
-            "type": "streamable-http",
-            "url": "https://langfuse.kapitalbank.az/api/public/mcp",
-            "headers": {
-                "Authorization": "Basic ${LANGFUSE_AUTH_HEADER}"
-            }
-        },
         "langfuse-docs": {
             "type": "streamable-http",
             "url": "https://langfuse.com/api/mcp"

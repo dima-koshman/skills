@@ -29,7 +29,7 @@ repos:
     rev: 1.38.2
     hooks:
       - id: basedpyright
-        exclude: ^(scripts/|tests/|src/dima/save_server_config\.py$)
+        exclude: ^(scripts/|tests/)
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.21.0

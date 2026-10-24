@@ -109,7 +109,10 @@ def _unexpected_download(*_args: object, **_kwargs: object) -> None:
 
 
 def _load_bootstrap():
-    path = pathlib.Path(__file__).parent.parent / "scripts/runpod_tunnel_bootstrap.py"
+    path = (
+        pathlib.Path(__file__).parent.parent
+        / "scripts/runpod/runpod_tunnel_bootstrap.py"
+    )
     spec = importlib.util.spec_from_file_location("runpod_tunnel_bootstrap", path)
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)

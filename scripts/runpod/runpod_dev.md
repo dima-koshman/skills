@@ -1,12 +1,13 @@
 # Runpod GPU workspace
 
 Run **Tasks: Run Task → Runpod: GPU workspace** from the Command Palette.
-Choose **VS Code Remote Tunnels** (default) or **Direct SSH** in the connection
-picker. The task creates an RTX 4090 Pod in the network volume's data center,
-checks CUDA and PyTorch, then opens `/workspace` in a new desktop VS Code window
-using the selected method. A saved Pod from an interrupted session can be reused
-with the same connection method. Tunnels need no direct SSH access or public port;
-SSH requires a network that permits the Pod's assigned TCP port.
+Choose the GPU (default: **NVIDIA GeForce RTX 4090**) and **VS Code Remote Tunnels**
+(default) or **Direct SSH** in the pickers. The task creates a Pod with the selected GPU
+in the network volume's data center, checks CUDA and PyTorch, then opens `/workspace`
+in a new desktop VS Code window using the selected method. A saved Pod from an
+interrupted session can be reused with the same GPU and connection method. Tunnels
+need no direct SSH access or public port; SSH requires a network that permits the
+Pod's assigned TCP port.
 
 Requirements: Python 3.11+, `runpodctl`, and the `code` CLI on PATH. Install the
 local VS Code extension for the selected method: **Remote - Tunnels**
@@ -47,8 +48,9 @@ The script reads `RUNPOD_API_KEY` from
 runs the CLI outside the project so a project `.env` cannot select an unintended
 account. API response bodies and credentials are not printed.
 
-Run `python3 scripts/runpod_dev.py --help` for options. The task passes the picker
-value to `--connection`; direct script calls retain `--connection ssh` as the default.
+Run `python3 scripts/runpod/runpod_dev.py --help` for options. The task passes the picker
+values to `--gpu` and `--connection`; direct script calls retain `--gpu "NVIDIA GeForce RTX 4090"`
+and `--connection ssh` as defaults.
 SSH mode uses the task's existing key `~/.runpod/ssh/RunPod-Key-Go`, registers its
 public key, updates the `runpod-devbox` alias, and requires Microsoft's
 Remote - SSH extension. Use a network that permits SSH.

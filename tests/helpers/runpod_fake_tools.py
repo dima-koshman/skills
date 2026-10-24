@@ -33,14 +33,22 @@ def main() -> None:
     if args[:2] == ["network-volume", "get"]:
         result = {"id": "volume", "dataCenterId": "EU-RO-1", "size": 10}
     elif args[:2] == ["gpu", "list"]:
+        availability = (
+            []
+            if mode == "no-stock"
+            else [{"dataCenterId": "EU-RO-1", "stockStatus": "Low"}]
+        )
         result = [
             {
                 "gpuId": "NVIDIA GeForce RTX 4090",
                 "securePricePerHr": 0.89,
-                "dataCenterAvailability": []
-                if mode == "no-stock"
-                else [{"dataCenterId": "EU-RO-1", "stockStatus": "Low"}],
-            }
+                "dataCenterAvailability": availability,
+            },
+            {
+                "gpuId": "NVIDIA RTX A5000",
+                "securePricePerHr": 0.27,
+                "dataCenterAvailability": availability,
+            },
         ]
     elif args[:2] == ["template", "get"]:
         result = {"imageName": "runpod/pytorch:pinned-cu128", "isServerless": False}
@@ -71,7 +79,7 @@ def main() -> None:
             "name": args[args.index("--name") + 1],
             "networkVolumeId": "volume",
             "desiredStatus": "RUNNING",
-            "gpuId": "NVIDIA GeForce RTX 4090",
+            "gpuId": args[args.index("--gpu-id") + 1],
         }
         account["pods"]["created"] = pod
         path.write_text(json.dumps(account))

@@ -278,6 +278,22 @@ def test_tunnel_failure_deletes_pod_with_actionable_error(
     assert "created" not in workspace.account()["pods"]
 
 
+def test_custom_gpu_selection_and_cleanup_without_gpu_arg(
+    workspace: "_Workspace",
+) -> None:
+    workspace.mode("lost-invisible")
+    process = workspace.start("--gpu", "NVIDIA RTX A5000")
+    assert process.wait(timeout=10) != 0
+    args = json.loads((workspace.root / "create-args.json").read_text())
+    assert args[args.index("--gpu-id") + 1] == "NVIDIA RTX A5000"
+    assert workspace.state.exists()
+    workspace.mode("ok")
+    recovery = workspace.start("--cleanup", log_name="recovery.log")
+    assert recovery.wait(timeout=10) == 0
+    assert "created" not in workspace.account()["pods"]
+    assert not workspace.state.exists()
+
+
 class _Workspace:
     def __init__(self, root: pathlib.Path):
         self.root = root
@@ -306,7 +322,7 @@ class _Workspace:
     def start(
         self, *args: str, log_name: str = "session.log"
     ) -> subprocess.Popen[bytes]:
-        script = pathlib.Path(__file__).parent.parent / "scripts/runpod_dev.py"
+        script = pathlib.Path(__file__).parent.parent / "scripts/runpod/runpod_dev.py"
         assert script.exists(), "Runpod workspace launcher has not been implemented"
         env = {
             "HOME": str(self.root / "home"),

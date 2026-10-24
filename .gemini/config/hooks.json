@@ -15,6 +15,15 @@
             "command": "osascript -e 'on run argv' -e 'display notification (item 1 of argv) with title \"Antigravity\" subtitle (item 2 of argv) sound name \"Ping\"' -e 'end run' -- 'Antigravity has a question' \"$(/usr/bin/python3 -c 'import json,os,sys; d=json.load(sys.stdin); ws=(d.get(\"workspacePaths\") or [os.getcwd()])[0]; print(os.path.basename(ws.rstrip(\"/\")))')\" && printf '{\"decision\":\"allow\"}\\n'"
           }
         ]
+      },
+      {
+        "matcher": "read_file|write_file|edit_file|run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'on run argv' -e 'set p to paragraphs of (item 1 of argv)' -e 'if (item 1 of p) is \"ask\" then display notification \"Antigravity needs permission\" with title \"Antigravity\" subtitle (item 2 of p) sound name \"Ping\"' -e 'return \"{\\\"decision\\\":\\\"\" & (item 1 of p) & \"\\\"}\"' -e 'end run' -- \"$(/usr/bin/python3 -c 'import json,os,sys; d=json.load(sys.stdin); ws=(d.get(\"workspacePaths\") or [os.getcwd()])[0]; tc=d.get(\"toolCall\") or {}; n=tc.get(\"name\",\"\"); a=tc.get(\"args\") or {}; roots=[os.path.realpath(p) for p in [*(d.get(\"workspacePaths\") or [os.getcwd()]), d.get(\"artifactDirectoryPath\") or \"\", os.path.expanduser(\"~/.gemini/antigravity/brain\"), \"/tmp\", \"/private/tmp\"] if p]; path=a.get(\"Path\") or \"\"; rp=os.path.realpath(os.path.expanduser(path)) if path else \"\"; in_roots=bool(rp) and any(rp==r or rp.startswith(r+\"/\") for r in roots); parts=set(rp.split(\"/\")) if rp else set(); prot=n in (\"write_file\",\"edit_file\") and bool(parts & {\".vscode\",\".git\",\".gemini\"} or os.path.basename(rp)==\"hooks.json\"); ask=bool(a.get(\"BypassSandbox\")) if n==\"run_command\" else (bool(rp) and (not in_roots or prot)); print((\"ask\" if ask else \"allow\")+\"\\n\"+os.path.basename(ws.rstrip(\"/\")))')\""
+          }
+        ]
       }
     ]
   }

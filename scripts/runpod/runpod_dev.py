@@ -170,9 +170,12 @@ class _Session:
         _atomic_write(self.state_path, json.dumps(self.state, indent=2) + "\n", 0o600)
 
     def _validate_pod(self, pod: dict[str, Any]) -> None:
+        expected_gpu = (
+            self.state.get("gpu", self.args.gpu) if self.args.cleanup else self.args.gpu
+        )
         if (
             pod.get("networkVolumeId") != self.args.volume_id
-            or pod.get("gpuId") != self.args.gpu
+            or pod.get("gpuId") != expected_gpu
         ):
             raise RuntimeError(
                 f"Pod {pod['id']} does not match the requested volume/GPU; refusing to adopt it."
@@ -204,7 +207,11 @@ class _Session:
             pod = self._pod(self.args.adopt_pod_id)
             if pod:
                 self._validate_pod(pod)
-                self.state = {"pod_id": pod["id"], "volume_id": self.args.volume_id}
+                self.state = {
+                    "pod_id": pod["id"],
+                    "volume_id": self.args.volume_id,
+                    "gpu": self.args.gpu,
+                }
                 self._save()
         if self.args.cleanup:
             return
@@ -256,6 +263,7 @@ class _Session:
         self._check_cancel()
         self.state = {
             "volume_id": self.args.volume_id,
+            "gpu": self.args.gpu,
             "connection": self.args.connection,
             "request_name": f"dima-gpu-dev-{uuid.uuid4().hex[:12]}",
         }

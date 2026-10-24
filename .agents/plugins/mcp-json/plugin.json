@@ -1,0 +1,4 @@
+{
+  "name": "mcp-json",
+  "description": "Loads MCP servers from the project root .mcp.json file."
+}

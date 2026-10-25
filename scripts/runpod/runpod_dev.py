@@ -221,11 +221,11 @@ class _Session:
             )
         for binary in (
             "runpodctl",
-            "code",
             *(["ssh"] if self.args.connection == "ssh" else []),
         ):
             if not shutil.which(binary):
                 raise RuntimeError(f"Required command is missing: {binary}")
+        self.editor = _editor_binary()
         volume = self._cli("network-volume", "get", self.args.volume_id)
         if self.args.connection == "ssh":
             self._register_key()
@@ -344,6 +344,7 @@ class _Session:
                 self.stop,
                 self.state["pod_id"],
                 self.env,
+                self.editor,
             )
             return
         deadline = time.monotonic() + self.args.ready_timeout
@@ -392,11 +393,11 @@ class _Session:
                     self._check_cancel()
                     result = subprocess.run(
                         [
-                            "code",
+                            self.editor,
                             "--new-window",
                             "--remote",
                             f"ssh-remote+{self.args.host}",
-                            "/workspace",
+                            self.args.remote_path,
                         ],
                         env=self.env,
                         timeout=30,
@@ -493,6 +494,21 @@ class _Session:
             return False
 
 
+def _editor_binary() -> str:
+    for name in ("code", "ide"):
+        if found := shutil.which(name):
+            return found
+    for candidate in (
+        pathlib.Path("~/.local/bin/ide").expanduser(),
+        pathlib.Path(
+            "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+        ),
+    ):
+        if os.access(candidate, os.X_OK):
+            return str(candidate)
+    raise RuntimeError("Required command is missing: code (or ide)")
+
+
 def _atomic_write(path: pathlib.Path, text: str, mode: int) -> None:
     name = None
     try:
@@ -524,6 +540,11 @@ def _arguments() -> argparse.Namespace:
     parser.add_argument("--min-cuda", default="12.8")
     parser.add_argument("--host", default="runpod-devbox")
     parser.add_argument("--connection", choices=("ssh", "tunnel"), default="ssh")
+    parser.add_argument(
+        "--remote-path",
+        default="/workspace",
+        help="Remote directory or subpath under /workspace to open in VS Code",
+    )
     parser.add_argument("--tunnel-name", default="dima-gpu-dev")
     parser.add_argument("--ssh-key", default="~/.ssh/runpod_dev_ed25519")
     parser.add_argument("--state-dir", default="~/.local/state/dima/runpod-dev")
@@ -545,6 +566,17 @@ def _arguments() -> argparse.Namespace:
         parser.error("--host must be a plain SSH alias")
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]{2,59}", args.tunnel_name):
         parser.error("--tunnel-name must be 3–60 lowercase letters, digits or hyphens")
+    raw_remote = args.remote_path.strip()
+    remote = (
+        pathlib.PurePosixPath("/workspace")
+        if not raw_remote
+        else pathlib.PurePosixPath(raw_remote)
+        if raw_remote.startswith("/")
+        else pathlib.PurePosixPath("/workspace") / raw_remote
+    )
+    if ".." in remote.parts or not remote.is_relative_to("/workspace"):
+        parser.error("--remote-path must be /workspace or a path inside /workspace")
+    args.remote_path = str(remote)
     if args.connection == "tunnel" and args.adopt_pod_id and not args.cleanup:
         parser.error(
             "Tunnel mode requires a Pod created with the tunnel bootstrap; omit --adopt-pod-id"

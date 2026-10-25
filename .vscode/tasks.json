@@ -16,14 +16,25 @@
             "command": "python3",
             "args": [
                 "${userHome}/Projects/dima/scripts/runpod/runpod_dev.py",
-                "--volume-id", "${input:runpodVolumeId}",
-                "--gpu", "${input:runpodGpu}",
-                "--connection", "${input:runpodConnection}",
-                "--ssh-key", "${userHome}/.runpod/ssh/RunPod-Key-Go",
-                "--ready-timeout", "900"
+                "--volume-id",
+                "${input:runpodVolumeId}",
+                "--gpu",
+                "${input:runpodGpu}",
+                "--connection",
+                "${input:runpodConnection}",
+                "--remote-path",
+                "${input:runpodRemotePath}",
+                "--ssh-key",
+                "${userHome}/.runpod/ssh/RunPod-Key-Go",
+                "--ready-timeout",
+                "900"
             ],
             "runOptions": { "instanceLimit": 1 },
-            "presentation": { "reveal": "always", "focus": true, "panel": "dedicated" }
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            }
         },
         {
             "label": "Runpod: cleanup GPU workspace",
@@ -32,11 +43,26 @@
             "command": "python3",
             "args": [
                 "${userHome}/Projects/dima/scripts/runpod/runpod_dev.py",
-                "--volume-id", "${input:runpodVolumeId}",
+                "--volume-id",
+                "${input:runpodVolumeId}",
                 "--cleanup"
             ],
             "runOptions": { "instanceLimit": 1 },
-            "presentation": { "reveal": "always", "focus": true, "panel": "dedicated" }
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "Runpod: SSH into Pod",
+            "detail": "Open an interactive SSH session in a dedicated task terminal via `runpodctl ssh info <pod-id>`. Leave the Pod ID blank to use the active workspace Pod recorded in ~/.local/state/dima/runpod-dev/session.json. Requires a Pod created with SSH enabled (Direct SSH mode or --ssh).",
+            "command": "pod=\"${input:runpodPodId}\"; [ -n \"$pod\" ] || pod=$(jq -r '.pod_id // empty' \"$HOME/.local/state/dima/runpod-dev/session.json\" 2>/dev/null); [ -n \"$pod\" ] || { echo 'No Pod ID provided and no active session in ~/.local/state/dima/runpod-dev/session.json' >&2; exit 1; }; info=$(runpodctl ssh info \"$pod\") || exit $?; cmd=$(printf '%s\\n' \"$info\" | jq -r '.ssh_command // .command // empty'); [ -n \"$cmd\" ] || { printf '%s\\n' \"$info\" >&2; exit 1; }; eval \"$cmd\"",
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            }
         },
         {
             "label": "Harnesses: build overview and open",
@@ -420,6 +446,32 @@
                 "panel": "dedicated",
                 "clear": true
             }
+        },
+        {
+            "label": "Setup development environment",
+            "dependsOn": [
+                "Pixi: install",
+                "Pixi: add to PATH",
+                "Direnv: install",
+                "Direnv: add hook to shell"
+            ],
+            "dependsOrder": "sequence"
+        },
+        {
+            "label": "Pixi: install",
+            "command": "curl -fsSL https://pixi.sh/install.sh | sh"
+        },
+        {
+            "label": "Pixi: add to PATH",
+            "command": "for file in \"$HOME/.profile\" \"$HOME/.bashrc\"; do touch \"$file\"; if ! grep -Fqx 'export PATH=\"$HOME/.pixi/bin:$PATH\"' \"$file\"; then if [ -s \"$file\" ]; then sed -i '1i export PATH=\"$HOME/.pixi/bin:$PATH\"' \"$file\"; else printf '%s\\n' 'export PATH=\"$HOME/.pixi/bin:$PATH\"' > \"$file\"; fi; fi; done"
+        },
+        {
+            "label": "Direnv: install",
+            "command": "curl -sfL https://direnv.net/install.sh | bash"
+        },
+        {
+            "label": "Direnv: add hook to shell",
+            "command": "found=0; for shell in bash zsh; do if command -v \"$shell\" >/dev/null 2>&1; then found=1; case \"$shell\" in bash) rc=\"$HOME/.bashrc\"; hook='eval \"$(direnv hook bash)\"' ;; zsh) rc=\"$HOME/.zshrc\"; hook='eval \"$(direnv hook zsh)\"' ;; esac; touch \"$rc\"; if ! grep -Fqx \"$hook\" \"$rc\"; then printf '%s\\n' \"$hook\" >> \"$rc\"; fi; fi; done; if [ \"$found\" -eq 0 ]; then echo 'Error: neither bash nor zsh is installed; cannot configure a direnv hook.' >&2; exit 1; fi"
         }
     ],
     "inputs": [
@@ -428,6 +480,12 @@
             "type": "promptString",
             "description": "Runpod network volume ID for the GPU workspace",
             "default": "gpe8lh1zzb"
+        },
+        {
+            "id": "runpodPodId",
+            "type": "promptString",
+            "description": "Runpod Pod ID for SSH (leave blank to use the active GPU workspace Pod)",
+            "default": ""
         },
         {
             "id": "runpodGpu",
@@ -488,6 +546,12 @@
                 }
             ],
             "default": "tunnel"
+        },
+        {
+            "id": "runpodRemotePath",
+            "type": "promptString",
+            "description": "Remote directory or subpath under /workspace to open in VS Code (optional; defaults to /workspace)",
+            "default": "/workspace"
         },
         {
             "id": "wikiBundle",

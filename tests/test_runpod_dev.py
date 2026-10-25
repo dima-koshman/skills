@@ -294,6 +294,43 @@ def test_custom_gpu_selection_and_cleanup_without_gpu_arg(
     assert not workspace.state.exists()
 
 
+@pytest.mark.parametrize("connection", ["ssh", "tunnel"])
+def test_falls_back_to_ide_when_code_missing(
+    workspace: "_Workspace", connection: str
+) -> None:
+    (workspace.root / "bin/code").rename(workspace.root / "bin/ide")
+    process = workspace.start("--connection", connection)
+    workspace.wait_for_file("opened.json", process)
+    os.killpg(process.pid, signal.SIGTERM)
+    assert process.wait(timeout=10) == 0
+
+
+@pytest.mark.parametrize(
+    ("connection", "remote_path", "expected_remote"),
+    [
+        ("ssh", "/workspace/project-a", "ssh-remote+runpod-devbox"),
+        ("tunnel", "project-a", "tunnel+dima-gpu-dev"),
+    ],
+)
+def test_custom_remote_path_opens_requested_folder(
+    workspace: "_Workspace",
+    connection: str,
+    remote_path: str,
+    expected_remote: str,
+) -> None:
+    process = workspace.start("--connection", connection, "--remote-path", remote_path)
+    workspace.wait_for_file("opened.json", process)
+    opened = json.loads((workspace.root / "opened.json").read_text())
+    assert opened == [
+        "--new-window",
+        "--remote",
+        expected_remote,
+        "/workspace/project-a",
+    ]
+    os.killpg(process.pid, signal.SIGTERM)
+    assert process.wait(timeout=10) == 0
+
+
 class _Workspace:
     def __init__(self, root: pathlib.Path):
         self.root = root

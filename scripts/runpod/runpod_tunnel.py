@@ -30,6 +30,7 @@ def connect(
     stop: threading.Event,
     pod_id: str,
     env: dict[str, str],
+    editor: str = "code",
 ) -> None:
     deadline = time.monotonic() + args.ready_timeout
     seen: set[tuple[str, str]] = set()
@@ -65,13 +66,14 @@ def connect(
                 tunnel_name = match[1]
         if gpu_ready and tunnel_name:
             check_cancel()
+            remote_path = getattr(args, "remote_path", "/workspace")
             result = subprocess.run(
                 [
-                    "code",
+                    editor,
                     "--new-window",
                     "--remote",
                     f"tunnel+{tunnel_name}",
-                    "/workspace",
+                    remote_path,
                 ],
                 env=env,
                 timeout=30,
@@ -81,7 +83,7 @@ def connect(
             if result.returncode:
                 raise RuntimeError("VS Code failed to open the remote window.")
             print(
-                f"Browser alternative: https://vscode.dev/tunnel/{tunnel_name}/workspace",
+                f"Browser alternative: https://vscode.dev/tunnel/{tunnel_name}{remote_path}",
                 flush=True,
             )
             return

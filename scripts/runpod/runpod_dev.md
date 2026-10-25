@@ -49,8 +49,9 @@ runs the CLI outside the project so a project `.env` cannot select an unintended
 account. API response bodies and credentials are not printed.
 
 Run `python3 scripts/runpod/runpod_dev.py --help` for options. The task passes the picker
-values to `--gpu` and `--connection`; direct script calls retain `--gpu "NVIDIA GeForce RTX 4090"`
-and `--connection ssh` as defaults.
+values to `--gpu`, `--connection`, and `--remote-path` (accepts `/workspace`, an absolute path
+under `/workspace`, or a relative subpath); direct script calls retain
+`--gpu "NVIDIA GeForce RTX 4090"`, `--connection ssh`, and `--remote-path /workspace` as defaults.
 SSH mode uses the task's existing key `~/.runpod/ssh/RunPod-Key-Go`, registers its
 public key, updates the `runpod-devbox` alias, and requires Microsoft's
 Remote - SSH extension. Use a network that permits SSH.

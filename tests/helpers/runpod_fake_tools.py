@@ -14,7 +14,7 @@ def main() -> None:
     path = root / "account.json"
     account = json.loads(path.read_text())
     mode = (root / "mode").read_text()
-    if tool == "code":
+    if tool in ("code", "ide"):
         (root / "opened.json").write_text(json.dumps(args))
         sys.exit(1 if mode == "code-fails" else 0)
     if tool == "ssh":

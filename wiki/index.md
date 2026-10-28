@@ -165,12 +165,15 @@ okf_version: "0.2"
 ## distributed-systems
 
 * [Bigtable](/software-engineering/distributed-systems/bigtable.md) `[Reference]` - A distributed sorted store whose data layout is part of the application design.
+* [Cosmos DB Partitioning](/software-engineering/distributed-systems/cosmos-db-partitioning.md) `[Concept]` - How Azure Cosmos DB maps many logical partitions (one per partition-key value) onto few physical partitions, why per-key limits are ceilings rather than guarantees, and why partitioning alone does not isolate tenants.
 * [Designing Data-Intensive Applications](/software-engineering/distributed-systems/designing_data_intensive_applications.md) `[Reference]` - Martin Kleppmann's guide to the trade-offs behind reliable storage and data processing.
 * [Dynamo](/software-engineering/distributed-systems/dynamo.md) `[Reference]` - An availability-oriented key-value store that exposes conflict resolution to applications.
 * [Google File System](/software-engineering/distributed-systems/google_file_system.md) `[Reference]` - A filesystem designed around large data workloads and routine hardware failure.
 * [MapReduce](/software-engineering/distributed-systems/map_reduce.md) `[Reference]` - A programming model and runtime for fault-tolerant parallel batch processing.
+* [OpenAI Habitat](/software-engineering/distributed-systems/openai-habitat.md) `[Reference]` - How OpenAI scaled its online storage layer to 70M+ requests per second for 1B+ weekly users — a library turned Python service turned Rust service with a deliberately narrow API in front of Azure Cosmos DB, and a round trip from shared to dedicated and back to shared database containers.
 * [Raft](/software-engineering/distributed-systems/raft.md) `[Reference]` - Consensus for a replicated log, organized around leader election, replication, and safety.
 * [Spanner](/software-engineering/distributed-systems/spanner.md) `[Reference]` - A globally replicated database combining transactions with explicit clock uncertainty.
+* [TAO](/software-engineering/distributed-systems/tao.md) `[Reference]` - Facebook's read-optimized, geographically distributed graph store — a fixed objects-and-associations API served by a two-tier cache over sharded MySQL, replacing client-side memcache logic.
 
 ## frontend
 

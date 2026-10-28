@@ -12,6 +12,7 @@ related:
 - /software-engineering/communication/grpc.md
 - /software-engineering/reliability/metastable-failures.md
 - /ai-engineering/enterprise/llm-gateway.md
+- /software-engineering/distributed-systems/openai-habitat.md
 uses: /software-engineering/infrastructure/planes.md
 implementation_example: Istio
 data_plane_modes:
@@ -106,6 +107,11 @@ A mesh is a good single place for the mechanical defenses against
 | Load shedding | Partly: Envoy's adaptive concurrency filter lowers the in-flight limit when latency rises above a measured baseline, at the cost of some 503s while it re-measures[^envoy-adaptive-concurrency] | Shedding based on what the proxy can't see: CPU, internal queues, request cost |
 | Dropping doomed work | Partly: Envoy sends the remaining time budget upstream in `x-envoy-expected-rq-timeout-ms` and cancels requests that time out[^envoy-router] | The service must read the deadline and stop work on cancellation; otherwise it keeps computing for nobody |
 | Prioritization, degradation, recover-friendly caching | No | Which requests matter more, what to serve degraded, read-through vs look-aside caching |
+
+A mesh also helps when a service runs **many small processes**, as Python services often do. A proxy can
+pool connections across them, upgrade HTTP/1 to HTTP/2 so many requests share one connection, and apply
+rate limits and circuit breakers to the pod's total traffic instead of each process's slice. OpenAI's
+Habitat used Envoy this way. See [OpenAI Habitat](/software-engineering/distributed-systems/openai-habitat.md).
 
 So a mesh makes stable systems *easier* — one policy for every service, in every language — but not
 automatic. Its main hazard is a hidden extra retry layer: adding Istio to services that already retry

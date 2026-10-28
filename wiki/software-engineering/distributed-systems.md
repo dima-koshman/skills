@@ -28,6 +28,9 @@ topics:
 - /software-engineering/distributed-systems/map_reduce.md
 - /software-engineering/distributed-systems/raft.md
 - /software-engineering/distributed-systems/spanner.md
+- /software-engineering/distributed-systems/tao.md
+- /software-engineering/distributed-systems/openai-habitat.md
+- /software-engineering/distributed-systems/cosmos-db-partitioning.md
 ---
 
 These sources explain the mechanisms behind the choices in
@@ -47,13 +50,18 @@ publication version. Links checked: 2026-10-11.
 | [Dynamo](/software-engineering/distributed-systems/dynamo.md) | What happens when writes remain available during failures? |
 | [Raft](/software-engineering/distributed-systems/raft.md) | How do replicas agree on a sequence of commands? |
 | [Spanner](/software-engineering/distributed-systems/spanner.md) | How can geographically distributed transactions preserve external consistency? |
+| [TAO](/software-engineering/distributed-systems/tao.md) | How does a fixed graph API let a cache tier own consistency and herd protection? |
+| [OpenAI Habitat](/software-engineering/distributed-systems/openai-habitat.md) | How does a storage layer survive >10× yearly growth, and when is multi-tenancy worth it? |
+| [Cosmos DB Partitioning](/software-engineering/distributed-systems/cosmos-db-partitioning.md) | Why don't logical partitions get the limits and isolation they seem to promise? |
 
 ## Suggested route
 
 Start with the failure and consistency chapters in Designing Data-Intensive
 Applications. Then compare Dynamo with Raft, followed by Spanner. For
 data-engineering work, read Google File System, MapReduce, and Bigtable together
-to see how storage and computation fit together.
+to see how storage and computation fit together. For online serving at scale,
+read TAO, then OpenAI Habitat, which borrows TAO's data model and cache
+invalidation.
 
 Treat the papers as historical designs with explicit workload assumptions.
 Their implementation details and measurements describe the published systems;

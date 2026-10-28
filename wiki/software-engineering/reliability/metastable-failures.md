@@ -12,6 +12,7 @@ related:
 - /software-engineering/reliability/sre.md
 - /ai-engineering/enterprise/llm-gateway.md
 - /software-engineering/infrastructure/service-mesh.md
+- /software-engineering/distributed-systems/openai-habitat.md
 sources:
 - id: bronson-hotos21
   resource: https://sigops.org/s/conferences/hotos/2021/papers/hotos21-s11-bronson.pdf
@@ -86,6 +87,12 @@ end when the trigger ends, like a denial-of-service attack, are not metastable.[
 
 In a study of 22 metastable failures at 11 organizations, at least 4 of the 15 major AWS outages of the
 past decade were of this kind.[^huang-osdi22]
+
+A less obvious loop: **LIFO connection reuse.** OpenAI's Python storage service used aiohttp, which reuses
+the most recently returned connection. Connections to slow server processes return last, so they are
+picked first, and the slow processes get even more work. Overloaded processes stayed overloaded after the
+bursty client stopped, until restarted. FIFO reuse broke the loop. See
+[OpenAI Habitat](/software-engineering/distributed-systems/openai-habitat.md).
 
 ## Making a system resilient
 

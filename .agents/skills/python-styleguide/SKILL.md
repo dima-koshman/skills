@@ -773,6 +773,47 @@ Don't use this pattern when the argument's type already excludes `None` — a pl
 is simpler. The sentinel is only justified when both `None` and "not passed" are
 meaningful, distinct states.
 
+## Arbitrary key-value pairs: a dict argument, not `**kwargs`
+
+When a function takes arbitrary key-value pairs as data (HTML or XML attributes, HTTP
+headers, metric labels, template variables) and has any other parameter, take them as an
+explicit, named dict argument instead of `**kwargs`. With `**kwargs`, the data keys share one
+namespace with the function's own parameters: a key that happens to match a parameter name
+cannot be passed, or binds to the parameter instead of joining the data. A parameter added
+later silently breaks every caller that already used that key.
+
+Positional-only parameters (`/`) protect only the parameters before the `/`. Any keyword
+option still collides, so they are no fix once the function needs one.
+
+```python
+# Good — the attributes are data in their own argument, so no key can collide
+def build_xml_tag(
+    tag: str,
+    text: str,
+    *,
+    with_newlines: bool = False,
+    attributes: Mapping[str, str] | None = None,
+) -> str: ...
+
+build_xml_tag("entity_type", guidance, attributes={"name": entity_type, "tag": "pii"})
+
+# Bad — a "tag" attribute raises TypeError: got multiple values for argument 'tag'
+def build_xml_tag(tag: str, text: str, **attributes: str) -> str: ...
+
+# Bad — "/" frees "tag" and "text", but an attribute named "with_newlines" sets the option
+def build_xml_tag(
+    tag: str, text: str, /, *, with_newlines: bool = False, **attributes: str
+) -> str: ...
+```
+
+Two uses of `**kwargs` are fine:
+
+- **The function takes nothing else.** `def labels(**pairs: str) -> dict[str, str]` has no
+    parameters for a key to collide with.
+- **Forwarding keyword arguments to another callable.** `**httpx_kwargs` passed on to
+    `httpx.get(...)` are the callee's own named parameters, not arbitrary data, and a
+    collision there is a real conflict worth an error.
+
 ## Public API in `__init__.py`
 
 Everything imported or defined in an `__init__.py` is treated as the package's public API

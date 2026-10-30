@@ -34,6 +34,7 @@ Reference: Nathan Bronson and colleagues,
 TAO serves Facebook's social graph through a small, fixed set of queries. It handled "a billion reads and
 millions of writes each second", with a sampled workload of 99.8% reads.[^tao] Nathan Bronson, its first
 author, later co-wrote the [metastable failures](/software-engineering/reliability/metastable-failures.md) paper.
+TAO's own connection pool to MySQL caused one: a two-year network link imbalance described on that page.
 
 ## Key ideas
 

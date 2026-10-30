@@ -98,6 +98,7 @@ come back to the pool last, so they get picked first, which sends more work to t
 already struggling. Some processes saw 5–10× average concurrency and stayed degraded until restarted,
 long after the bursty client stopped — a [metastable failure](/software-engineering/reliability/metastable-failures.md).
 Capping connection lifetime limited it; FIFO reuse fixed it and also cut steady-state variance.[^part1]
+Facebook hit the same loop in 2014 with TAO's MRU pool and congested network links.
 Today they rely on Istio and Envoy for pooling and load-aware balancing.[^part1]
 
 ### Put fan-in in the proxy

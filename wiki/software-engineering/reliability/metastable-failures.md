@@ -44,9 +44,19 @@ sources:
   title: Fail at Scale and controlling queue delay (secondhand summary of Ben Maurer, ACM Queue 2015)
   author: Adrian Colyer
   last_modified: '2015-11-19T00:00:00Z'
+- id: fb-link-imbalance
+  resource: https://engineering.fb.com/2014/11/14/production-engineering/solving-the-mystery-of-link-imbalance-a-metastable-failure-state-at-scale/
+  title: 'Solving the Mystery of Link Imbalance: A Metastable Failure State at Scale'
+  author: Nathan Bronson (Facebook)
+  last_modified: '2014-11-14T00:00:00Z'
+- id: habitat-part1
+  resource: https://openai.com/index/scaling-storage-one-billion-users-part-one/
+  title: Rapidly scaling online storage to serve over 1 billion ChatGPT users (Part I)
+  author: Jon Lee, Chaomin Yu, Ben Ries (OpenAI)
+  last_modified: '2026-09-11T00:00:00Z'
 generated:
   by: claude-code/claude-opus-5-5
-  at: '2026-10-16T16:00:00+04:00'
+  at: '2026-10-29T10:00:00+04:00'
 ---
 
 A metastable failure is an outage that **outlives its cause**. A trigger knocks the system into a bad
@@ -88,11 +98,46 @@ end when the trigger ends, like a denial-of-service attack, are not metastable.[
 In a study of 22 metastable failures at 11 organizations, at least 4 of the 15 major AWS outages of the
 past decade were of this kind.[^huang-osdi22]
 
-A less obvious loop: **LIFO connection reuse.** OpenAI's Python storage service used aiohttp, which reuses
-the most recently returned connection. Connections to slow server processes return last, so they are
-picked first, and the slow processes get even more work. Overloaded processes stayed overloaded after the
-bursty client stopped, until restarted. FIFO reuse broke the loop. See
+## A less obvious loop: newest-first connection reuse
+
+A connection pool that hands out the **most recently returned** connection (MRU, or LIFO) looks harmless:
+spare connections idle out, and the pool sizes itself. But in a burst, the requests on a *slow* path finish
+last, so their connections go back on top of the pool and are picked first. Work concentrates on whatever
+is already slow. One client can't overload anything; hundreds of clients doing it at once can.
+
+**Facebook, 2014: link imbalance.** Switches spread TCP flows across the links of an aggregated bundle
+by hashing each flow's addresses and ports, so a connection stays on one link. Sometimes most connections
+landed on one link, which overloaded and dropped packets while the other links sat idle, until traffic was
+drained or the hash seed changed. Often draining just moved the problem to another link.[^fb-link-imbalance]
+
+- **Clue.** The overloaded links always carried traffic between MySQL and
+  [TAO](/software-engineering/distributed-systems/tao.md)'s cache servers.[^fb-link-imbalance]
+- **Loop.** TAO's pool reused connections MRU, with a 10 s idle timeout. Loading a cold user's data sends
+  50–100 queries to one database at once. Queries over the congested link "lose the race reliably, even if
+  only by a few milliseconds", become most recently used, and get the next queries. "If it finds a slow
+  link it will rapidly shift a large amount of traffic toward it."[^fb-link-imbalance]
+- **Triggers** varied: a bulk transfer, hardware failure, a spike in database queries. The pool "doesn't
+  create congestion but makes it metastable".[^fb-link-imbalance]
+- **Why it took over two years.** Each layer was correct on its own, and the pool code hadn't changed in
+  a year. The application never chose a route; latency was the hidden channel carrying routing information
+  into the pool. A 2 ms queueing delay was enough to be visible.[^fb-link-imbalance]
+- **Fix.** Switch the pool to least recently used, with a maximum connection age. That costs slightly more
+  database connections. With a runtime switch, an induced imbalance disappeared within seconds of enabling
+  LRU, and they couldn't reproduce it under LRU.[^fb-link-imbalance]
+
+**OpenAI, 2025: process imbalance.** Habitat's Python service used aiohttp, whose pool also reuses
+connections LIFO. Here the slow paths were overloaded server processes, not network links. Some processes
+saw 5–10× average concurrency and stayed degraded after the bursty client stopped, until restarted.
+Capping connection lifetime limited it; FIFO reuse fixed it.[^habitat-part1] See
 [OpenAI Habitat](/software-engineering/distributed-systems/openai-habitat.md).
+
+Lessons:
+
+- Don't use newest-first pools for connections whose speed varies by path. Bronson's literal conclusion:
+  "MRU connection pools shouldn't be used for connections that traverse aggregated links."[^fb-link-imbalance]
+- Cap connection age, so stale routing decisions expire.
+- For emergent behavior that no single component explains, Bronson suggests treating the components "as
+  agents colluding via covert channels" and investigating across layers and teams.[^fb-link-imbalance]
 
 ## Making a system resilient
 
@@ -129,3 +174,5 @@ application.
 [^brooker-retries]: Marc Brooker, AWS Builders' Library.
 [^aws-load-shedding]: AWS Builders' Library.
 [^fail-at-scale]: Adrian Colyer's summary of Ben Maurer's ACM Queue article (secondhand).
+[^fb-link-imbalance]: Nathan Bronson, Facebook Engineering, 2014-11-14.
+[^habitat-part1]: OpenAI, Habitat Part I, 2026-09-11.

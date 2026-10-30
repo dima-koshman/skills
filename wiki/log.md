@@ -1,5 +1,9 @@
 # Knowledge history
 
+## 2026-10-29
+
+- **Update**: Added a newest-first connection reuse section to [Metastable Failures](/software-engineering/reliability/metastable-failures.md). It covers Facebook's 2014 link-imbalance incident (Bronson): TAO's MRU pool to MySQL concentrated flows on a congested aggregated link and kept it overloaded, fixed with LRU plus a maximum connection age. Placed it beside OpenAI Habitat's LIFO case. Linked the incident from [TAO](/software-engineering/distributed-systems/tao.md).
+
 ## 2026-10-28
 
 - **Creation**: Added [OpenAI Habitat](/software-engineering/distributed-systems/openai-habitat.md) from OpenAI's two-part post on scaling online storage (2026-09-11, 2026-10-23). It covers: Python as planned debt until the Rust rewrite; asyncio loop lag; LIFO connection reuse as a metastable loop; Envoy fan-in with HTTP/2; the narrow TAO-style API; and the shared → dedicated → shared container journey. Added [TAO](/software-engineering/distributed-systems/tao.md) from the ATC '13 paper, with a comparison to Habitat. Added [Cosmos DB Partitioning](/software-engineering/distributed-systems/cosmos-db-partitioning.md): containers, logical vs physical partitions, weak partitions, and why the two don't line up (Microsoft Learn docs).

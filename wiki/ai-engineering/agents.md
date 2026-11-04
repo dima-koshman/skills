@@ -16,6 +16,7 @@ topics:
 - /ai-engineering/agents/codex.md
 - /ai-engineering/agents/deep-agents.md
 - /ai-engineering/agents/devin.md
+- /ai-engineering/agents/llm-browser-use.md
 - /ai-engineering/agents/opencode.md
 - /ai-engineering/agents/peer-agents.md
 generated:
@@ -33,5 +34,6 @@ generated:
 - [Codex](/ai-engineering/agents/codex.md) — OpenAI's coding agent — an open-source terminal CLI plus cloud environments, powered by OpenAI's coding models.
 - [Deep Agents](/ai-engineering/agents/deep-agents.md) — Opinionated LangChain package for high level agent patterns.
 - [Devin](/ai-engineering/agents/devin.md) — Cognition's autonomous AI software engineer — a cloud agent that executes coding tasks end-to-end in its own sandbox.
+- [LLM Browser Use](/ai-engineering/agents/llm-browser-use.md) — How LLMs operate real web browsers — the browser driver, the page representation the model reads, the control style and the hosting, with Playwright, Stagehand and Browserbase as examples.
 - [OpenCode](/ai-engineering/agents/opencode.md) — Open-source, terminal-native, model-agnostic coding agent — a vendor-neutral alternative to Claude Code.
 - [Peer Agents](/ai-engineering/agents/peer-agents.md) — Independently governed agents that own goals and coordinate as peers rather than through a permanent parent.

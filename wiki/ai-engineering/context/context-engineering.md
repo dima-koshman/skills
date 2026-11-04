@@ -12,13 +12,21 @@ related:
 - /ai-engineering/context/prompt-caching.md
 - /ai-engineering/context/rag.md
 - /ai-engineering/context/memory.md
+- /ai-engineering/context/skills.md
+- /ai-engineering/context/tool-result-offloading.md
+- /ai-engineering/harness/subagents.md
 sources:
 - id: ref-1
   resource: https://docs.langchain.com/oss/python/deepagents/context-engineering
   title: docs.langchain.com
+- id: chase-late-2026
+  resource: https://www.langchain.com/blog/context-engineering-challenges-late-2026
+  title: New context engineering challenges in late 2026
+  author: Harrison Chase
+  last_modified: '2026-11-02'
 generated:
-  by: antigravity/gemini-3-8-flash
-  at: '2026-10-15T17:36:45+04:00'
+  by: claude-code/claude-opus-5-5
+  at: '2026-11-04T10:40:00+04:00'
 ---
 
 Reference: <https://docs.langchain.com/oss/python/deepagents/context-engineering>
@@ -30,3 +38,20 @@ conversation history — and managing the limited context window. It is the broa
 successor discipline to prompt engineering.
 
 A core principle of modern context engineering is designing for [prompt caching](/ai-engineering/context/prompt-caching.md). Because provider caches rely on prefix matching, context must be assembled with static components (base prompts, invariant tool schemas, project configs) positioned strictly before dynamic components (session context, recent tool results, user messages). Inadvertently modifying or reordering early context breaks caching across the entire conversation.
+
+# Cornerstones
+
+Harrison Chase lists the "standard-ish" solutions that agent harnesses have converged on as of late 2026:[^chase-late-2026]
+
+| Technique | Problem it handles |
+| --- | --- |
+| Summarizing long threads | History outgrows the context window |
+| [Offloading large tool results](/ai-engineering/context/tool-result-offloading.md) | One result is too big to keep in context |
+| [Skills](/ai-engineering/context/skills.md) | Instructions load only when relevant (progressive disclosure) |
+| Tool search | Too many tools to list up front |
+| [Subagents](/ai-engineering/harness/subagents.md) | Isolate a subtask's context from the main thread |
+| Bash as a primary tool | Replaces many specialized tools |
+
+His argument is that these solve the known problems, and that proactive, always-on, goal-oriented agents raise new ones: when to interrupt, what to remember, async work, goal tracking, alignment and browser use. He says the industry doesn't necessarily have general solutions for those yet.[^chase-late-2026]
+
+[^chase-late-2026]: Harrison Chase, LangChain blog, 2026-11-02.

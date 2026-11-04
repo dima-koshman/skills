@@ -24,6 +24,9 @@ looking for now.
     coordinating workers, rather than generic API-tool orchestration.
 - **Software engineering decisions at scale:** why strong organizations choose what
   they choose (monorepos, SRE practice, distributed systems).
+- **Which skills hold value as AI improves (2026-11-04):** he wants to hand execution to
+  AI and move up to directing it. Looking for general skills that gain value as models
+  improve, plus evidence on supervision and skill loss.
 - **State of LLMs:** which models lead on quality, price and speed. For an actual
   model pick, use the `ranking-llms-by-benchmark` skill.
 

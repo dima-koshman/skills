@@ -28,6 +28,7 @@ okf_version: "0.2"
 * [Codex](/ai-engineering/agents/codex.md) `[Tool]` - OpenAI's coding agent — an open-source terminal CLI plus cloud environments, powered by OpenAI's coding models.
 * [Deep Agents](/ai-engineering/agents/deep-agents.md) `[Tool]` - Opinionated LangChain package for high level agent patterns.
 * [Devin](/ai-engineering/agents/devin.md) `[Tool]` - Cognition's autonomous AI software engineer — a cloud agent that executes coding tasks end-to-end in its own sandbox.
+* [LLM Browser Use](/ai-engineering/agents/llm-browser-use.md) `[Concept]` - How LLMs operate real web browsers — the browser driver, the page representation the model reads, the control style and the hosting, with Playwright, Stagehand and Browserbase as examples.
 * [OpenCode](/ai-engineering/agents/opencode.md) `[Tool]` - Open-source, terminal-native, model-agnostic coding agent — a vendor-neutral alternative to Claude Code.
 * [Peer Agents](/ai-engineering/agents/peer-agents.md) `[Concept]` - Independently governed agents that own goals and coordinate as peers rather than through a permanent parent.
 
@@ -77,9 +78,12 @@ okf_version: "0.2"
 * [OpenWiki](/ai-engineering/context/openwiki.md) `[Tool]` - LangChain's early-stage CLI for generating and maintaining agent-facing Markdown wikis from local knowledge sources.
 * [Prompt Caching](/ai-engineering/context/prompt-caching.md) `[Concept]` - Reusing cached prefix tokens across LLM requests to minimize latency and token costs, and how to design agent harnesses around cache preservation.
 * [RAG](/ai-engineering/context/rag.md) `[Concept]` - Retrieval-augmented generation — fetching relevant documents at query time and adding them to the model's context.
+* [Tool Result Offloading](/ai-engineering/context/tool-result-offloading.md) `[Practice]` - Store a large tool result outside the context window and keep only a path and preview, so the model can fetch the rest when it needs it.
 
 ## development
 
+* [Agent Verification and Self-Improvement](/ai-engineering/development/agent-self-improvement.md) `[Concept]` - Agents can only be trusted, delegated to, or left to improve themselves as far as something independent can check their work, so verification sets the limit on supervision and on self-improvement.
+* [AI Productivity Evidence](/ai-engineering/development/ai-productivity-evidence.md) `[Reference]` - What controlled trials and surveys show about AI's effect on software development speed, and what they don't measure.
 * [AI-Native SDLC](/ai-engineering/development/ai-native-sdlc.md) `[Practice]` - A software lifecycle rebuilt as a loop of committed artifacts, with agents doing the work between gates and humans owning every judgment call.
 * [Observability-Driven AI-Assisted Development](/ai-engineering/development/observability-driven-development.md) `[Practice]` - A development loop where AI agents use real runtime telemetry as evidence for diagnosis, remediation, and verification.
 

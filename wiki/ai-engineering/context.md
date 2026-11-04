@@ -16,6 +16,7 @@ topics:
 - /ai-engineering/context/prompt-caching.md
 - /ai-engineering/context/rag.md
 - /ai-engineering/context/skills.md
+- /ai-engineering/context/tool-result-offloading.md
 generated:
   by: antigravity/gemini-3-8-flash
   at: '2026-10-15T17:36:30+04:00'
@@ -32,3 +33,4 @@ generated:
 - [Prompt Caching](/ai-engineering/context/prompt-caching.md) — Reusing cached prefix tokens across LLM requests to minimize latency and token costs, and how to design agent harnesses around cache preservation.
 - [RAG](/ai-engineering/context/rag.md) — Retrieval-augmented generation — fetching relevant documents at query time and adding them to the model's context.
 - [Agent Skills](/ai-engineering/context/skills.md) — Packaged instruction files an agent loads on demand — most useful as behavior control, and a context tax when installed indiscriminately.
+- [Tool Result Offloading](/ai-engineering/context/tool-result-offloading.md) — Store a large tool result outside the context window and keep only a path and preview, so the model can fetch the rest when it needs it.

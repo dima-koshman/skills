@@ -1,5 +1,11 @@
 # Knowledge history
 
+## 2026-11-04
+
+- **Creation**: Added [Agent Verification and Self-Improvement](/ai-engineering/development/agent-self-improvement.md), linking Sutton's Verification Principle, the supervision paradox, reward hacking and a five-level self-improvement ladder, from the Darwin Godel Machine, AIDE2 and Anthropic. Added [AI Productivity Evidence](/ai-engineering/development/ai-productivity-evidence.md) after Dima questioned the METR slowdown result; it compares the controlled trials and surveys and says what none of them measures.
+- **Creation**: Added [Tool Result Offloading](/ai-engineering/context/tool-result-offloading.md) as a cornerstone of context engineering, prompted by Harrison Chase's 2026-11-02 post. It compares Deep Agents, Claude Code and Manus, the storage backends, and clearing, truncation and summarization. Added a Cornerstones section to [Context Engineering](/ai-engineering/context/context-engineering.md) and linked the new concept from [LLM Browser Use](/ai-engineering/agents/llm-browser-use.md).
+- **Creation**: Added [LLM Browser Use](/ai-engineering/agents/llm-browser-use.md) after Dima asked how Stagehand's act, extract and observe calls work and whether it is cloud-only and paid. It separates the driver, page representation, control style and hosting, and covers Playwright and Playwright MCP, Stagehand, Browserbase, cost and prompt-injection risk, from their docs, Anthropic's computer use docs and Browserbase pricing.
+
 ## 2026-10-29
 
 - **Update**: Added a newest-first connection reuse section to [Metastable Failures](/software-engineering/reliability/metastable-failures.md). It covers Facebook's 2014 link-imbalance incident (Bronson): TAO's MRU pool to MySQL concentrated flows on a congested aggregated link and kept it overloaded, fixed with LRU plus a maximum connection age. Placed it beside OpenAI Habitat's LIFO case. Linked the incident from [TAO](/software-engineering/distributed-systems/tao.md).

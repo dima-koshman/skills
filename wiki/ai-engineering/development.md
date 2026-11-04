@@ -7,6 +7,8 @@ tags:
 - development
 parent: /ai-engineering.md
 topics:
+- /ai-engineering/development/agent-self-improvement.md
+- /ai-engineering/development/ai-productivity-evidence.md
 - /ai-engineering/development/ai-native-sdlc.md
 - /ai-engineering/development/observability-driven-development.md
 generated:
@@ -16,5 +18,7 @@ generated:
 
 ## Topics
 
+- [Agent Verification and Self-Improvement](/ai-engineering/development/agent-self-improvement.md) — Agents can only be trusted, delegated to, or left to improve themselves as far as something independent can check their work, so verification sets the limit on supervision and on self-improvement.
+- [AI Productivity Evidence](/ai-engineering/development/ai-productivity-evidence.md) — What controlled trials and surveys show about AI's effect on software development speed, and what they don't measure.
 - [AI-Native SDLC](/ai-engineering/development/ai-native-sdlc.md) — A software lifecycle rebuilt as a loop of committed artifacts, with agents doing the work between gates and humans owning every judgment call.
 - [Observability-Driven AI-Assisted Development](/ai-engineering/development/observability-driven-development.md) — A development loop where AI agents use real runtime telemetry as evidence for diagnosis, remediation, and verification.

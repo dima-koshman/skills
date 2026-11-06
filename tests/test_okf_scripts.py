@@ -1613,9 +1613,10 @@ def test_site_direct_sidebar_click_opens_without_attention_pulse(
 const fs = require('node:fs');
 const vm = require('node:vm');
 const html = fs.readFileSync(process.argv[1], 'utf8');
-const definition = html.match(/function onNavConceptClick\(ev, id\) \{.*?\n}/s)[0];
+const definition = ['cancelNavClick', 'deferNavClick', 'onNavConceptClick']
+  .map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}'))[0]).join('\n');
 const opened = [];
-const context = {DOUBLE_CLICK_MS: 150,
+const context = {DOUBLE_CLICK_MS: 150, expanded: new Set(),
   directoryForNode: id => id === 'merged.md' ? 'Services' : null,
   openConcept: (...args) => opened.push(args), expandDir: (_path, done) => done(),
   clearTimeout: () => {},
@@ -1686,14 +1687,15 @@ def test_site_first_overview_click_expands_its_directory_and_opens_page(
 const fs = require('node:fs');
 const vm = require('node:vm');
 const html = fs.readFileSync(process.argv[1], 'utf8');
-const definition = html.match(/function onNavConceptClick\([^]*?\n}/s)[0];
+const definition = ['cancelNavClick', 'deferNavClick', 'onNavConceptClick']
+  .map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}'))[0]).join('\n');
 const path = 'Services/AI Gateway';
 const id = path + '.md';
 const expanded = new Set();
 const actions = [];
 let timer;
 const context = {
-  expanded, DOUBLE_CLICK_MS: 150, pendingNavClick: null,
+  expanded, DOUBLE_CLICK_MS: 150, pendingNavClick: null, navClickStart: null,
   directoryForNode: () => path,
   clearTimeout() {}, setTimeout: callback => { timer = callback; return 1; },
   expandDir: (value, done) => { expanded.add(value); actions.push(['expand', value]); done(); },
@@ -1722,6 +1724,183 @@ process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path) }));
     }
 
 
+_SIDEBAR_DIRECTORY_HARNESS = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const [target, start] = JSON.parse(process.argv[2]);
+const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
+const names = ['directoryForNode', 'ancestorsOf', 'setExpanded', 'expandDir', 'collapseDir', 'subtreeOf', 'expandDirDeep',
+  'collapseDirDeep', 'toggleDirectory', 'collapseNodeIntoParent', 'onNodeDoubleClick', 'deferNavClick', 'cancelNavClick',
+  'onNavConceptClick', 'onNavDoubleClick', 'buildTree', 'renderTree'];
+const definitions = names.flatMap(name =>
+  html.match(new RegExp('^function ' + name + '\\((?:.*}$|[^]*?\\n})', 'm')) ?? []).join('\n');
+function element(tag) {
+  const classes = new Set();
+  return { tag, children: [], dataset: {}, listeners: {}, className: '', innerHTML: '',
+    classList: { add: name => classes.add(name), contains: name => classes.has(name) }, setAttribute() {},
+    addEventListener(name, callback) { this.listeners[name] = callback; },
+    appendChild(child) { this.children.push(child); } };
+}
+const dirs = {};
+for (const n of data.nodes) {
+  const parts = n.id.split('/');
+  for (let i = 1; i < parts.length; i++) {
+    const path = parts.slice(0, i).join('/');
+    (dirs[path] ||= { name: parts[i - 1], concepts: [], files: 0 }).concepts.push(n.id);
+  }
+}
+for (const path of Object.keys(dirs)) dirs[path].overviewId = data.nodes.some(n => n.id === path + '.md') ? path + '.md' : null;
+const expanded = new Set(start);
+const opened = [];
+const timers = new Map();
+let nextTimer = 0;
+const context = {
+  DATA: data, dirs, expanded, document: { createElement: element }, DOUBLE_CLICK_MS: 150, DIR_PREFIX: 'dir:',
+  pendingNavClick: null, navClickStart: null, escapeHtml: value => value, escapeAttr: value => value,
+  setTimeout: callback => { const id = ++nextTimer; timers.set(id, () => { timers.delete(id); callback(); }); return id; },
+  clearTimeout: id => timers.delete(id),
+  dirLabel: value => dirs[value].name, syncGraph: done => { if (done) done(); },
+  isDirId: id => id.startsWith('dir:'), dirOf: id => id.slice(4),
+  parentDirOf: id => id.includes('/') ? id.slice(0, id.lastIndexOf('/')) : null,
+  openDir: value => opened.push(value), openConcept: value => opened.push(value),
+};
+const tree = vm.runInNewContext(definitions + '\nrenderTree(buildTree(DATA.nodes, []))', context);
+const row = tree.children.find(li => li.dataset.dir === 'Platform').children[0];
+const element_ = { row, caret: row.children[0], title: row.children[1] }[target];
+const flush = () => { for (const callback of [...timers.values()]) callback(); };
+const event = detail => ({ detail, currentTarget: element_, target: element_, preventDefault() {}, stopPropagation() {} });
+"""
+
+
+def _run_sidebar_directory_script(
+    output: pathlib.Path, script: str, target: str, start: list[str]
+) -> dict[str, object]:
+    result = subprocess.run(
+        [
+            "node",
+            "-e",
+            _SIDEBAR_DIRECTORY_HARNESS + script,
+            str(output),
+            json.dumps([target, start]),
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    return cast(dict[str, object], json.loads(result.stdout))
+
+
+def _nested_directories(bundle: pathlib.Path, *, overview: bool) -> pathlib.Path:
+    _write(bundle / "Platform/API/v1/deep.md", {"type": "Service"}, "Deep.")
+    _write(bundle / "Platform/API/v2/other.md", {"type": "Service"}, "Other.")
+    _write(bundle / "Platform/Workers/worker.md", {"type": "Service"}, "Worker.")
+    _write(bundle / "Platform-old/legacy/gone.md", {"type": "Service"}, "Gone.")
+    if overview:
+        _write(bundle / "Platform.md", {"type": "Service", "title": "Platform"}, "Hub.")
+    output = bundle.parent / f"sidebar-deep-{overview}.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    return output
+
+
+_PLATFORM_SUBTREE = [
+    "Platform",
+    "Platform/API",
+    "Platform/API/v1",
+    "Platform/API/v2",
+    "Platform/Workers",
+]
+_DOUBLE_CLICK_TARGETS = pytest.mark.parametrize(
+    ("target", "overview"),
+    [("row", False), ("row", True), ("title", True), ("caret", True)],
+    ids=["plain-row", "merged-row", "merged-title", "merged-caret"],
+)
+_FAST_DOUBLE_CLICK = r"""
+element_.listeners.click(event(1));
+element_.listeners.click(event(2));
+(element_.listeners.dblclick || row.listeners.dblclick)(event(2));
+flush();
+process.stdout.write(JSON.stringify({ expanded: [...expanded].sort(), opened }));
+"""
+_SLOW_DOUBLE_CLICK = r"""
+element_.listeners.click(event(1));
+flush();
+element_.listeners.click(event(2));
+(element_.listeners.dblclick || row.listeners.dblclick)(event(2));
+flush();
+process.stdout.write(JSON.stringify({ expanded: [...expanded].sort() }));
+"""
+
+
+@_DOUBLE_CLICK_TARGETS
+def test_site_sidebar_double_click_expands_whole_directory_subtree(
+    bundle: pathlib.Path, target: str, overview: bool
+) -> None:
+    output = _nested_directories(bundle, overview=overview)
+    result = _run_sidebar_directory_script(output, _FAST_DOUBLE_CLICK, target, [])
+    assert result == {"expanded": _PLATFORM_SUBTREE, "opened": ["Platform"]}
+
+
+@_DOUBLE_CLICK_TARGETS
+@pytest.mark.parametrize(
+    "start",
+    [["Platform"], _PLATFORM_SUBTREE],
+    ids=["one-level-open", "fully-open"],
+)
+def test_site_sidebar_double_click_collapses_whole_open_directory_subtree(
+    bundle: pathlib.Path, target: str, overview: bool, start: list[str]
+) -> None:
+    output = _nested_directories(bundle, overview=overview)
+    result = _run_sidebar_directory_script(
+        output, _FAST_DOUBLE_CLICK, target, [*start, "Platform-old"]
+    )
+    assert result == {"expanded": ["Platform-old"], "opened": ["Platform"]}
+
+
+@_DOUBLE_CLICK_TARGETS
+@pytest.mark.parametrize(
+    ("start", "expected"),
+    [([], _PLATFORM_SUBTREE), (_PLATFORM_SUBTREE, [])],
+    ids=["from-collapsed", "from-open"],
+)
+def test_site_sidebar_slow_double_click_acts_on_state_before_first_click(
+    bundle: pathlib.Path,
+    target: str,
+    overview: bool,
+    start: list[str],
+    expected: list[str],
+) -> None:
+    output = _nested_directories(bundle, overview=overview)
+    result = _run_sidebar_directory_script(output, _SLOW_DOUBLE_CLICK, target, start)
+    assert result == {"expanded": expected}
+
+
+@pytest.mark.parametrize(
+    ("target", "overview"),
+    [("row", False), ("caret", True)],
+    ids=["plain-row", "merged-caret"],
+)
+def test_site_sidebar_directory_single_click_still_toggles_one_level(
+    bundle: pathlib.Path, target: str, overview: bool
+) -> None:
+    output = _nested_directories(bundle, overview=overview)
+    script = r"""
+element_.listeners.click(event(1));
+const beforeWindow = [...expanded];
+flush();
+const afterOpen = [...expanded];
+element_.listeners.click(event(1));
+flush();
+process.stdout.write(JSON.stringify({ beforeWindow, afterOpen, afterClose: [...expanded] }));
+"""
+    assert _run_sidebar_directory_script(output, script, target, []) == {
+        "beforeWindow": [],
+        "afterOpen": ["Platform"],
+        "afterClose": [],
+    }
+
+
 def test_site_sidebar_double_click_toggles_overview_and_collapses_concept_parent(
     bundle: pathlib.Path,
 ) -> None:
@@ -1742,7 +1921,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const html = fs.readFileSync(process.argv[1], 'utf8');
 const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
-const names = ['directoryForNode', 'toggleDirectory', 'collapseNodeIntoParent', 'onNodeDoubleClick', 'onNavConceptClick', 'onNavConceptDoubleClick', 'buildTree', 'renderTree'];
+const names = ['directoryForNode', 'toggleDirectory', 'collapseNodeIntoParent', 'onNodeDoubleClick', 'cancelNavClick', 'deferNavClick', 'onNavConceptClick', 'onNavDoubleClick', 'buildTree', 'renderTree'];
 const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
 function element(tag) {
   const classes = new Set();
@@ -1768,7 +1947,7 @@ const navDelays = [];
 let nextTimer = 0;
 const context = {
   DATA: data, dirs, expanded, document: { createElement: element },
-  DOUBLE_CLICK_MS: 150, pendingNavClick: null,
+  DOUBLE_CLICK_MS: 150, pendingNavClick: null, navClickStart: null,
   setTimeout: (callback, delay) => { navDelays.push(delay); const id = ++nextTimer; timers.set(id, () => { timers.delete(id); callback(); }); return id; },
   clearTimeout: id => timers.delete(id),
   escapeHtml: value => value, escapeAttr: value => value,
@@ -1776,6 +1955,8 @@ const context = {
   isDirId: id => id.startsWith('dir:'), dirOf: id => id.slice(4),
   parentDirOf: id => id.slice(0, id.lastIndexOf('/')),
   expandDir: (value, done) => { if (!expanded.has(value)) { actions.push(['expand', value]); expanded.add(value); } done(); },
+  expandDirDeep: (value, done) => context.expandDir(value, done),
+  collapseDirDeep: (value, done) => context.collapseDir(value, done),
   collapseDir: (value, done) => { if (expanded.has(value)) { actions.push(['collapse', value]); expanded.delete(value); } done(); },
   openDir: value => actions.push(['open', value]),
   openConcept: value => actions.push(['concept', value]),
@@ -1803,7 +1984,6 @@ for (const callback of timers.values()) callback();
 const caret = label.children[0];
 caret.listeners.click({ stopPropagation() {}, detail: 1 });
 caret.listeners.click({ stopPropagation() {}, detail: 2 });
-caret.listeners.dblclick(event);
 label.listeners.dblclick(event);
 overview.classList.add('active');
 click(overview);
@@ -1846,14 +2026,13 @@ process.stdout.write(JSON.stringify({ actions, expanded: expanded.has(path), pre
             ["collapse", "Platform Services/AI Gateway"],
             ["open", "Platform Services/AI Gateway"],
             ["expand", "Platform Services/AI Gateway"],
-            ["open", "Platform Services/AI Gateway"],
             ["concept", "Platform Services/AI Gateway.md"],
             ["collapse", "Platform Services/AI Gateway"],
             ["open", "Platform Services/AI Gateway"],
         ],
         "expanded": False,
         "prematureConcepts": 0,
-        "navDelays": [150, 150, 150, 150, 150, 150, 150, 150, 150, 150],
+        "navDelays": [150] * 12,
         "titleClickStopped": True,
     }
 

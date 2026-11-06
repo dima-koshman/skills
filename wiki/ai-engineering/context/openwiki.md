@@ -38,7 +38,7 @@ reorganization, Claims, and update behavior. Editorial control stays with the
 source bundle, including its type schemas, typed relationships, and matching
 directory-overview concepts. The generated bundle remains derived material.
 
-Use **Wiki: regenerate, render and open** to compare either bundle with the same
+Use **Wiki: regenerate and render** to compare either bundle with the same
 custom renderer; `wiki/` is the default choice. The generation brief tells
 OpenWiki how to interpret source-root links and preserve useful custom properties.
 

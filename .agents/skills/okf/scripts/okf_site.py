@@ -1199,6 +1199,9 @@ function setExpanded(paths, open, done) {
   if (changed) syncGraph(done); else if (done) done();
 }
 function expandDir(path, done) { setExpanded([...ancestorsOf(path + '/x'), path], true, done); }
+function subtreeOf(path) { return Object.keys(dirs).filter(p => p === path || p.startsWith(path + '/')); }
+function expandDirDeep(path, done) { setExpanded([...ancestorsOf(path), ...subtreeOf(path)], true, done); }
+function collapseDirDeep(path, done) { setExpanded(subtreeOf(path), false, done); }
 function collapseDir(path, done) { setExpanded([path], false, done); }
 function collapseAllDirs(done) { stopViewportMotion(); setExpanded([...expanded], false, done); }
 function revealConcept(id, done) { setExpanded(ancestorsOf(id), true, done); }
@@ -1872,14 +1875,27 @@ function buildTree(nodes, assets = DATA.files) {
   return root;
 }
 
-// Sidebar links use the graph's click window so a double-click can cancel navigation.
+// Sidebar entries use the graph's click window so a double-click can cancel the single click.
+// A slower pair lets the first click toggle the directory, so a double-click acts on the state
+// from before that click.
 let pendingNavClick = null;
+let navClickStart = null;
+function cancelNavClick(id) {
+  if (!pendingNavClick) return;
+  clearTimeout(pendingNavClick.timer);
+  if (pendingNavClick.id !== id) pendingNavClick.run();   // a click elsewhere settles the previous one
+  pendingNavClick = null;
+}
+
+function deferNavClick(ev, id, run) {
+  cancelNavClick(id);
+  if (!(ev.detail > 1)) navClickStart = { id, open: expanded.has(directoryForNode(id)) };
+  pendingNavClick = { id, run, timer: setTimeout(() => { pendingNavClick = null; run(); }, DOUBLE_CLICK_MS) };
+}
+
 function onNavConceptClick(ev, id) {
   ev.preventDefault();
-  if (pendingNavClick) {
-    clearTimeout(pendingNavClick.timer);
-    if (pendingNavClick.id !== id) pendingNavClick.run();
-  }
+  cancelNavClick(id);
   const directory = directoryForNode(id);
   const toggleSelected = !!directory && ev.currentTarget.classList.contains('active');
   const run = () => {
@@ -1889,20 +1905,18 @@ function onNavConceptClick(ev, id) {
     } else if (directory) expandDir(directory, () => openConcept(id, false));
     else openConcept(id, false);
   };
-  pendingNavClick = { id, run, timer: setTimeout(() => { pendingNavClick = null; run(); }, DOUBLE_CLICK_MS) };
+  deferNavClick(ev, id, run);
 }
 
-function onNavConceptDoubleClick(ev, id) {
+// A directory entry expands or collapses its whole subtree; a concept folds into its parent.
+function onNavDoubleClick(ev, id) {
   ev.preventDefault();
   ev.stopPropagation();
-  if (pendingNavClick) {
-    clearTimeout(pendingNavClick.timer);
-    if (pendingNavClick.id !== id) pendingNavClick.run();
-    pendingNavClick = null;
-  }
+  cancelNavClick(id);
   const directory = directoryForNode(id);
-  if (directory) toggleDirectory(directory, false);
-  else onNodeDoubleClick(id, false);
+  if (!directory) { onNodeDoubleClick(id, false); return; }
+  const open = navClickStart && navClickStart.id === id ? navClickStart.open : expanded.has(directory);
+  (open ? collapseDirDeep : expandDirDeep)(directory, () => openDir(directory, false));
 }
 
 function renderTree(tree, prefix = '') {
@@ -1916,7 +1930,7 @@ function renderTree(tree, prefix = '') {
     if (n.status && n.status !== 'stable') a.classList.add(n.status);
     a.innerHTML = `<span class="dot" style="background:${n.color}"></span><span>${escapeHtml(n.title)}</span>`;
     a.addEventListener('click', ev => onNavConceptClick(ev, n.id));
-    a.addEventListener('dblclick', ev => onNavConceptDoubleClick(ev, n.id));
+    a.addEventListener('dblclick', ev => onNavDoubleClick(ev, n.id));
     li.appendChild(a);
     ul.appendChild(li);
   });
@@ -1951,8 +1965,7 @@ function renderTree(tree, prefix = '') {
       caret.setAttribute('aria-label', 'Expand or collapse ' + overview.title);
       caret.setAttribute('aria-expanded', 'false');
       caret.textContent = '▸';
-      caret.addEventListener('click', ev => { ev.stopPropagation(); if (ev.detail < 2) toggle(); });
-      caret.addEventListener('dblclick', ev => { ev.preventDefault(); ev.stopPropagation(); });
+      caret.addEventListener('click', ev => { ev.stopPropagation(); deferNavClick(ev, overview.id, toggle); });
       const link = document.createElement('a');
       link.className = 'overview-link';
       link.href = '#' + encodeURIComponent(overview.id);
@@ -1967,12 +1980,13 @@ function renderTree(tree, prefix = '') {
       label.appendChild(link);
       label.appendChild(count);
       label.addEventListener('click', ev => onNavConceptClick(ev, overview.id));
-      label.addEventListener('dblclick', ev => onNavConceptDoubleClick(ev, overview.id));
+      label.addEventListener('dblclick', ev => onNavDoubleClick(ev, overview.id));
     } else {
-      label.title = 'Click to expand or collapse (also in the graph)';
+      label.title = 'Click to expand or collapse (also in the graph); double-click to expand or collapse everything inside';
       label.innerHTML = `<span class="caret">▸</span><span>${escapeHtml(dirLabel(path))}</span>` +
         `<span class="count">${dirs[path].concepts.length + dirs[path].files}</span>`;
-      label.addEventListener('click', toggle);
+      label.addEventListener('click', ev => deferNavClick(ev, DIR_PREFIX + path, toggle));
+      label.addEventListener('dblclick', ev => onNavDoubleClick(ev, DIR_PREFIX + path));
     }
     li.appendChild(label);
     li.appendChild(renderTree(tree.dirs[name], path));

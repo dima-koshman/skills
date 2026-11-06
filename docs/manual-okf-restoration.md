@@ -2,7 +2,7 @@
 
 > **Update 2026-10-15:** maintained knowledge is now one OKF v0.2 bundle in
 > [`wiki/`](../wiki/), with local type schemas, merged directory overviews, and
-> the **Wiki: regenerate, render and open** task. It defaults to `wiki/` and can
+> the **Wiki: regenerate and render** task. It defaults to `wiki/` and can
 > also render `openwiki/`. The recovery steps below are historical; the old
 > skill-contained bundles and Pages deployment remain retired.
 >

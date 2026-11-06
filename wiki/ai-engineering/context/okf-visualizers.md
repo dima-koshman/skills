@@ -83,7 +83,7 @@ Three options:
 
 ## Current local workflow (2026-10-15)
 
-**Wiki: regenerate, render and open** selects `wiki/` (the authoritative source,
+**Wiki: regenerate and render** selects `wiki/` (the authoritative source,
 default) or `openwiki/` (generated experiment). The local reader merges sibling
 directory-overview concepts, uses `_types/` descriptions and `primary_fields` for
 properties and technical details, draws typed frontmatter edges, and renders

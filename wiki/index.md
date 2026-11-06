@@ -41,6 +41,10 @@ okf_version: "0.2"
 * [MAX](/ai-engineering/compute/max.md) `[Tool]` - Modular's AI serving and modeling framework — OpenAI-compatible model serving, a PyTorch-like Python modeling API, and Mojo kernels for CPUs, GPUs and ASICs without depending on CUDA or ROCm.
 * [Mojo](/ai-engineering/compute/mojo.md) `[Tool]` - Modular's Python-like systems language for CPUs, GPUs and other accelerators, built on MLIR; 1.0 and open source (Apache 2.0) since August 2026, owned by Qualcomm.
 * [Neural Processing Unit (NPU)](/ai-engineering/compute/npu.md) `[Concept]` - A hardware accelerator built specifically for neural-network math, usually low-precision and power-efficient, programmed with explicit memory movement rather than the GPU's thread model; Google's TPU is one, and GPU Tensor Cores are the same idea as a unit inside a GPU.
+* [NVIDIA Multi-Instance GPU (MIG)](/ai-engineering/compute/mig.md) `[Concept]` - Hardware partitioning of one GPU into up to seven isolated instances, each with its own compute, cache and memory path, on Ampere and newer data center GPUs.
+* [NVIDIA Multi-Process Service (MPS)](/ai-engineering/compute/mps.md) `[Concept]` - A CUDA runtime service that lets kernels from different processes run on a GPU at the same time, where native multi-process sharing only takes turns on the whole GPU.
+* [NVIDIA Run:ai](/ai-engineering/compute/run-ai.md) `[Tool]` - A Kubernetes platform for GPU scheduling, quotas and fractional GPU sharing across teams, open source since October 2026, with KAI Scheduler as its scheduling engine.
+* [Sharing Accelerators Across Vendors](/ai-engineering/compute/accelerator-sharing.md) `[Concept]` - How NVIDIA, AMD, Apple and Google TPUs let several workloads use one chip, from hardware partitions to time-slicing to exclusive allocation.
 * [SIMD and SIMT](/ai-engineering/compute/simd-simt.md) `[Concept]` - Two ways to run one instruction over many data elements — explicit vector instructions (SIMD) vs NVIDIA's per-thread model on top of vector hardware (SIMT) — and why the difference matters for portable kernels.
 
 ### serving
@@ -59,6 +63,7 @@ okf_version: "0.2"
 * [KV Cache Offloading](/ai-engineering/compute/serving/kv-cache-offloading.md) `[Concept]` - Moving KV state to CPU memory or storage trades GPU residency for transfer work and potentially avoids later recomputation.
 * [LLM Quantization](/ai-engineering/compute/serving/quantization.md) `[Concept]` - Represent weights, activations or KV state with fewer bits to reduce memory and potentially accelerate supported inference kernels.
 * [LLM Serving Metrics](/ai-engineering/compute/serving/serving-metrics.md) `[Concept]` - Latency, throughput and goodput measure different serving goals and must be compared under a specified workload and load.
+* [NVIDIA Triton Inference Server](/ai-engineering/compute/serving/triton-inference-server.md) `[Tool]` - NVIDIA's general-purpose model server, which hosts many models and frameworks behind one API and handles batching, concurrency and backends. Not the Triton GPU kernel language.
 * [PagedAttention](/ai-engineering/compute/serving/paged-attention.md) `[Concept]` - A block table maps logical token positions to noncontiguous KV blocks, reducing allocation waste and enabling flexible sharing.
 * [Pipeline Parallelism](/ai-engineering/compute/serving/pipeline-parallelism.md) `[Concept]` - Place successive groups of model layers on different devices and pipeline requests or microbatches through the stages.
 * [Prefill and Decode](/ai-engineering/compute/serving/prefill-decode.md) `[Concept]` - The two inference phases process a known prompt in parallel, then generate a dependent output sequence token by token.
@@ -66,6 +71,7 @@ okf_version: "0.2"
 * [Prefix Caching](/ai-engineering/compute/serving/prefix-caching.md) `[Concept]` - Reuse stored KV state for a matching prompt prefix to skip repeated prefill computation across requests.
 * [Speculative Decoding](/ai-engineering/compute/serving/speculative-decoding.md) `[Concept]` - A cheap proposer drafts multiple tokens and a target model verifies them together to reduce serial target-model passes.
 * [Tensor Parallelism](/ai-engineering/compute/serving/tensor-parallelism.md) `[Concept]` - Split tensors and layer computation across GPUs so a model replica can use their combined memory and compute.
+* [vLLM](/ai-engineering/compute/serving/vllm.md) `[Tool]` - An open-source LLM inference and serving library built around KV cache management, which runs on its own or as a backend under a general model server such as Triton.
 
 ## context
 
@@ -153,7 +159,7 @@ okf_version: "0.2"
 * [Learning Resources](/software-engineering/learning.md) `[Knowledge Area]` - Practical labs and structured training for Linux, Kubernetes, and software infrastructure.
 * [Reliability Engineering](/software-engineering/reliability.md) `[Knowledge Area]` - Reliability targets, simplicity, and toil reduction as software engineering practices.
 * [Service Communication](/software-engineering/communication.md) `[Knowledge Area]` - Protocol Buffers schemas and gRPC contracts for communication between services.
-* [Service Infrastructure](/software-engineering/infrastructure.md) `[Knowledge Area]` - Service meshes and data, control, and management planes around distributed applications.
+* [Service Infrastructure](/software-engineering/infrastructure.md) `[Knowledge Area]` - Service meshes, data, control, and management planes around distributed applications, and OS CPU scheduling.
 * [Software Architecture](/software-engineering/architecture.md) `[Knowledge Area]` - Component boundaries, communication styles, and dependency trade-offs in software design.
 * [Source Control](/software-engineering/source-control.md) `[Knowledge Area]` - How code is stored, versioned, and shared across projects — repository strategy and version-control systems at scale.
 
@@ -186,6 +192,7 @@ okf_version: "0.2"
 ## infrastructure
 
 * [Data, Control & Management Planes](/software-engineering/infrastructure/planes.md) `[Concept]` - The decomposition of a distributed system into traffic-carrying, policy-distributing, and operator-facing layers.
+* [OS CPU Scheduling](/software-engineering/infrastructure/cpu-scheduling.md) `[Concept]` - How an OS shares CPU time, through preemption, fair shares and priorities, and how weights differ from limits, using Linux as the example.
 * [Service Mesh](/software-engineering/infrastructure/service-mesh.md) `[Concept]` - A dedicated infrastructure layer handling service-to-service routing, security, reliability, and observability outside application code.
 
 ## learning

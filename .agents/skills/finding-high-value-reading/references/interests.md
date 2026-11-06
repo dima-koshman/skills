@@ -16,6 +16,9 @@ looking for now.
   - 2026-10-22: Comparing interactive cloud GPU development environments for
     PyTorch, vLLM and Mojo, especially local VS Code over SSH, browser IDEs,
     Runpod, Modal and access to GPU clusters.
+  - 2026-11-05: Asking how GPUs are shared (MPS, MIG, Run:ai) and how the serving
+    stack layers (Triton, vLLM); wants isolation guarantees and failure behavior,
+    not just features.
 - **AI engineering:** agents, harnesses, context engineering, evals, LLM gateways and
   observability (see `ai-engineering/` in the wiki).
   - 2026-10-22: Interested in PTC adoption and whether improving models and harnesses

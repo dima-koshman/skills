@@ -12,6 +12,10 @@ topics:
 - /ai-engineering/compute/npu.md
 - /ai-engineering/compute/compilers.md
 - /ai-engineering/compute/cuda.md
+- /ai-engineering/compute/mps.md
+- /ai-engineering/compute/mig.md
+- /ai-engineering/compute/run-ai.md
+- /ai-engineering/compute/accelerator-sharing.md
 - /ai-engineering/compute/mojo.md
 - /ai-engineering/compute/max.md
 - /ai-engineering/compute/serving.md
@@ -26,8 +30,8 @@ sources:
   resource: https://puzzles.modular.com/
   title: Mojo GPU Puzzles
 generated:
-  by: codex/gpt-6
-  at: '2026-10-22T13:46:52+04:00'
+  by: claude-code/claude-opus-5-5
+  at: '2026-11-05T15:42:16+04:00'
 ---
 
 The layer under the model: how its math becomes instructions on a GPU or another accelerator, and why
@@ -44,6 +48,13 @@ the software for that layer looks the way it does. Started 2026-10-16 while lear
 - [LLVM and MLIR](/ai-engineering/compute/compilers.md) — the compiler infrastructure Mojo is built on.
 - [CUDA Ecosystem](/ai-engineering/compute/cuda.md) — why NVIDIA's software stack won, and the attempts to break
   it.
+- [NVIDIA Multi-Process Service (MPS)](/ai-engineering/compute/mps.md) — how processes share a GPU natively,
+  and what MPS adds so their kernels can run at the same time.
+- [NVIDIA Multi-Instance GPU (MIG)](/ai-engineering/compute/mig.md) — hardware partitioning of one GPU, and how
+  far its isolation goes.
+- [NVIDIA Run:ai](/ai-engineering/compute/run-ai.md) — GPU scheduling, quotas and fractions on Kubernetes.
+- [Sharing Accelerators Across Vendors](/ai-engineering/compute/accelerator-sharing.md) — what AMD, Apple and
+  Google TPUs offer instead of MPS and MIG.
 - [Mojo](/ai-engineering/compute/mojo.md) — Modular's Python-like systems language for CPUs, GPUs and other
   accelerators.
 - [MAX](/ai-engineering/compute/max.md) — Modular's serving and modeling framework built on Mojo kernels.

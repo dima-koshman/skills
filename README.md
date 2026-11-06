@@ -27,11 +27,11 @@ OpenWiki reads this ready-made OKF input and synthesizes a separate OKF bundle i
 for testing OpenWiki's synthesis and maintenance behavior. Curated explanations,
 taxonomy, links, and custom properties are controlled in `wiki/`.
 
-Use **Wiki: regenerate, render and open** to choose **wiki/** (the default) or
-**openwiki/**. It regenerates the chosen catalog, renders the custom reader, and
-opens `dev/wiki-okf-site.html` or `dev/openwiki-okf-site.html`. Both outputs are
-ignored by Git. The component tasks **Wiki: regenerate index** and
-**Wiki: render and open** offer the same selector.
+Use **Wiki: regenerate and render** to choose **wiki/** (the default) or
+**openwiki/**. It regenerates the chosen catalog, renders the custom reader to
+`dev/wiki-okf-site.html` or `dev/openwiki-okf-site.html`, and opens it unless you
+set `do_open` to false. Both outputs are ignored by Git. The component tasks
+**Wiki: regenerate index** and **Wiki: render** offer the same selector.
 
 A sibling `topic.md` overview and `topic/` directory share one sidebar row and graph
 node. The local type schemas use `primary_fields` to show important relationships
@@ -71,7 +71,7 @@ the single `wiki/` OKF bundle. The [historical restoration guide](docs/manual-ok
 is retained for recovery context.
 
 Use **OpenWiki: update CLI**, **OpenWiki: init**, and **OpenWiki: update** for
-the generation experiment; **Wiki: regenerate, render and open** browses either bundle. Initialize once; a fresh `--init` replaces generated
+the generation experiment; **Wiki: regenerate and render** browses either bundle. Initialize once; a fresh `--init` replaces generated
 pages, while an interrupted init resumes its checkpoint.
 Routine `openwiki --update` runs use OpenWiki's saved provider and model independently
 of the coding agent. Review and commit generated changes after each update.

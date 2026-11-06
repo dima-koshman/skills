@@ -84,7 +84,7 @@ pages stay out of the reader graph. Frontmatter concept paths become labeled
 edges, and Mermaid fences render as diagrams. These are local consumer choices;
 OKF permits custom keys without requiring other consumers to implement this UI.
 
-Use **Wiki: regenerate, render and open** to choose `wiki/` (default) or
+Use **Wiki: regenerate and render** to choose `wiki/` (default) or
 `openwiki/`. The [visualizer comparison](/ai-engineering/context/okf-visualizers.md)
 retains the historical upstream evaluation and records the local rendering workflow.
 

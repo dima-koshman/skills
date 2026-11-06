@@ -37,6 +37,8 @@ topics:
 - /ai-engineering/compute/serving/expert-parallelism.md
 - /ai-engineering/compute/serving/context-parallelism.md
 - /ai-engineering/compute/serving/inference-routing.md
+- /ai-engineering/compute/serving/triton-inference-server.md
+- /ai-engineering/compute/serving/vllm.md
 sources:
 - id: modular-handbook
   resource: https://handbook.modular.com/
@@ -72,6 +74,7 @@ inference mechanisms behind them.
 | How is work scheduled? | [Continuous Batching](/ai-engineering/compute/serving/continuous-batching.md), [Chunked Prefill](/ai-engineering/compute/serving/chunked-prefill.md), [Prefill–Decode Disaggregation](/ai-engineering/compute/serving/prefill-decode-disaggregation.md), [Cache-aware Routing](/ai-engineering/compute/serving/inference-routing.md) |
 | How can token execution become cheaper? | [Speculative Decoding](/ai-engineering/compute/serving/speculative-decoding.md), [Quantization](/ai-engineering/compute/serving/quantization.md), [FlashAttention](/ai-engineering/compute/serving/flash-attention.md), [Kernel Fusion](/ai-engineering/compute/serving/kernel-fusion.md), [CUDA Graphs](/ai-engineering/compute/serving/cuda-graphs.md) |
 | How does the model architecture affect KV memory? | [Grouped-Query and Multi-Query Attention](/ai-engineering/compute/serving/grouped-query-attention.md) |
+| Which software implements this? | [vLLM](/ai-engineering/compute/serving/vllm.md), [Triton Inference Server](/ai-engineering/compute/serving/triton-inference-server.md), [MAX](/ai-engineering/compute/max.md) |
 | How is work distributed across GPUs? | [Tensor](/ai-engineering/compute/serving/tensor-parallelism.md), [Pipeline](/ai-engineering/compute/serving/pipeline-parallelism.md), [Data](/ai-engineering/compute/serving/data-parallelism.md), [Expert](/ai-engineering/compute/serving/expert-parallelism.md) and [Context Parallelism](/ai-engineering/compute/serving/context-parallelism.md) |
 
 ## Start from the bottleneck

@@ -1,5 +1,15 @@
 # Knowledge history
 
+## 2026-11-11
+
+- **Update**: Added a "How far to trust a leaderboard" section to [LLM Leaderboards](/ai-engineering/providers/leaderboards.md), after Dima asked whether Artificial Analysis is fair and whether models are benchmaxxed.
+  - Artificial Analysis runs the evals itself. It also wrote 30% of Intelligence Index v5, and 60% of v5 is private.
+  - Method changes move rankings: the open-weights gap went from 3 points under v4.3 to 12 under v5.
+  - Benchmaxxing evidence from GSM1k, The Leaderboard Illusion and MaxxBench: frontier flagships hold up, while cheap and open-weight models drop sharply on changed tasks.
+- **Creation**: Added [Unified CPU-GPU Memory](/ai-engineering/compute/unified-memory.md) after Dima asked how Apple's GPU can share memory with the CPU and whether big GPUs could do the same. Shared memory removes copies but not the device boundary: the GPU keeps its own firmware, queues and scheduler. Compares Apple M3 Ultra, DGX Spark, MI300A and Grace Hopper on capacity and bandwidth. Notes that Apple's current Mac Studio spec page lists 256GB for M3 Ultra, down from 512GB at launch. The Grace Hopper CPU-to-HBM figure comes from a search excerpt.
+- **Update**: Added root cause, cost-aware scheduling and co-design sections to [Why GPU Scheduling Differs from CPU Scheduling](/ai-engineering/compute/gpu-scheduling.md) after Dima asked whether a scheduler could hide the difference and whether co-designed chips would converge. Cites Chimera and REEF for cost-aware GPU preemption, PTask, the HSA 1.2 spec and MI300A for co-design, and Linux AMX handling as the CPU-side parallel.
+- **Creation**: Added [Why GPU Scheduling Differs from CPU Scheduling](/ai-engineering/compute/gpu-scheduling.md) after Dima asked whether the difference comes from data loading time. It does not: memory stays resident across time slices. The cost is tens of MB of on-chip registers and shared memory on an H100, so GPUs switch warps for free but programs rarely, and preempted only at thread block boundaries before Pascal. Sources are the CUDA guide, Hopper tuning guide, Pascal whitepaper and Linux XSTATE docs.
+
 ## 2026-11-05
 
 - **Update**: Renamed the render task to **Wiki: regenerate and render** in [Open Knowledge Format (OKF)](/ai-engineering/context/okf.md), [OKF Visualizers](/ai-engineering/context/okf-visualizers.md) and [OpenWiki](/ai-engineering/context/openwiki.md); opening the site is now its `do_open` input.

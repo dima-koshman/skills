@@ -46,6 +46,8 @@ okf_version: "0.2"
 * [NVIDIA Run:ai](/ai-engineering/compute/run-ai.md) `[Tool]` - A Kubernetes platform for GPU scheduling, quotas and fractional GPU sharing across teams, open source since October 2026, with KAI Scheduler as its scheduling engine.
 * [Sharing Accelerators Across Vendors](/ai-engineering/compute/accelerator-sharing.md) `[Concept]` - How NVIDIA, AMD, Apple and Google TPUs let several workloads use one chip, from hardware partitions to time-slicing to exclusive allocation.
 * [SIMD and SIMT](/ai-engineering/compute/simd-simt.md) `[Concept]` - Two ways to run one instruction over many data elements — explicit vector instructions (SIMD) vs NVIDIA's per-thread model on top of vector hardware (SIMT) — and why the difference matters for portable kernels.
+* [Unified CPU-GPU Memory](/ai-engineering/compute/unified-memory.md) `[Concept]` - Why a CPU and GPU can share one memory pool, why the GPU is still a separate device to the OS, and what the design trades away, from Apple silicon to MI300A and Grace Hopper.
+* [Why GPU Scheduling Differs from CPU Scheduling](/ai-engineering/compute/gpu-scheduling.md) `[Concept]` - GPUs switch between threads constantly but between programs rarely, because they keep tens of MB of thread state on-chip; data transfer is not the reason.
 
 ### serving
 
@@ -127,7 +129,7 @@ okf_version: "0.2"
 * [Claude](/ai-engineering/providers/claude.md) `[Model Provider]` - Anthropic Claude API token pricing and prompt-caching mechanics — cache multipliers, TTLs, and cost-optimization guidance.
 * [Gemini](/ai-engineering/providers/gemini.md) `[Model Provider]` - Google Gemini API token pricing plus implicit and explicit context caching, with break-even guidance.
 * [GPT](/ai-engineering/providers/gpt.md) `[Model Provider]` - OpenAI GPT API token pricing and prompt caching — the 272K long-context cliff, cache-write fees, and keep-alive economics.
-* [LLM Leaderboards](/ai-engineering/providers/leaderboards.md) `[Reference]` - A curated bookmark set and benchmark map for choosing reliable, independent LLM evaluation sources across capabilities.
+* [LLM Leaderboards](/ai-engineering/providers/leaderboards.md) `[Reference]` _(draft)_ - A curated bookmark set and benchmark map for choosing reliable, independent LLM evaluation sources across capabilities, plus how far to trust them (Artificial Analysis method limits, benchmaxxing evidence).
 
 ## security
 

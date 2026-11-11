@@ -9,6 +9,7 @@ tags:
 - gpu
 parent: /ai-engineering/compute.md
 related:
+- /ai-engineering/compute/gpu-scheduling.md
 - /ai-engineering/compute/npu.md
 - /ai-engineering/compute/mojo.md
 - /ai-engineering/compute/performance-regimes.md

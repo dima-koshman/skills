@@ -99,6 +99,18 @@ valuable, using the `okf` skill:
 - Or create a concept (`type: Practice`/`Concept`, or `Reference` for a reading
   note) under the matching area. Then regenerate `index.md`, add a `log.md` entry,
   and re-render the site. The `okf` skill covers each step.
+- New concepts and substantial changes go in as `status: draft`, and stay
+  uncommitted. Dima promotes them in the `okf` skill's review pass. The full rules
+  are in the "Personal wiki" section of `~/Projects/dima/AGENTS.md`.
+
+**Durability test (added 2026-11-11).** Write to the wiki only what passes both:
+
+1. It would still matter in 3 months, to someone outside this session.
+2. It is a claim about the world, not about this task. "Fable on Pro is included
+   until Nov 16" fails; "subscription limits roughly track API price" might pass.
+
+Something that fails goes in the chat reply only. A fact about how Dima works goes
+to auto memory, and a fact about one project goes to that project's notes.
 
 ## Follow-up questions are capture signals
 
@@ -116,7 +128,9 @@ Added at Dima's request on 2026-10-16.
 4. If he says an explanation fell short ("that doesn't really explain it"), put the
    better explanation into the concept, not only into the chat reply.
 
-Skip trivia that is clearly one-off (a CLI flag, a typo) and anything already covered well.
+Skip trivia that is clearly one-off (a CLI flag, a typo), anything already covered
+well, and anything that fails the durability test in step 5. What you add goes in as
+a draft.
 
 ## Trending repositories
 

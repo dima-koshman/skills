@@ -8,7 +8,8 @@ description: >
   API, or join path so an agent can read it, or to make internal knowledge
   agent-readable or portable. Covers the concept-document format (v0.2: provenance,
   trust, lifecycle), cross-linking, regenerating index.md, keeping log.md current,
-  and rendering the bundle as a browsable HTML knowledge graph.
+  rendering the bundle as a browsable HTML knowledge graph, and review passes
+  ("review / consolidate / clean up the wiki", promoting drafts, stale concepts).
 ---
 
 # Open Knowledge Format (OKF)
@@ -24,7 +25,7 @@ source of truth for field names, link forms, and conformance rules.
 
 Scripts live in this skill's `scripts/` directory and need only Python 3.12+ and
 PyYAML. From any repository, run them by absolute path, e.g.
-`uv run --no-project --with pyyaml python ~/Projects/dima/.agents/skills/okf/scripts/okf_site.py <bundle-dir>`.
+`uv run --no-project --with pyyaml python <skill-dir>/scripts/okf_site.py <bundle-dir>`.
 
 ## Reading a bundle
 
@@ -46,6 +47,10 @@ PyYAML. From any repository, run them by absolute path, e.g.
    or a missing `index.md`. A broken link may just be not-yet-written knowledge.
 
 ## Authoring or updating a concept
+
+Follow the project's own rules for the bundle first. Some projects, for example,
+require agent-written concepts to start as `status: draft` until a person reviews
+them; the review pass below handles those drafts.
 
 - **One concept per file.** The file's path within the bundle *is* its identity,
   so choose a stable location; prefer moving concepts rarely. Readable directory
@@ -220,6 +225,35 @@ bundle for important work. This is a review pass, not something to run on every 
    `index.md` and the HTML site, and add a dated `log.md` `Update` entry saying what
    changed and why.
 
+### Consolidation: drafts, links, duplicates
+
+A review pass also consolidates: it merges, links and prunes, not only re-checks.
+Start from the inventory script, which only lists:
+
+```bash
+uv run --no-project --with pyyaml python <skill-dir>/scripts/okf_review.py <bundle-dir>
+```
+
+It reports drafts, concepts past `stale_after`, unverified concepts (counted; use
+`--list-unverified` to list them), broken bundle-relative links, source ids that no
+footnote cites, and footnotes without a source. Then:
+
+1. **Drafts.** For each draft, propose one of three: promote it (remove `status`),
+   merge it into an existing concept, or delete it. Two tests decide:
+   - Would it still matter in 3 months, to someone outside the session that wrote it?
+   - Is it a claim about the world, or only about that task?
+
+   If you can search past agent sessions, use that to see why a draft was written.
+2. **Duplicates.** Concepts that cover the same idea under different names: propose
+   a merge into one, with the other deleted or linking to it.
+3. **Links and citations.** Fix broken links, or remove them if the target won't be
+   written. An uncited source can be a deliberate reading-list entry; check the
+   project's rules before removing one.
+4. **Prune.** Propose removing content no one would miss, and say why.
+5. **Present the proposal before applying it.** Show one list grouped by action.
+   Apply only what the user approves. Add a `human:<id>` `verified` event only to
+   concepts the user says they checked.
+
 Keep edits surgical — update what actually drifted; don't rewrite concepts that
 still hold. Structural changes (a renamed taxonomy, a split/merged concept) are
 larger and should be brainstormed with the user before restructuring directories.
@@ -235,5 +269,4 @@ revision:
 
 If the version has advanced past 0.2, tell the user and offer to update
 `references/spec.md`, the `OKF_VERSION` constant in `scripts/okf_index.py`, the
-renderer in `scripts/okf_site.py`, their tests (`tests/test_okf_scripts.py` in the
-dima repo), and this skill together. Don't silently assume 0.2 is still current.
+renderer in `scripts/okf_site.py`, their tests, and this skill together. Don't silently assume 0.2 is still current.

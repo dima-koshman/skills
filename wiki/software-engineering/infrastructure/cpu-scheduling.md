@@ -12,6 +12,7 @@ tags:
 - operating-systems
 parent: /software-engineering/infrastructure.md
 related:
+- /ai-engineering/compute/gpu-scheduling.md
 - /ai-engineering/compute/mps.md
 - /ai-engineering/compute/accelerator-sharing.md
 sources:

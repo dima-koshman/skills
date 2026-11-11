@@ -93,6 +93,24 @@ The `brainstorming` and `writing-plans` skills cover the full workflow for large
   If they don't, issue them together in one turn rather than one at a time — it saves
   latency and token cost.
 
+## Personal wiki (`wiki/`)
+
+`wiki/` is Dima's OKF knowledge base; the `okf` skill covers the format and scripts.
+These rules are for this wiki only. They were added on 2026-11-11 so that a note
+written for one session's need is reviewed before it counts as settled knowledge.
+
+- **Agent writes start as drafts.** A concept you create gets `status: draft`. So
+  does an existing concept you change substantially, such as a new section or a
+  changed claim. A fix to a link, a typo or wording does not.
+- Never add a `human:` event to `verified`, and never remove `draft`, unless Dima
+  says he reviewed it. Promotion happens in the okf skill's review pass, and his
+  review is recorded as `human:dima`.
+- Git is the approval gate: leave wiki changes uncommitted unless he asks you to
+  commit them.
+- In a review pass, the `agent-chats` tools find the session that wrote a draft.
+  Uncited `ref-N` sources come from the 2026-10-15 conversion and are reading-list
+  entries. Leave them unless you are already editing that concept.
+
 <!-- OPENWIKI:START -->
 
 ## OpenWiki

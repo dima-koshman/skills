@@ -28,14 +28,14 @@ technology choice, and what it cost.
 | --- | --- |
 | [Anthropic Engineering](https://www.anthropic.com/engineering), [Anthropic Research](https://www.anthropic.com/research) | Building agents, tool design, evals, interpretability |
 | [OpenAI engineering](https://openai.com/news/engineering/), [Google DeepMind blog](https://deepmind.google/discover/blog/) | Frontier-lab practice and research |
-| [LangChain blog](https://blog.langchain.com/) | Often directly actionable: agent architectures, context engineering, evals in practice |
-| [Artificial Analysis](https://artificialanalysis.ai/) | Current state of LLMs: quality, price and speed leaderboards, coding-agent benchmarks. For a model pick, use the `ranking-llms-by-benchmark` skill. |
+| [LangChain blog](https://www.langchain.com/blog/) | Often directly actionable: agent architectures, context engineering, evals in practice. Often promotes LangSmith and Managed Deep Agents, so pull out the pattern and flag the pitch. |
+| [Artificial Analysis](https://artificialanalysis.ai/) | Current state of LLMs: quality, price and speed leaderboards, coding-agent benchmarks. Runs evals itself, but wrote 30% of Index v5 and keeps 60% private; method changes move rankings (see the wiki's LLM Leaderboards note). For a model pick, use the `ranking-llms-by-benchmark` skill. |
 | [Hugging Face blog](https://huggingface.co/blog) | Open models, training and serving |
 | [PyTorch blog](https://pytorch.org/blog/) | Active, but mostly framework internals (compiler, kernels, distributed training). Use only for deep dives; see the depth preference in `interests.md`. |
 | [Simon Willison](https://simonwillison.net/) | Daily, skeptical, hands-on notes on LLM tools and security (prompt injection) |
 | [Lilian Weng](https://lilianweng.github.io/) | Long, citation-dense surveys (agents, hallucination, RL) |
 | [Chip Huyen](https://huyenchip.com/blog/), [Eugene Yan](https://eugeneyan.com/writing/), [Hamel Husain](https://hamel.dev/) | Production ML/LLM systems, evals, lessons from real deployments |
-| [Latent Space](https://www.latent.space/), [Interconnects](https://www.interconnects.ai/) (Nathan Lambert), [Sebastian Raschka](https://magazine.sebastianraschka.com/) | Industry context, post-training, model architecture |
+| [Latent Space](https://www.latent.space/), [Interconnects](https://www.interconnects.ai/) (Nathan Lambert), [Sebastian Raschka](https://magazine.sebastianraschka.com/) | Industry context, post-training, model architecture. Latent Space AI News headlines are a good quick feed, but its event write-ups are low signal. |
 
 ## GPU programming and AI compute
 

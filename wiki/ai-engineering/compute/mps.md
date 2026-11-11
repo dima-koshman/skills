@@ -12,6 +12,7 @@ tags:
 - gpu
 parent: /ai-engineering/compute.md
 related:
+- /ai-engineering/compute/gpu-scheduling.md
 - /ai-engineering/compute/cuda.md
 - /ai-engineering/compute/simd-simt.md
 - /ai-engineering/compute/performance-regimes.md

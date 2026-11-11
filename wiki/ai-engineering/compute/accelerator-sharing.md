@@ -16,6 +16,7 @@ related:
 - /ai-engineering/compute/mig.md
 - /ai-engineering/compute/run-ai.md
 - /ai-engineering/compute/npu.md
+- /ai-engineering/compute/unified-memory.md
 sources:
 - id: amd-kernel-params
   resource: https://docs.kernel.org/gpu/amdgpu/module-parameters.html
@@ -118,6 +119,8 @@ of it. Apple's stack is designed for one person's machine, not tenants.
 - Scheduling is private. Reverse engineering by Asahi Linux found a firmware coprocessor manages the GPU, and the
   macOS driver talks to it rather than to the hardware.[^asahi-m1-gpu] Whether two processes' kernels run at the same
   moment is not publicly documented.
+- The CPU and GPU share one memory pool, but the GPU is still a separate device with its own firmware; see
+  [unified memory](/ai-engineering/compute/unified-memory.md).
 
 ## Google TPU
 

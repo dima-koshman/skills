@@ -16,6 +16,8 @@ topics:
 - /ai-engineering/compute/mig.md
 - /ai-engineering/compute/run-ai.md
 - /ai-engineering/compute/accelerator-sharing.md
+- /ai-engineering/compute/gpu-scheduling.md
+- /ai-engineering/compute/unified-memory.md
 - /ai-engineering/compute/mojo.md
 - /ai-engineering/compute/max.md
 - /ai-engineering/compute/serving.md
@@ -31,7 +33,7 @@ sources:
   title: Mojo GPU Puzzles
 generated:
   by: claude-code/claude-opus-5-5
-  at: '2026-11-05T15:42:16+04:00'
+  at: '2026-11-11T10:05:00+04:00'
 ---
 
 The layer under the model: how its math becomes instructions on a GPU or another accelerator, and why
@@ -55,6 +57,10 @@ the software for that layer looks the way it does. Started 2026-10-16 while lear
 - [NVIDIA Run:ai](/ai-engineering/compute/run-ai.md) — GPU scheduling, quotas and fractions on Kubernetes.
 - [Sharing Accelerators Across Vendors](/ai-engineering/compute/accelerator-sharing.md) — what AMD, Apple and
   Google TPUs offer instead of MPS and MIG.
+- [Why GPU Scheduling Differs from CPU Scheduling](/ai-engineering/compute/gpu-scheduling.md) — on-chip state,
+  free warp switching and late preemption.
+- [Unified CPU-GPU Memory](/ai-engineering/compute/unified-memory.md) — Apple silicon, MI300A and Grace Hopper:
+  shared memory without merging the processors, and its bandwidth and capacity trade.
 - [Mojo](/ai-engineering/compute/mojo.md) — Modular's Python-like systems language for CPUs, GPUs and other
   accelerators.
 - [MAX](/ai-engineering/compute/max.md) — Modular's serving and modeling framework built on Mojo kernels.

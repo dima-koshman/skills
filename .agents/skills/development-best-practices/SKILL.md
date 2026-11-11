@@ -1,6 +1,6 @@
 ---
 name: development-best-practices
-description: Cross-project local development hygiene and preferences — the worktree-to-main workflow, git branch/worktree cleanup, VS Code task conventions, direnv/environment-variable layout, and other day-to-day dev workflow conventions. Use when starting feature work in a worktree, finishing a branch, merging to main, pushing to main, monitoring or fixing a GitHub Actions run after a push, cleaning up local git branches, pruning merged/deleted branches, tidying worktrees, creating or renaming VS Code tasks, writing a local helper or dev script (prefer Python over shell), writing or changing a project's `.envrc`, deciding where to keep environment variables or credentials for local development, updating OpenCode plugins, setting or changing a container's timezone in a Dockerfile or deployment, or setting up recurring local-dev maintenance.
+description: Cross-project local development hygiene and preferences — the worktree-to-main workflow, git branch/worktree cleanup, VS Code task conventions, direnv/environment-variable layout, and other day-to-day dev workflow conventions. Use when starting feature work in a worktree, finishing a branch, merging to main, pushing to main, monitoring or fixing a GitHub Actions run after a push, cleaning up local git branches, pruning merged/deleted branches, tidying worktrees, creating or renaming VS Code tasks, writing a local helper or dev script (prefer Python over shell), writing or editing YAML (block style by default), writing or changing a project's `.envrc`, deciding where to keep environment variables or credentials for local development, updating OpenCode plugins, setting or changing a container's timezone in a Dockerfile or deployment, or setting up recurring local-dev maintenance.
 ---
 
 # Development Best Practices
@@ -70,6 +70,31 @@ thin wrappers around a single tool.
   `mkdir -p dev` first, because the directory doesn't exist in a fresh clone.
 
 Existing shell scripts can stay; port one to Python when you next change it substantially.
+
+## Write YAML in block style
+
+Expand every list and map onto its own lines, in config files, values files, CI and compose
+alike. Don't use inline flow style (`[a, b]`, `{key: value}`), even for one item:
+
+```yaml
+# Good
+access_groups:
+  - ai_friends_family
+capabilities:
+  citations: true
+
+# Bad
+access_groups: [ai_friends_family]
+capabilities: {citations: true}
+```
+
+- One style per file keeps diffs line-per-item and makes a second item a one-line change.
+- An empty collection stays `[]` or `{}`: block style has no empty form.
+- Exceptions aren't settled yet (Dima, 2026-11-11). If inline reads clearly better somewhere,
+  ask before using it, and record the exception here.
+
+When touching a file that mixes styles, expand the inline collections and check the parsed data
+is unchanged (`yaml.safe_load` before and after).
 
 ## Store env var combinations in ~/.config/direnv/env/
 

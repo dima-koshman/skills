@@ -190,7 +190,7 @@
         },
         {
             "label": "Skills: install remote (runpod)",
-            "detail": "Install the upstream logfire skills from runpod/runpod-plugins-official.",
+            "detail": "Install every upstream Runpod skill from runpod/runpod-plugins-official (16 of them). The Runpod MCP server also serves them as guides (list-guides, read-guide). Prompts for install scope (default: this project).",
             "command": "npx --yes skills add runpod/runpod-plugins-official --skill '*' --agent claude-code --agent opencode ${input:skillScope} --yes"
         },
         {
@@ -214,6 +214,11 @@
             "label": "Skills: remove (global or this project)",
             "detail": "Remove installed skills by name (space- or comma-separated) from the global skill dirs (~/.agents/skills, ~/.claude/skills, OpenCode, Codex, agy) or from this project, plus their lock entries. Symlinks are unlinked, installed copies deleted; a skill's source (git-tracked, or the dir a local install copies from) is never deleted, unlike `npx skills remove`. Prints the plan unless you type 'yes'.",
             "command": "python3 \"${workspaceFolder}/scripts/remove_skills.py\" ${input:skillScope} --project \"${workspaceFolder}\" --confirm=${input:removeConfirm} ${input:skillNames}"
+        },
+        {
+            "label": "Skills: restore from skills-lock.json",
+            "detail": "Install this project's remote skills recorded in skills-lock.json into .agents/skills/ (git-ignored), e.g. after a fresh clone. The lock is the tracked record of remote skills; only skills authored here are tracked themselves.",
+            "command": "npx --yes skills experimental_install --agent claude-code --agent opencode"
         },
         {
             "label": "Skills: update from remote sources",

@@ -293,8 +293,8 @@ npx skills add obra/superpowers --global    # all superpowers skills, globally
 npx skills add obra/superpowers@systematic-debugging --global
 ```
 
-Third-party skills are installed the same way — copied to `.agents/skills/` (project) or
-`~/.agents/skills/` (global) and tracked in the lock file for updates.
+Third-party skills are installed the same way — copied to `.agents/skills/` (project, git-ignored)
+or `~/.agents/skills/` (global) and tracked in the lock file for updates.
 
 ## Spec-driven development tools (on the radar, not adopted)
 
@@ -318,6 +318,13 @@ Skip **BMAD-METHOD** for this purpose (full runtime engine, needs Node + Python 
 
 Skills in `.agents/skills/` are read by all agents at the project level (Claude, Codex, opencode).
 This is where our own skills live, alongside any third-party skills installed without `--global`.
+
+Git tracks only the skills authored here. `npx skills add` has no option for the install
+directory, so `.gitignore` ignores `.agents/skills/*` and allowlists each owned skill. A new
+skill of ours needs its own `!/.agents/skills/<name>/` line; `tests/test_skills_gitignore.py`
+fails until it has one. Remote skills are recorded only in `skills-lock.json`, which is tracked:
+the **Skills: restore from skills-lock.json** task (`npx skills experimental_install`)
+reinstalls them after a fresh clone.
 
 ## Per-tool docs
 

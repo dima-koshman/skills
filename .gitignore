@@ -19,3 +19,18 @@ __pycache__/
 
 # Secrets
 .env
+
+# Agent skills. `npx skills add` always installs project skills into
+# .agents/skills/<name>, so they are ignored by default and skills-lock.json is
+# what records them. Skills authored here are allowlisted: add a line for each
+# new one (tests/test_skills_gitignore.py checks it).
+/.agents/skills/*
+!/.agents/skills/cli-subagents/
+!/.agents/skills/development-best-practices/
+!/.agents/skills/finding-high-value-reading/
+!/.agents/skills/macos-disk-cleanup/
+!/.agents/skills/macos-kernel-task-cpu/
+!/.agents/skills/okf/
+!/.agents/skills/portfolio/
+!/.agents/skills/python-styleguide/
+!/.agents/skills/ranking-llms-by-benchmark/

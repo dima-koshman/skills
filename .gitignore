@@ -30,6 +30,7 @@ __pycache__/
 !/.agents/skills/finding-high-value-reading/
 !/.agents/skills/macos-disk-cleanup/
 !/.agents/skills/macos-kernel-task-cpu/
+!/.agents/skills/mojo/
 !/.agents/skills/okf/
 !/.agents/skills/portfolio/
 !/.agents/skills/python-styleguide/

@@ -300,7 +300,8 @@ or `~/.agents/skills/` (global) and tracked in the lock file for updates.
 
 Deliberately **not** installed. The superpowers chain (`brainstorming` → `writing-plans` →
 `subagent-driven-development` → `requesting-code-review`) already covers prompt-only spec/plan/execute
-on plain files, with no runtime binary. Revisit these only if a project needs *stricter* specs —
+on plain files, with no runtime binary. Its first two skills are on demand only, via the **"Skills:
+install remote (superpowers planning and debugging)"** task. Revisit these only if a project needs *stricter* specs —
 enforced validation, dependency-ordered artifacts, delta/archive traceability — which prompts can
 describe but can't guarantee:
 

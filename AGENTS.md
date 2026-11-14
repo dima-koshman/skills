@@ -72,8 +72,6 @@ Find the root cause before proposing a fix. Symptom patches are not fixes.
 - **After 3 failed fixes, stop and question the architecture.** If each fix surfaces a new
   problem elsewhere, the design is wrong and more patches won't help. Raise it.
 
-The `systematic-debugging` skill has the full process and tracing techniques.
-
 ## Planning and design
 
 - For anything non-trivial, understand the problem before writing code: ask clarifying
@@ -84,8 +82,6 @@ The `systematic-debugging` skill has the full process and tracing techniques.
 - In existing code, follow established patterns. Fix problems in code you're already
   touching; don't bundle unrelated refactoring.
 - YAGNI. Remove speculative features from designs before implementing them.
-
-The `brainstorming` and `writing-plans` skills cover the full workflow for larger work.
 
 ## Parallel execution
 

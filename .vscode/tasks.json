@@ -175,13 +175,18 @@
         },
         {
             "label": "Skills: install remote (skill-creator)",
-            "detail": "Install Anthropic's skill-creator from anthropics/skills for Claude Code and OpenCode. Used instead of superpowers' writing-skills for authoring and evaluating skills. Prompts for install scope (default: this project).",
+            "detail": "Install Anthropic's skill-creator from anthropics/skills for Claude Code and OpenCode. Used instead of superpowers' writing-skills for authoring and evaluating skills. On demand only, not part of setup: Claude Code already ships it as anthropic-skills:skill-creator. Prompts for install scope (default: this project).",
             "command": "npx --yes skills add anthropics/skills --skill skill-creator --agent claude-code --agent opencode ${input:skillScope} --yes"
         },
         {
             "label": "Skills: install remote (superpowers subset)",
-            "detail": "Install the three superpowers skills worth keeping (brainstorming, systematic-debugging, writing-plans) from obra/superpowers, without the plugin's always-on SessionStart context injection. Prompts for install scope (default: this project).",
-            "command": "npx --yes skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill writing-plans --skill test-driven-development --skill subagent-driven-development --skill requesting-code-review --agent claude-code --agent opencode ${input:skillScope} --yes"
+            "detail": "Install the superpowers skills worth keeping (test-driven-development, subagent-driven-development, requesting-code-review) from obra/superpowers, without the plugin's always-on SessionStart context injection. Prompts for install scope (default: this project).",
+            "command": "npx --yes skills add obra/superpowers --skill test-driven-development --skill subagent-driven-development --skill requesting-code-review --agent claude-code --agent opencode ${input:skillScope} --yes"
+        },
+        {
+            "label": "Skills: install remote (superpowers planning and debugging)",
+            "detail": "On demand only, not part of setup: install brainstorming, writing-plans and systematic-debugging from obra/superpowers. Dropped on 2026-11-14 because AGENTS.md already carries their core rules and recent models need little of the rest; reinstall for the full spec -> plan -> subagent workflow. Prompts for install scope (default: this project).",
+            "command": "npx --yes skills add obra/superpowers --skill brainstorming --skill writing-plans --skill systematic-debugging --agent claude-code --agent opencode ${input:skillScope} --yes"
         },
         {
             "label": "Skills: install remote (langfuse)",
@@ -207,6 +212,7 @@
                 "Skills: install remote (supabase)",
                 "Skills: install remote (skill-creator)",
                 "Skills: install remote (superpowers subset)",
+                "Skills: install remote (superpowers planning and debugging)",
                 "Skills: install remote (langfuse)"
             ]
         },

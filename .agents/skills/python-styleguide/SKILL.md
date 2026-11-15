@@ -954,6 +954,29 @@ result = foo(
 )
 ```
 
+## Keyword arguments
+
+Prefer passing arguments by keyword at call sites when a function takes two or more
+arguments, rather than relying on positional order. This is a preference, not a hard rule —
+use judgement where positional calls stay clearer or more idiomatic.
+
+Exceptions where positional arguments are fine:
+
+- **Single-argument calls** (`len(items)`, `validate_models(config.agent_models)`).
+- **Simple inline calls** whose meaning is obvious at a glance (e.g., `isinstance(x, Foo)`,
+    `dict.get(key, default)`, `(a, b)`-style math/pair helpers, or logging format calls).
+- **Callables with positional-only parameters** (`/`) or variadic `*args` wrappers.
+
+```python
+# Preferred
+store = SqlSecretStore(engine=async_engine, cipher=secret_cipher)
+user = create_user(name=name, role=UserRole.MEMBER, is_active=True)
+
+# Avoid on multi-argument calls with non-obvious order
+store = SqlSecretStore(async_engine, secret_cipher)
+user = create_user(name, UserRole.MEMBER, True)
+```
+
 ## ExceptionGroup and TaskGroup
 
 A function that owns an `asyncio.TaskGroup` (or otherwise produces an `ExceptionGroup`)

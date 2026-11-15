@@ -426,7 +426,7 @@
             "type": "process",
             "command": "sudo",
             "args": [
-                "python3.15",
+                "/opt/homebrew/bin/python3.15",
                 "-m",
                 "profiling.sampling",
                 "attach",
@@ -446,7 +446,7 @@
             "type": "process",
             "command": "sudo",
             "args": [
-                "python3.15",
+                "/opt/homebrew/bin/python3.15",
                 "-m",
                 "profiling.sampling",
                 "attach",
@@ -672,7 +672,7 @@
         {
             "id": "pid",
             "type": "promptString",
-            "description": "PID of the process to caffeinate"
+            "description": "PID of the target process (caffeinate or standard CPython 3.15 Tachyon profiling)"
         },
         {
             "id": "days",

@@ -1,6 +1,6 @@
 ---
 name: development-best-practices
-description: Cross-project local development hygiene and preferences — the worktree-to-main workflow, git branch/worktree cleanup, VS Code task conventions, direnv/environment-variable layout, and other day-to-day dev workflow conventions. Use when starting feature work in a worktree, finishing a branch, merging to main, pushing to main, monitoring or fixing a GitHub Actions run after a push, cleaning up local git branches, pruning merged/deleted branches, tidying worktrees, creating or renaming VS Code tasks, writing a local helper or dev script (prefer Python over shell), writing or editing YAML (block style by default), writing or changing a project's `.envrc`, deciding where to keep environment variables or credentials for local development, updating OpenCode plugins, setting or changing a container's timezone in a Dockerfile or deployment, or setting up recurring local-dev maintenance.
+description: Cross-project local development hygiene and preferences — the worktree-to-main workflow, git branch/worktree cleanup, VS Code task conventions, direnv/environment-variable layout, and other day-to-day dev workflow conventions. Use when starting feature work in a worktree, finishing a branch, merging to main, pushing to main, monitoring or fixing a GitHub Actions run after a push, cleaning up local git branches, pruning merged/deleted branches, tidying worktrees, creating or renaming VS Code tasks, writing a local helper or dev script (prefer Python over shell), writing or editing YAML (block style by default), writing or changing a project's `.envrc`, deciding where to keep environment variables or credentials for local development, keeping global (work) skills, MCP servers or instructions out of a personal project's coding agents (agent profiles), updating OpenCode plugins, setting or changing a container's timezone in a Dockerfile or deployment, or setting up recurring local-dev maintenance.
 ---
 
 # Development Best Practices
@@ -191,6 +191,61 @@ declare -F dotenv_prefixed >/dev/null || dotenv_prefixed() {
   ...  # the definition above
 }
 ```
+
+## Keep work skills and MCP servers out of a personal project
+
+The global harness config is set up for work: work skills in `~/.agents/skills` and
+`~/.claude/skills`, work MCP servers, and work instructions in the global CLAUDE.md / AGENTS.md.
+For a personal project, switch the coding agents to a separate **agent profile** in its `.envrc`.
+Guard it so it runs only on hosts that have both the helper and the profile. Other clones skip it.
+It can't go in `.env`: `dotenv_if_exists` only reads `KEY=value` lines.
+
+```bash
+if declare -F use_agent_profile >/dev/null && [[ -d "$HOME/.config/agent-profiles/personal" ]]; then
+  use agent_profile personal python-styleguide systematic-debugging
+fi
+```
+
+On a new host, create the profile once with `agent_profile.py --profile personal`.
+
+The names after the profile are global skills to keep. A kept skill is skipped when the project
+has its own skill of that name. The keep list belongs to the profile, so projects sharing a
+profile should pass the same list; use another profile name for a different set.
+
+`use_agent_profile` comes from `scripts/agent_profile.sh`, symlinked into
+`~/.config/direnv/lib/`. It runs `scripts/agent_profile.py`, which keeps config dirs under
+`~/.config/agent-profiles/<name>/`, and exports `CLAUDE_CONFIG_DIR`, `CODEX_HOME` and
+`OPENCODE_CONFIG_DIR` to point at them. The project's own skills, MCP servers and AGENTS.md still
+load. Preferences (models, permissions, hooks) are copied once from the global files; edit them in
+the profile afterwards.
+
+Switching the config dir alone leaves gaps, and the script closes each one:
+
+- **Claude Code** walks up from the project to `~` and loads `~/.claude/CLAUDE.md` as an
+  ancestor's CLAUDE.md, so the profile's `claudeMdExcludes` lists it. claude.ai connectors come
+  with the account, so `ENABLE_CLAUDEAI_MCP_SERVERS=false`.
+- **Codex** reads `~/.agents/skills` whatever `CODEX_HOME` is, so the profile's `config.toml`
+  disables each one by path in `[[skills.config]]`. Don't disable them by name: the global
+  `skill-creator` has the same name as Codex's bundled one.
+- **OpenCode** looks for `.agents/` and `.claude/` in every directory from the project up to `/`,
+  so it finds the global skills anyway. The profile's `opencode.json` hides each one with a
+  `skill.use` deny policy, and `OPENCODE_DISABLE_CLAUDE_CODE=1` skips `.claude/`. The shared
+  background service keeps the env it started with, so the profile's `bin/opencode` wrapper (put
+  on `PATH`) adds `--standalone`.
+- **Antigravity** has no config-dir switch, and project files can't remove global skills or MCP
+  servers. It isn't covered. To keep work items out of it, take them out of agy globally (every
+  project) with the harness input set to Antigravity: "Sync: remove MCP servers globally", "Sync:
+  remove global instructions", and `scripts/link_global_skills.py --harness antigravity --unlink`
+  (ai-platform's "Skills: global removal" task). Each harness has its own global skill dir, so the
+  other harnesses keep them.
+
+The skill lists are rebuilt on every direnv load, and the `.envrc` watches both global skill
+dirs, so a newly installed global skill is shut out on the next prompt. The profile needs its own
+`/login` in Claude Code and `codex login`. OpenCode keeps sharing the global auth.
+
+To check what a harness actually sends, capture its prompt: `codex debug prompt-input`, and
+`~/Projects/dima/scripts/llm_capture.py` for Claude Code and OpenCode. Inside a Claude Code
+session, unset `CLAUDECODE` first.
 
 ## Update OpenCode plugins
 

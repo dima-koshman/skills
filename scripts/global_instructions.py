@@ -10,9 +10,10 @@ path that this script owns; content outside the markers (incl. other sources' bl
 Several projects can each sync their own instructions file; a block is identified by the file's path (with ~ for
 the home directory), so after moving or renaming the file, `remove` with the old path and `sync` with the new one.
 
-Only harnesses whose config dir exists are touched; a missing instruction file is created.
+--harness limits a command to one harness (claude, codex, opencode, antigravity; default all). Only harnesses whose
+config dir exists are touched; a missing instruction file is created.
 
-Usage: global_instructions.py {sync,remove,status} [--instructions-file PATH]
+Usage: global_instructions.py {sync,remove,status} [--instructions-file PATH] [--harness HARNESS]
     sync    add the block if absent, replace it if the instructions changed (idempotent)
     remove  delete the block (and the file, if nothing else is left in it)
     status  show per file: current / outdated / absent / no harness
@@ -23,12 +24,12 @@ import os
 import sys
 from pathlib import Path
 
-TARGETS = [
-    Path.home() / ".claude/CLAUDE.md",
-    Path.home() / ".config/opencode/AGENTS.md",
-    Path.home() / ".codex/AGENTS.md",
-    Path.home() / ".gemini/GEMINI.md",
-]
+TARGETS = {
+    "claude": Path.home() / ".claude/CLAUDE.md",
+    "opencode": Path.home() / ".config/opencode/AGENTS.md",
+    "codex": Path.home() / ".codex/AGENTS.md",
+    "antigravity": Path.home() / ".gemini/GEMINI.md",
+}
 
 
 def display(path: Path) -> str:
@@ -90,6 +91,12 @@ def main() -> None:
         default="global-instructions.md",
         help="Markdown to keep in the global instruction files (default ./global-instructions.md)",
     )
+    parser.add_argument(
+        "--harness",
+        choices=["all", *TARGETS],
+        default="all",
+        help="the harness whose global instruction file to change (default all)",
+    )
     args = parser.parse_args()
     cmd = args.command
     source = Path(args.instructions_file).expanduser().resolve()
@@ -98,7 +105,8 @@ def main() -> None:
     block = Block(source)
     print(f"instructions file: {source}")
 
-    for path in TARGETS:
+    paths = list(TARGETS.values()) if args.harness == "all" else [TARGETS[args.harness]]
+    for path in paths:
         if cmd == "remove":
             rest, current = (
                 block.split(path.read_text()) if path.is_file() else ("", None)

@@ -138,13 +138,13 @@
         },
         {
             "label": "Skills: link local (all)",
-            "detail": "Symlink alternative to 'Skills: install local (all)' — same skill selection (keep the two lists in sync), same global layout (~/.agents/skills/<name> -> this repo, ~/.claude/skills/<name> -> ../../.agents/skills/<name>), but edits here apply everywhere with no re-run. Replaces an existing npx copy of the same skill; refuses anything else in the way. Use one mechanism or the other: before going back to npx, run 'Skills: unlink local (all)'.",
-            "command": "link_global_skills.sh \"${workspaceFolder}/.agents/skills/development-best-practices\" \"${workspaceFolder}/.agents/skills/python-styleguide\" \"${workspaceFolder}/.agents/skills/cli-subagents\" \"${workspaceFolder}/.agents/skills/finding-high-value-reading\""
+            "detail": "Symlink alternative to 'Skills: install local (all)' — same skill selection (keep the two lists in sync), installed for the chosen harness (or all) in its own global skill dir (~/.claude/skills, ~/.config/opencode/skills, ~/.gemini/config/skills; Codex: a path entry in ~/.codex/config.toml), so edits here apply everywhere with no re-run. Not ~/.agents/skills, which Codex and OpenCode share: an npx copy there is migrated to per-harness links for Claude Code, Codex and OpenCode. Refuses anything else in the way. Use one mechanism or the other: before going back to npx, run 'Skills: unlink local (all)'.",
+            "command": "python3 \"${workspaceFolder}/scripts/link_global_skills.py\" --harness ${input:harness} \"${workspaceFolder}/.agents/skills/development-best-practices\" \"${workspaceFolder}/.agents/skills/python-styleguide\" \"${workspaceFolder}/.agents/skills/cli-subagents\" \"${workspaceFolder}/.agents/skills/finding-high-value-reading\""
         },
         {
             "label": "Skills: unlink local (all)",
-            "detail": "Remove the global symlinks created by 'Skills: link local (all)' (only links pointing into this repo). Run before switching back to 'Skills: install local (all)'.",
-            "command": "link_global_skills.sh --unlink \"${workspaceFolder}/.agents/skills/development-best-practices\" \"${workspaceFolder}/.agents/skills/python-styleguide\" \"${workspaceFolder}/.agents/skills/cli-subagents\" \"${workspaceFolder}/.agents/skills/finding-high-value-reading\""
+            "detail": "Remove the chosen harness's (or every harness's) global links created by 'Skills: link local (all)' (only links pointing into this repo). Run before switching back to 'Skills: install local (all)'.",
+            "command": "python3 \"${workspaceFolder}/scripts/link_global_skills.py\" --harness ${input:harness} --unlink \"${workspaceFolder}/.agents/skills/development-best-practices\" \"${workspaceFolder}/.agents/skills/python-styleguide\" \"${workspaceFolder}/.agents/skills/cli-subagents\" \"${workspaceFolder}/.agents/skills/finding-high-value-reading\""
         },
         {
             "label": "Setup: link scripts and IDE to ~/.local/bin",
@@ -262,34 +262,34 @@
             "command": "bash \"${workspaceFolder}/scripts/sync_files.sh\" --confirm=${input:syncConfirm} \"${workspaceFolder}/.claude/settings.json\" \"$HOME/.claude/settings.json\""
         },
         {
-            "label": "Sync: MCP servers globally (all harnesses)",
-            "detail": "Render the chosen Claude-style MCP file (default: .global.mcp.json in the open workspace; it is not the project-scope .mcp.json Claude Code loads) with the ${VAR} values from the chosen dotenv file (empty for none; the shell environment is ignored) into the global MCP config of Claude Code (~/.claude.json), Codex (~/.codex/config.toml), OpenCode (~/.config/opencode/opencode.json) and Antigravity IDE + agy (~/.gemini/config/mcp_config.json). Mode merge adds/updates the file's servers and keeps every other one (a server deleted from the file stays installed); override makes each harness's server set exactly the file, dropping every other server, incl. other projects' and ones this script never installed (e.g. openwiki), and lists what it dropped. Idempotent; re-run after editing the file or rotating a token, then restart the harnesses.",
-            "command": "python3 \"$HOME/Projects/dima/scripts/global_mcp.py\" sync --mcp-json \"${input:mcpJson}\" --env-file \"${input:mcpEnvFile}\" --mode ${input:mcpSyncMode}"
+            "label": "Sync: MCP servers globally",
+            "detail": "Render the chosen Claude-style MCP file (default: .global.mcp.json in the open workspace; it is not the project-scope .mcp.json Claude Code loads) with the ${VAR} values from the chosen dotenv file (empty for none; the shell environment is ignored) into the global MCP config of the chosen harness, or all: Claude Code (~/.claude.json), Codex (~/.codex/config.toml), OpenCode (~/.config/opencode/opencode.json) and Antigravity IDE + agy (~/.gemini/config/mcp_config.json). Mode merge adds/updates the file's servers and keeps every other one (a server deleted from the file stays installed); override makes each harness's server set exactly the file, dropping every other server, incl. other projects' and ones this script never installed (e.g. openwiki), and lists what it dropped. Idempotent; re-run after editing the file or rotating a token, then restart the harnesses.",
+            "command": "python3 \"$HOME/Projects/dima/scripts/global_mcp.py\" sync --mcp-json \"${input:mcpJson}\" --env-file \"${input:mcpEnvFile}\" --mode ${input:mcpSyncMode} --harness ${input:harness}"
         },
         {
             "label": "Sync: MCP servers global status",
-            "detail": "Show per harness config whether the chosen MCP file's servers are current / outdated / absent for the sync mode, and which installed servers the file doesn't define (names only, no values printed).",
-            "command": "python3 \"$HOME/Projects/dima/scripts/global_mcp.py\" status --mcp-json \"${input:mcpJson}\" --env-file \"${input:mcpEnvFile}\" --mode ${input:mcpSyncMode}"
+            "detail": "Show per harness config (the chosen harness, or all) whether the chosen MCP file's servers are current / outdated / absent for the sync mode, and which installed servers the file doesn't define (names only, no values printed).",
+            "command": "python3 \"$HOME/Projects/dima/scripts/global_mcp.py\" status --mcp-json \"${input:mcpJson}\" --env-file \"${input:mcpEnvFile}\" --mode ${input:mcpSyncMode} --harness ${input:harness}"
         },
         {
             "label": "Sync: remove MCP servers globally",
-            "detail": "Delete the chosen MCP file's servers from the global harness configs; other servers are kept.",
-            "command": "python3 \"$HOME/Projects/dima/scripts/global_mcp.py\" remove --mcp-json \"${input:mcpJson}\""
+            "detail": "Delete the chosen MCP file's servers from the chosen harness's global config, or every harness's; other servers are kept.",
+            "command": "python3 \"$HOME/Projects/dima/scripts/global_mcp.py\" remove --mcp-json \"${input:mcpJson}\" --harness ${input:harness}"
         },
         {
-            "label": "Sync: global instructions (all harnesses)",
-            "detail": "Add or refresh the chosen Markdown file as a block marked with its path in ~/.claude/CLAUDE.md, ~/.config/opencode/AGENTS.md, ~/.codex/AGENTS.md and ~/.gemini/GEMINI.md (only for harnesses installed here). Idempotent; content outside the block, incl. other files' blocks, is never touched. Re-run after editing the file.",
-            "command": "python3 \"$HOME/Projects/dima/scripts/global_instructions.py\" sync --instructions-file \"${input:instructionsFile}\""
+            "label": "Sync: global instructions",
+            "detail": "Add or refresh the chosen Markdown file as a block marked with its path in the chosen harness's global instruction file, or all of them: ~/.claude/CLAUDE.md, ~/.config/opencode/AGENTS.md, ~/.codex/AGENTS.md and ~/.gemini/GEMINI.md (only for harnesses installed here). Idempotent; content outside the block, incl. other files' blocks, is never touched. Re-run after editing the file.",
+            "command": "python3 \"$HOME/Projects/dima/scripts/global_instructions.py\" sync --instructions-file \"${input:instructionsFile}\" --harness ${input:harness}"
         },
         {
             "label": "Sync: global instructions status",
-            "detail": "Show per global instruction file whether the chosen file's block is current / outdated / absent.",
-            "command": "python3 \"$HOME/Projects/dima/scripts/global_instructions.py\" status --instructions-file \"${input:instructionsFile}\""
+            "detail": "Show per global instruction file (the chosen harness's, or all) whether the chosen file's block is current / outdated / absent.",
+            "command": "python3 \"$HOME/Projects/dima/scripts/global_instructions.py\" status --instructions-file \"${input:instructionsFile}\" --harness ${input:harness}"
         },
         {
             "label": "Sync: remove global instructions",
-            "detail": "Delete the chosen file's block from the global instruction files (a file is deleted only if nothing else is left in it).",
-            "command": "python3 \"$HOME/Projects/dima/scripts/global_instructions.py\" remove --instructions-file \"${input:instructionsFile}\""
+            "detail": "Delete the chosen file's block from the chosen harness's global instruction file, or all of them (a file is deleted only if nothing else is left in it).",
+            "command": "python3 \"$HOME/Projects/dima/scripts/global_instructions.py\" remove --instructions-file \"${input:instructionsFile}\" --harness ${input:harness}"
         },
         {
             "label": "Sync: VSCode settings and tasks to Code User",
@@ -656,6 +656,19 @@
             "description": "merge: add/update the file's servers, keep the rest; override: also drop every server not in the file (incl. openwiki)",
             "options": ["merge", "override"],
             "default": "merge"
+        },
+        {
+            "id": "harness",
+            "type": "pickString",
+            "description": "Which harness's global config to change",
+            "options": [
+                {"label": "all harnesses", "value": "all"},
+                {"label": "Claude Code", "value": "claude"},
+                {"label": "Codex", "value": "codex"},
+                {"label": "OpenCode", "value": "opencode"},
+                {"label": "Antigravity (IDE + agy)", "value": "antigravity"}
+            ],
+            "default": "all"
         },
         {
             "id": "instructionsFile",

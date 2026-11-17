@@ -27,7 +27,7 @@ SCRIPTS=(
     create_worktree.sh
     get_venv_packages_size.py
     link_claude_skills.sh
-    link_global_skills.sh
+    link_global_skills.py
     list_opencode_processes.sh
     voice_chat.sh
 )

@@ -49,3 +49,22 @@ def test_two_sources_sync_update_and_remove_independently(
     _ = _run(tmp_path, "remove", "--instructions-file", str(b))
 
     assert claude.read_text() == "# Mine\n\nkeep me\n"
+
+
+def test_harness_limits_sync_and_remove_to_one_file(tmp_path: pathlib.Path) -> None:
+    (tmp_path / ".claude").mkdir()
+    (tmp_path / ".gemini").mkdir()
+    a = tmp_path / "a.md"
+    _ = a.write_text("A one\n")
+    _ = _run(tmp_path, "sync", "--instructions-file", str(a))
+
+    _ = _run(
+        tmp_path, "remove", "--instructions-file", str(a), "--harness", "antigravity"
+    )
+
+    assert not (tmp_path / ".gemini/GEMINI.md").exists()
+    assert "A one" in (tmp_path / ".claude/CLAUDE.md").read_text()
+    status = _run(
+        tmp_path, "status", "--instructions-file", str(a), "--harness", "claude"
+    )
+    assert status.count("current") == 1 and "GEMINI" not in status

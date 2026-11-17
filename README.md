@@ -7,11 +7,13 @@ skills globally, using the same skill selection:
 
 - **Copy** — task **Skills: install local (all)** runs `npx skills add … --global`, copying each skill
   into `~/.agents/skills/` (symlinked into `~/.claude/skills/`). Re-run it after editing a skill.
-- **Symlink** — task **Skills: link local (all)** runs `scripts/link_global_skills.sh`, linking the same
-  skills to this repo in the same layout, so edits apply everywhere with no re-run. It replaces an
-  existing npx copy of the same skill; run **Skills: unlink local (all)** before switching back to npx.
-  The script is on `PATH` after **Setup: link scripts and IDE to ~/.local/bin**, so other repos can
-  link their own skills with it (`link_global_skills.sh <skill-dir>...`).
+- **Symlink** — task **Skills: link local (all)** runs `scripts/link_global_skills.py`, linking the same
+  skills to this repo, so edits apply everywhere with no re-run. It links into each harness's own
+  global skill dir, so you can pick one harness or all; Codex gets a path entry in
+  `~/.codex/config.toml` instead. It migrates an existing npx copy of the same skill out of the
+  shared `~/.agents/skills/`. Run **Skills: unlink local (all)** before switching back to npx. The
+  script is on `PATH` after **Setup: link scripts and IDE to ~/.local/bin**, so other repos can link
+  their own skills with it (`link_global_skills.py [--harness NAME] <skill-dir>...`).
 
 ## Engineering knowledge with OpenWiki
 

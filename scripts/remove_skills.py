@@ -3,11 +3,12 @@
 
 Where a skill can be installed (one name may be in several of these):
     global   ~/.agents/skills/ (Codex, OpenCode), ~/.claude/skills/, ~/.config/opencode/skills/, ~/.codex/skills/,
-             ~/.gemini/antigravity-cli/skills/; lock ~/.agents/.skill-lock.json
+             ~/.gemini/antigravity-cli/skills/; lock ~/.agents/.skill-lock.json. Not covered: link_global_skills.py's
+             ~/.gemini/config/skills/ links and Codex config.toml entries (use its --unlink)
     project  <project>/.agents/skills/, <project>/.claude/skills/, <project>/.opencode/skills/; lock <project>/skills-lock.json
 
 Rules, per installed entry:
-    symlink      remove the link only (link_global_skills.sh links and npx's ~/.claude/skills links point at a source)
+    symlink      remove the link only (link_global_skills.py links and npx's ~/.claude/skills links point at a source)
     copy         delete the directory: a remote install (npx skills add owner/repo) or a copy of a local one
     source       never deleted: a git-tracked skill, or the directory a `sourceType: local` lock entry installs from
                  (`npx skills remove` would delete those, e.g. a project's own .agents/skills/<name> or, through a

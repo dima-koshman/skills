@@ -22,10 +22,12 @@ environment is ignored, so a stale token direnv exported into the shell is never
 url/headers; local stdio specs use command/args. Other keys (e.g. "type", "description", "auth") are not written.
 Written files are 0600: they may hold tokens. Re-run `sync` after rotating a token or editing the file.
 
-Only harnesses whose config dir exists are touched.
+--harness limits every command to one harness (claude, codex, opencode, antigravity; default all), e.g. to keep work
+servers out of a harness used for personal projects. Only harnesses whose config dir exists are touched.
 
 Usage: global_mcp.py {sync,status} [--mcp-json PATH] [--env-file PATH] [--var NAME=VALUE ...] [--mode {merge,override}]
-       global_mcp.py remove [--mcp-json PATH]
+                     [--harness HARNESS]
+       global_mcp.py remove [--mcp-json PATH] [--harness HARNESS]
 """
 
 import argparse
@@ -330,13 +332,17 @@ class OpenCode:
         )
 
 
-def targets(source: str) -> list:
-    return [
-        JsonUpsert(CLAUDE, CLAUDE, claude_server),
-        Codex(source),
-        OpenCode(),
-        JsonUpsert(ANTIGRAVITY, ANTIGRAVITY.parent, antigravity_server),
-    ]
+HARNESSES = ["claude", "codex", "opencode", "antigravity"]
+
+
+def targets(source: str, harness: str = "all") -> list:
+    every = {
+        "claude": JsonUpsert(CLAUDE, CLAUDE, claude_server),
+        "codex": Codex(source),
+        "opencode": OpenCode(),
+        "antigravity": JsonUpsert(ANTIGRAVITY, ANTIGRAVITY.parent, antigravity_server),
+    }
+    return list(every.values()) if harness == "all" else [every[harness]]
 
 
 def project_root() -> Path:
@@ -383,6 +389,12 @@ def main() -> None:
         default="merge",
         help="merge: add/update the file's servers, keep the rest; override: also drop servers not in the file",
     )
+    parser.add_argument(
+        "--harness",
+        choices=["all", *HARNESSES],
+        default="all",
+        help="the harness whose global config to change (default all)",
+    )
     args = parser.parse_args()
     cmd = args.command
     override = args.mode == "override"
@@ -401,9 +413,9 @@ def main() -> None:
         servers = load_servers(mcp_json, load_env(env_file) | variables)
         print(
             f"MCP file: {mcp_json}\nenv file: {env_file or '-'}\nvariables: {', '.join(variables) or '-'}\n"
-            f"mode: {args.mode}\nservers: {', '.join(names)}"
+            f"mode: {args.mode}\nharness: {args.harness}\nservers: {', '.join(names)}"
         )
-    for target in targets(display(mcp_json)):
+    for target in targets(display(mcp_json), args.harness):
         path = target.path
         if not target.installed():
             print(f"{'no harness':<10} {path}")

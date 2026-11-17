@@ -213,6 +213,25 @@ def test_empty_file_changes_nothing_in_merge_mode(env: "_Env") -> None:
     assert [path.read_text() for path in env.configs if path.exists()] == before
 
 
+def test_harness_limits_sync_and_remove_to_one_config(env: "_Env") -> None:
+    a = env.mcp_json("a.json", {"a1": LOCAL_SERVER})
+    _ = env.run("sync", "--mcp-json", str(a))
+
+    _ = env.run("remove", "--mcp-json", str(a), "--harness", "antigravity")
+
+    assert "a1" not in env.antigravity()
+    assert env.antigravity()["unmanaged"] == {"command": "keep"}
+    assert "a1" in env.claude() and "a1" in env.codex() and "a1" in env.opencode()
+
+    status = env.run("status", "--mcp-json", str(a), "--harness", "antigravity")
+
+    assert status.count("absent") == 1 and "current" not in status
+
+    _ = env.run("sync", "--mcp-json", str(a), "--harness", "antigravity")
+
+    assert env.antigravity()["a1"] == LOCAL_SERVER
+
+
 @final
 class _Env:
     def __init__(self, tmp_path: pathlib.Path) -> None:

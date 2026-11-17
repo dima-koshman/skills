@@ -159,9 +159,10 @@ okf_version: "0.2"
 * [Distributed Systems](/software-engineering/distributed-systems.md) `[Knowledge Area]` - Reading notes on storage, replication, consensus, and large-scale data processing.
 * [Frontend Engineering](/software-engineering/frontend.md) `[Knowledge Area]` - Server-rendered interactivity and the trade-offs of the hypermedia approach.
 * [Learning Resources](/software-engineering/learning.md) `[Knowledge Area]` - Practical labs and structured training for Linux, Kubernetes, and software infrastructure.
+* [Planning and Delivery](/software-engineering/planning.md) `[Knowledge Area]` _(draft)_ - How software work is shaped, sized, committed to and shipped, such as appetites versus estimates.
 * [Reliability Engineering](/software-engineering/reliability.md) `[Knowledge Area]` - Reliability targets, simplicity, and toil reduction as software engineering practices.
 * [Service Communication](/software-engineering/communication.md) `[Knowledge Area]` - Protocol Buffers schemas and gRPC contracts for communication between services.
-* [Service Infrastructure](/software-engineering/infrastructure.md) `[Knowledge Area]` - Service meshes, data, control, and management planes around distributed applications, and OS CPU scheduling.
+* [Service Infrastructure](/software-engineering/infrastructure.md) `[Knowledge Area]` - Service meshes, data, control, and management planes around distributed applications, OS CPU scheduling, and network ports.
 * [Software Architecture](/software-engineering/architecture.md) `[Knowledge Area]` - Component boundaries, communication styles, and dependency trade-offs in software design.
 * [Source Control](/software-engineering/source-control.md) `[Knowledge Area]` - How code is stored, versioned, and shared across projects — repository strategy and version-control systems at scale.
 
@@ -196,11 +197,18 @@ okf_version: "0.2"
 * [Data, Control & Management Planes](/software-engineering/infrastructure/planes.md) `[Concept]` - The decomposition of a distributed system into traffic-carrying, policy-distributing, and operator-facing layers.
 * [OS CPU Scheduling](/software-engineering/infrastructure/cpu-scheduling.md) `[Concept]` - How an OS shares CPU time, through preemption, fair shares and priorities, and how weights differ from limits, using Linux as the example.
 * [Service Mesh](/software-engineering/infrastructure/service-mesh.md) `[Concept]` - A dedicated infrastructure layer handling service-to-service routing, security, reliability, and observability outside application code.
+* [Well-Known Ports (22, 80, 443)](/software-engineering/infrastructure/network-ports.md) `[Concept]` _(draft)_ - Why ports 22, 80 and 443 matter beyond convention. Covers privileged ports, client defaults, browser port blocking, firewalls, and protocols that need a fixed port, plus what this means for a Runpod Pod.
 
 ## learning
 
 * [LabEx](/software-engineering/learning/labex.md) `[Reference]` - Browser-based hands-on labs and structured skill trees for Linux, DevOps, cybersecurity, and programming.
 * [Linux Foundation Training](/software-engineering/learning/linux-foundation.md) `[Reference]` - Structured open-source training, including Introduction to Kubernetes (LFS158) and its hands-on exercises.
+
+## planning
+
+* [Responding to Raw Ideas](/software-engineering/planning/responding-to-raw-ideas.md) `[Practice]` _(draft)_ - How to answer a new idea calmly, without promising what you can't guarantee or criticizing what you can't back up, based on Shape Up's "Interesting. Maybe some day."
+* [Shape Up](/software-engineering/planning/shape-up.md) `[Reference]` _(draft)_ - Ryan Singer's book on Basecamp's product process; its core idea is the appetite, a fixed time budget with variable scope, set before the solution is designed.
+* [Shaping Work Before the Pitch](/software-engineering/planning/shaping.md) `[Practice]` _(draft)_ - The steps that turn a raw idea into a pitch, following Shape Up. Narrow the problem, set an appetite, rough out the solution, find rabbit holes, then check it with experts while it is still easy to change.
 
 ## reliability
 

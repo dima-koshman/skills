@@ -1,5 +1,12 @@
 # Knowledge history
 
+## 2026-11-17
+
+- **Creation**: Added [Well-Known Ports (22, 80, 443)](/software-engineering/infrastructure/network-ports.md) after Dima asked whether these ports are special beyond convention and whether SSH and HTTP(S) can swap ports in his Runpod setup. TCP doesn't care. What depends on the number: privileged ports below 1024, client defaults, the WHATWG bad-port list (22 is on it, so no HTTP on 22 in browsers), firewalls, and Let's Encrypt's fixed ports. RFC 9114 lets HTTP/3 use any UDP port. Runpod maps an internal TCP port to an assigned external port, so moving sshd inside the Pod doesn't help on a strict network. Draft.
+- **Creation**: Added [Shaping Work Before the Pitch](/software-engineering/planning/shaping.md), from Shape Up chapters 2–6 and the glossary, at Dima's request. Covers the pitch definition, rough/solved/bounded, narrowing the problem, the appetite, breadboards and fat marker sketches, rabbit holes, checking with technical experts ("is X possible in 6-weeks?") and the five pitch ingredients. Adds what makes a good pitch, made generic beyond UI, plus a pre-pitch checklist and a note on private versus open shaping. Draft.
+- **Creation**: Added [Responding to Raw Ideas](/software-engineering/planning/responding-to-raw-ideas.md) at Dima's request: answer new ideas calmly with no commitment you can't guarantee and no criticism you can't back up. Based on chapter 3's "Interesting. Maybe some day."; the dismissing failure mode and the reply patterns are our own analysis. Linked both from [Shape Up](/software-engineering/planning/shape-up.md). Draft.
+- **Creation**: Added [Shape Up](/software-engineering/planning/shape-up.md) and a new [Planning and Delivery](/software-engineering/planning.md) area, after Dima asked whether chapter 3's appetite (fixed time, variable scope) argues against estimates. Records that an estimate fixes scope and derives time, and that the trap is turning it into a deadline. Adds the chapter's points, the circuit breaker from chapter 8, trade-offs, and when to use an appetite versus an estimate. Both are drafts.
+
 ## 2026-11-11
 
 - **Update**: Added a "How far to trust a leaderboard" section to [LLM Leaderboards](/ai-engineering/providers/leaderboards.md), after Dima asked whether Artificial Analysis is fair and whether models are benchmaxxed.

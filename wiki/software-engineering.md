@@ -29,6 +29,7 @@ topics:
 - /software-engineering/frontend.md
 - /software-engineering/infrastructure.md
 - /software-engineering/learning.md
+- /software-engineering/planning.md
 - /software-engineering/reliability.md
 - /software-engineering/source-control.md
 ---
@@ -61,7 +62,12 @@ not tutorials.
 - **Infrastructure** — the layer around the services: the
   [service mesh](/software-engineering/infrastructure/service-mesh.md), and the
   [data, control, and management planes](/software-engineering/infrastructure/planes.md) that
-  describe how such systems are decomposed.
+  describe how such systems are decomposed, plus what makes
+  [ports 22, 80 and 443](/software-engineering/infrastructure/network-ports.md) special.
+- **Planning** — how work is shaped, sized and committed to:
+  [Shape Up](/software-engineering/planning/shape-up.md)'s appetite (fixed time, variable scope)
+  versus estimates, [shaping an idea into a pitch](/software-engineering/planning/shaping.md), and
+  [responding to raw ideas](/software-engineering/planning/responding-to-raw-ideas.md).
 - **Source control** — repository strategy:
   [monorepo vs polyrepo](/software-engineering/source-control/monorepo.md), with
   Google's, Meta's and Anthropic's scaling stories and the case against.

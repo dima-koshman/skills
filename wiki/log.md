@@ -2,6 +2,8 @@
 
 ## 2026-11-18
 
+- **Creation**: [Betting and Building in Cycles](/software-engineering/planning/betting-and-building.md), from Dima's notes on parts 2 and 3 of Shape Up: cycles and cool-down, betting versus planning, the circuit breaker, handing over whole projects (with the research on autonomy), scopes split by structure, discovered tasks and the hill chart, scope hammering and QA. [Shape Up](/software-engineering/planning/shape-up.md) links to it. Draft.
+
 - **Creation**: [Tool Search](/ai-engineering/harness/tool-search.md), from Dima's question about tool search in Claude Code: `defer_loading` and the two server-side variants in the Claude API (no automatic threshold), Claude Code's default and `ENABLE_TOOL_SEARCH=auto:N`, and how OpenAI, Codex CLI and Cursor do it. Draft.
 - **Creation**: [Agents as Tools](/ai-engineering/harness/agents-as-tools.md), from Dima's question about Claude Code's web-fetch subagent: the names for the pattern (agents as tools, AgentTool, context quarantine), model-in-a-tool vs agent-as-a-tool, good fits, risks and how to scope a call. Draft.
 - **Update**: [Advisor Tool](/ai-engineering/harness/advisor.md) explains how executor and advisor communicate: no question, one-way advice, control stays with the executor.

@@ -14,6 +14,7 @@ parent: /software-engineering/planning.md
 related:
 - /software-engineering/planning/shaping.md
 - /software-engineering/planning/responding-to-raw-ideas.md
+- /software-engineering/planning/betting-and-building.md
 status: draft
 sources:
 - id: shapeup
@@ -69,6 +70,8 @@ Chapter 3 ("Set Boundaries") also argues:[^shapeup-ch3]
 
 The companion rule is the **circuit breaker**: a project that does not ship in its cycle is cancelled by default, not
 extended.[^shapeup-ch8] Cycles are six weeks, followed by a two-week cool-down with no scheduled work.[^shapeup-ch8]
+Those rules and the rest of parts 2 and 3 (betting, whole projects, scopes, the hill chart, QA) are in
+[Betting and Building in Cycles](/software-engineering/planning/betting-and-building.md).
 
 # Trade-offs
 

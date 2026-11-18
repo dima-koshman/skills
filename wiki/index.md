@@ -144,6 +144,7 @@ okf_version: "0.2"
 
 ## planning
 
+* [Betting and Building in Cycles](/software-engineering/planning/betting-and-building.md) `[Practice]` _(draft)_ - Parts 2 and 3 of Shape Up, reduced to the ideas worth reusing. Longer cycles with a cool-down, a clean slate, bets instead of plans, whole projects handed to a team, scopes cut by structure, to-do lists that grow before they shrink, the circuit breaker, and QA for the edges.
 * [Responding to Raw Ideas](/software-engineering/planning/responding-to-raw-ideas.md) `[Practice]` _(draft)_ - How to answer a new idea calmly, without promising what you can't guarantee or criticizing what you can't back up, based on Shape Up's "Interesting. Maybe some day."
 * [Shape Up](/software-engineering/planning/shape-up.md) `[Reference]` _(draft)_ - Ryan Singer's book on Basecamp's product process; its core idea is the appetite, a fixed time budget with variable scope, set before the solution is designed.
 * [Shaping Work Before the Pitch](/software-engineering/planning/shaping.md) `[Practice]` _(draft)_ - The steps that turn a raw idea into a pitch, following Shape Up. Narrow the problem, set an appetite, rough out the solution, find rabbit holes, then check it with experts while it is still easy to change.

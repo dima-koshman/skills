@@ -12,11 +12,10 @@ tags:
 parent: /ai-engineering/compute/serving.md
 related:
 - /ai-engineering/compute/serving/triton-inference-server.md
-- /ai-engineering/compute/serving/paged-attention.md
-- /ai-engineering/compute/serving/continuous-batching.md
-- /ai-engineering/compute/serving/prefix-caching.md
-- /ai-engineering/compute/mps.md
-- /ai-engineering/compute/max.md
+- /ai-engineering/compute/serving/prefill-decode-and-kv-cache.md
+- /ai-engineering/compute/serving/batching-and-scheduling.md
+- /ai-engineering/compute/gpu-sharing/mps.md
+- /ai-engineering/compute/software-stack/max.md
 sources:
 - id: vllm-docs
   resource: https://docs.vllm.ai/en/latest/
@@ -54,13 +53,13 @@ tested.[^vllm-paper]
 vLLM is where the LLM-specific scheduling lives. This is what separates an inference engine from a general model
 server:
 
-- KV memory, through [PagedAttention](/ai-engineering/compute/serving/paged-attention.md).[^vllm-docs]
-- [Continuous batching](/ai-engineering/compute/serving/continuous-batching.md),
-  [chunked prefill](/ai-engineering/compute/serving/chunked-prefill.md) and
-  [prefix caching](/ai-engineering/compute/serving/prefix-caching.md).[^vllm-docs]
-- Kernel choice, including [FlashAttention](/ai-engineering/compute/serving/flash-attention.md), plus
-  [CUDA graphs](/ai-engineering/compute/serving/cuda-graphs.md) and
-  [quantization](/ai-engineering/compute/serving/quantization.md) formats.[^vllm-docs]
+- KV memory, through [PagedAttention](/ai-engineering/compute/serving/prefill-decode-and-kv-cache.md#pagedattention).[^vllm-docs]
+- [Continuous batching](/ai-engineering/compute/serving/batching-and-scheduling.md#continuous-batching),
+  [chunked prefill](/ai-engineering/compute/serving/batching-and-scheduling.md#chunked-prefill) and
+  [prefix caching](/ai-engineering/compute/serving/prefill-decode-and-kv-cache.md#prefix-caching).[^vllm-docs]
+- Kernel choice, including [FlashAttention](/ai-engineering/compute/serving/kernels-and-decoding.md#flashattention), plus
+  [CUDA graphs](/ai-engineering/compute/serving/kernels-and-decoding.md#cuda-graphs) and
+  [quantization](/ai-engineering/compute/serving/kernels-and-decoding.md#llm-quantization) formats.[^vllm-docs]
 
 ## Is it lower level than Triton?
 
@@ -73,9 +72,9 @@ The more useful split is general versus LLM-specific:
 
 | Layer | Example | Unit it schedules |
 | --- | --- | --- |
-| Cluster | [Run:ai](/ai-engineering/compute/run-ai.md), Kubernetes | Pods onto GPUs |
+| Cluster | [Run:ai](/ai-engineering/compute/gpu-sharing/run-ai.md), Kubernetes | Pods onto GPUs |
 | Model server | [Triton](/ai-engineering/compute/serving/triton-inference-server.md) | Requests onto model instances |
-| Inference engine | vLLM, [MAX](/ai-engineering/compute/max.md) | Tokens and KV memory within a batch |
+| Inference engine | vLLM, [MAX](/ai-engineering/compute/software-stack/max.md) | Tokens and KV memory within a batch |
 | Kernels | FlashAttention, CUDA | Threads on the GPU |
 
 This table is our framing, not a standard taxonomy. MAX's position is approximate, since it also ships a server.
@@ -87,7 +86,7 @@ The memory setting `--gpu-memory-utilization` is per instance. To put two instan
 version.
 
 The setting only divides memory. Two instances are two processes, so without
-[MPS](/ai-engineering/compute/mps.md) they still time-slice the GPU's compute.
+[MPS](/ai-engineering/compute/gpu-sharing/mps.md) they still time-slice the GPU's compute.
 
 [^vllm-docs]: vLLM documentation, home page.
 [^vllm-paper]: Kwon et al., SOSP 2023.

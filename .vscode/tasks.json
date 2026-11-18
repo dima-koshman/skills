@@ -409,8 +409,17 @@
             "label": "Wiki: regenerate and render",
             "detail": "Choose wiki/ (maintained source, default) or openwiki/ (generated experiment) and do_open (default true), then regenerate its index, render it, and open the reader when do_open is true.",
             "dependsOrder": "sequence",
-            "dependsOn": ["Wiki: choose bundle and do_open", "Wiki: regenerate index", "Wiki: render"],
+            "dependsOn": [
+                "Wiki: choose bundle and do_open",
+                "Wiki: regenerate index",
+                "Wiki: render"
+            ],
             "command": "if [ \"${input:wikiDoOpen}\" = true ]; then open \"${workspaceFolder}/dev/${input:wikiBundle}-okf-site.html\"; fi"
+        },
+        {
+            "label": "Wiki: review server",
+            "detail": "Choose wiki/ (default) or openwiki/ and do_open, then serve that bundle's reader with two review actions, recorded as human:dima: a Promote button beside each draft pill, and a Comment panel on every concept. wiki/ uses http://127.0.0.1:8765 and openwiki/ uses :8766, so both can run at once. On start it regenerates index.md and renders dev/<bundle>-okf-site.html, like 'Wiki: regenerate and render', then opens the URL when do_open is true. It re-renders whenever a bundle file changes and open pages reload themselves. openwiki/ is generated: 'OpenWiki: update' may overwrite reviews made there. Keep it running; Ctrl+C stops it.",
+            "command": "mkdir -p \"${workspaceFolder}/dev\" && port=$([ \"${input:wikiBundle}\" = openwiki ] && echo 8766 || echo 8765) && uv run --no-project --with pyyaml python \"${workspaceFolder}/.agents/skills/okf/scripts/okf_review_server.py\" \"${workspaceFolder}/${input:wikiBundle}\" --output \"${workspaceFolder}/dev/${input:wikiBundle}-okf-site.html\" --reviewer human:dima --port \"$port\" $([ \"${input:wikiDoOpen}\" = true ] && echo --open)"
         },
         {
             "label": "OpenWiki: visualize",
@@ -662,11 +671,11 @@
             "type": "pickString",
             "description": "Which harness's global config to change",
             "options": [
-                {"label": "all harnesses", "value": "all"},
-                {"label": "Claude Code", "value": "claude"},
-                {"label": "Codex", "value": "codex"},
-                {"label": "OpenCode", "value": "opencode"},
-                {"label": "Antigravity (IDE + agy)", "value": "antigravity"}
+                { "label": "all harnesses", "value": "all" },
+                { "label": "Claude Code", "value": "claude" },
+                { "label": "Codex", "value": "codex" },
+                { "label": "OpenCode", "value": "opencode" },
+                { "label": "Antigravity (IDE + agy)", "value": "antigravity" }
             ],
             "default": "all"
         },

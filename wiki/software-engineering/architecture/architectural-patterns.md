@@ -8,11 +8,11 @@ tags:
 - architecture
 parent: /software-engineering/architecture.md
 related:
-- /ai-engineering/enterprise/mcp-gateway.md
-- /ai-engineering/agents/agent.md
-- /ai-engineering/context/rag.md
+- /ai-engineering/platform/ai-gateways.md
+- /ai-engineering.md
+- /ai-engineering/context/context-engineering.md
 - /software-engineering/infrastructure/service-mesh.md
-- /software-engineering/reliability/simplicity.md
+- /software-engineering/reliability/sre.md
 sources:
 - id: ref-1
   resource: https://metapatterns.io/
@@ -137,11 +137,11 @@ effects. These are decision questions to resolve before selecting infrastructure
 
 These examples are design lenses, not an audit of any implementation:
 
-- An [MCP gateway](/ai-engineering/enterprise/mcp-gateway.md) can combine
+- An [MCP gateway](/ai-engineering/platform/ai-gateways.md#mcp-gateway) can combine
   proxy routing, a policy pipeline, and adapters to downstream systems.
-- An [agent](/ai-engineering/agents/agent.md) can coordinate a use case as an
+- An [agent](/ai-engineering.md#agent) can coordinate a use case as an
   orchestrator. Tool interfaces and workflow state deserve separate attention.
-- A [RAG](/ai-engineering/context/rag.md) ingestion flow can be modeled as
+- A [RAG](/ai-engineering/context/context-engineering.md#retrieval-augmented-generation-rag) ingestion flow can be modeled as
   stages for extraction, normalization, chunking, and indexing.
 - A [service mesh](/software-engineering/infrastructure/service-mesh.md) moves communication policy
   into infrastructure. Evaluate its operational cost against the duplication it
@@ -150,7 +150,7 @@ These examples are design lenses, not an audit of any implementation:
 When reviewing a design, ask what changes together, which boundary protects
 independent change, and which failure must be contained. Draw the request path
 and state owners, then compare a simpler arrangement against the proposed one.
-The existing [simplicity note](/software-engineering/reliability/simplicity.md) complements this:
+The existing [simplicity note](/software-engineering/reliability/sre.md#simplicity) complements this:
 reduce accidental complexity and keep APIs purposeful.
 
 ## Selected reading

@@ -14,10 +14,8 @@ tags:
 - serving
 parent: /ai-engineering/compute/serving.md
 related:
-- /ai-engineering/compute/serving/prefill-decode.md
-- /ai-engineering/compute/serving/continuous-batching.md
-- /ai-engineering/compute/serving/prefill-decode-disaggregation.md
-- /ai-engineering/compute/serving/inference-routing.md
+- /ai-engineering/compute/serving/prefill-decode-and-kv-cache.md
+- /ai-engineering/compute/serving/batching-and-scheduling.md
 sources:
 - id: modular-metrics
   resource: https://handbook.modular.com/llm-inference-basics/llm-inference-metrics/

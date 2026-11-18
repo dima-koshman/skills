@@ -10,7 +10,7 @@ tags:
 parent: /ai-engineering/compute.md
 related:
 - /ai-engineering/compute/simd-simt.md
-- /ai-engineering/compute/cuda.md
+- /ai-engineering/compute/software-stack/cuda.md
 sources:
 - id: horace-brrr
   resource: https://horace.io/brrr_intro.html

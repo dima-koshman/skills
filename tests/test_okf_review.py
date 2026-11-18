@@ -129,3 +129,39 @@ def test_ignores_index_and_log_files(tmp_path):
 
     assert report.broken_links == []
     assert report.unverified == []
+
+
+def test_lists_review_comments_left_on_concepts(tmp_path):
+    _write(
+        tmp_path,
+        "a.md",
+        "type: Concept\nreview_comments:\n- by: human:ana\n  at: '2026-11-10T00:00:00Z'\n  text: Add a source.",
+    )
+    _write(tmp_path, "b.md", "type: Concept")
+
+    report = okf_review.review(tmp_path, now=NOW)
+
+    assert report.review_comments == [("/a.md", "human:ana: Add a source.")]
+
+
+def test_percent_encoded_links_to_existing_concepts_are_not_broken(tmp_path):
+    _write(tmp_path, "Services/PII Masking (v2).md", "type: Concept")
+    _write(
+        tmp_path,
+        "a.md",
+        "type: Concept",
+        "See [masking](/Services/PII%20Masking%20%28v2%29.md).\n",
+    )
+
+    report = okf_review.review(tmp_path, now=NOW)
+
+    assert report.broken_links == []
+
+
+def test_links_to_the_bundle_index_are_not_broken(tmp_path):
+    (tmp_path / "index.md").write_text("# Index\n")
+    _write(tmp_path, "a.md", "type: Concept", "Back to the [catalog](/index.md).\n")
+
+    report = okf_review.review(tmp_path, now=NOW)
+
+    assert report.broken_links == []

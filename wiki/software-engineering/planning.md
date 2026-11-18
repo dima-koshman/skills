@@ -8,9 +8,9 @@ tags:
 parent: /software-engineering.md
 status: draft
 topics:
+- /software-engineering/planning/responding-to-raw-ideas.md
 - /software-engineering/planning/shape-up.md
 - /software-engineering/planning/shaping.md
-- /software-engineering/planning/responding-to-raw-ideas.md
 generated:
   by: claude-code/claude-opus-5-5
   at: '2026-11-17T17:45:00+04:00'

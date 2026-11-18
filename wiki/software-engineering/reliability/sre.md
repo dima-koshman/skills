@@ -1,17 +1,21 @@
 ---
 type: Practice
 title: Site Reliability Engineering
-description: 'Google''s discipline of running production with software engineering: explicit reliability
-  targets, an error budget that balances them against change, and automation in place of manual operations.'
+aliases:
+- Simplicity
+description: 'Google''s discipline of running production with software engineering: explicit reliability targets,
+  an error budget that balances them against change, and automation in place of manual operations.'
 tags:
 - software-engineering
 - reliability
 parent: /software-engineering/reliability.md
 related:
 - /software-engineering/reliability/toil.md
-- /software-engineering/reliability/simplicity.md
 - /ai-engineering/development/ai-native-sdlc.md
 - /ai-engineering/development/observability-driven-development.md
+- /software-engineering/architecture/protobuf.md
+- /software-engineering/infrastructure/service-mesh.md
+status: draft
 sources:
 - id: ref-1
   resource: https://sre.google/sre-book/
@@ -50,9 +54,12 @@ sources:
   title: Google SRE books (2nd edition announcement and free editions)
 - resource: https://sre.google/resources/book-update/
   title: SRE book update pages
+- id: simplicity-ref-1
+  resource: https://sre.google/sre-book/simplicity/
+  title: sre.google
 generated:
   by: claude-code/claude-opus-5-5
-  at: '2026-10-16T13:00:00+04:00'
+  at: '2026-11-18T12:00:00+04:00'
 ---
 
 Reference: <https://sre.google/sre-book/>
@@ -83,7 +90,7 @@ chapters stand on their own.
 - **Blameless postmortems.** Incidents are written up to fix systems and
   processes, not to assign fault
   ([Postmortem culture](https://sre.google/sre-book/postmortem-culture/)).
-- **Release engineering and [simplicity](/software-engineering/reliability/simplicity.md).** Small, reproducible,
+- **Release engineering and [simplicity](/software-engineering/reliability/sre.md#simplicity).** Small, reproducible,
   gradual releases and minimal accidental complexity make failures rare and
   attributable ([Release engineering](https://sre.google/sre-book/release-engineering/)).
 
@@ -106,6 +113,42 @@ The same ideas reappear in agent-era practice. The
 control-band monitoring and postmortem-to-eval loops in its Maintain stage, and
 [observability-driven development](/ai-engineering/development/observability-driven-development.md)
 makes telemetry evidence for code changes.
+
+## Simplicity
+
+**Note date:** 2026-09-30
+
+Reference: <https://sre.google/sre-book/simplicity/>
+
+Note dated: 2026-09-30 18:00:00+00:00.
+
+Google's SRE book treats simplicity as a prerequisite for reliability. The aim
+is to balance stability with agility: predictable code and reliable release
+processes make changes easier to understand and failures easier to diagnose.
+
+### Design consequences
+
+- Distinguish **essential complexity**, inherent in the problem, from
+  **accidental complexity**, introduced by implementation choices.
+- Delete dead code rather than retaining commented blocks or permanently
+  disabled features; version control preserves the history.
+- Keep APIs small and purposeful. Fewer methods and parameters leave fewer
+  behaviors to understand and maintain.
+- Give modules and services clear responsibilities and loose coupling so they
+  can change independently. Version interfaces and preserve compatibility;
+  [Protocol Buffers](/software-engineering/architecture/protobuf.md) illustrate the importance of
+  compatibility at the data-format boundary.
+- Release small, understandable changes so regressions can be attributed to a
+  narrower set of causes.
+
+Apply this when deciding whether to introduce a
+[service mesh](/software-engineering/infrastructure/service-mesh.md): centralized traffic policy
+may remove duplicated application code while adding operational components.
+Judge the total complexity against a concrete requirement.
+
+### Resources
+
+- [Google SRE book, chapter 9: Simplicity](https://sre.google/sre-book/simplicity/) — Max Luebbe, edited by Tim Harvey.
 
 ## Second edition (2026)
 

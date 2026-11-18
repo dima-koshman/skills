@@ -12,9 +12,9 @@ parent: /ai-engineering/models.md
 related:
 - /ai-engineering/models/jev.md
 - /ai-engineering/models/clm.md
-- /ai-engineering/agents/deep-agents.md
+- /ai-engineering/harness.md
 - /ai-engineering/context/context-engineering.md
-- /ai-engineering/observability/langsmith.md
+- /ai-engineering/observability.md
 decision_interface:
 - Summarize
 - Compress
@@ -62,7 +62,7 @@ API.[^scaledown-docs]
 ## How it fits a harness: Deep Agents middleware
 
 `langchain-scaledown` wires the models into
-[Deep Agents](/ai-engineering/agents/deep-agents.md) as middleware, so the
+[Deep Agents](/ai-engineering/harness.md#deep-agents) as middleware, so the
 frontier model never sees the raw bulk.[^pypi][^langchain-scaledown]
 
 - **Summarization:** replaces Deep Agents' built-in history summarization,

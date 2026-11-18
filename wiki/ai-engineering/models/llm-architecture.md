@@ -1,16 +1,27 @@
 ---
 type: Concept
 title: LLM Architecture
-description: Design choices inside modern open-weight LLMs — sparsity, attention efficiency, and the empirical
-  tweaks — and the two main ways to make them multimodal.
+aliases:
+- Grouped-Query Attention
+- GQA
+- Multi-Query Attention
+- MQA
+description: Design choices inside modern open-weight LLMs — sparsity, attention efficiency, and the empirical tweaks
+  — and the two main ways to make them multimodal.
 tags:
 - ai-engineering
 - models
+- compute
+- inference
+- serving
 parent: /ai-engineering/models.md
 related:
-- /ai-engineering/providers/claude.md
-- /ai-engineering/providers/leaderboards.md
-note_date: '2026-10-03'
+- /ai-engineering/models/providers/claude.md
+- /ai-engineering/models/leaderboards.md
+- /ai-engineering/compute/serving/prefill-decode-and-kv-cache.md
+- /ai-engineering/compute/serving/kernels-and-decoding.md
+- /ai-engineering/compute/serving/parallelism.md
+status: draft
 sources:
 - id: ref-1
   resource: https://magazine.sebastianraschka.com/p/the-big-llm-architecture-comparison
@@ -18,9 +29,18 @@ sources:
 - id: ref-2
   resource: https://magazine.sebastianraschka.com/p/understanding-multimodal-llms
   title: magazine.sebastianraschka.com
+- id: gqa
+  resource: https://arxiv.org/abs/2305.13245
+  title: 'GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints'
+  author: Joshua Ainslie et al.
+- id: vllm-cp
+  resource: https://docs.vllm.ai/en/latest/serving/context_parallel_deployment/
+  title: Context Parallel Deployment
+  author: vLLM
 generated:
-  by: codex/gpt-6
-  at: '2026-10-15T15:23:06+04:00'
+  by: claude-code/claude-opus-5-5
+  at: '2026-11-18T12:00:00+04:00'
+note_date: '2026-10-03'
 ---
 
 References:
@@ -65,7 +85,7 @@ recomputing them for the whole prefix at every step. This greatly speeds up
 inference at the cost of memory that grows with context length, layers, and
 attention heads. Within a single model call the cache is per sequence. Serving
 stacks can additionally reuse cached prefixes across requests that share them;
-this is what provider [prompt caching](/ai-engineering/providers/claude.md) and vLLM prefix
+this is what provider [prompt caching](/ai-engineering/models/providers/claude.md) and vLLM prefix
 caching do.
 
 Because KV-cache memory is often the binding constraint, most attention
@@ -85,6 +105,26 @@ variants are ways to shrink it:
 These savings compound with the rest of the architecture: fewer layers, fewer
 KV heads, a smaller head dimension, and local attention windows all multiply
 into the cache size.
+
+### Serving view: grouped-query and multi-query attention
+
+Multiple query heads share fewer key/value heads, reducing KV state and decode bandwidth through a model architecture choice.
+
+#### Mechanism
+
+Ordinary multi-head attention gives each query head a corresponding key/value head. **Multi-query attention (MQA)** shares one KV head across all query heads. **Grouped-query attention (GQA)** uses an intermediate number: each group of query heads shares a KV head.
+
+Fewer KV heads mean less state to store per token and fewer KV bytes to read during decode.[^gqa]
+
+#### Why the distinction matters
+
+The [KV cache](/ai-engineering/compute/serving/prefill-decode-and-kv-cache.md#kv-cache) memory estimate must use the number of KV heads. For the same layer count, head dimension and precision, eight KV heads require one quarter of the KV payload of 32 KV heads.
+
+This is an architecture/checkpoint property, not a lossless runtime switch. The GQA paper describes uptraining existing multi-head checkpoints and studies the speed/quality compromise. A server cannot safely reinterpret an arbitrary checkpoint as MQA just by changing a flag.[^gqa]
+
+#### Trade-offs
+
+Sharing KV heads reduces representational freedom; quality depends on how the model was trained or adapted. Fewer KV heads can also constrain straightforward head-based tensor sharding, making [context parallelism](/ai-engineering/compute/serving/parallelism.md#context-parallelism) relevant when serving very long contexts across many devices.[^vllm-cp]
 
 ## Sliding-window attention is an optimization, not a new category
 
@@ -161,6 +201,9 @@ Hybrids exist as well, such as NVLM-H, which mixes both.
 - Long-context quality depends on how much **global attention** remains;
   sliding-window and linear-attention layers make long contexts cheaper, not
   automatically better.
-- Benchmarks and [leaderboards](/ai-engineering/providers/leaderboards.md) measure
+- Benchmarks and [leaderboards](/ai-engineering/models/leaderboards.md) measure
   outcomes. Architecture explains cost and failure modes, but no single tweak
   reliably predicts quality.
+
+[^gqa]: Joshua Ainslie et al., [GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints](https://arxiv.org/abs/2305.13245).
+[^vllm-cp]: vLLM, [Context Parallel Deployment](https://docs.vllm.ai/en/latest/serving/context_parallel_deployment/).

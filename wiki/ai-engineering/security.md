@@ -1,26 +1,28 @@
 ---
 type: Knowledge Area
 title: Agent Security
-description: How enterprise agent platforms are attacked and defended — the OWASP Agentic Top 10 risks
-  and the mitigations that contain them.
+aliases:
+- Agent Goal Hijack
+- Tool Misuse & Exploitation
+- Agent Identity & Privilege Abuse
+- Agentic Supply Chain Compromise
+- Unexpected Code Execution
+- Memory & Context Poisoning
+- Insecure Inter-Agent Communication
+- Cascading Agent Failures
+- Human-Agent Trust Exploitation
+- Rogue Agents
+- Agentic Security Risks
+description: 'How enterprise agent platforms are attacked: the OWASP Agentic Top 10 risks in one table, with pointers
+  to the platform controls that contain them.'
 tags:
 - ai-engineering
 parent: /ai-engineering.md
 related:
-- /ai-engineering/security/risks/agent-goal-hijack.md
-- /ai-engineering/security/risks/tool-misuse.md
-- /ai-engineering/security/risks/identity-privilege-abuse.md
-- /ai-engineering/security/risks/supply-chain-compromise.md
-- /ai-engineering/security/risks/unexpected-code-execution.md
-- /ai-engineering/security/risks/memory-context-poisoning.md
-- /ai-engineering/security/risks/insecure-inter-agent-communication.md
-- /ai-engineering/security/risks/cascading-agent-failures.md
-- /ai-engineering/security/risks/human-agent-trust-exploitation.md
-- /ai-engineering/security/risks/rogue-agents.md
-- /ai-engineering/security/mitigations/guardrails.md
-- /ai-engineering/security/mitigations/pii-masking.md
-- /ai-engineering/enterprise/llm-gateway.md
-- /ai-engineering/enterprise/mcp-gateway.md
+- /ai-engineering/platform.md
+- /ai-engineering/platform/ai-gateways.md
+- /ai-engineering/platform/guardrails-and-masking.md
+status: draft
 sources:
 - id: ref-1
   resource: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
@@ -35,42 +37,54 @@ sources:
   resource: https://claude.com/resources/articles/zero-trust-for-ai-agents
   title: Zero Trust for AI agents — Anthropic
 generated:
-  by: codex/gpt-6
-  at: '2026-10-15T15:23:06+04:00'
-topics:
-- /ai-engineering/security/mitigations.md
-- /ai-engineering/security/risks.md
+  by: claude-code/claude-opus-5-5
+  at: '2026-11-18T12:00:00+04:00'
 ---
 
 Reference: <https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/>
 
 Agentic systems act with real tools and the user's own permissions, so their
 attack surface is the tool, identity, memory, and communication surface — not
-just the prompt. This area splits into **risks** (how agents are subverted) and
-**mitigations** (what keeps them inside a safe envelope — minimizing risk, never
-fully eliminating it). The reference model is the OWASP Top 10 for Agentic
+just the prompt. This page covers the **risks** (how agents are subverted). The **mitigations**, which keep
+agents inside a safe envelope (minimizing risk, never fully eliminating it), are in
+[AI Platform](/ai-engineering/platform.md). The reference model is the OWASP Top 10 for Agentic
 Applications (2026).
 
 ## Risks (OWASP Agentic Top 10)
 
-- [Agent Goal Hijack](/ai-engineering/security/risks/agent-goal-hijack.md)
-- [Tool Misuse & Exploitation](/ai-engineering/security/risks/tool-misuse.md)
-- [Agent Identity & Privilege Abuse](/ai-engineering/security/risks/identity-privilege-abuse.md)
-- [Agentic Supply Chain Compromise](/ai-engineering/security/risks/supply-chain-compromise.md)
-- [Unexpected Code Execution](/ai-engineering/security/risks/unexpected-code-execution.md)
-- [Memory & Context Poisoning](/ai-engineering/security/risks/memory-context-poisoning.md)
-- [Insecure Inter-Agent Communication](/ai-engineering/security/risks/insecure-inter-agent-communication.md)
-- [Cascading Agent Failures](/ai-engineering/security/risks/cascading-agent-failures.md)
-- [Human-Agent Trust Exploitation](/ai-engineering/security/risks/human-agent-trust-exploitation.md)
-- [Rogue Agents](/ai-engineering/security/risks/rogue-agents.md)
+| # | Risk | Surface | Description |
+| --- | --- | --- | --- |
+| 1 | Agent Goal Hijack | goals and instructions | Adversarial input redirects the agent's plan or objective — OWASP's #1 agentic risk, prompt injection being the primary mechanism. |
+| 2 | Tool Misuse & Exploitation | tool invocation | The agent invokes tools in ways they were not intended or authorized for. |
+| 3 | Agent Identity & Privilege Abuse | identity and authorization | The agent's identity or permissions are misused, impersonated, or escalated. |
+| 4 | Agentic Supply Chain Compromise | dependencies and components | Malicious or compromised components — tools, MCP servers, models, dependencies — enter the agent supply chain. |
+| 5 | Unexpected Code Execution | code execution | The agent executes attacker-influenced code, e.g. via a code interpreter or a tool with an RCE path. |
+| 6 | Memory & Context Poisoning | persistent memory and context | Malicious content persists in the agent's memory or context and influences later decisions. |
+| 7 | Insecure Inter-Agent Communication | agent messages | Trust, spoofing, or tampering weaknesses in messaging between agents. |
+| 8 | Cascading Agent Failures | failure propagation | A local failure or compromise propagates across agents and tools into a systemic failure. |
+| 9 | Human-Agent Trust Exploitation | human trust | The agent is used to manipulate the human, or humans over-trust the agent's output. |
+| 10 | Rogue Agents | agent governance | Unauthorized or compromised agents operating outside governance and oversight. |
+
+### Notes per risk
+
+- **Agent Goal Hijack.** Agent goal hijack is when adversarial input redirects an agent's plan or objective away from the developer's intent. Its primary mechanism is **prompt injection** — adversarial instructions embedded in content the model reads (a web page, a document, a tool result, an email). **Indirect** injection (via data the agent retrieves rather than the user's own message) is the dangerous variant for autonomous agents. There is no known complete fix; it is a systemic property of models that follow natural-language instructions.
+- **Tool Misuse & Exploitation.** Tool misuse is when an agent is driven to call tools — or chain them — in ways outside their intended, authorized use, turning legitimate capabilities into an attack.
+- **Agent Identity & Privilege Abuse.** Identity and privilege abuse covers impersonation, token theft, and privilege escalation — the agent acting with authority it should not have.
+- **Agentic Supply Chain Compromise.** Supply chain compromise is the poisoning of what the agent depends on: a backdoored MCP server, a tampered model, a malicious package, or a spoofed tool.
+- **Unexpected Code Execution.** Unexpected code execution is when an agent runs attacker-controlled code — a growing risk as agents gain interpreters and code-mode tools.
+- **Memory & Context Poisoning.** Memory and context poisoning plants adversarial content that survives across turns — the persistent cousin of goal hijack, corrupting future reasoning.
+- **Insecure Inter-Agent Communication.** In multi-agent systems, the channels between agents become an attack surface: unauthenticated messages, spoofed peers, and tampered hand-offs.
+- **Cascading Agent Failures.** Cascading failures are when one bad output, loop, or outage ripples through dependent agents and tools — a reliability failure that is also a security one.
+- **Human-Agent Trust Exploitation.** Trust exploitation runs both ways: an agent weaponized to socially engineer a person, and humans granting unearned trust to fluent but wrong output.
+- **Rogue Agents.** Rogue agents are those running outside the sanctioned control plane — unregistered, compromised, or drifted beyond their mandate.
 
 ## Mitigations
 
-- [Guardrails](/ai-engineering/security/mitigations/guardrails.md) — input/output/action policy enforcement around the model.
-- [PII Masking & Anonymization](/ai-engineering/security/mitigations/pii-masking.md) — redacting or tokenizing personal data on the way in and out.
+- [Guardrails](/ai-engineering/platform/guardrails-and-masking.md#guardrails) — input/output/action policy enforcement around the model.
+- [PII Masking & Anonymization](/ai-engineering/platform/guardrails-and-masking.md#pii-masking--anonymization) — redacting or tokenizing personal data on the way in and out.
 
-Mitigations are enforced in practice at the [LLM gateway](/ai-engineering/enterprise/llm-gateway.md)
-and [MCP gateway](/ai-engineering/enterprise/mcp-gateway.md), under a zero-trust posture: every
+Mitigations are enforced in practice at the [LLM gateway](/ai-engineering/platform/ai-gateways.md#llm-gateway)
+and [MCP gateway](/ai-engineering/platform/ai-gateways.md#mcp-gateway), under a zero-trust posture: every
 agent action authenticated, authorized, least-privileged, and logged.
 
 ## Resources

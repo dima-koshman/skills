@@ -12,7 +12,9 @@ Reports, per concept:
   that names no file in the bundle;
 * uncited sources: a ``sources`` id that no ``[^id]`` footnote cites;
 * undefined footnotes: a ``[^id]`` with neither a matching source nor a local
-  ``[^id]:`` definition.
+  ``[^id]:`` definition;
+* review comments: ``review_comments`` a reviewer left (for example from
+  ``okf_review_server.py``), waiting for an agent to address them.
 
 It only lists. Judging duplicates, re-checking claims and deciding what to
 promote or prune is the review pass's job (see SKILL.md).
@@ -26,6 +28,7 @@ import datetime
 import pathlib
 import re
 import sys
+import urllib.parse
 
 from okf_index import _parse_frontmatter
 
@@ -46,6 +49,7 @@ class Report:
     broken_links: list[tuple[str, str]] = dataclasses.field(default_factory=list)
     uncited_sources: list[tuple[str, str]] = dataclasses.field(default_factory=list)
     undefined_footnotes: list[tuple[str, str]] = dataclasses.field(default_factory=list)
+    review_comments: list[tuple[str, str]] = dataclasses.field(default_factory=list)
 
 
 def review(bundle_root: pathlib.Path, now: datetime.datetime) -> Report:
@@ -56,8 +60,10 @@ def review(bundle_root: pathlib.Path, now: datetime.datetime) -> Report:
         for path in sorted(bundle_root.rglob("*.md"))
         if path.name not in _RESERVED_FILENAMES
     ]
+    # Reserved files (index.md, log.md) are valid link targets, even though they are not concepts.
     existing = {
-        "/" + path.relative_to(bundle_root).as_posix() for path in all_documents
+        "/" + path.relative_to(bundle_root).as_posix()
+        for path in bundle_root.rglob("*.md")
     }
     # `_types/` holds type schemas, not concepts; okf_site.py skips them too.
     documents = [
@@ -81,8 +87,15 @@ def review(bundle_root: pathlib.Path, now: datetime.datetime) -> Report:
             report.stale.append(concept)
         if not frontmatter.get("verified"):
             report.unverified.append(concept)
+        for comment in frontmatter.get("review_comments") or []:
+            if isinstance(comment, dict) and comment.get("text"):
+                author = comment.get("by") or "unknown"
+                report.review_comments.append((concept, f"{author}: {comment['text']}"))
 
-        targets = set(_BODY_LINK.findall(body)) | set(_frontmatter_paths(frontmatter))
+        # Markdown link URLs percent-encode spaces and parentheses; frontmatter paths stay readable.
+        targets = {urllib.parse.unquote(t) for t in _BODY_LINK.findall(body)} | set(
+            _frontmatter_paths(frontmatter)
+        )
         report.broken_links.extend(
             (concept, target) for target in sorted(targets - existing)
         )
@@ -125,6 +138,9 @@ def main() -> int:
 
     report = review(bundle_root, now=datetime.datetime.now(datetime.UTC))
     _print_section("Drafts", report.drafts)
+    _print_section(
+        "Review comments", [f"{c}: {text}" for c, text in report.review_comments]
+    )
     _print_section("Past stale_after", report.stale)
     if args.list_unverified:
         _print_section("Unverified", report.unverified)

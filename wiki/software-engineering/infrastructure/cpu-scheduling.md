@@ -12,9 +12,9 @@ tags:
 - operating-systems
 parent: /software-engineering/infrastructure.md
 related:
-- /ai-engineering/compute/gpu-scheduling.md
-- /ai-engineering/compute/mps.md
-- /ai-engineering/compute/accelerator-sharing.md
+- /ai-engineering/compute/gpu-sharing/gpu-scheduling.md
+- /ai-engineering/compute/gpu-sharing/mps.md
+- /ai-engineering/compute/gpu-sharing/accelerator-sharing.md
 sources:
 - id: linux-sched-man
   resource: https://man7.org/linux/man-pages/man7/sched.7.html
@@ -82,7 +82,7 @@ Cgroups show the same split for groups of tasks.[^linux-cgroup-v2]
   the others.
 - **`cpu.max`** is a limit: at most `$MAX` in each `$PERIOD`, even if the CPU is otherwise idle.
 
-This distinction carries over to GPUs. [MPS](/ai-engineering/compute/mps.md) thread percentages are limits. Its
+This distinction carries over to GPUs. [MPS](/ai-engineering/compute/gpu-sharing/mps.md) thread percentages are limits. Its
 weighted timeslicing looks like a weight but only sets slice length between servers, and NVIDIA says it does not
 guarantee a share of utilization.
 

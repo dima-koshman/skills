@@ -14,10 +14,10 @@ tags:
 - gpu
 parent: /ai-engineering/compute.md
 related:
-- /ai-engineering/compute/gpu-scheduling.md
-- /ai-engineering/compute/accelerator-sharing.md
+- /ai-engineering/compute/gpu-sharing/gpu-scheduling.md
+- /ai-engineering/compute/gpu-sharing/accelerator-sharing.md
 - /ai-engineering/compute/performance-regimes.md
-- /ai-engineering/compute/mps.md
+- /ai-engineering/compute/gpu-sharing/mps.md
 sources:
 - id: apple-storage-modes
   resource: https://developer.apple.com/documentation/metal/choosing-a-resource-storage-mode-for-apple-gpus
@@ -100,7 +100,7 @@ Sharing memory removes copies. It does not merge the processors.
 - Programs still choose how each buffer is used. Apple's storage modes are **shared** (CPU and GPU, the default on
   Apple silicon), **private** (GPU only) and **memoryless** (on-chip tile memory only).[^apple-storage-modes]
 
-So the "GPU as an I/O device" problem from [GPU scheduling](/ai-engineering/compute/gpu-scheduling.md) is mostly
+So the "GPU as an I/O device" problem from [GPU scheduling](/ai-engineering/compute/gpu-sharing/gpu-scheduling.md) is mostly
 about OS abstractions, not where memory lives. PTask argued that OSes cannot guarantee fairness while they treat
 the GPU as a device behind a driver.[^ptask] Unified memory fixes the data path and leaves that part as it was.
 (This reading is ours.)

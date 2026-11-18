@@ -13,30 +13,14 @@ tags:
 parent: /ai-engineering/compute.md
 related:
 - /ai-engineering/compute/performance-regimes.md
-- /ai-engineering/compute/max.md
+- /ai-engineering/compute/software-stack/max.md
 - /ai-engineering/context/prompt-caching.md
 topics:
-- /ai-engineering/compute/serving/prefill-decode.md
-- /ai-engineering/compute/serving/kv-cache.md
+- /ai-engineering/compute/serving/batching-and-scheduling.md
+- /ai-engineering/compute/serving/kernels-and-decoding.md
+- /ai-engineering/compute/serving/parallelism.md
+- /ai-engineering/compute/serving/prefill-decode-and-kv-cache.md
 - /ai-engineering/compute/serving/serving-metrics.md
-- /ai-engineering/compute/serving/continuous-batching.md
-- /ai-engineering/compute/serving/chunked-prefill.md
-- /ai-engineering/compute/serving/paged-attention.md
-- /ai-engineering/compute/serving/prefix-caching.md
-- /ai-engineering/compute/serving/speculative-decoding.md
-- /ai-engineering/compute/serving/kv-cache-offloading.md
-- /ai-engineering/compute/serving/prefill-decode-disaggregation.md
-- /ai-engineering/compute/serving/quantization.md
-- /ai-engineering/compute/serving/flash-attention.md
-- /ai-engineering/compute/serving/grouped-query-attention.md
-- /ai-engineering/compute/serving/cuda-graphs.md
-- /ai-engineering/compute/serving/kernel-fusion.md
-- /ai-engineering/compute/serving/tensor-parallelism.md
-- /ai-engineering/compute/serving/pipeline-parallelism.md
-- /ai-engineering/compute/serving/data-parallelism.md
-- /ai-engineering/compute/serving/expert-parallelism.md
-- /ai-engineering/compute/serving/context-parallelism.md
-- /ai-engineering/compute/serving/inference-routing.md
 - /ai-engineering/compute/serving/triton-inference-server.md
 - /ai-engineering/compute/serving/vllm.md
 sources:
@@ -60,7 +44,7 @@ generated:
 worker placement and streaming responses. This area focuses on autoregressive
 Transformer generation; other architectures can need different techniques.
 
-The wiki previously covered [MAX](/ai-engineering/compute/max.md), hardware
+The wiki previously covered [MAX](/ai-engineering/compute/software-stack/max.md), hardware
 [performance regimes](/ai-engineering/compute/performance-regimes.md) and
 [Prompt Caching](/ai-engineering/context/prompt-caching.md). The pages below add the
 inference mechanisms behind them.
@@ -69,13 +53,13 @@ inference mechanisms behind them.
 
 | Question | Concepts |
 | --- | --- |
-| What happens during a request? | [Prefill and Decode](/ai-engineering/compute/serving/prefill-decode.md), [Serving Metrics](/ai-engineering/compute/serving/serving-metrics.md) |
-| Where does sequence state live? | [KV Cache](/ai-engineering/compute/serving/kv-cache.md), [PagedAttention](/ai-engineering/compute/serving/paged-attention.md), [Prefix Caching](/ai-engineering/compute/serving/prefix-caching.md), [KV Offloading](/ai-engineering/compute/serving/kv-cache-offloading.md) |
-| How is work scheduled? | [Continuous Batching](/ai-engineering/compute/serving/continuous-batching.md), [Chunked Prefill](/ai-engineering/compute/serving/chunked-prefill.md), [Prefill–Decode Disaggregation](/ai-engineering/compute/serving/prefill-decode-disaggregation.md), [Cache-aware Routing](/ai-engineering/compute/serving/inference-routing.md) |
-| How can token execution become cheaper? | [Speculative Decoding](/ai-engineering/compute/serving/speculative-decoding.md), [Quantization](/ai-engineering/compute/serving/quantization.md), [FlashAttention](/ai-engineering/compute/serving/flash-attention.md), [Kernel Fusion](/ai-engineering/compute/serving/kernel-fusion.md), [CUDA Graphs](/ai-engineering/compute/serving/cuda-graphs.md) |
-| How does the model architecture affect KV memory? | [Grouped-Query and Multi-Query Attention](/ai-engineering/compute/serving/grouped-query-attention.md) |
-| Which software implements this? | [vLLM](/ai-engineering/compute/serving/vllm.md), [Triton Inference Server](/ai-engineering/compute/serving/triton-inference-server.md), [MAX](/ai-engineering/compute/max.md) |
-| How is work distributed across GPUs? | [Tensor](/ai-engineering/compute/serving/tensor-parallelism.md), [Pipeline](/ai-engineering/compute/serving/pipeline-parallelism.md), [Data](/ai-engineering/compute/serving/data-parallelism.md), [Expert](/ai-engineering/compute/serving/expert-parallelism.md) and [Context Parallelism](/ai-engineering/compute/serving/context-parallelism.md) |
+| What happens during a request? | [Prefill and Decode](/ai-engineering/compute/serving/prefill-decode-and-kv-cache.md#prefill-and-decode), [Serving Metrics](/ai-engineering/compute/serving/serving-metrics.md) |
+| Where does sequence state live? | [KV Cache](/ai-engineering/compute/serving/prefill-decode-and-kv-cache.md#kv-cache), [PagedAttention](/ai-engineering/compute/serving/prefill-decode-and-kv-cache.md#pagedattention), [Prefix Caching](/ai-engineering/compute/serving/prefill-decode-and-kv-cache.md#prefix-caching), [KV Offloading](/ai-engineering/compute/serving/prefill-decode-and-kv-cache.md#kv-cache-offloading) |
+| How is work scheduled? | [Continuous Batching](/ai-engineering/compute/serving/batching-and-scheduling.md#continuous-batching), [Chunked Prefill](/ai-engineering/compute/serving/batching-and-scheduling.md#chunked-prefill), [Prefill–Decode Disaggregation](/ai-engineering/compute/serving/batching-and-scheduling.md#prefilldecode-disaggregation), [Cache-aware Routing](/ai-engineering/compute/serving/batching-and-scheduling.md#cache-aware-inference-routing) |
+| How can token execution become cheaper? | [Speculative Decoding](/ai-engineering/compute/serving/kernels-and-decoding.md#speculative-decoding), [Quantization](/ai-engineering/compute/serving/kernels-and-decoding.md#llm-quantization), [FlashAttention](/ai-engineering/compute/serving/kernels-and-decoding.md#flashattention), [Kernel Fusion](/ai-engineering/compute/serving/kernels-and-decoding.md#kernel-fusion), [CUDA Graphs](/ai-engineering/compute/serving/kernels-and-decoding.md#cuda-graphs) |
+| How does the model architecture affect KV memory? | [Grouped-Query and Multi-Query Attention](/ai-engineering/models/llm-architecture.md#serving-view-grouped-query-and-multi-query-attention) |
+| Which software implements this? | [vLLM](/ai-engineering/compute/serving/vllm.md), [Triton Inference Server](/ai-engineering/compute/serving/triton-inference-server.md), [MAX](/ai-engineering/compute/software-stack/max.md) |
+| How is work distributed across GPUs? | [Tensor](/ai-engineering/compute/serving/parallelism.md#tensor-parallelism), [Pipeline](/ai-engineering/compute/serving/parallelism.md#pipeline-parallelism), [Data](/ai-engineering/compute/serving/parallelism.md#inference-data-parallelism), [Expert](/ai-engineering/compute/serving/parallelism.md#expert-parallelism) and [Context Parallelism](/ai-engineering/compute/serving/parallelism.md#context-parallelism) |
 
 ## Start from the bottleneck
 

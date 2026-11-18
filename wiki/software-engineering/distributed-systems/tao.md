@@ -11,7 +11,7 @@ parent: /software-engineering/distributed-systems.md
 related:
 - /software-engineering/distributed-systems/openai-habitat.md
 - /software-engineering/reliability/metastable-failures.md
-- /software-engineering/distributed-systems/bigtable.md
+- /software-engineering/distributed-systems.md
 publication: 'Nathan Bronson and colleagues, **TAO: Facebook''s Distributed Data Store for the Social Graph**, USENIX ATC
   2013.'
 sources:

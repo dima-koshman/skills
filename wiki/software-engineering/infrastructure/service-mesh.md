@@ -9,9 +9,9 @@ tags:
 parent: /software-engineering/infrastructure.md
 related:
 - /software-engineering/infrastructure/planes.md
-- /software-engineering/communication/grpc.md
+- /software-engineering/architecture/grpc.md
 - /software-engineering/reliability/metastable-failures.md
-- /ai-engineering/enterprise/llm-gateway.md
+- /ai-engineering/platform/ai-gateways.md
 - /software-engineering/distributed-systems/openai-habitat.md
 uses: /software-engineering/infrastructure/planes.md
 implementation_example: Istio
@@ -87,7 +87,7 @@ transparently being the operative claim, since application code is unchanged.
 - **Control plane** — `istiod` watches the services and dynamically programs
   proxy behavior as rules and the environment change.
 
-What that buys: automatic load balancing for HTTP, [gRPC](/software-engineering/communication/grpc.md),
+What that buys: automatic load balancing for HTTP, [gRPC](/software-engineering/architecture/grpc.md),
 WebSocket, and TCP, with fine-grained routing, retries, failover, and fault
 injection; mutual TLS with identity-based authentication and authorization
 between services; and automatic metrics, logs, and traces for all traffic
@@ -119,7 +119,7 @@ adds two more attempts per call by default.
 
 **For LLM traffic,** requests last seconds to minutes, stream, and vary a thousandfold in cost, so request
 counts are a poor load measure. Token-based limits, budgets and model-level retries belong in an
-[LLM gateway](/ai-engineering/enterprise/llm-gateway.md), which plays the mesh's role for model calls.
+[LLM gateway](/ai-engineering/platform/ai-gateways.md#llm-gateway), which plays the mesh's role for model calls.
 
 ## Running it locally
 

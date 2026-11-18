@@ -75,6 +75,10 @@ _SPEC_KEYS = frozenset(
     }
 )
 
+# Producer-defined keys the reader shows in their own place instead of the Properties table.
+# `review_comments` holds notes left in review (okf_review_server.py) for an agent to address.
+_READER_KEYS = frozenset({"review_comments"})
+
 # Mid-tone, print-friendly hues that read well on a light background, assigned to
 # concept types in first-seen order.
 _TYPE_PALETTE = [
@@ -119,6 +123,7 @@ class Concept:
     links: list[dict] = dataclasses.field(
         default_factory=list
     )  # typed frontmatter edges
+    review_comments: list[dict] = dataclasses.field(default_factory=list)
 
 
 def main() -> int:
@@ -379,6 +384,7 @@ def _make_concept(
         sources=_sources(frontmatter.get("sources"), source_dir, known_ids),
         properties=properties,
         links=links,
+        review_comments=_review_comments(frontmatter.get("review_comments")),
     )
 
 
@@ -417,6 +423,19 @@ def _verified_events(value: object) -> list[dict]:
         {"by": str(event.get("by") or ""), "at": _iso(event.get("at"))}
         for event in events
         if isinstance(event, dict)
+    ]
+
+
+def _review_comments(value: object) -> list[dict]:
+    """Normalize ``review_comments`` to ``{by, at, text}`` entries that have text."""
+    return [
+        {
+            "by": str(comment.get("by") or ""),
+            "at": _iso(comment.get("at")),
+            "text": str(comment["text"]).strip(),
+        }
+        for comment in (value if isinstance(value, list) else [])
+        if isinstance(comment, dict) and str(comment.get("text") or "").strip()
     ]
 
 
@@ -485,7 +504,7 @@ def _properties_and_links(
         return _rewrite_internal_links(text, concept_id, known_ids)
 
     for key, value in frontmatter.items():
-        if key in _SPEC_KEYS or value in (None, "", []):
+        if key in _SPEC_KEYS or key in _READER_KEYS or value in (None, "", []):
             continue
         properties.append([str(key), cell(value, str(key))])
 
@@ -684,6 +703,7 @@ def _render_html(
                 "stale": concept.stale,
                 "sources": concept.sources,
                 "properties": concept.properties,
+                "review_comments": concept.review_comments,
             }
             for concept in concepts
         ],
@@ -744,7 +764,7 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #mobile-actions { display:none; }
   .mobile-toggle { border:1px solid var(--line); border-radius:6px; padding:6px 9px; background:var(--bg); color:var(--ink); font:inherit; font-size:12px; cursor:pointer; }
   .mobile-toggle[aria-expanded="true"] { background:var(--active); border-color:var(--accent); }
-  #search { margin-left:auto; flex:0 0 260px; padding:6px 10px; border-radius:6px; border:1px solid var(--line); background:var(--bg); color:var(--ink); font-size:13px; }
+  #search { flex:0 0 260px; padding:6px 10px; border-radius:6px; border:1px solid var(--line); background:var(--bg); color:var(--ink); font-size:13px; }
   .below { flex:1 1 auto; display:flex; min-height:0; }
 
   aside { flex:0 0 264px; display:flex; flex-direction:column; border-right:1px solid var(--line); background:var(--sidebar); min-height:0; }
@@ -855,6 +875,22 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #doc .pill { display:inline-block; padding:1px 8px; border-radius:10px; font-size:11px; font-weight:600; border:1px solid var(--line); color:var(--muted); background:var(--bg); }
   #doc .pill.status-draft { color:#9a6700; border-color:#d4a72c; background:#fff8c5; }
   #doc .pill.status-deprecated { color:#82071e; border-color:#ff8182; background:#ffebe9; }
+  #doc .review-comments { margin:0 0 12px; padding:8px 12px; border:1px solid #d4a72c; border-radius:6px; background:#fff8c5; font-size:13px; }
+  #doc .review-comments .review-title { font-weight:600; color:#9a6700; margin-bottom:4px; }
+  #doc .review-comments ul { margin:0; padding-left:18px; }
+  #doc .review-meta { color:var(--muted); font-size:11px; margin-right:4px; }
+  /* The review panel needs okf_review_server.py; a static copy never shows it. */
+  #doc .review-panel { display:none; margin:0 0 12px; font-size:13px; }
+  body.review-on #doc .review-panel { display:block; }
+  #doc .review-promote { display:none; align-items:center; gap:6px; }
+  body.review-on #doc .review-promote { display:inline-flex; }
+  #doc .review-promote button { font-size:11px; font-weight:600; padding:0 10px; border:1px solid #2da44e; border-radius:10px; color:#1a7f37; background:var(--bg); cursor:pointer; }
+  #doc .review-status { font-size:11px; }
+  #doc .review-panel summary { cursor:pointer; color:var(--muted); }
+  #doc .review-panel textarea { box-sizing:border-box; width:100%; margin:6px 0; font:inherit; padding:6px; border:1px solid var(--line); border-radius:6px; }
+  #doc .review-buttons { display:flex; gap:8px; align-items:center; }
+  #doc .review-buttons button { font:inherit; padding:3px 12px; border:1px solid var(--line); border-radius:6px; background:var(--bg); cursor:pointer; }
+  #doc .review-status { color:var(--muted); }
   #doc table.props { margin:4px 0 18px; }
   #doc table.props th { white-space:nowrap; font-weight:600; width:1%; }
   #doc .sources h1 { font-size:17px; font-weight:600; margin:1.6em 0 .4em; padding-bottom:5px; border-bottom:1px solid var(--line); }
@@ -897,11 +933,11 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
       <button id="nav-back" type="button" title="Back" aria-label="Back" disabled>←</button>
       <button id="nav-forward" type="button" title="Forward" aria-label="Forward" disabled>→</button>
     </div>
+    <input id="search" type="search" placeholder="Search concepts…" autocomplete="off">
     <div id="mobile-actions">
       <button id="nav-toggle" class="mobile-toggle" type="button" aria-controls="nav" aria-expanded="false">Contents</button>
       <button id="graph-toggle" class="mobile-toggle" type="button" aria-controls="graph-wrap" aria-expanded="false">Links</button>
     </div>
-    <input id="search" type="search" placeholder="Search concepts…" autocomplete="off">
   </header>
   <div class="below">
     <aside>
@@ -1667,7 +1703,26 @@ window.addEventListener('popstate', ev => {
 /* ---------- OKF v0.2 metadata ---------- */
 function lifecycleHtml(n) {
   if (!n.status || n.status === 'stable') return '';
-  return `<div class="lifecycle"><span class="pill status-${escapeAttr(n.status)}">${escapeHtml(n.status)}</span></div>`;
+  // Promote needs okf_review_server.py; CSS hides it on a static page.
+  const promote = n.status === 'draft'
+    ? `<span class="review-promote" data-id="${escapeAttr(n.id)}">` +
+      `<button type="button" data-review="promote" title="Remove draft and record your review">Promote</button>` +
+      `<span class="review-status"></span></span>` : '';
+  return `<div class="lifecycle"><span class="pill status-${escapeAttr(n.status)}">${escapeHtml(n.status)}</span>${promote}</div>`;
+}
+
+function reviewHtml(n) {
+  const comments = (n.review_comments || []).map(c =>
+    `<li><span class="review-meta">${escapeHtml(c.by)}${c.at ? ' · ' + escapeHtml(c.at.slice(0, 10)) : ''}</span>` +
+    `${marked.parseInline(c.text)}</li>`).join('');
+  const list = comments
+    ? `<div class="review-comments"><div class="review-title">Review comments</div><ul>${comments}</ul></div>` : '';
+  const panel = `<details class="review-panel" data-id="${escapeAttr(n.id)}"><summary>Comment</summary>` +
+    `<textarea rows="3" placeholder="What should change? An agent addresses it and then clears it."></textarea>` +
+    `<div class="review-buttons">` +
+    `<button type="button" data-review="comment" title="Leave a comment for an agent to address">Comment</button>` +
+    `<span class="review-status"></span></div></details>`;
+  return list + panel;
 }
 
 function propertiesHtml(n) {
@@ -1729,7 +1784,7 @@ function openConcept(id, attention = true) {
       `<span class="meta-right">${tagsHtml}` +
         `<span class="badge" style="background:${n.color}"${typeTitle}>${escapeHtml(n.type)}</span>` +
       `</span>` +
-    `</div>` + lifecycleHtml(n) + summaryHtml + propertiesHtml(n);
+    `</div>` + lifecycleHtml(n) + reviewHtml(n) + summaryHtml + propertiesHtml(n);
   wireDocLinks(doc);
   const bodyHtml = document.createElement('div');
   bodyHtml.className = 'prose';
@@ -1920,9 +1975,15 @@ function onNavDoubleClick(ev, id) {
 }
 
 function renderTree(tree, prefix = '') {
+  // Sidebar order within a directory: concepts, files and subdirectories in one alphabetical list by
+  // their visible label. Underscore-prefixed directories (e.g. _types) hold meta concepts and go last.
+  const compareNavEntries = (a, b) => (a.meta - b.meta) ||
+    a.label.localeCompare(b.label, undefined, { sensitivity: 'base' }) ||
+    a.label.localeCompare(b.label) || a.key.localeCompare(b.key);
   const ul = document.createElement('ul');
-  // Standalone concepts first; same-named overviews live in their directory entry.
-  tree.files.sort((a, b) => a.title.localeCompare(b.title)).forEach(n => {
+  const entries = [];
+  // Same-named overviews live in their directory entry, not here.
+  tree.files.forEach(n => {
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.href = '#' + encodeURIComponent(n.id);
@@ -1932,9 +1993,9 @@ function renderTree(tree, prefix = '') {
     a.addEventListener('click', ev => onNavConceptClick(ev, n.id));
     a.addEventListener('dblclick', ev => onNavDoubleClick(ev, n.id));
     li.appendChild(a);
-    ul.appendChild(li);
+    entries.push({ label: n.title, key: n.id, meta: false, li });
   });
-  tree.assets.sort((a, b) => a.title.localeCompare(b.title)).forEach(file => {
+  tree.assets.forEach(file => {
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.className = 'asset-link';
@@ -1944,10 +2005,9 @@ function renderTree(tree, prefix = '') {
     a.rel = 'noopener';
     a.innerHTML = `<span>📄</span><span>${escapeHtml(file.title)}</span><span class="file-kind">${escapeHtml(file.kind)}</span>`;
     li.appendChild(a);
-    ul.appendChild(li);
+    entries.push({ label: file.title, key: file.id, meta: false, li });
   });
-  // Underscore-prefixed directories (e.g. _types) hold meta concepts: list them last.
-  Object.keys(tree.dirs).sort((a, b) => (a[0] === '_') - (b[0] === '_') || a.localeCompare(b)).forEach(name => {
+  Object.keys(tree.dirs).forEach(name => {
     const path = prefix ? prefix + '/' + name : name;
     const li = document.createElement('li');
     li.className = 'dir collapsed';
@@ -1990,8 +2050,10 @@ function renderTree(tree, prefix = '') {
     }
     li.appendChild(label);
     li.appendChild(renderTree(tree.dirs[name], path));
-    ul.appendChild(li);
+    const shown = tree.dirs[name].overview ? tree.dirs[name].overview.title : dirLabel(path);
+    entries.push({ label: shown, key: path, meta: name[0] === '_', li });
   });
+  entries.sort(compareNavEntries).forEach(entry => ul.appendChild(entry.li));
   return ul;
 }
 
@@ -2122,6 +2184,80 @@ function buildLegend() {
   legend.appendChild(relayoutButton);
 }
 
+/* ---------- review server (optional) ---------- */
+// okf_review_server.py serves this page with a small /api. Opened as a file, or from any other
+// server, the probe fails and the page stays a static reader.
+let reviewVersion = null;
+const REVIEW_SCROLL_KEY = 'okf-review-scroll';
+
+function startReview() {
+  if (!location.protocol.startsWith('http')) return;
+  fetch('/api/ping', { cache: 'no-store' })
+    .then(response => response.ok ? response.json() : null)
+    .then(info => {
+      if (!info || !info.okf_review) return;
+      document.body.classList.add('review-on');
+      reviewVersion = info.version;
+      setInterval(pollReviewVersion, 1500);
+    })
+    .catch(() => {});
+}
+
+// The server re-renders after a review action or any edit to the bundle; reload to show it,
+// unless a comment is being typed.
+function pollReviewVersion() {
+  fetch('/api/version', { cache: 'no-store' })
+    .then(response => response.json())
+    .then(info => {
+      if (info.version === reviewVersion) return;
+      const typing = [...document.querySelectorAll('.review-panel textarea')].some(t => t.value.trim());
+      if (!typing) reloadKeepingScroll();
+    })
+    .catch(() => {});
+}
+
+function reloadKeepingScroll() {
+  try { sessionStorage.setItem(REVIEW_SCROLL_KEY, JSON.stringify({ hash: location.hash, top: doc.scrollTop })); } catch (e) {}
+  location.reload();
+}
+
+function restoreReviewScroll() {
+  let saved = null;
+  try { saved = JSON.parse(sessionStorage.getItem(REVIEW_SCROLL_KEY) || 'null'); sessionStorage.removeItem(REVIEW_SCROLL_KEY); } catch (e) {}
+  if (saved && saved.hash === location.hash) doc.scrollTop = saved.top;
+}
+
+// Promote and Comment are separate actions; each lives in an element carrying the concept id.
+async function submitReview(button) {
+  const action = button.dataset.review;
+  const box = button.closest('[data-id]');
+  const textarea = box.querySelector('textarea');
+  const text = textarea ? textarea.value.trim() : '';
+  const status = box.querySelector('.review-status');
+  if (action === 'comment' && !text) { status.textContent = 'Write a comment first.'; return; }
+  const buttons = box.querySelectorAll('button');
+  buttons.forEach(b => { b.disabled = true; });
+  status.textContent = 'Saving…';
+  try {
+    const body = action === 'comment' ? { id: box.dataset.id, text } : { id: box.dataset.id };
+    const response = await fetch('/api/' + action, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || response.statusText);
+    if (textarea) textarea.value = '';
+    reloadKeepingScroll();
+  } catch (error) {
+    status.textContent = 'Not saved: ' + (error.message || error);
+    buttons.forEach(b => { b.disabled = false; });
+  }
+}
+
+doc.addEventListener('click', ev => {
+  const button = ev.target.closest && ev.target.closest('[data-review]');
+  if (button) submitReview(button);
+});
+
 /* ---------- helpers ---------- */
 function escapeHtml(s) { return String(s).replace(/[&<>]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c])); }
 function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
@@ -2137,7 +2273,9 @@ syncGraph(() => {
   else if (isDirId(start) && dirs[dirOf(start)]) expandDir(dirOf(start), () => openDir(dirOf(start)));
   else if (DATA.index) openIndex();
   else showGraphOnly();
+  restoreReviewScroll();
 });
+startReview();
 </script>
 </body>
 </html>

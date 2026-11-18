@@ -11,8 +11,7 @@ tags:
 parent: /software-engineering/distributed-systems.md
 related:
 - /software-engineering/distributed-systems/openai-habitat.md
-- /software-engineering/distributed-systems/dynamo.md
-- /software-engineering/distributed-systems/bigtable.md
+- /software-engineering/distributed-systems.md
 sources:
 - id: partitioning
   resource: https://learn.microsoft.com/en-us/azure/cosmos-db/partitioning

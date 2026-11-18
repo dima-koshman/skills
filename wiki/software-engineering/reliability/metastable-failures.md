@@ -10,7 +10,7 @@ tags:
 parent: /software-engineering/reliability.md
 related:
 - /software-engineering/reliability/sre.md
-- /ai-engineering/enterprise/llm-gateway.md
+- /ai-engineering/platform/ai-gateways.md
 - /software-engineering/infrastructure/service-mesh.md
 - /software-engineering/distributed-systems/openai-habitat.md
 sources:
@@ -162,7 +162,7 @@ offers tools for that.[^brooker-metastability]
 
 SDK retries in each client, gateway retries, provider 429s, and a slow guardrail or NER step in the
 request path can form a retry storm. Check that only one layer retries, and that the gateway sheds load
-before its queues fill. See [LLM Gateway](/ai-engineering/enterprise/llm-gateway.md).
+before its queues fill. See [LLM Gateway](/ai-engineering/platform/ai-gateways.md#llm-gateway).
 
 A [service mesh](/software-engineering/infrastructure/service-mesh.md) can own timeouts, retries and circuit
 breaking for all services in one place, but deadline handling, prioritization and degradation stay in the

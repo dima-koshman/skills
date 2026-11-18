@@ -8,15 +8,11 @@ tags:
 - context
 parent: /ai-engineering/context.md
 related:
-- /ai-engineering/agents/agent.md
+- /ai-engineering.md
 - /ai-engineering/harness.md
 - /ai-engineering/context/context-engineering.md
-- /ai-engineering/agents/claude-code.md
-- /ai-engineering/agents/opencode.md
-- /ai-engineering/agents/codex.md
-- /ai-engineering/context/mcp.md
-- /ai-engineering/security/risks/supply-chain-compromise.md
-- /ai-engineering/security/risks/agent-goal-hijack.md
+- /ai-engineering/harness/mcp.md
+- /ai-engineering/security.md
 note_date: '2026-07-20'
 sources:
 - id: ref-1
@@ -41,15 +37,15 @@ Reference: <https://code.claude.com/docs/en/skills>
 Note dated: 2026-07-20.
 
 A skill is a directory holding a `SKILL.md` — YAML frontmatter (`name`,
-`description`) plus a markdown body — that an [agent](/ai-engineering/agents/agent.md) loads on
+`description`) plus a markdown body — that an [agent](/ai-engineering.md#agent) loads on
 demand when the description matches the task. The [harness](/ai-engineering/harness.md)
 keeps every installed skill's name and description in context every turn, and
 pulls the body in only when the skill is invoked. This two-tier design is
 [context engineering](/ai-engineering/context/context-engineering.md): descriptions are the
 always-on index, bodies are the progressive disclosure.
 
-Skills are portable across harnesses — [Claude Code](/ai-engineering/agents/claude-code.md),
-[OpenCode](/ai-engineering/agents/opencode.md), and [Codex](/ai-engineering/agents/codex.md) all read the same
+Skills are portable across harnesses — [Claude Code](/ai-engineering/harness.md#claude-code),
+[OpenCode](/ai-engineering/harness.md#opencode), and [Codex](/ai-engineering/harness.md#codex) all read the same
 format, though each scans different directories. Installers such as `npx skills`
 copy a skill into a canonical store and symlink it into each harness's directory.
 
@@ -63,7 +59,7 @@ private or fast-moving knowledge — but it decays as frontier models improve.
 Content restating widely-known practice (what TDD is, how to bisect a bug) buys
 little from a frontier model that already knows it, while still costing context.
 For public library documentation specifically, live retrieval via
-[MCP](/ai-engineering/context/mcp.md) beats a vendored snapshot, which silently goes stale.
+[MCP](/ai-engineering/harness/mcp.md) beats a vendored snapshot, which silently goes stale.
 
 **As behavior control**, a skill changes what the agent does by default at a
 decision point — investigate before patching, design before implementing. Here
@@ -106,8 +102,8 @@ third-party skill cannot.
   the original.
 - **Third-party skills execute with full agent permissions** and may ship scripts.
   Treat an installed skill as a dependency with the trust level of code, not
-  documentation — see [supply chain compromise](/ai-engineering/security/risks/supply-chain-compromise.md)
-  and [agent goal hijack](/ai-engineering/security/risks/agent-goal-hijack.md).
+  documentation — see [supply chain compromise](/ai-engineering/security.md#risks-owasp-agentic-top-10)
+  and [agent goal hijack](/ai-engineering/security.md#risks-owasp-agentic-top-10).
 
 ## Design considerations
 

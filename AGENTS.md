@@ -100,12 +100,41 @@ written for one session's need is reviewed before it counts as settled knowledge
   changed claim. A fix to a link, a typo or wording does not.
 - Never add a `human:` event to `verified`, and never remove `draft`, unless Dima
   says he reviewed it. Promotion happens in the okf skill's review pass, and his
-  review is recorded as `human:dima`.
+  review is recorded as `human:dima`. He can also promote a draft himself with the
+  Promote button of the review server (VS Code task "Wiki: review server"), which
+  writes that event.
+- **Review comments.** `review_comments` in a concept's frontmatter are Dima's
+  notes from the review server's Comment panel. When you work on that concept, or
+  he asks you to go through them, resolve each one and then clear it from the
+  list; delete the `review_comments` key when none are left. The server never
+  clears them. `okf_review.py` lists the open ones. A change that resolves a
+  comment follows the draft rule above.
 - Git is the approval gate: leave wiki changes uncommitted unless he asks you to
   commit them.
 - In a review pass, the `agent-chats` tools find the session that wrote a draft.
   Uncited `ref-N` sources come from the 2026-10-15 conversion and are reading-list
   entries. Leave them unless you are already editing that concept.
+- **Prefer fewer, fuller concepts.** As a rough guide, a concept earns its own file
+  when it has about 150 words of its own content or its own sources. Anything
+  smaller usually fits better as a section of a related concept, or as a term in
+  its area's Glossary (the AI Engineering overview has one). This is a guideline,
+  not a hard limit: a short concept that many others link to, or one that is
+  about to grow, can stay on its own. When merging, keep the old title as an
+  alias and every source.
+- **Render after every edit.** Dima keeps the rendered wiki open in a browser tab.
+  After any change under `wiki/`, regenerate and render it the way the VS Code
+  task "Wiki: regenerate and render" does for `wiki/`, so a reload shows the change.
+  Agents can't start VS Code tasks, so run its commands from the repository root:
+
+  ```bash
+  uv run --no-project --with pyyaml python .agents/skills/okf/scripts/okf_index.py wiki
+  mkdir -p dev && uv run --no-project --with pyyaml python .agents/skills/okf/scripts/okf_site.py wiki --output dev/wiki-okf-site.html
+  ```
+
+  Skip the task's final `open` step unless he asks, because the tab is already
+  open. If the task in `.vscode/tasks.json` changes, update these commands. When
+  the "Wiki: review server" task is running, it re-renders on its own and the
+  page reloads; running the commands anyway does no harm.
 
 <!-- OPENWIKI:START -->
 

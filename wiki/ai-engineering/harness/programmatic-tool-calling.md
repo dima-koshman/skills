@@ -13,12 +13,12 @@ tags:
 - programmatic-tool-calling
 parent: /ai-engineering/harness.md
 related:
-- /ai-engineering/agents/agent.md
-- /ai-engineering/harness/subagents.md
-- /ai-engineering/harness/dynamic-subagents.md
-- /ai-engineering/context/mcp.md
+- /ai-engineering.md
+- /ai-engineering/multi-agent/subagents.md
+- /ai-engineering/multi-agent/dynamic-subagents.md
+- /ai-engineering/harness/mcp.md
 - /ai-engineering/context/context-engineering.md
-- /ai-engineering/security/risks/unexpected-code-execution.md
+- /ai-engineering/security.md
 sources:
 - id: claude-workflows
   resource: https://code.claude.com/docs/en/workflows
@@ -69,8 +69,8 @@ generated:
 
 ## Core pattern
 
-An [agent](/ai-engineering/agents/agent.md) writes a program that calls tools or
-[subagents](/ai-engineering/harness/subagents.md), handles loops and branches, and
+An [agent](/ai-engineering.md#agent) writes a program that calls tools or
+[subagents](/ai-engineering/multi-agent/subagents.md), handles loops and branches, and
 filters or combines their outputs. Intermediate results stay in runtime variables;
 only selected output returns to the coordinating model. This can reduce model
 round trips and context use, especially when many calls return large datasets.[^anthropic-programmatic-tools]
@@ -119,7 +119,7 @@ Both optimizations are forms of [context engineering](/ai-engineering/context/co
   model calls.[^anthropic-programmatic-tools]
 - Model-written code requires an appropriate execution boundary; see
   [Agent Sandboxes](/ai-engineering/harness/sandboxes.md) and
-  [Unexpected Code Execution](/ai-engineering/security/risks/unexpected-code-execution.md).
+  [Unexpected Code Execution](/ai-engineering/security.md#risks-owasp-agentic-top-10).
 
 ## What PTC provides, and what the harness provides
 
@@ -132,7 +132,7 @@ PTC has container expiration and tool-result waiting deadlines.[^anthropic-progr
 
 ## Dynamic subagents
 
-[Dynamic Subagents](/ai-engineering/harness/dynamic-subagents.md) is the narrower
+[Dynamic Subagents](/ai-engineering/multi-agent/dynamic-subagents.md) is the narrower
 application of PTC where generated code invokes agents as tools. That concept
 covers aliases, cost comparisons, and Claude Code, Codex and OpenCode support.
 **Code mode is the generic PTC mechanism**, whether the called tools are ordinary

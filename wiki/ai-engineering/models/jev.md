@@ -11,7 +11,7 @@ parent: /ai-engineering/models.md
 related:
 - /ai-engineering/harness/programmatic-tool-calling.md
 - /ai-engineering/harness.md
-- /ai-engineering/observability/langsmith-evals.md
+- /ai-engineering/observability.md
 - /ai-engineering/models/clm.md
 - /ai-engineering/models/scaledown.md
 decision_interface:
@@ -68,7 +68,7 @@ extended reasoning.
 
 Typed output prevents malformed free-text answers; it does **not** establish
 that a decision is correct. Validate accuracy and probability calibration on
-representative data with [evals](/ai-engineering/observability/langsmith-evals.md), then choose
+representative data with [evals](/ai-engineering/observability.md#langsmith-evals), then choose
 action and escalation thresholds based on the cost of mistakes. A closed set
 of choices also needs an explicit fallback when none is appropriate.
 
@@ -89,7 +89,7 @@ counterpart: a typed answer with a probability. Jev takes text only, up to 32K
 tokens of state per question. Classify takes up to 1M tokens, images included,
 and adds a one-sentence reason.[^langchain-scaledown] ScaleDown also has
 Summarize, Compress and Extract models. LangChain wires them into
-[Deep Agents](/ai-engineering/agents/deep-agents.md) as middleware, under the
+[Deep Agents](/ai-engineering/harness.md#deep-agents) as middleware, under the
 same "cheap by default, frontier on exception" principle LangChain applies to
 Jev.
 

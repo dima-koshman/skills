@@ -8,14 +8,12 @@ tags:
 - development
 parent: /ai-engineering/development.md
 related:
-- /ai-engineering/agents/agent.md
+- /ai-engineering.md
 - /ai-engineering/harness/tools.md
 - /ai-engineering/context/context-engineering.md
-- /ai-engineering/context/mcp.md
-- /ai-engineering/observability/langsmith.md
-- /ai-engineering/observability/langfuse.md
-- /ai-engineering/observability/langsmith-evals.md
-- /ai-engineering/security/risks/agent-goal-hijack.md
+- /ai-engineering/harness/mcp.md
+- /ai-engineering/observability.md
+- /ai-engineering/security.md
 sources:
 - id: ref-1
   resource: https://logfire.pydantic.dev/docs/
@@ -38,7 +36,7 @@ generated:
 ---
 
 Observability-driven AI-assisted development makes runtime evidence part of the
-software-development loop. An [agent](/ai-engineering/agents/agent.md) retrieves traces, logs,
+software-development loop. An [agent](/ai-engineering.md#agent) retrieves traces, logs,
 metrics, exceptions, and evaluation results through [tools](/ai-engineering/harness/tools.md),
 correlates them with the code and current task, proposes or implements a bounded
 change, and verifies the result. Observability is therefore not only for human
@@ -52,7 +50,7 @@ for development agents.
    correlation identifiers.
 2. **Observe** real behavior in production, staging, tests, and evaluations.
 3. **Retrieve** a bounded evidence window through an observability API, CLI, or
-   [MCP](/ai-engineering/context/mcp.md) server rather than pasting dashboard screenshots or
+   [MCP](/ai-engineering/harness/mcp.md) server rather than pasting dashboard screenshots or
    unbounded logs into the agent context.
 4. **Correlate** signals across systems and map representative events to code,
    configuration, deployments, and existing work items.
@@ -87,8 +85,8 @@ nor silently forget telemetry.
 
 LLM and agent traces expose prompts, model responses, tool calls, trajectories,
 latency, token use, and cost. Products such as
-[LangSmith](/ai-engineering/observability/langsmith.md) and
-[Langfuse](/ai-engineering/observability/langfuse.md) answer what an AI system saw, decided, and
+[LangSmith](/ai-engineering/observability.md#langsmith) and
+[Langfuse](/ai-engineering/observability.md#langfuse) answer what an AI system saw, decided, and
 did.
 
 Application observability exposes standard logs, spans, metrics, exceptions,
@@ -102,7 +100,7 @@ model decision that led to it. Correlation should prefer shared trace or request
 identifiers; when none exists, timestamp, environment, operation, and failure
 text provide only probabilistic linkage and must be labeled accordingly.
 
-[LangSmith Evals](/ai-engineering/observability/langsmith-evals.md) and comparable evaluation
+[LangSmith Evals](/ai-engineering/observability.md#langsmith-evals) and comparable evaluation
 systems add outcome evidence. A production trace can become a regression example,
 and a verified fix can be tested across a dataset rather than only against the
 single observed failure.
@@ -136,7 +134,7 @@ single observed failure.
 - **Telemetry is untrusted input.** Logs, exceptions, model payloads, and tool
   results may contain attacker-controlled instructions. Treat them as diagnostic
   data and independently verify any suggested action to prevent
-  [agent goal hijack](/ai-engineering/security/risks/agent-goal-hijack.md).
+  [agent goal hijack](/ai-engineering/security.md#risks-owasp-agentic-top-10).
 - **Unbounded retrieval wastes context and money.** Query narrow windows, aggregate
   first, and fetch representative details only as needed.
 - **A plausible diagnosis is not verification.** Require a reproduction or other

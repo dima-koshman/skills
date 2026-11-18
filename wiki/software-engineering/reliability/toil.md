@@ -8,13 +8,10 @@ tags:
 - reliability
 parent: /software-engineering/reliability.md
 related:
-- /software-engineering/reliability/simplicity.md
-- /ai-engineering/observability/langsmith.md
-- /ai-engineering/observability/langfuse.md
-- /ai-engineering/observability/langsmith-evals.md
+- /software-engineering/reliability/sre.md
+- /ai-engineering/observability.md
 - /ai-engineering/development/observability-driven-development.md
 - /ai-engineering/development/ai-native-sdlc.md
-- /software-engineering/reliability/sre.md
 note_date: '2026-10-03'
 sources:
 - id: ref-1
@@ -73,7 +70,7 @@ a team that absorbs operational work invites other teams to hand it more.
 - **"It needs human judgment" can hide toil.** A service that pages several
   times a day, each alert needing an expert response, is poorly designed. The
   judgment-heavy response stays toil until the system is
-  [simplified](/software-engineering/reliability/simplicity.md) to remove the failure or handle it automatically.
+  [simplified](/software-engineering/reliability/sre.md#simplicity) to remove the failure or handle it automatically.
 - **Running a script is still toil.** Automation that needs a human to trigger
   it removes steps, not the toil.
 - **Averages hide outliers.** A team average of 33% can contain people at 80%.
@@ -111,21 +108,21 @@ online and continuously, not only when someone asks:
 Two products cover parts of this loop:
 
 - **[LangSmith Engine](https://docs.langchain.com/langsmith/engine-overview)**
-  is this loop productized for agents traced in [LangSmith](/ai-engineering/observability/langsmith.md).
+  is this loop productized for agents traced in [LangSmith](/ai-engineering/observability.md#langsmith).
   It scans tracing projects on a schedule, groups recurring failures into
   issues, and diagnoses root causes against connected source code. It then
   proposes fixes as pull requests, tracks each issue as matching traces arrive
   (reopening it if the issue recurs), and creates ground-truth dataset examples
   for offline evaluation. Code fixes target agents built with LangChain,
   LangGraph, and Deep Agents.
-- **[Langfuse](/ai-engineering/observability/langfuse.md) evaluators**
+- **[Langfuse](/ai-engineering/observability.md#langfuse) evaluators**
   supply the quality signal. LLM-as-a-judge evaluators run asynchronously on
   incoming production observations that match a rule's filters, and they write
   numeric, categorical, or boolean scores with reasoning back onto the traces.
   The same evaluators score datasets in experiments. The detect-diagnose-fix
   agent around those scores is yours to build, for example a coding agent with
   read access to Langfuse and the repository.
-  [LangSmith Evals](/ai-engineering/observability/langsmith-evals.md)
+  [LangSmith Evals](/ai-engineering/observability.md#langsmith-evals)
   plays the same role in LangSmith.
 
 The human role moves from doing the toil to reviewing what the agent produced.

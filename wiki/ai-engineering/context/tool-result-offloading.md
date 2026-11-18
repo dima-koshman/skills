@@ -8,12 +8,10 @@ tags:
 parent: /ai-engineering/context.md
 related:
 - /ai-engineering/context/context-engineering.md
-- /ai-engineering/context/memory.md
 - /ai-engineering/context/prompt-caching.md
 - /ai-engineering/harness/tools.md
-- /ai-engineering/agents/deep-agents.md
-- /ai-engineering/agents/claude-code.md
-- /ai-engineering/agents/llm-browser-use.md
+- /ai-engineering/harness.md
+- /ai-engineering/harness/llm-browser-use.md
 sources:
 - id: chase-late-2026
   resource: https://www.langchain.com/blog/context-engineering-challenges-late-2026
@@ -70,8 +68,8 @@ The idea is older than the name. Anthropic's advice is to keep lightweight ident
 
 | Harness | Trigger | Stored in | Left in context | Reading it back |
 | --- | --- | --- | --- | --- |
-| [Deep Agents](/ai-engineering/agents/deep-agents.md) | Result over about 20,000 tokens, user message over 50,000[^deepagents-remember] | Configured backend, under `/large_tool_results/{tool_call_id}`[^deepagents-remember] | Path and preview[^deepagents-context-docs] | Pages with `read_file`, or searches[^deepagents-remember][^deepagents-context-management] |
-| [Claude Code](/ai-engineering/agents/claude-code.md) | MCP text result over 50,000 characters[^claude-code-mcp] | A file[^claude-code-mcp] | A note with the file path[^claude-code-mcp] | Reads the file when needed[^claude-code-mcp] |
+| [Deep Agents](/ai-engineering/harness.md#deep-agents) | Result over about 20,000 tokens, user message over 50,000[^deepagents-remember] | Configured backend, under `/large_tool_results/{tool_call_id}`[^deepagents-remember] | Path and preview[^deepagents-context-docs] | Pages with `read_file`, or searches[^deepagents-remember][^deepagents-context-management] |
+| [Claude Code](/ai-engineering/harness.md#claude-code) | MCP text result over 50,000 characters[^claude-code-mcp] | A file[^claude-code-mcp] | A note with the file path[^claude-code-mcp] | Reads the file when needed[^claude-code-mcp] |
 | Manus | No threshold given | Sandbox file system[^manus-context-engineering] | URL or path[^manus-context-engineering] | Reads files on demand[^manus-context-engineering] |
 
 Deep Agents sources disagree on the preview: the docs say the first 10 lines, and the October 2026 blog says the first and last few lines.[^deepagents-context-docs][^deepagents-remember]

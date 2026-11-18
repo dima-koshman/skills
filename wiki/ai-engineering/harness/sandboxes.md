@@ -10,8 +10,8 @@ tags:
 parent: /ai-engineering/harness.md
 related:
 - /ai-engineering/harness/tools.md
-- /ai-engineering/agents/deep-agents.md
-- /ai-engineering/harness/subagents.md
+- /ai-engineering/harness.md
+- /ai-engineering/multi-agent/subagents.md
 - /ai-engineering/security.md
 sources:
 - id: anthropic-managed-agents

@@ -194,7 +194,7 @@ Outstanding findings, in priority order:
    through harness dispatch and calls harness mediation of every tool effect an
    invariant. [Skills and tooling](openwiki/concepts/skills-and-tooling.md) also
    draws a client-to-hosted-tool execution step. The
-   [source note](wiki/ai-engineering/harness/provider-tools.md) says providers
+   [source note](wiki/ai-engineering/harness/tools.md#provider-side-tools) says providers
    execute these tools within their API turn; the client enables capabilities
    beforehand and receives results. The generated prose partly preserves this
    distinction, but its universal diagram/control claims do not.
@@ -209,7 +209,7 @@ Outstanding findings, in priority order:
    [context and knowledge](openwiki/concepts/context-and-knowledge.md), and
    [maintenance](openwiki/operations/maintenance-and-provenance.md) generalize the
    connector/raw-snapshot pipeline from the
-   [older source note](wiki/ai-engineering/context/openwiki.md). This follows that
+   [older source note](wiki/ai-engineering/knowledge/openwiki.md). This follows that
    note but is misleading for our repository-native Claims workflow. Source
    agreement does not establish current product accuracy.
 5. **Claims are useful pointers, not semantic proof or exhaustive coverage.**

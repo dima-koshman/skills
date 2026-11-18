@@ -465,6 +465,92 @@ def test_site_lists_extra_frontmatter_as_linked_properties(
     assert "generated" not in properties and "sources" not in properties
 
 
+def test_site_shows_review_comments_as_notes_not_properties(
+    bundle: pathlib.Path,
+) -> None:
+    _write(
+        bundle / "notes.md",
+        {
+            "type": "Concept",
+            "title": "Notes",
+            "status": "draft",
+            "review_comments": [
+                {
+                    "by": "human:ana",
+                    "at": "2026-11-18T10:00:00Z",
+                    "text": "Add a **source**.",
+                }
+            ],
+        },
+        "Body.",
+    )
+
+    node = _nodes(bundle)["notes.md"]
+
+    assert node["review_comments"] == [
+        {"by": "human:ana", "at": "2026-11-18T10:00:00Z", "text": "Add a **source**."}
+    ]
+    assert node["properties"] == []
+
+
+def test_reader_offers_promote_beside_the_draft_pill_and_comment_separately(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "review.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const definitions = ['lifecycleHtml', 'reviewHtml']
+  .map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
+const context = {escapeHtml: value => String(value), escapeAttr: value => String(value),
+  marked: {parseInline: value => '<md>' + value + '</md>'}};
+vm.runInNewContext(definitions, context);
+const comments = [{by: 'human:ana', at: '2026-11-18T10:00:00Z', text: 'Add a source.'}];
+process.stdout.write(JSON.stringify({
+  draftLifecycle: context.lifecycleHtml({id: 'a.md', status: 'draft'}),
+  deprecatedLifecycle: context.lifecycleHtml({id: 'b.md', status: 'deprecated'}),
+  draftReview: context.reviewHtml({id: 'a.md', status: 'draft', review_comments: comments}),
+  stableReview: context.reviewHtml({id: 'c.md', review_comments: []}),
+}));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    markup = json.loads(result.stdout)
+
+    assert 'data-review="promote"' in markup["draftLifecycle"]
+    assert 'data-id="a.md"' in markup["draftLifecycle"]
+    assert 'data-review="promote"' not in markup["deprecatedLifecycle"]
+    for review in (markup["draftReview"], markup["stableReview"]):
+        assert 'data-review="promote"' not in review
+        assert 'data-review="comment"' in review
+        assert "<summary>Comment</summary>" in review
+    assert "<md>Add a source.</md>" in markup["draftReview"]
+    assert "human:ana" in markup["draftReview"]
+    assert "review-comments" not in markup["stableReview"]
+
+
+def test_reader_review_tools_stay_hidden_until_the_review_server_answers(
+    bundle: pathlib.Path,
+) -> None:
+    output = bundle.parent / "static.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    html = output.read_text()
+
+    assert re.search(r"\.review-panel\s*\{[^}]*display:\s*none", html)
+    assert re.search(
+        r"body\.review-on (?:#doc )?\.review-panel\s*\{[^}]*display:\s*block", html
+    )
+    assert re.search(r"\.review-promote\s*\{[^}]*display:\s*none", html)
+    assert "location.protocol.startsWith('http')" in html
+
+
 def test_site_links_sources_and_footnotes(bundle: pathlib.Path) -> None:
     node = _nodes(bundle)["services/api.md"]
     sources = cast(list[dict[str, str]], node["sources"])
@@ -1198,6 +1284,59 @@ process.stdout.write(JSON.stringify({ hidden }));
     )
     assert result.returncode == 0, result.stderr
     assert json.loads(result.stdout) == {"hidden": False}
+
+
+def test_site_sidebar_sorts_concepts_and_directories_together_by_label(
+    bundle: pathlib.Path,
+) -> None:
+    _write(bundle / "zeta.md", {"type": "Concept", "title": "Zeta"}, "Z.")
+    _write(bundle / "beta.md", {"type": "Concept", "title": "Beta"}, "B.")
+    _write(
+        bundle / "apps.md", {"type": "Concept", "title": "Applications"}, "Overview."
+    )
+    _write(bundle / "apps/web.md", {"type": "Concept", "title": "Web"}, "W.")
+    output = bundle.parent / "sorted-tree.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    javascript = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
+const definitions = ['buildTree', 'renderTree'].map(name =>
+  html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
+function element(tag) {
+  return { tag, children: [], dataset: {}, className: '', innerHTML: '',
+    classList: { add() {} }, setAttribute() {}, addEventListener() {}, appendChild(child) { this.children.push(child); } };
+}
+const dirs = {};
+for (const n of data.nodes) {
+  const parts = n.id.split('/');
+  for (let i = 1; i < parts.length; i++) {
+    const path = parts.slice(0, i).join('/');
+    (dirs[path] ||= { name: parts[i - 1], concepts: [] }).concepts.push(n.id);
+  }
+}
+dirs.apps.overviewId = 'apps.md';
+const context = { DATA: data, document: { createElement: element }, dirs, escapeHtml: s => s,
+  escapeAttr: s => s, dirLabel: path => dirs[path].name, expanded: new Set(), expandDir() {},
+  collapseDir() {}, openConcept() {}, openDir() {} };
+const tree = vm.runInNewContext(definitions + '\nrenderTree(buildTree(DATA.nodes))', context);
+process.stdout.write(JSON.stringify(tree.children.map(li => li.dataset.dir || li.children[0].dataset.id)));
+"""
+    result = subprocess.run(
+        ["node", "-e", javascript, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == [
+        "apps",
+        "beta.md",
+        "people",
+        "services",
+        "zeta.md",
+    ]
 
 
 def test_site_matching_overview_renders_one_collapsible_sidebar_entry(
@@ -2069,7 +2208,7 @@ const html = fs.readFileSync(process.argv[1], 'utf8');
 const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
 const node = data.nodes.find(node => node.id === process.argv[2]);
 Object.assign(node, JSON.parse(process.argv[3]));
-const names = ['escapeHtml', 'escapeAttr', 'lifecycleHtml', 'provenanceHtml',
+const names = ['escapeHtml', 'escapeAttr', 'lifecycleHtml', 'reviewHtml', 'provenanceHtml',
                'propertiesHtml', 'sourcesHtml', 'openConcept'];
 const definitions = names.map(name => {
   const start = html.indexOf('function ' + name + '(');
@@ -2198,3 +2337,21 @@ if (mode !== 'unavailable') {
     assert actual["source"] == (
         'flowchart LR\n  Parent["Parent & agent"] -->|delegates bounded goal| Sub["Subagent"]\n'
     )
+
+
+def test_site_search_box_sits_right_after_the_history_buttons(
+    bundle: pathlib.Path,
+) -> None:
+    _write(bundle / "a.md", {"type": "Concept", "title": "A"}, "A.")
+    output = bundle.parent / "search-position.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+    html = output.read_text()
+    header = re.search(r"<header>(.*?)</header>", html, re.S)
+    assert header
+    assert re.search(
+        r'id="nav-forward"[^>]*>[^<]*</button>\s*</div>\s*<input id="search"',
+        header.group(1),
+    )
+    desktop_rule = re.search(r"\n  #search \{([^}]*)\}", html)
+    assert desktop_rule
+    assert "margin-left:auto" not in desktop_rule.group(1)

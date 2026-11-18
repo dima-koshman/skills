@@ -16,10 +16,10 @@ tags:
 parent: /ai-engineering/compute/serving.md
 related:
 - /ai-engineering/compute/serving/vllm.md
-- /ai-engineering/compute/mps.md
-- /ai-engineering/compute/mig.md
-- /ai-engineering/compute/run-ai.md
-- /ai-engineering/compute/max.md
+- /ai-engineering/compute/gpu-sharing/mps.md
+- /ai-engineering/compute/gpu-sharing/mig.md
+- /ai-engineering/compute/gpu-sharing/run-ai.md
+- /ai-engineering/compute/software-stack/max.md
 sources:
 - id: triton-overview
   resource: https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/index.html
@@ -60,7 +60,7 @@ NVIDIA calls it NVIDIA Dynamo Triton, part of the Dynamo Platform; the docs stil
 name.[^triton-dynamo-rename]
 
 Do not confuse it with the Triton language, a Python DSL for GPU kernels, mentioned in
-[CUDA Ecosystem](/ai-engineering/compute/cuda.md) and [Kernel Fusion](/ai-engineering/compute/serving/kernel-fusion.md).
+[CUDA Ecosystem](/ai-engineering/compute/software-stack/cuda.md) and [Kernel Fusion](/ai-engineering/compute/serving/kernels-and-decoding.md#kernel-fusion).
 They are unrelated projects.
 
 ## Where it sits
@@ -76,7 +76,7 @@ schedulers worth separating:
 ## Do models on one GPU get time-sliced?
 
 It depends on the backend, because time-slicing applies between CUDA contexts, and normally a process has one
-([MPS](/ai-engineering/compute/mps.md)).
+([MPS](/ai-engineering/compute/gpu-sharing/mps.md)).
 
 | Backend | Runs as | Without MPS |
 | --- | --- | --- |

@@ -10,8 +10,8 @@ tags:
 parent: /ai-engineering/compute.md
 related:
 - /ai-engineering/compute/simd-simt.md
-- /ai-engineering/compute/mojo.md
-- /ai-engineering/compute/cuda.md
+- /ai-engineering/compute/software-stack/mojo.md
+- /ai-engineering/compute/software-stack/cuda.md
 sources:
 - id: wikipedia-npu
   resource: https://en.wikipedia.org/wiki/Neural_processing_unit
@@ -106,7 +106,7 @@ Modular's port of MAX to Qualcomm's Cloud AI 100 shows the differences from a GP
 Lattner argues that hardware companies treat software as overhead because "the chip is still the
 product". Their software ends up built for demos and a few large customers, so each new chip lacks the
 ecosystem developers need.[^lattner-hw-software] Mojo and MAX are Modular's bet that one portable stack can fill
-that gap. Qualcomm, a chip company, now owns Modular (see [Mojo](/ai-engineering/compute/mojo.md)).
+that gap. Qualcomm, a chip company, now owns Modular (see [Mojo](/ai-engineering/compute/software-stack/mojo.md)).
 
 [^wikipedia-npu]: Wikipedia, Neural processing unit.
 [^modular-qualcomm-npu]: Modular engineering blog, 2026-08-18.

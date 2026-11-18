@@ -8,14 +8,13 @@ tags:
 parent: /ai-engineering/context.md
 related:
 - /ai-engineering/context/context-engineering.md
-- /ai-engineering/harness/subagents.md
-- /ai-engineering/agents/claude-code.md
-- /ai-engineering/enterprise/llm-gateway.md
-- /ai-engineering/observability/langfuse.md
-- /ai-engineering/providers/claude.md
-- /ai-engineering/providers/gpt.md
-- /ai-engineering/compute/serving/prefix-caching.md
-- /ai-engineering/compute/serving/kv-cache.md
+- /ai-engineering/multi-agent/subagents.md
+- /ai-engineering/harness.md
+- /ai-engineering/platform/ai-gateways.md
+- /ai-engineering/observability.md
+- /ai-engineering/models/providers/claude.md
+- /ai-engineering/models/providers/gpt.md
+- /ai-engineering/compute/serving/prefill-decode-and-kv-cache.md
 sources:
 - id: ref-1
   resource: https://claude.com/blog/lessons-from-building-claude-code-prompt-caching-is-everything
@@ -28,11 +27,11 @@ generated:
 Reference: <https://claude.com/blog/lessons-from-building-claude-code-prompt-caching-is-everything>
 
 For the serving-side execution mechanism, see
-[Prefix Caching](/ai-engineering/compute/serving/prefix-caching.md) and
-[KV Cache](/ai-engineering/compute/serving/kv-cache.md). This page focuses on
+[Prefix Caching](/ai-engineering/compute/serving/prefill-decode-and-kv-cache.md#prefix-caching) and
+[KV Cache](/ai-engineering/compute/serving/prefill-decode-and-kv-cache.md#kv-cache). This page focuses on
 prompt layout and agent-harness economics.
 
-Prompt caching allows LLM providers to reuse KV-cache computation from previous requests whenever an incoming prompt matches a previously seen token prefix. Because cached prompt tokens are dramatically cheaper (e.g., 90% discount on [Claude](/ai-engineering/providers/claude.md) and [GPT](/ai-engineering/providers/gpt.md)) and significantly reduce time-to-first-token (TTFT), prompt caching is the primary technical and economic foundation for long-running agent loops.
+Prompt caching allows LLM providers to reuse KV-cache computation from previous requests whenever an incoming prompt matches a previously seen token prefix. Because cached prompt tokens are dramatically cheaper (e.g., 90% discount on [Claude](/ai-engineering/models/providers/claude.md) and [GPT](/ai-engineering/models/providers/gpt.md)) and significantly reduce time-to-first-token (TTFT), prompt caching is the primary technical and economic foundation for long-running agent loops.
 
 Designing an agent harness around prompt caching requires structuring all prompt assembly and execution workflows to preserve prefix stability.
 
@@ -78,15 +77,15 @@ Instead, execute **cache-safe forking**: invoke compaction using the exact same 
 
 Prompt cache hit ratio (`cache_read_tokens / total_prompt_tokens`) is a primary operational reliability and cost metric. In production agent harnesses, cache hit rates should be monitored and alerted on like system availability:
 
-- **LLM Gateway tracking**: An [LLM gateway](/ai-engineering/enterprise/llm-gateway.md) such as LiteLLM can track prompt cache hit ratios across providers centrally via custom middleware and logging hooks, alerting when cache hit rates drop below target thresholds.
-- **Agent tracing**: Observability platforms like [Langfuse](/ai-engineering/observability/langfuse.md) capture token usage breakdowns (`cache_read`, `cache_creation`, and uncached input) across LangChain and custom agent traces, enabling step-level inspection of cache invalidation causes.
+- **LLM Gateway tracking**: An [LLM gateway](/ai-engineering/platform/ai-gateways.md#llm-gateway) such as LiteLLM can track prompt cache hit ratios across providers centrally via custom middleware and logging hooks, alerting when cache hit rates drop below target thresholds.
+- **Agent tracing**: Observability platforms like [Langfuse](/ai-engineering/observability.md#langfuse) capture token usage breakdowns (`cache_read`, `cache_creation`, and uncached input) across LangChain and custom agent traces, enabling step-level inspection of cache invalidation causes.
 
 ## Interaction with subagents
 
 The caching mechanics of the main agent context affect multi-agent orchestration.
-A [subagent](/ai-engineering/harness/subagents.md) starts a separate context thread,
+A [subagent](/ai-engineering/multi-agent/subagents.md) starts a separate context thread,
 but matching prompt prefixes may still be reused within the provider's cache
 boundaries. A warm parent can be cheaper than a new worker; compare actual cache
 usage and worker effort rather than assuming every worker is entirely cold. See
-[Dynamic Subagents](/ai-engineering/harness/dynamic-subagents.md) for Claude Code's
+[Dynamic Subagents](/ai-engineering/multi-agent/dynamic-subagents.md) for Claude Code's
 documented sibling-prefix reuse.

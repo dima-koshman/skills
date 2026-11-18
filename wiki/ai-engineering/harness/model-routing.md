@@ -9,7 +9,8 @@ tags:
 - cost
 parent: /ai-engineering/harness.md
 related:
-- /ai-engineering/enterprise/llm-gateway.md
+- /ai-engineering/harness/advisor.md
+- /ai-engineering/platform/ai-gateways.md
 - /ai-engineering/context/prompt-caching.md
 - /ai-engineering/models/jev.md
 sources:
@@ -42,7 +43,7 @@ Gateways such as LiteLLM offer automatic routing by request complexity. Dima adv
 - **The savings backfire.** Cache misses plus simple requests misrouted to heavy models can cost more than
   no routing.
 
-The [LLM gateway](/ai-engineering/enterprise/llm-gateway.md) forwards the model the client named.
+The [LLM gateway](/ai-engineering/platform/ai-gateways.md#llm-gateway) forwards the model the client named.
 
 ## When it works: in the harness, once per thread
 

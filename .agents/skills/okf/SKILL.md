@@ -161,6 +161,8 @@ Both actions clear the same directory state used by the sidebar and graph. Openi
 content link scrolls its selected sidebar entry into view and briefly pulses it; for a merged directory overview,
 the full row is revealed and pulsed. Reduced-motion readers see a steady outline instead.
 Clicking an entry directly in the sidebar selects and scrolls it without the attention pulse.
+Within each directory the sidebar lists concepts, files and subdirectories in one alphabetical list by their
+visible label (case-insensitive), with underscore-prefixed directories such as `_types` last.
 Non-Markdown files remain supporting assets rather than OKF concepts. The HTML reader lists them in the sidebar,
 including asset-only directories, and opens them in a new tab; links to local assets are rewritten relative to the
 generated HTML file, so custom HTML pages work when the renderer writes into a sibling `dev/` directory.
@@ -172,6 +174,28 @@ queued viewport animations so the parent gets one final centering move. The full
 expanding or collapsing places only
 the new nodes around their anchor, and "↻ Re-layout" redoes the full layout. The output is a build artifact — regenerate it, don't
 hand-edit, and consider git-ignoring it.
+
+### Review server (optional)
+
+`scripts/okf_review_server.py` serves the same reader on localhost and lets a person review in the page:
+
+```bash
+python scripts/okf_review_server.py <bundle-dir> -o dev/site.html --reviewer human:<id> [--port 8765] [--open]
+```
+
+Two independent actions appear. A draft gets a **Promote** button beside its draft pill: it removes `status: draft`
+and appends a `verified` event by the reviewer. Every concept gets a collapsed **Comment** panel: it appends
+`{by, at, text}` to the concept's `review_comments` and leaves the status alone. Edits rewrite only those frontmatter keys and leave the rest of the file
+as it was. After an edit, and whenever any file in the bundle changes, the server regenerates `index.md` and the HTML,
+and open pages reload themselves, keeping the concept and scroll position. A page with a comment being typed waits.
+
+The page finds the server by calling `/api/ping`. Opened as a file or from any other server, it stays the static reader
+and both actions stay hidden. The server binds to 127.0.0.1, serves only the page and files inside the bundle, and
+accepts actions only as JSON from its own origin.
+
+`review_comments` are the reviewer's requests to whoever edits the concept next. The server only adds comments; the
+agent clears each one once it is resolved, and deletes the `review_comments` key when none are left.
+The reader shows them in a box above the summary, not in Properties, and `okf_review.py` lists them.
 
 ## 2. Update log.md (via git + reasoning)
 
@@ -234,9 +258,10 @@ Start from the inventory script, which only lists:
 uv run --no-project --with pyyaml python <skill-dir>/scripts/okf_review.py <bundle-dir>
 ```
 
-It reports drafts, concepts past `stale_after`, unverified concepts (counted; use
-`--list-unverified` to list them), broken bundle-relative links, source ids that no
-footnote cites, and footnotes without a source. Then:
+It reports drafts, review comments, concepts past `stale_after`, unverified concepts
+(counted; use `--list-unverified` to list them), broken bundle-relative links, source
+ids that no footnote cites, and footnotes without a source. Address each review
+comment first, since it is the reviewer's own request, and remove it once done. Then:
 
 1. **Drafts.** For each draft, propose one of three: promote it (remove `status`),
    merge it into an existing concept, or delete it. Two tests decide:

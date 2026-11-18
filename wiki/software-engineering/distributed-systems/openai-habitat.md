@@ -16,7 +16,7 @@ related:
 - /software-engineering/distributed-systems/cosmos-db-partitioning.md
 - /software-engineering/reliability/metastable-failures.md
 - /software-engineering/infrastructure/service-mesh.md
-- /software-engineering/distributed-systems/raft.md
+- /software-engineering/distributed-systems.md
 publication: 'Jon Lee, Chaomin Yu, Ben Ries, Hrachya Hakobyan (OpenAI), **Rapidly scaling online storage to serve over 1
   billion ChatGPT users**, Parts I and II, OpenAI Engineering blog, 2026-09-11 and 2026-10-23.'
 sources:
@@ -62,7 +62,7 @@ order of priorities: make it reliable, then fast, then cheap.[^part2]
 | Peak of Python | >20M RPS; second-largest service at OpenAI by core count | — |
 | Q2 2026 | Rust rewrite by 2 engineers with Codex and GPT‑5.5; serves 95% of traffic | 6× less CPU, 15× less memory, lower average and tail latency[^part1] |
 | 2026 | Global read p50 down from ~120 ms to ~10 ms | Replicating critical data near users, in-region caching, the Rust rewrite[^part2] |
-| In development | In-house exabyte-scale store: Rockset's RocksDB Cloud core plus [Raft](/software-engineering/distributed-systems/raft.md) replication | Replicating bulky data more cheaply, at lower peak QPS[^part2] |
+| In development | In-house exabyte-scale store: Rockset's RocksDB Cloud core plus [Raft](/software-engineering/distributed-systems.md#raft) replication | Replicating bulky data more cheaply, at lower peak QPS[^part2] |
 
 ## Lessons
 

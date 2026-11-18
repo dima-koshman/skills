@@ -11,8 +11,8 @@ related:
 - /ai-engineering/development/observability-driven-development.md
 - /ai-engineering/development/ai-productivity-evidence.md
 - /ai-engineering/context/skills.md
-- /ai-engineering/context/memory.md
-- /ai-engineering/observability/langsmith-evals.md
+- /ai-engineering/context/context-engineering.md
+- /ai-engineering/observability.md
 sources:
 - id: sutton-verification
   resource: http://www.incompleteideas.net/IncIdeas/KeytoAI.html

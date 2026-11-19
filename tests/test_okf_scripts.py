@@ -168,7 +168,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const html = fs.readFileSync(process.argv[1], 'utf8');
 const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
-const definitions = ['buildTree', 'renderTree'].map(name =>
+const definitions = ['buildTree', 'compareNavEntries', 'renderTree'].map(name =>
   html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
 function element(tag) {
   return {tag, children: [], dataset: {}, className: '', innerHTML: '', classList: {add() {}},
@@ -435,8 +435,6 @@ def test_site_uses_hidden_local_type_concepts_for_field_tooltips(
         },
         "primaryFields": ["owner"],
     }
-    assert "# _types" not in str(data["index"])
-    assert "/_types/service.md" not in str(data["index"])
 
     rendered = _reader_html(bundle, "services/api.md", {})
     assert 'title="A service we run."' in rendered
@@ -1090,8 +1088,9 @@ const context = {
   closeMobilePanels: () => {},
   main: {classList: {remove: () => {}}},
   document: {createElement: () => ({className: '', innerHTML: ''})},
-  marked: {parse: value => value},
-  DATA: {index: '# Catalog'},
+  indexTreeHtml: () => '<ul></ul>',
+  buildTree: () => ({dirs: {}, files: [], assets: []}),
+  DATA: {nodes: []},
   doc: {innerHTML: '', appendChild: () => {}, scrollTop: 3},
   wireDocLinks: () => {},
   setActiveNav: id => events.push(['active', id]),
@@ -1302,7 +1301,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const html = fs.readFileSync(process.argv[1], 'utf8');
 const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
-const definitions = ['buildTree', 'renderTree'].map(name =>
+const definitions = ['buildTree', 'compareNavEntries', 'renderTree'].map(name =>
   html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
 function element(tag) {
   return { tag, children: [], dataset: {}, className: '', innerHTML: '',
@@ -1359,7 +1358,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const html = fs.readFileSync(process.argv[1], 'utf8');
 const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
-const names = ['buildTree', 'renderTree'];
+const names = ['buildTree', 'compareNavEntries', 'renderTree'];
 const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
 function element(tag) {
   return { tag, children: [], dataset: {}, className: '', innerHTML: '',
@@ -1871,7 +1870,7 @@ const [target, start] = JSON.parse(process.argv[2]);
 const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
 const names = ['directoryForNode', 'ancestorsOf', 'setExpanded', 'expandDir', 'collapseDir', 'subtreeOf', 'expandDirDeep',
   'collapseDirDeep', 'toggleDirectory', 'collapseNodeIntoParent', 'onNodeDoubleClick', 'deferNavClick', 'cancelNavClick',
-  'onNavConceptClick', 'onNavDoubleClick', 'buildTree', 'renderTree'];
+  'onNavConceptClick', 'onNavDoubleClick', 'buildTree', 'compareNavEntries', 'renderTree'];
 const definitions = names.flatMap(name =>
   html.match(new RegExp('^function ' + name + '\\((?:.*}$|[^]*?\\n})', 'm')) ?? []).join('\n');
 function element(tag) {
@@ -2060,7 +2059,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const html = fs.readFileSync(process.argv[1], 'utf8');
 const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
-const names = ['directoryForNode', 'toggleDirectory', 'collapseNodeIntoParent', 'onNodeDoubleClick', 'cancelNavClick', 'deferNavClick', 'onNavConceptClick', 'onNavDoubleClick', 'buildTree', 'renderTree'];
+const names = ['directoryForNode', 'toggleDirectory', 'collapseNodeIntoParent', 'onNodeDoubleClick', 'cancelNavClick', 'deferNavClick', 'onNavConceptClick', 'onNavDoubleClick', 'buildTree', 'compareNavEntries', 'renderTree'];
 const definitions = names.map(name => html.match(new RegExp('function ' + name + '\\([^]*?\\n}', 's'))[0]).join('\n');
 function element(tag) {
   const classes = new Set();
@@ -2275,7 +2274,7 @@ def test_index_lists_underscore_meta_directories_last(bundle: pathlib.Path) -> N
         for line in (bundle / "index.md").read_text().splitlines()
         if line.startswith("# ")
     ]
-    assert headings[-1] == "# _types"
+    assert headings[-1] == "# Types"
 
 
 @pytest.mark.parametrize("mode", ["success", "invalid", "unavailable", "detached"])
@@ -2355,3 +2354,135 @@ def test_site_search_box_sits_right_after_the_history_buttons(
     desktop_rule = re.search(r"\n  #search \{([^}]*)\}", html)
     assert desktop_rule
     assert "margin-left:auto" not in desktop_rule.group(1)
+
+
+_EXTRACT_FUNCTIONS_JS = r"""
+const fs = require('node:fs');
+const vm = require('node:vm');
+const html = fs.readFileSync(process.argv[1], 'utf8');
+const data = JSON.parse(html.match(/const DATA = (\{.*?\});\n/s)[1]);
+function definitions(names) {
+  return names.map(name => {
+    const start = html.indexOf('function ' + name + '(');
+    if (start < 0) throw new Error('Missing reader function: ' + name);
+    const lineEnd = html.indexOf('\n', start);
+    const end = html.slice(start, lineEnd).trimEnd().endsWith('}') ? lineEnd : html.indexOf('\n}', start) + 2;
+    return html.slice(start, end);
+  }).join('\n');
+}
+"""
+
+
+def _run_reader_functions(output: pathlib.Path, script: str) -> str:
+    result = subprocess.run(
+        ["node", "-e", _EXTRACT_FUNCTIONS_JS + script, str(output)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    return result.stdout
+
+
+def test_site_directory_labels_use_sentence_case(bundle: pathlib.Path) -> None:
+    output = bundle.parent / "labels.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+
+    labels = _run_reader_functions(
+        output,
+        r"""
+const names = ['distributed-systems', '_types', 'gpu_sharing', 'Platform Services'];
+const dirs = Object.fromEntries(names.map(name => [name, {name}]));
+const labels = vm.runInNewContext(definitions(['dirLabel']) + '\nnames.map(dirLabel)', {dirs, names});
+process.stdout.write(JSON.stringify(labels));
+""",
+    )
+
+    assert json.loads(labels) == [
+        "Distributed systems",
+        "Types",
+        "Gpu sharing",
+        "Platform Services",
+    ]
+
+
+def test_site_index_nests_only_links_under_directory_overviews(
+    bundle: pathlib.Path,
+) -> None:
+    _write(
+        bundle / "services.md", {"type": "Area", "title": "Services"}, "All services."
+    )
+    output = bundle.parent / "index-tree.html"
+    _ = _run("okf_site.py", str(bundle), "-o", str(output))
+
+    markup = _run_reader_functions(
+        output,
+        r"""
+const dirs = {people: {name: 'people'}, services: {name: 'services'}};
+const names = ['dirLabel', 'escapeHtml', 'escapeAttr', 'compareNavEntries', 'buildTree',
+               'indexEntryHtml', 'indexTreeHtml'];
+const context = {dirs, DATA: data};
+process.stdout.write(vm.runInNewContext(
+  definitions(names) + '\nindexTreeHtml(buildTree(DATA.nodes, []))', context));
+""",
+    )
+
+    assert markup == (
+        "<ul>"
+        "<li>People<ul>"
+        '<li><a href="#node:people%2Fana.md">Ana</a></li>'
+        "</ul></li>"
+        '<li><a href="#node:services.md">Services</a><ul>'
+        '<li><a href="#node:services%2Fapi.md">API</a></li>'
+        '<li><a href="#node:services%2Fdb.md">DB</a></li>'
+        "</ul></li>"
+        "</ul>"
+    )
+
+
+def _index_headings(bundle: pathlib.Path) -> list[str]:
+    _ = _run("okf_index.py", str(bundle))
+    return [
+        line
+        for line in (bundle / "index.md").read_text().splitlines()
+        if line.startswith("#")
+    ]
+
+
+def test_index_heading_uses_the_directory_overview_title(bundle: pathlib.Path) -> None:
+    _write(bundle / "services.md", {"type": "Area", "title": "Service Catalog"}, "All.")
+
+    headings = _index_headings(bundle)
+
+    assert "# Service Catalog" in headings
+    assert "# services" not in headings
+
+
+def test_index_heading_without_overview_uses_sentence_case(
+    bundle: pathlib.Path,
+) -> None:
+    _write(bundle / "on-call-rota/bob.md", {"type": "Person", "title": "Bob"}, "Pager.")
+
+    assert "# On call rota" in _index_headings(bundle)
+
+
+def test_index_lists_the_overview_first_in_its_own_section(
+    bundle: pathlib.Path,
+) -> None:
+    _write(
+        bundle / "services.md",
+        {"type": "Area", "title": "Service Catalog", "description": "All services."},
+        "All.",
+    )
+    _ = _run("okf_index.py", str(bundle))
+
+    lines = (bundle / "index.md").read_text().splitlines()
+    overview = "* [Service Catalog](/services.md) `[Area]` - All services."
+    assert lines.count(overview) == 1
+    assert lines[lines.index("# Service Catalog") + 2] == overview
+
+
+def test_index_orders_sections_by_heading_label(bundle: pathlib.Path) -> None:
+    _write(bundle / "services.md", {"type": "Area", "title": "Catalog"}, "All.")
+
+    assert _index_headings(bundle) == ["# Catalog", "# People"]

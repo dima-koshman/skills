@@ -200,18 +200,14 @@ def render(
     edges = _build_edges(concepts)
     known_ids = {concept.id for concept in concepts}
     log_markdown = _read_log(bundle_root, known_ids)
-    index_markdown = _read_index(bundle_root, known_ids)
     if log_markdown is not None:
         log_markdown = _rewrite_asset_links(log_markdown, "log.md", asset_hrefs)
-    if index_markdown is not None:
-        index_markdown = _rewrite_asset_links(index_markdown, "index.md", asset_hrefs)
     output_path.write_text(
         _render_html(
             bundle_root.name,
             concepts,
             edges,
             log_markdown,
-            index_markdown,
             type_schemas,
             assets,
         ),
@@ -604,32 +600,6 @@ def _read_log(bundle_root: pathlib.Path, known_ids: set[str]) -> str | None:
     )
 
 
-def _read_index(bundle_root: pathlib.Path, known_ids: set[str]) -> str | None:
-    """Return the bundle-root ``index.md`` body (frontmatter stripped, links rewritten)."""
-    index_path = bundle_root / "index.md"
-    if not index_path.is_file():
-        return None
-
-    _, body, error = _split_document(index_path)
-    markdown = index_path.read_text(encoding="utf-8") if error is not None else body
-
-    visible_lines: list[str] = []
-    hidden_level: int | None = None
-    for line in markdown.splitlines():
-        heading = re.match(r"^(#{1,6})\s+", line)
-        if (
-            heading
-            and hidden_level is not None
-            and len(heading.group(1)) <= hidden_level
-        ):
-            hidden_level = None
-        if heading and line[len(heading.group(1)) :].strip() == "_types":
-            hidden_level = len(heading.group(1))
-        if hidden_level is None:
-            visible_lines.append(line)
-    return _rewrite_internal_links("\n".join(visible_lines), "index.md", known_ids)
-
-
 def _rewrite_internal_links(body: str, source_id: str, known_ids: set[str]) -> str:
     """Rewrite links that resolve to a concept in the bundle to ``#node:<id>``.
 
@@ -672,7 +642,6 @@ def _render_html(
     concepts: list[Concept],
     edges: list[dict],
     log_markdown: str | None,
-    index_markdown: str | None,
     type_schemas: dict[str, dict],
     assets: list[dict[str, str]],
 ) -> str:
@@ -717,7 +686,6 @@ def _render_html(
             name: type_schemas[name] for name in types if name in type_schemas
         },
         "log": log_markdown,
-        "index": index_markdown,
     }
 
     payload = json.dumps(graph_data).replace("</", "<\\/")
@@ -895,6 +863,8 @@ _HTML_TEMPLATE = r"""<!DOCTYPE html>
   #doc table.props th { white-space:nowrap; font-weight:600; width:1%; }
   #doc .sources h1 { font-size:17px; font-weight:600; margin:1.6em 0 .4em; padding-bottom:5px; border-bottom:1px solid var(--line); }
   #doc .sources li { margin:3px 0; }
+  #doc .index-tree ul ul { margin-top:2px; }
+  #doc .index-tree li { margin:2px 0; }
   #doc ul.dirlist { list-style:none; padding-left:0; }
   #doc ul.dirlist li { margin:4px 0; }
   #doc ul.dirlist .dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
@@ -1060,7 +1030,10 @@ function representative(conceptId) {
   return conceptId;
 }
 function dirLabel(path) {
-  return dirs[path].name;
+  // Sentence case for display: separators become spaces, a leading underscore is dropped.
+  const name = dirs[path].name;
+  const words = name.replace(/^_+/, '').replace(/[-_]+/g, ' ').trim() || name;
+  return words.charAt(0).toUpperCase() + words.slice(1);
 }
 
 /* ---------- graph ---------- */
@@ -1800,12 +1773,12 @@ function openConcept(id, attention = true) {
 }
 
 function openIndex() {
-  // The bundle-root index.md is the landing page: catalog in the reader, every directory collapsed.
+  // The landing page: the concept hierarchy in the reader, every directory collapsed.
   closeMobilePanels();
   main.classList.remove('graph-only');
   const body = document.createElement('div');
-  body.className = 'prose';
-  body.innerHTML = DATA.index ? marked.parse(DATA.index) : '';
+  body.className = 'prose index-tree';
+  body.innerHTML = indexTreeHtml(buildTree(DATA.nodes, []));
   doc.innerHTML = '';
   doc.appendChild(body);
   wireDocLinks(body);
@@ -1974,12 +1947,15 @@ function onNavDoubleClick(ev, id) {
   (open ? collapseDirDeep : expandDirDeep)(directory, () => openDir(directory, false));
 }
 
-function renderTree(tree, prefix = '') {
-  // Sidebar order within a directory: concepts, files and subdirectories in one alphabetical list by
-  // their visible label. Underscore-prefixed directories (e.g. _types) hold meta concepts and go last.
-  const compareNavEntries = (a, b) => (a.meta - b.meta) ||
+function compareNavEntries(a, b) {
+  // Sidebar and Index order within a directory: concepts, files and subdirectories in one alphabetical
+  // list by their visible label. Underscore-prefixed directories (e.g. _types) hold meta concepts and go last.
+  return (a.meta - b.meta) ||
     a.label.localeCompare(b.label, undefined, { sensitivity: 'base' }) ||
     a.label.localeCompare(b.label) || a.key.localeCompare(b.key);
+}
+
+function renderTree(tree, prefix = '') {
   const ul = document.createElement('ul');
   const entries = [];
   // Same-named overviews live in their directory entry, not here.
@@ -2057,6 +2033,25 @@ function renderTree(tree, prefix = '') {
   return ul;
 }
 
+function indexEntryHtml(n) {
+  // One Index entry: just the concept link.
+  return `<a href="#node:${encodeURIComponent(n.id)}">${escapeHtml(n.title)}</a>`;
+}
+
+function indexTreeHtml(tree, prefix = '') {
+  // The Index page: the sidebar's hierarchy as nested lists, with a directory's overview as its entry.
+  const entries = tree.files.map(n => ({ label: n.title, key: n.id, meta: false, html: indexEntryHtml(n) }));
+  Object.keys(tree.dirs).forEach(name => {
+    const path = prefix ? prefix + '/' + name : name;
+    const overview = tree.dirs[name].overview;
+    const head = overview ? indexEntryHtml(overview) : escapeHtml(dirLabel(path));
+    entries.push({ label: overview ? overview.title : dirLabel(path), key: path, meta: name[0] === '_',
+                   html: head + indexTreeHtml(tree.dirs[name], path) });
+  });
+  if (!entries.length) return '';
+  return '<ul>' + entries.sort(compareNavEntries).map(entry => `<li>${entry.html}</li>`).join('') + '</ul>';
+}
+
 // Reflect `expanded` onto the sidebar tree.
 function paintTreeState() {
   document.querySelectorAll('#nav li.dir').forEach(li => {
@@ -2099,14 +2094,12 @@ function setActiveNav(id, attention = true) {
 }
 
 const nav = document.getElementById('nav');
-if (DATA.index) {
-  const home = document.createElement('a');
-  home.href = '#index';
-  home.className = 'homelink';
-  home.innerHTML = '🏠 <span>Index</span>';
-  home.addEventListener('click', ev => { ev.preventDefault(); openIndex(); });
-  nav.appendChild(home);
-}
+const home = document.createElement('a');
+home.href = '#index';
+home.className = 'homelink';
+home.innerHTML = '🏠 <span>Index</span>';
+home.addEventListener('click', ev => { ev.preventDefault(); openIndex(); });
+nav.appendChild(home);
 nav.appendChild(renderTree(buildTree(DATA.nodes, DATA.files)));
 if (DATA.log) {
   const link = document.createElement('a');
@@ -2271,8 +2264,7 @@ syncGraph(() => {
   if (start === 'log') openLog();
   else if (byId[start]) openConcept(start);
   else if (isDirId(start) && dirs[dirOf(start)]) expandDir(dirOf(start), () => openDir(dirOf(start)));
-  else if (DATA.index) openIndex();
-  else showGraphOnly();
+  else openIndex();
   restoreReviewScroll();
 });
 startReview();

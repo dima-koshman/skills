@@ -106,6 +106,11 @@ python scripts/okf_index.py <bundle-dir>
 python scripts/okf_index.py <bundle-dir> --per-directory
 ```
 
+In the single catalog, headings form the directory tree, depth-first, so the heading outline is the
+breadth-first view. A heading takes the title of the directory's overview (`<directory>.md` beside it), and
+that overview is the section's first entry. A directory without one is named in Sentence case
+(`distributed-systems` → "Distributed systems"). Siblings are sorted by heading name, `_`-prefixed ones last.
+
 The script overwrites existing `index.md` files, warns (without failing) on any
 concept missing frontmatter or a `type`, tags each entry with its type (and its
 status when not `stable`), and stamps `okf_version: "0.2"` into the bundle-root
@@ -163,6 +168,11 @@ the full row is revealed and pulsed. Reduced-motion readers see a steady outline
 Clicking an entry directly in the sidebar selects and scrolls it without the attention pulse.
 Within each directory the sidebar lists concepts, files and subdirectories in one alphabetical list by their
 visible label (case-insensitive), with underscore-prefixed directories such as `_types` last.
+Directory names display in Sentence case (`distributed-systems` → "Distributed systems") in the sidebar, graph
+and reader; a directory with an overview shows the overview's title instead.
+The Index page (the landing page) is built from the concepts, not from `index.md`: the sidebar's hierarchy as
+nested lists in the same order, each entry only a link to the concept. A directory's
+overview is the entry its children nest under. `index.md` keeps its descriptions for agents.
 Non-Markdown files remain supporting assets rather than OKF concepts. The HTML reader lists them in the sidebar,
 including asset-only directories, and opens them in a new tab; links to local assets are rewritten relative to the
 generated HTML file, so custom HTML pages work when the renderer writes into a sibling `dev/` directory.

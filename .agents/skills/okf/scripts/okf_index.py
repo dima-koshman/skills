@@ -13,7 +13,10 @@ files, not in ``index.md``.
 By default a single catalog is written to ``<bundle>/index.md`` mirroring the
 bundle's directory hierarchy: each directory becomes a heading whose level
 reflects its depth (top-level dirs are ``#``, their subdirectories ``##``, and
-so on), with that directory's concepts listed beneath it. Each concept's
+so on), with that directory's concepts listed beneath it. A heading is named
+after the directory's overview (the same-named ``<directory>.md`` beside it),
+which is listed first in that section, or after the directory in Sentence case
+when there is no overview; siblings are sorted by that name. Each concept's
 ``type`` is shown as an inline ``` `[Type]` ``` tag before its description
 (followed by its lifecycle ``status`` when it is not ``stable``),
 since Markdown cannot color-code entries the way the HTML site does. With
@@ -30,6 +33,7 @@ from __future__ import annotations
 import argparse
 import dataclasses
 import pathlib
+import re
 import sys
 import urllib.parse
 
@@ -245,45 +249,81 @@ def _render_hierarchy(bundle_root: pathlib.Path, concepts: list[Concept]) -> str
 
     Each directory becomes a heading whose level equals its depth below the
     bundle root (top-level directories are ``#``, capped at ``######``), with
-    that directory's concepts listed beneath it. Concepts living at the bundle
-    root are listed first, without a heading. Directories are emitted in
-    pre-order so a directory's own concepts sit directly above its
-    subdirectories.
+    that directory's concepts listed beneath it. A directory's overview, the
+    same-named ``<directory>.md`` beside it, names the heading and is listed
+    first in that section rather than in its parent's. A directory without an
+    overview is named after its directory in Sentence case. Concepts living at
+    the bundle root are listed first, without a heading. Directories are
+    emitted in pre-order, siblings sorted by heading label with
+    underscore-prefixed (meta) directories last, so a directory's own concepts
+    sit directly above its subdirectories.
     """
     by_directory: dict[pathlib.Path, list[Concept]] = {}
     for concept in concepts:
         by_directory.setdefault(concept.directory, []).append(concept)
 
     covered = _directories_covering(bundle_root, by_directory.keys())
+    by_path = {concept.path: concept for concept in concepts}
+    overviews = {
+        directory: by_path[directory.parent / f"{directory.name}.md"]
+        for directory in covered
+        if directory != bundle_root
+        and directory.parent / f"{directory.name}.md" in by_path
+    }
+    overview_paths = {overview.path for overview in overviews.values()}
+
+    def label(directory: pathlib.Path) -> str:
+        overview = overviews.get(directory)
+        return overview.title if overview else _sentence_case(directory.name)
+
+    def sort_key(directory: pathlib.Path) -> tuple:
+        parts = directory.relative_to(bundle_root).parts
+        path = [
+            bundle_root.joinpath(*parts[: depth + 1]) for depth in range(len(parts))
+        ]
+        return tuple(
+            (step.name.startswith("_"), label(step).casefold(), label(step))
+            for step in path
+        )
+
+    def listed(directory: pathlib.Path) -> list[Concept]:
+        return [
+            concept
+            for concept in by_directory.get(directory, [])
+            if concept.path not in overview_paths
+        ]
+
     blocks: list[str] = []
 
     root_list = _render_concept_list(
-        by_directory.get(bundle_root, []),
-        link_for=lambda concept: concept.bundle_path,
+        listed(bundle_root), link_for=lambda concept: concept.bundle_path
     )
     if root_list:
         blocks.append(root_list)
 
-    subdirectories = sorted(
-        (directory for directory in covered if directory != bundle_root),
-        # Underscore-prefixed directories (e.g. ``_types``) hold meta concepts; list them last.
-        key=lambda directory: tuple(
-            (part.startswith("_"), part)
-            for part in directory.relative_to(bundle_root).parts
-        ),
-    )
-    for directory in subdirectories:
-        parts = directory.relative_to(bundle_root).parts
-        level = min(len(parts), _MAX_HEADING_LEVEL)
-        heading = f"{'#' * level} {parts[-1]}"
+    for directory in sorted((d for d in covered if d != bundle_root), key=sort_key):
+        level = min(len(directory.relative_to(bundle_root).parts), _MAX_HEADING_LEVEL)
+        heading = f"{'#' * level} {label(directory)}"
+        lines = []
+        if directory in overviews:
+            overview = overviews[directory]
+            lines.append(_render_concept_line(overview, overview.bundle_path))
         entries = _render_concept_list(
-            by_directory.get(directory, []),
-            link_for=lambda concept: concept.bundle_path,
+            listed(directory), link_for=lambda concept: concept.bundle_path
         )
-        block = f"{heading}\n\n{entries}" if entries else heading
+        if entries:
+            lines.append(entries)
+        block = f"{heading}\n\n" + "\n".join(lines) if lines else heading
         blocks.append(block)
 
     return "\n\n".join(blocks)
+
+
+def _sentence_case(name: str) -> str:
+    """Display a directory name in Sentence case: ``distributed-systems`` -> ``Distributed systems``."""
+    words = re.sub(r"[-_]+", " ", name.lstrip("_")).strip() or name
+
+    return words[:1].upper() + words[1:]
 
 
 def _render_concept_list(concepts, link_for) -> str:

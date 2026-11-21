@@ -549,6 +549,25 @@ class Foo(pydantic.BaseModel):
     retries: int = pydantic.Field(3, description="Retry count")
 ```
 
+For empty container defaults on Pydantic `BaseModel` fields, prefer plain `[]` or `{}` (or
+`pydantic.Field(default=[], ...)` when field metadata such as `description` is needed) over
+`pydantic.Field(default_factory=list)` or `pydantic.Field(default_factory=dict)`. Pydantic
+deep-copies mutable defaults per instance automatically, so `default_factory` adds noise
+without safety benefit (note: this applies to Pydantic models only — keep `default_factory` on
+stdlib `@dataclass` and avoid mutable defaults in regular function signatures).
+
+```python
+# Good
+class MessageUsage(pydantic.BaseModel):
+    models: list[ModelUsage] = []
+    labels: dict[str, str] = pydantic.Field(default={}, description="Optional labels")
+
+# Bad — unnecessary ceremony on Pydantic models
+class MessageUsage(pydantic.BaseModel):
+    models: list[ModelUsage] = pydantic.Field(default_factory=list)
+    labels: dict[str, str] = pydantic.Field(default_factory=dict, description="Optional labels")
+```
+
 ## Multiline strings
 
 For multiline strings whose content spans several lines (e.g. a `description=` in
